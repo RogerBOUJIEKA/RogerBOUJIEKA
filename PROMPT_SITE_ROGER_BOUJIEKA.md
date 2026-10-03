@@ -1,403 +1,423 @@
-# PROMPT — Plateforme de formations en ligne « Roger BOUJIEKA »
+# PROMPT — Site officiel & plateforme de Roger BOUJIEKA (version 2)
 
-> **Mode d'emploi :** copie tout le texte à partir de la ligne « RÔLE » ci-dessous et envoie-le à Claude Code dans un **nouveau dépôt dédié au site** (par ex. `roger-boujieka-academy`), et non dans ce dépôt de profil GitHub.
-> Avant d'envoyer, remplace toutes les mentions **`[À COMPLÉTER]`** par tes vraies informations (téléphone, WhatsApp, e-mail, réseaux sociaux, prix, titres des formations…).
+> **Mode d'emploi :** copie tout le texte à partir de la ligne « RÔLE » ci-dessous et envoie-le à Claude Code dans un **nouveau dépôt dédié au site** (par ex. `rogerboujieka-site`), et non dans ce dépôt de profil GitHub.
+> Avant d'envoyer, remplace toutes les mentions **`[À COMPLÉTER]`** par tes vraies informations. Vérifie aussi les noms marqués **`[À CONFIRMER]`** : je les ai compris à l'oral et l'orthographe peut être différente.
 
 ---
 
 ## RÔLE
 
-Tu es un développeur full-stack senior et un designer UI/UX spécialisé dans les plateformes e-learning et le e-commerce pour le marché africain. Tu vas concevoir et développer de A à Z une plateforme web professionnelle de vente et de diffusion de formations en ligne pour **Roger BOUJIEKA**, créateur digital et entrepreneur web basé à **Douala, Cameroun**.
+Tu es un développeur full-stack senior et un directeur artistique web. Tu travailles comme une agence haut de gamme qui livre le site officiel d'un entrepreneur reconnu. Le résultat doit ressembler à un site conçu et codé à la main par une vraie équipe, **pas à un site généré par une IA ni à un template**.
 
-Travaille de façon méthodique : propose d'abord l'architecture et le plan, puis développe phase par phase, en testant chaque fonctionnalité avant de passer à la suivante. Le code doit être propre, typé, commenté là où c'est utile, sécurisé et prêt pour la production.
+Tu vas concevoir et développer le **site personnel officiel de Roger BOUJIEKA**, entrepreneur web et créateur digital basé à **Douala, Cameroun**. Le site intègre aussi son **académie en ligne** (formations hébergées sur la plateforme), ses **services**, ses **événements**, sa **communauté** et un **assistant IA « Roger IA »**.
 
----
-
-## 1. CONTEXTE DU PROJET
-
-- **Propriétaire :** Roger BOUJIEKA — créateur de contenu, formateur et entrepreneur web.
-- **Localisation :** Douala, Cameroun (fuseau horaire `Africa/Douala`, UTC+1).
-- **Domaines d'expertise :** Intelligence Artificielle (IA) et Marketing Digital.
-- **Objectif principal :** vendre des formations en ligne, les diffuser de façon sécurisée (streaming + téléchargement pour visionnage hors ligne sur téléphone), proposer des accompagnements personnalisés et animer une communauté.
-- **Échéance :** lancement des premières formations **la semaine prochaine** → la **Phase 1 (MVP)** doit être fonctionnelle et déployable en priorité.
-- **Public cible :** entrepreneurs, étudiants, freelances, commerçants, créateurs de contenu et professionnels d'Afrique francophone (Cameroun, Côte d'Ivoire, Sénégal, Gabon, Congo, etc.) et de la diaspora.
-- **Contraintes du marché :**
-  - Majorité des visiteurs sur **mobile** (Android d'entrée et milieu de gamme).
-  - Connexion internet parfois lente ou instable (3G/4G) et data coûteuse → le site doit être **très léger et rapide**.
-  - Paiement principalement par **Mobile Money** (Orange Money, MTN Mobile Money) ; la carte bancaire est secondaire.
-  - **WhatsApp** est le canal de communication principal.
-  - Devise principale : **Franc CFA (XAF / FCFA)**. Afficher aussi un équivalent indicatif en EUR/USD pour la diaspora.
-  - Langue principale : **français**. Prévoir l'architecture pour l'**anglais** (Cameroun bilingue) via i18n.
+Travaille de façon méthodique : présente d'abord l'architecture, la direction artistique et le plan, puis développe phase par phase en testant chaque fonctionnalité. Le code doit être propre, typé, sécurisé et prêt pour la production.
 
 ---
 
-## 2. IDENTITÉ VISUELLE & DESIGN
+## 1. QUI EST ROGER BOUJIEKA (contexte à respecter partout)
 
-### 2.1 Charte graphique — dominante ROUGE
+- **Roger BOUJIEKA** — entrepreneur web, créateur digital, formateur et conférencier, basé à Douala (Cameroun).
+- **PDG du Groupe BOUJIEKA** `[À CONFIRMER : nom exact du groupe]`, qui comprend notamment :
+  - **BOUJIEKA Agence** `[À CONFIRMER]` — agence de communication et de marketing digital.
+  - **BOUJIEKA Académie** `[À CONFIRMER]` — centre de formation (en présentiel à Douala et en ligne). Des formations y ont lieu **tous les jours**.
+- **Masterclass gratuites tous les mercredis et samedis** à l'agence (Douala), à mettre en avant avec inscription.
+- **Programme TRANSMISSION** : tournée de conférences **gratuites** lancée par Roger pour transmettre ses compétences. Il se déplace dans les villes, écoles, universités, églises, associations, assemblées et entreprises qui l'invitent.
+- **Domaines d'expertise** (le site ne doit **pas** donner l'impression qu'il parle seulement d'IA) :
+  - Marketing digital et réseaux sociaux
+  - Entrepreneuriat web et business en ligne
+  - Intelligence artificielle appliquée au business
+  - Création de contenu (stratégie, tournage, personal branding)
+  - Création de visuels et infographie
+  - Montage vidéo
+  - Création et vente de produits digitaux, monétisation des compétences
+  - Achat et importation depuis la **Chine, Dubaï, la Turquie** `[À CONFIRMER : j'ai compris « Tchéquie »]` **et le Nigeria**
+  - Formation du personnel des entreprises, coaching, conférences, masterclass
+- **Public :** jeunes, étudiants, entrepreneurs, commerçants, freelances, créateurs, entreprises et organisations d'Afrique francophone et de la diaspora.
 
-Couleur signature : **le rouge**. Le rendu doit être premium, moderne, sobre et professionnel (inspiration : Netflix, Apple, Stripe, Linear, Webflow — pas un rendu « template gratuit »).
+**Positionnement :** c'est **d'abord le site personnel d'un entrepreneur** (marque personnelle, crédibilité, services, événements), et **ensuite** une plateforme où il vend et héberge ses formations et produits digitaux.
 
-Palette proposée (à définir en variables CSS / tokens Tailwind pour pouvoir l'ajuster facilement) :
+---
+
+## 2. CONTRAINTES DU MARCHÉ
+
+- Visiteurs majoritairement sur **mobile Android** d'entrée et milieu de gamme.
+- Connexion parfois lente (3G/4G) et data coûteuse → site **léger et rapide**.
+- Paiement principalement par **Mobile Money** (Orange Money, MTN MoMo) ; carte bancaire et PayPal pour la diaspora.
+- **WhatsApp** est le canal de contact principal : garder les boutons WhatsApp (flottant, pages de vente, contact, services).
+- Devise : **FCFA (XAF)**, équivalent indicatif en EUR/USD.
+- Fuseau `Africa/Douala`. Langue : **français**, architecture prête pour l'**anglais** (i18n).
+
+---
+
+## 3. DIRECTION ARTISTIQUE — UN SITE QUI A L'AIR RÉEL
+
+### 3.1 Règles anti « site généré par IA »
+
+C'est une exigence majeure. Interdits :
+
+- Les icônes ou logos **faits maison** : carré coloré avec les initiales, pictogramme générique à la place d'une vraie marque, emoji utilisés comme icônes.
+- Les blocs de 3 cartes identiques « icône + titre + 2 lignes » répétés sur toute la page.
+- Les textes creux et génériques (« Libérez votre potentiel », « Solutions innovantes »). Écris des textes concrets, directs, avec le ton d'un entrepreneur camerounais qui parle à son audience (tutoiement possible, phrases courtes, exemples locaux : Douala, Yaoundé, commerçants du marché, boutiques en ligne, Akwa, Bonapriso…).
+- Les illustrations vectorielles génériques de personnages, les images de stock « bureau américain ».
+- Les gros dégradés violets/bleus « tech » par défaut.
+
+À faire :
+
+- **Photographie réelle au centre du design** : photos de Roger (portrait, sur scène, en formation, en masterclass, avec ses élèves, à l'agence), photos d'événements TRANSMISSION, vidéos courtes. En attendant les vraies photos, utilise des emplacements élégants clairement marqués `[PHOTO À FOURNIR]` avec le bon format (pas de fausses photos de personnes).
+- **Mise en page éditoriale** : grands titres, alternance de grilles, sections asymétriques, chiffres en très gros, citations de Roger, bandeaux pleine largeur, galeries photo type magazine.
+- **Détails soignés** : grain léger sur les fonds, bordures fines, ombres réalistes, états de survol travaillés, curseur et transitions cohérents.
+
+### 3.2 Couleurs — branding rouge
 
 | Rôle | Couleur | Usage |
 |---|---|---|
-| Rouge principal | `#E11D2E` | Boutons d'action, liens, éléments clés |
-| Rouge profond | `#9F1220` | Survol, dégradés, fonds de sections fortes |
-| Rouge clair | `#FFE4E6` | Badges, fonds légers, surlignages |
-| Noir profond | `#0A0A0B` | Fonds sombres, sections premium, hero |
-| Anthracite | `#1C1C1F` | Cartes en mode sombre |
-| Gris texte | `#52525B` | Texte secondaire |
-| Blanc cassé | `#FAFAFA` | Fond clair principal |
-| Accent doré (optionnel, avec parcimonie) | `#F5B700` | Badges « Bestseller », étoiles d'avis, offres premium |
+| Rouge BOUJIEKA | `#E11D2E` | Boutons, accents, liens, soulignés |
+| Rouge profond | `#A3121F` | Survols, dégradés, fonds forts |
+| Rouge nuit | `#3B0A10` | Fonds sombres avec teinte rouge |
+| Noir | `#0A0A0B` | Fonds premium, hero, footer |
+| Anthracite | `#18181B` | Cartes en mode sombre |
+| Gris texte | `#5B5B63` | Texte secondaire |
+| Blanc cassé | `#F7F5F2` | Fond clair (légèrement chaud, pas blanc pur) |
+| Doré (rare) | `#E8B547` | Étoiles d'avis, badges « Bestseller » / VIP |
 
-- **Modes clair et sombre** avec bascule, respectant la préférence système. Les sections « hero » et « offre premium » peuvent être en noir + rouge dans les deux modes.
-- **Typographies :** titres en `Poppins` ou `Sora` (gras, impactants) ; texte courant en `Inter`. Chargées via `next/font` (auto-hébergées, pas de requête externe bloquante).
-- **Style :** coins arrondis (12–20 px), ombres douces, dégradés rouge → rouge profond, effets « glassmorphism » légers sur la navigation, grilles aérées, beaucoup d'espace blanc, icônes cohérentes (Lucide).
-- **Logo :** prévoir un emplacement pour le logo `[À COMPLÉTER]` ; en attendant, générer un logotype texte « Roger BOUJIEKA » (ou monogramme « RB ») en SVG, rouge et noir.
-- **Accessibilité :** contrastes WCAG AA minimum, navigation clavier, attributs `alt`, `aria-*`, tailles tactiles ≥ 44 px.
+Variables CSS / tokens Tailwind, mode clair et sombre.
 
-### 2.2 Animations & dynamisme
+### 3.3 Typographie
 
-Le site doit être **vivant et animé**, sans jamais sacrifier la performance :
+- Titres : **Clash Display** ou **General Sans** (Fontshare, gratuites) — alternative Google : **Sora**. Grandes tailles, interlignage serré, graisse forte.
+- Texte : **Satoshi** (Fontshare) ou **Inter**.
+- Chiffres clés : variante tabulaire, très grande taille.
+- Polices **auto-hébergées** (`next/font/local`), sous-ensembles latins uniquement, `font-display: swap`.
 
-- **Framer Motion** pour les transitions de pages, apparitions au scroll (fade/slide), effets de survol des cartes (élévation, zoom léger de l'image), menus et modales.
-- **Hero animé** : titre avec effet de texte qui s'écrit ou mots qui alternent (« Maîtrise l'IA », « Vends en ligne », « Automatise ton business »…), dégradé rouge animé ou particules légères en arrière-plan.
-- **Compteurs animés** (nombre d'apprenants, de formations, d'heures de contenu, de pays touchés).
-- **Carrousels / sliders** fluides et tactiles pour les témoignages, les réalisations et les formations (Embla Carousel).
-- **Marquee** (défilement infini) des logos de partenaires / médias / outils (ChatGPT, Claude, Canva, Meta Ads, etc.).
-- **Micro-interactions** : boutons avec effet de pulsation sur les CTA principaux, barre de progression animée, confettis à la fin d'un cours ou après un achat réussi.
-- **Skeleton loaders** pendant les chargements.
-- **Compte à rebours** pour les offres de lancement et promotions.
-- **Notifications de preuve sociale** discrètes (« Aïcha de Yaoundé vient de rejoindre la formation… ») — basées sur de vrais achats uniquement, désactivables depuis l'admin.
-- Respecter `prefers-reduced-motion` : animations réduites si l'utilisateur le demande.
+### 3.4 Fonds et animations — fluides et professionnels
+
+- **Fond du hero** : dégradé maillé (mesh gradient) rouge → rouge nuit → noir qui **bouge lentement** (shader WebGL léger, ex. composant type « aurora » ou `@paper-design/shaders-react`), avec texture de grain et vidéo/photo de Roger en premier plan. Version CSS statique de secours sur les téléphones faibles ou en mode économie de données.
+- Sections alternant fond clair chaud, fond noir et fond rouge plein ; transitions douces entre elles (dégradés, formes courbes).
+- **Défilement fluide** avec **Lenis** ; animations au scroll avec **GSAP + ScrollTrigger** (sections épinglées, révélations de texte ligne par ligne, parallaxe légère sur les photos) et **Framer Motion** pour les composants (menus, modales, cartes, transitions de pages).
+- Compteurs animés, carrousels tactiles (Embla), bandeau de logos en défilement infini, compte à rebours, confettis à l'achat et à la fin d'un cours.
+- Animations à 60 i/s : uniquement `transform` et `opacity`, pas d'animation qui bloque la lecture.
+- Respect de `prefers-reduced-motion`.
 
 ---
 
-## 3. STACK TECHNIQUE
+## 4. ICÔNES ET LOGOS — LES VRAIS
 
-Choisis la stack suivante (ou justifie toute alternative) :
+### 4.1 Logos des marques (outils, plateformes, paiements)
 
-- **Framework :** Next.js (dernière version stable, App Router) + **TypeScript** strict.
-- **UI :** Tailwind CSS + shadcn/ui + Lucide Icons + Framer Motion.
-- **Base de données :** PostgreSQL (via **Supabase** ou Neon) avec **Prisma** ou Drizzle ORM.
-- **Authentification :** Auth.js (NextAuth) ou Supabase Auth — connexion par e-mail + mot de passe, **lien magique**, **Google**, et **connexion par numéro de téléphone (OTP SMS/WhatsApp)** prévue dans l'architecture.
-- **Hébergement vidéo sécurisé :** **Bunny Stream** (recommandé : économique, CDN rapide en Afrique, HLS adaptatif, URLs signées, protection anti-téléchargement, watermark) — alternative : Mux.
-- **Stockage fichiers (PDF, ressources, images) :** Supabase Storage, Cloudflare R2 ou Bunny Storage avec **URLs signées à durée limitée**.
-- **Paiements :** **Chariow** (prioritaire) + architecture multi-fournisseurs (voir section 6).
-- **E-mails transactionnels :** Resend + React Email (templates aux couleurs de la marque).
-- **Formulaires & validation :** React Hook Form + Zod.
-- **PWA :** application installable sur téléphone (manifest, service worker, icônes, écran de démarrage rouge) avec lecture hors ligne (voir section 5.4).
-- **Déploiement :** Vercel (frontend + API) ; base de données Supabase/Neon.
-- **Analytics :** Plausible ou Umami + **Meta Pixel** et **Google Analytics 4 / Google Tag Manager** (indispensables pour les publicités Facebook/Instagram/TikTok), **TikTok Pixel**.
-- **Qualité :** ESLint, Prettier, tests (Vitest pour la logique, Playwright pour les parcours critiques : inscription, achat, accès au cours).
+Utiliser **les vrais logos officiels**, en couleurs d'origine (ou en version monochrome blanche/noire quand le design l'exige, selon la charte de la marque) :
 
----
+- **IA :** ChatGPT / OpenAI, **Claude** / Anthropic, Gemini, Midjourney, Perplexity, Copilot, ElevenLabs, CapCut.
+- **Création :** Canva, Adobe Photoshop, Illustrator, Premiere Pro, After Effects, CapCut, Figma.
+- **Réseaux & marketing :** Facebook, Instagram, TikTok, WhatsApp, YouTube, LinkedIn, Telegram, Snapchat, Meta (Ads), Google Ads.
+- **Business & achat :** Alibaba, 1688, AliExpress, Shopify, WooCommerce, Chariow.
+- **Paiement :** **Orange Money**, **MTN Mobile Money**, Wave, Moov Money, Visa, Mastercard, **PayPal**, Chariow.
 
-## 4. STRUCTURE DU SITE (ARBORESCENCE)
+Méthode :
 
-### 4.1 Pages publiques
+1. Pour les marques disponibles, utiliser le paquet **`simple-icons`** (SVG officiels avec la couleur de marque) ou `@icons-pack/react-simple-icons`.
+2. Pour les marques absentes (Orange Money, MTN MoMo, Chariow, Wave, Moov, Alibaba, etc.), télécharger le **logo officiel** depuis le kit presse / site officiel de la marque et le placer dans `public/brands/` (SVG de préférence, sinon PNG haute résolution sur fond transparent).
+3. Si un logo ne peut pas être téléchargé automatiquement, **ne le redessine pas** : crée la liste `docs/LOGOS_A_FOURNIR.md` avec le nom du fichier attendu et la source officielle, et affiche un emplacement neutre en attendant.
+4. Composant unique `<BrandLogo name="orange-money" />` pour tout centraliser.
+5. Respecter les chartes des marques (pas de déformation, pas de recoloration hors des versions autorisées, zone de protection).
 
-1. **Accueil** (`/`)
-2. **Catalogue des formations** (`/formations`)
-3. **Page de vente d'une formation** (`/formations/[slug]`) — la page la plus importante
-4. **Accompagnement / Coaching** (`/accompagnement`)
-5. **Communauté** (`/communaute`)
-6. **Réalisations & Témoignages** (`/realisations`)
-7. **À propos de Roger** (`/a-propos`)
-8. **Blog / Ressources gratuites** (`/blog`, `/blog/[slug]`) — astuces IA & marketing, optimisé SEO
-9. **Ressources gratuites / Lead magnets** (`/gratuit`) — ex. « Guide des 50 prompts IA pour vendre en ligne » contre e-mail + WhatsApp
-10. **Programme d'affiliation** (`/affiliation`)
-11. **Contact** (`/contact`)
-12. **FAQ** (`/faq`)
-13. **Vérification de certificat** (`/certificat/[code]`)
-14. **Pages légales :** Mentions légales, CGV, Politique de confidentialité, Politique de remboursement, Politique cookies
-15. **Panier / Checkout** (`/checkout`) + pages **Paiement réussi / en attente / échoué**
-16. **Pages d'erreur** 404 et 500 personnalisées, aux couleurs de la marque
+### 4.2 Icônes d'interface et de services
 
-### 4.2 Espace membre (`/espace`)
-
-- Tableau de bord, mes formations, lecteur de cours, téléchargements, certificats, factures, communauté, mes rendez-vous d'accompagnement, parrainage/affiliation, profil & paramètres.
-
-### 4.3 Espace administrateur (`/admin`) — réservé à Roger (et futurs collaborateurs)
-
-- Gestion des formations, ventes, clients, coupons, témoignages, réalisations, blog, communauté, accompagnements, affiliés, e-mails, paramètres. (Détails section 8.)
+- Icônes d'interface (menus, flèches, lecture, téléchargement…) : **Lucide** ou **Phosphor** (style duotone), cohérentes et fines.
+- Pour les cartes de services et les grandes sections : icônes **3D réalistes** (ex. pack libre de droits type **3dicons.co**) ou mieux, **vraies photos**, recolorées ou cadrées pour rester dans le branding rouge.
+- **Drapeaux réels** (SVG, paquet `flag-icons`) pour Chine, Émirats (Dubaï), Turquie, Nigeria, Cameroun dans la section « Achat à l'international ».
 
 ---
 
-## 5. DÉTAIL DES PAGES ET FONCTIONNALITÉS
+## 5. STACK TECHNIQUE
 
-### 5.1 Page d'accueil
-
-Sections dans cet ordre (toutes animées au scroll) :
-
-1. **Barre d'annonce** en haut (rouge, fermable) : « 🚀 Lancement : -40 % sur toutes les formations jusqu'au [date] » avec compte à rebours. Modifiable depuis l'admin.
-2. **Navigation** sticky, transparente puis floutée au scroll : logo, Formations, Accompagnement, Communauté, Réalisations, Blog, À propos, bouton « Se connecter », bouton CTA rouge « Commencer maintenant ». Menu burger animé sur mobile.
-3. **Hero** : titre fort (ex. « Maîtrise l'Intelligence Artificielle et le Marketing Digital pour développer ton business en Afrique »), sous-titre, 2 CTA (« Découvrir les formations » / « Rejoindre la communauté »), photo ou vidéo de Roger avec cadre rouge, badges de confiance (« +[X] apprenants », note moyenne ⭐, « Paiement Mobile Money sécurisé »).
-4. **Bandeau logos** des outils enseignés / médias (marquee).
-5. **Chiffres clés animés.**
-6. **Problème → Solution** : les douleurs de l'audience (« Tu postes mais tu ne vends pas ? », « L'IA te paraît compliquée ? ») et comment les formations les résolvent.
-7. **Formations phares** : cartes (image, titre, niveau, durée, nombre de leçons, note, prix barré + prix promo en FCFA, badge « Nouveau » / « Bestseller »), bouton « Voir la formation ».
-8. **Pourquoi se former avec Roger** : 4–6 arguments avec icônes (méthode pratique, contenu adapté au contexte africain, accès à vie, support WhatsApp, certificat, communauté).
-9. **Comment ça marche** : 3–4 étapes animées (Choisis → Paie par Mobile Money → Accède immédiatement → Applique et obtiens des résultats).
-10. **Témoignages** : carrousel texte + témoignages **vidéo** + captures d'écran de résultats (WhatsApp, ventes…).
-11. **Réalisations** : aperçu de projets / résultats d'élèves, lien vers la page dédiée.
-12. **Accompagnement** : présentation des offres de coaching avec CTA.
-13. **Communauté** : bloc d'appel à rejoindre (gratuite et/ou VIP).
-14. **À propos de Roger** : photo, mini-bio, parcours, valeurs, liens réseaux sociaux.
-15. **Lead magnet** : ressource gratuite contre e-mail + numéro WhatsApp.
-16. **FAQ** (accordéon animé).
-17. **CTA final** pleine largeur rouge/noir.
-18. **Footer** complet : liens, contacts (Douala, Cameroun), WhatsApp, réseaux sociaux (Facebook, Instagram, TikTok, YouTube, LinkedIn, Telegram), moyens de paiement acceptés (logos Orange Money, MTN MoMo, Visa/Mastercard), inscription newsletter, liens légaux, © Roger BOUJIEKA.
-
-**Éléments globaux :** bouton **WhatsApp flottant** (avec message pré-rempli), bouton « retour en haut », bannière cookies conforme.
-
-### 5.2 Catalogue des formations
-
-- Grille responsive de cartes animées.
-- **Filtres** : catégorie (IA, Marketing Digital, Business en ligne, Réseaux sociaux, Copywriting, Automatisation…), niveau (Débutant / Intermédiaire / Avancé), prix (gratuit / payant), durée, format.
-- **Recherche instantanée** et **tri** (populaires, récentes, prix, mieux notées).
-- **Packs / Bundles** : plusieurs formations à prix réduit.
-- Pagination ou chargement progressif.
-
-### 5.3 Page de vente d'une formation (dynamique, générée depuis l'admin)
-
-Chaque formation créée dans l'admin génère automatiquement une page de vente complète et persuasive :
-
-1. **En-tête** : titre, sous-titre/promesse, catégorie, niveau, note ⭐ et nombre d'avis, nombre d'inscrits, date de mise à jour, langue.
-2. **Vidéo de présentation** (trailer) ou image de couverture.
-3. **Encadré d'achat sticky** (à droite sur desktop, barre fixe en bas sur mobile) : prix barré, prix promo en FCFA (+ équivalent EUR), compte à rebours de l'offre, bouton « Acheter maintenant » (rouge, pulsant), bouton « Payer via WhatsApp », champ code promo, ce qui est inclus (heures de vidéo, nombre de leçons, ressources téléchargeables, accès à vie, certificat, accès communauté, mises à jour gratuites), badges de paiement sécurisé et garantie.
-4. **Ce que tu vas apprendre** : liste de bénéfices avec coches rouges.
-5. **Pour qui est cette formation / pour qui elle n'est PAS.**
-6. **Prérequis.**
-7. **Programme détaillé** : modules → leçons (accordéon), durée de chaque leçon, icône de type (vidéo, PDF, quiz, audio), leçons en **aperçu gratuit** lisibles sans achat.
-8. **Description longue** riche (éditeur de texte riche dans l'admin : titres, gras, listes, images, vidéos intégrées).
-9. **Bonus inclus** (templates, prompts, fichiers Canva, groupes privés…), avec valeur affichée.
-10. **Le formateur** : présentation de Roger.
-11. **Témoignages et avis** spécifiques à la formation (texte, vidéo, captures de résultats) + note globale avec répartition des étoiles.
-12. **Réalisations d'élèves** liées à la formation.
-13. **Garantie** : politique de satisfaction/remboursement (paramétrable, ex. 7 jours).
-14. **FAQ de la formation.**
-15. **Offres complémentaires** : upsell (accompagnement), bundle, formations similaires.
-16. **CTA final** avec rappel du prix et du compte à rebours.
-
-Paramètres par formation : prix normal, prix promo, date de fin de promo, **paiement en plusieurs fois** (ex. 2 ou 3 versements), formation gratuite, places limitées, statut (brouillon / publiée / bientôt disponible avec liste d'attente / archivée), date de publication programmée, **contenu distillé au fil du temps (drip)**, SEO (titre, description, image de partage), pixel/événements de conversion.
-
-### 5.4 Espace apprenant & lecteur de cours
-
-- **Tableau de bord** : formations achetées avec progression (%), « Reprendre là où je me suis arrêté », recommandations, annonces de Roger.
-- **Lecteur de cours** :
-  - Lecteur vidéo HLS adaptatif (qualité automatique selon la connexion : 360p / 480p / 720p / 1080p), choix manuel de la qualité, vitesse de lecture (0,75× à 2×), sous-titres, mode plein écran, reprise automatique à la dernière position.
-  - **Mode économie de données** : qualité basse par défaut, option audio uniquement.
-  - Sommaire latéral des modules/leçons avec cases de progression, leçon suivante automatique.
-  - Onglets sous la vidéo : description, ressources téléchargeables (PDF, templates, fichiers), **notes personnelles**, **questions/commentaires** par leçon (Roger peut répondre), quiz.
-  - Bouton « Marquer comme terminée », barre de progression globale, confettis à 100 %.
-  - **Watermark dynamique** sur la vidéo (nom/e-mail/téléphone de l'acheteur) pour dissuader le piratage.
-- **Téléchargement pour visionnage hors ligne sur téléphone** (exigence importante) :
-  - **Option A (recommandée, sécurisée)** : via la **PWA installée**, bouton « Télécharger pour regarder hors ligne » sur chaque leçon/module ; la vidéo est stockée dans le stockage de l'application (IndexedDB / Cache API), chiffrée, lisible uniquement dans l'application, avec gestion de l'espace utilisé et suppression des téléchargements. Expiration et revalidation périodique de la licence (ex. reconnexion obligatoire tous les 30 jours).
-  - **Option B (paramétrable par formation dans l'admin)** : téléchargement direct du fichier MP4 en qualité compressée via **URL signée à durée limitée**, avec watermark incrusté et **limite du nombre de téléchargements** par utilisateur.
-  - Ressources PDF téléchargeables avec watermark au nom de l'acheteur.
-- **Sécurité de l'accès** : contenu accessible uniquement aux acheteurs, URLs signées expirantes, limitation du nombre d'appareils/sessions simultanées par compte (ex. 2 appareils), détection de partage de compte.
-- **Certificats** : génération automatique d'un certificat PDF (design rouge/noir, nom de l'apprenant, formation, date, signature de Roger, **QR code** et code unique vérifiable sur `/certificat/[code]`) quand la formation est terminée (+ quiz final réussi si activé). Partageable sur LinkedIn.
-- **Mes achats / factures** : historique, reçus PDF téléchargeables.
-- **Profil** : photo, nom, téléphone, pays, ville, mot de passe, préférences de notification, appareils connectés.
-
-### 5.5 Accompagnement / Coaching
-
-- Présentation des formules, par exemple (à paramétrer dans l'admin) :
-  - **Session stratégique individuelle** (1 h, visio) — `[PRIX À COMPLÉTER]` FCFA
-  - **Accompagnement mensuel** (4 sessions + support WhatsApp) — `[PRIX À COMPLÉTER]` FCFA
-  - **Mentorat VIP / Done-with-you** (sur candidature) — `[PRIX À COMPLÉTER]` FCFA
-  - **Formation en entreprise / conférences** (sur devis)
-- Tableau comparatif des formules, témoignages de clients accompagnés, FAQ.
-- **Prise de rendez-vous** intégrée (Cal.com ou Calendly, fuseau `Africa/Douala`), paiement avant confirmation.
-- **Formulaire de candidature** pour les offres premium (objectifs, activité, budget), notifié à Roger par e-mail et WhatsApp.
-- Espace « Mes rendez-vous » dans l'espace membre (lien visio Google Meet/Zoom, rappels automatiques).
-
-### 5.6 Communauté
-
-- **Communauté gratuite** : accès aux astuces, posts et lives ; liens vers la chaîne WhatsApp, le groupe Telegram et/ou la page Facebook `[À COMPLÉTER]`.
-- **Communauté privée intégrée à la plateforme** (pour les membres/acheteurs, et option **abonnement VIP mensuel** payant) :
-  - Fil d'actualité avec publications de Roger (astuces IA, marketing, opportunités), épinglées en haut.
-  - Espaces/catégories : Annonces, Astuces IA, Marketing Digital, Questions-Réponses, Victoires des membres, Opportunités.
-  - Publications des membres avec texte, images, liens ; commentaires, réactions, mentions.
-  - **Lives et replays** (lien YouTube/Zoom + replay intégré), calendrier des événements.
-  - Profils des membres, badges (Nouveau, Actif, Top contributeur, Certifié), classement/gamification par points.
-  - Modération : signalement, suppression, bannissement depuis l'admin.
-  - Notifications (in-app, e-mail, push PWA).
-- Possibilité de restreindre certains espaces aux acheteurs d'une formation précise ou aux abonnés VIP.
-
-### 5.7 Réalisations & Témoignages
-
-- **Témoignages** : texte, vidéo, captures d'écran ; nom, photo, ville/pays, formation suivie, résultat obtenu ; filtrables par formation.
-- **Réalisations / études de cas** : projets de Roger et de ses élèves (sites, campagnes, chiffres, avant/après) en galerie animée avec page détaillée.
-- **Mur d'amour** (wall of love) en grille masonry.
-- Formulaire permettant aux élèves de **soumettre un témoignage** (validé par l'admin avant publication).
-- Ajout de données structurées (Schema.org Review / AggregateRating) pour le SEO.
-
-### 5.8 À propos
-
-Histoire de Roger, parcours, mission (« démocratiser l'IA et le marketing digital en Afrique »), valeurs, chiffres, apparitions médias, photos, frise chronologique animée, CTA.
-
-### 5.9 Blog & ressources gratuites
-
-Articles (catégories, tags, temps de lecture, partage social, articles liés, CTA vers formations), lead magnets téléchargeables contre e-mail + WhatsApp, optimisation SEO (sitemap, métadonnées, Open Graph, données structurées Article).
-
-### 5.10 Affiliation / Parrainage
-
-- Chaque membre peut devenir affilié : lien unique, cookie de suivi (30 jours paramétrable), commission en % paramétrable par formation.
-- Tableau de bord affilié : clics, ventes, commissions, retraits.
-- Demande de retrait par **Mobile Money** (Orange Money / MTN MoMo) validée manuellement par l'admin.
-
-### 5.11 Contact
-
-Formulaire (nom, e-mail, WhatsApp, objet, message) + anti-spam (Cloudflare Turnstile), boutons WhatsApp / e-mail / appel, localisation Douala, horaires, liens réseaux sociaux.
+- **Next.js** (dernière version stable, App Router) + **TypeScript** strict.
+- **Tailwind CSS** + shadcn/ui (personnalisé, jamais l'apparence par défaut) + Lucide/Phosphor + Framer Motion + GSAP + Lenis.
+- **PostgreSQL** (Supabase ou Neon) + **Prisma**.
+- **Authentification** : Auth.js ou Supabase Auth — e-mail/mot de passe, lien magique, Google, connexion par **numéro de téléphone (OTP)** prévue.
+- **Vidéos des formations hébergées sur la plateforme** via **Bunny Stream** (HLS adaptatif, URLs signées, watermark, CDN rapide en Afrique). Alternative : Mux.
+- **Fichiers** (PDF, ressources) : Bunny Storage / Cloudflare R2 / Supabase Storage avec URLs signées expirantes.
+- **Paiements :** **Chariow** (prioritaire) + architecture multi-fournisseurs (section 9).
+- **Assistant IA :** API Claude d'Anthropic via le SDK officiel `@anthropic-ai/sdk` (section 8).
+- **E-mails :** Resend + React Email.
+- **Formulaires :** React Hook Form + Zod. Anti-spam : Cloudflare Turnstile.
+- **PWA** installable avec lecture hors ligne.
+- **Analytics & pubs :** Meta Pixel + API Conversions, TikTok Pixel, GA4/GTM, Plausible ou Umami.
+- **Déploiement :** Vercel.
+- **Tests :** Vitest + Playwright (parcours : inscription, achat, accès au cours, réservation, invitation TRANSMISSION).
 
 ---
 
-## 6. PAIEMENTS — CHARIOW + MOBILE MONEY AFRICAIN
+## 6. ARBORESCENCE DU SITE
 
-### 6.1 Intégration Chariow (prioritaire)
+### 6.1 Pages publiques
 
-- Intégrer **Chariow** comme moyen de paiement principal. **Avant de coder, consulte la documentation officielle de l'API Chariow** (endpoints, authentification, création de paiement/checkout, webhooks, statuts, environnement de test) et implémente exactement selon cette documentation. Si un point de l'API est ambigu, signale-le-moi plutôt que de l'inventer.
-- Moyens de paiement à exposer selon ce que Chariow supporte : **Orange Money, MTN Mobile Money**, autres mobile money d'Afrique de l'Ouest et Centrale (Wave, Moov Money, Airtel Money…), **cartes Visa/Mastercard**.
-- Clés API stockées uniquement dans les **variables d'environnement** (`CHARIOW_API_KEY`, `CHARIOW_WEBHOOK_SECRET`, etc.), jamais dans le code ni côté client.
-- Flux complet :
-  1. L'utilisateur clique « Acheter » → création d'une **commande** en base (statut `PENDING`) → appel API Chariow côté serveur pour initier le paiement → redirection vers la page de paiement / affichage de l'instruction Mobile Money (validation sur le téléphone).
-  2. Page « Paiement en attente » avec vérification automatique du statut (polling) et message clair (« Valide le paiement sur ton téléphone en composant… »).
-  3. **Webhook** Chariow → vérification de la signature → mise à jour de la commande (`PAID` / `FAILED` / `CANCELLED`) → **accès accordé automatiquement** à la formation.
-  4. Idempotence : un même webhook reçu plusieurs fois ne crée jamais de double accès ni de double commission.
-  5. Envoi automatique de l'e-mail de confirmation + reçu PDF + message WhatsApp de bienvenue (si intégration WhatsApp activée).
-- Création automatique d'un compte à l'achat si l'acheteur n'en a pas (e-mail + lien magique pour définir son mot de passe).
+1. **Accueil** `/`
+2. **À propos — Roger BOUJIEKA** `/a-propos`
+3. **Groupe BOUJIEKA** `/groupe` (Agence, Académie, autres entités `[À COMPLÉTER]`)
+4. **Services** `/services` + une page par service `/services/[slug]`
+5. **Académie en ligne — catalogue** `/formations`
+6. **Page détaillée d'une formation** `/formations/[slug]`
+7. **Boutique de produits digitaux** `/boutique` + `/boutique/[slug]`
+8. **Masterclass gratuites (mercredi & samedi)** `/masterclass`
+9. **Programme TRANSMISSION** `/transmission`
+10. **Conférences & interventions / Inviter Roger** `/conferences`
+11. **Formation en entreprise** `/entreprises`
+12. **Coaching & accompagnement** `/accompagnement`
+13. **Achat à l'international (Chine, Dubaï, Turquie, Nigeria)** `/achat-international`
+14. **Agenda des événements** `/agenda`
+15. **Communauté** `/communaute`
+16. **Réalisations & témoignages** `/realisations`
+17. **Médias & presse** `/presse` (passages TV/radio, articles, kit presse téléchargeable)
+18. **Blog / Astuces** `/blog`
+19. **Ressources gratuites** `/gratuit`
+20. **Affiliation** `/affiliation`
+21. **Contact** `/contact`
+22. **FAQ** `/faq`
+23. **Vérification de certificat** `/certificat/[code]`
+24. **Pages légales** : mentions légales, CGV, confidentialité, remboursement, cookies
+25. **Checkout** + pages paiement réussi / en attente / échoué
+26. Pages **404 / 500** soignées
 
-### 6.2 Architecture multi-fournisseurs
-
-- Crée une **couche d'abstraction** `PaymentProvider` (interface commune : `createPayment`, `verifyPayment`, `handleWebhook`, `refund`) afin de pouvoir ajouter ou basculer facilement vers d'autres agrégateurs africains en secours : **NotchPay** et **Campay** (camerounais), **CinetPay**, **Flutterwave**, et **Stripe/PayPal** pour la diaspora.
-- Activation/désactivation de chaque fournisseur depuis l'admin.
-
-### 6.3 Fonctionnalités commerciales
-
-- Prix en **FCFA (XAF)**, affichage formaté (`25 000 FCFA`), conversion indicative EUR/USD.
-- **Codes promo** (pourcentage ou montant fixe, date d'expiration, nombre d'utilisations max, limité à certaines formations).
-- **Paiement en plusieurs fois** (accès progressif ou complet selon paramètre, relances automatiques des échéances).
-- **Bundles**, **order bump** au checkout (ex. « Ajoute le pack de 100 prompts pour 5 000 FCFA »), **upsell** après achat.
-- **Relance de panier abandonné** (e-mail + WhatsApp) après 1 h et 24 h.
-- **Paiement manuel de secours** : l'utilisateur peut payer via WhatsApp/transfert Mobile Money ; l'admin valide manuellement la commande pour débloquer l'accès.
-- Factures/reçus PDF numérotés automatiquement.
-- Remboursements gérés depuis l'admin (révocation de l'accès).
-
----
-
-## 7. AUTOMATISATIONS, E-MAILS & NOTIFICATIONS
-
-- E-mails (templates React Email aux couleurs de la marque) : bienvenue, confirmation d'achat, accès à la formation, reçu, paiement échoué, relance panier, rappel de rendez-vous, nouvelle leçon publiée, certificat obtenu, réinitialisation de mot de passe, newsletter.
-- **WhatsApp** : boutons de contact avec messages pré-remplis partout ; architecture prête pour l'**API WhatsApp Business (Cloud API)** pour les notifications automatiques (confirmation d'achat, rappels).
-- **Notifications push** via la PWA.
-- **Newsletter** : collecte des e-mails et numéros WhatsApp, export CSV, intégration prévue avec Brevo / Systeme.io / MailerLite.
-- **Webhooks sortants** optionnels (Make / Zapier) à chaque vente pour brancher d'autres outils.
+### 6.2 Espace membre `/espace` et administration `/admin` (sections 10 et 12)
 
 ---
 
-## 8. TABLEAU DE BORD ADMINISTRATEUR (`/admin`)
+## 7. CONTENU DES PAGES
 
-Interface simple et intuitive pour que Roger puisse **ajouter des formations en continu sans toucher au code** :
+### 7.1 Accueil
 
-- **Vue d'ensemble** : chiffre d'affaires (jour / semaine / mois), nombre de ventes, nouveaux inscrits, taux de conversion, formations les plus vendues, graphiques animés, dernières commandes.
-- **Formations** : créer / modifier / dupliquer / archiver ; constructeur de programme par **glisser-déposer** (modules et leçons) ; **upload vidéo direct** vers Bunny Stream avec barre de progression ; ajout de PDF, fichiers, quiz ; éditeur riche pour la description ; gestion des bonus, FAQ, prérequis ; prévisualisation de la page de vente avant publication ; options drip, téléchargement autorisé ou non, certificat.
-- **Produits digitaux simples** (e-books, packs de prompts, templates) vendus en téléchargement direct, en plus des formations.
-- **Commandes** : liste filtrable, détails, statut, validation manuelle d'un paiement Mobile Money, remboursement, export CSV/Excel.
-- **Clients / apprenants** : fiches, formations, progression, historique, accorder/retirer un accès manuellement, envoyer un message.
-- **Codes promo, bundles, upsells.**
-- **Témoignages & réalisations** : ajout, modération des soumissions, mise en avant.
-- **Blog** : éditeur d'articles, catégories, SEO.
-- **Communauté** : publications, épinglage, modération, gestion des espaces.
-- **Accompagnement** : formules, candidatures reçues, rendez-vous.
-- **Affiliés** : commissions, demandes de retrait, validation des paiements.
-- **Contenu du site** : textes de la page d'accueil, barre d'annonce, FAQ, chiffres clés, liens réseaux sociaux, numéro WhatsApp — **modifiables sans code**.
-- **Paramètres** : fournisseurs de paiement, devises, e-mails, pixels de tracking, politique de remboursement.
-- **Rôles** : Super-admin (Roger), Admin, Support, Modérateur communauté.
-- **Journal d'activité** (audit log) des actions sensibles.
+1. **Barre d'annonce** (modifiable depuis l'admin) : ex. « Masterclass gratuite ce samedi à 15 h à BOUJIEKA Agence — Réserve ta place ».
+2. **Navigation** sticky : logo, À propos, Services (méga-menu avec icônes et photos), Académie, Événements (Masterclass, TRANSMISSION, Agenda), Communauté, Contact, « Se connecter », CTA rouge « Me contacter » / « Commencer ».
+3. **Hero** (fond animé, photo de Roger) — il parle du **digital et de l'entrepreneuriat**, pas seulement d'IA. Exemples de textes à proposer et à affiner :
+   - Surtitre : « Entrepreneur web · Formateur · PDG du Groupe BOUJIEKA »
+   - Titre : « Le digital est la plus grande opportunité de notre génération. Je t'aide à la saisir. »
+   - Mots qui alternent : « Marketing digital · Création de contenu · Intelligence artificielle · Produits digitaux · Business en ligne · Import depuis la Chine »
+   - Sous-titre : « Formations, accompagnement et conférences pour les jeunes, les entrepreneurs et les entreprises qui veulent gagner de l'argent avec leurs compétences — à Douala, en ligne et partout en Afrique. »
+   - CTA : « Voir les formations » · « Travailler avec moi » · lien secondaire « Masterclass gratuite mercredi & samedi ».
+   - Preuves : nombre de personnes formées, d'événements, de villes TRANSMISSION, note moyenne.
+4. **Bandeau de logos réels** des outils et plateformes maîtrisés (défilement infini).
+5. **Qui suis-je** : photo, histoire courte, citation, bouton « Mon histoire ».
+6. **Ce que je fais** : les pôles (Former · Accompagner · Conseiller · Transmettre) avec accès aux services — mise en page variée, pas 6 cartes identiques.
+7. **Académie** : formations phares (cartes détaillées, section 7.5).
+8. **Boutique de produits digitaux** : e-books, packs de prompts, templates Canva, guides.
+9. **Masterclass gratuites** : prochaine date (calcul automatique du prochain mercredi/samedi), compte à rebours, lieu, inscription.
+10. **TRANSMISSION** : bande pleine largeur rouge, vidéo/photos de la tournée, carte des villes visitées, CTA « Inviter TRANSMISSION ».
+11. **Entreprises & organisations** : formation du personnel, logos de clients (réels uniquement).
+12. **Chiffres clés animés.**
+13. **Témoignages** (texte, vidéo, captures) + **réalisations**.
+14. **Agenda** des prochains événements.
+15. **Communauté** : invitation à rejoindre.
+16. **Roger IA** : bloc qui présente l'assistant (« Pose-moi ta question, je te réponds tout de suite »).
+17. **Blog / dernières astuces.**
+18. **Ressource gratuite** contre e-mail + WhatsApp.
+19. **CTA final** + **footer complet** : liens, Groupe BOUJIEKA, adresse de l'agence à Douala `[À COMPLÉTER]`, carte Google Maps, horaires, WhatsApp, e-mail, réseaux sociaux (vrais logos), moyens de paiement (vrais logos), newsletter, mentions légales.
+
+Éléments globaux : bouton **WhatsApp flottant** (message pré-rempli selon la page), **bulle Roger IA**, retour en haut, bannière cookies.
+
+### 7.2 À propos
+
+Histoire complète, parcours, frise chronologique animée, mission (« rendre le digital accessible et rentable pour la jeunesse africaine »), valeurs, Groupe BOUJIEKA, galerie photos, médias, chiffres, citations, CTA.
+
+### 7.3 Services (une page complète par service)
+
+Chaque service a sa page : présentation, problèmes résolus, ce qui est inclus, déroulement en étapes, formats (en ligne / présentiel / en entreprise), tarifs ou « sur devis », réalisations liées, témoignages, FAQ, formulaire de demande + bouton WhatsApp.
+
+Liste des services :
+
+**Marketing digital & communication (BOUJIEKA Agence)**
+- Stratégie marketing digital, gestion de réseaux sociaux (community management), publicité Facebook/Instagram/TikTok, personal branding, création de contenu pour les marques.
+- Création de visuels, **infographie**, identité visuelle.
+- **Montage vidéo** (Reels, TikTok, YouTube, publicités).
+
+**Intelligence artificielle**
+- Intégration de l'IA dans l'entreprise, automatisations, création d'assistants IA, formation aux outils IA.
+
+**Formations**
+- Formations en ligne (académie), formations **en présentiel** à BOUJIEKA Académie (tous les jours), **formations personnalisées** (sur mesure), **formation du personnel des entreprises**, formations pour écoles, églises, associations, ONG.
+
+**Coaching, accompagnement & conseil**
+- Consultations privées, coaching individuel, accompagnement en création de contenu, accompagnement en marketing digital, accompagnement à la création et à la vente de produits digitaux, monétisation des compétences, accompagnement des entreprises.
+
+**Achat & importation à l'international**
+- Accompagnement à l'achat en **Chine** (Alibaba, 1688, Guangzhou/Yiwu), **Dubaï**, **Turquie** `[À CONFIRMER]`, **Nigeria** (Lagos) : recherche de fournisseurs, négociation, vérification, paiement sécurisé, transitaires et logistique vers le Cameroun.
+- **Formation** à l'achat en Chine et à l'import.
+
+**Événements**
+- Conférences, masterclass, séminaires, coaching de groupe, animation d'ateliers.
+
+### 7.4 Académie — catalogue
+
+Catégories : Marketing digital · Création de contenu · Intelligence artificielle · Infographie & visuels · Montage vidéo · Produits digitaux & monétisation · Entrepreneuriat web · Achat en Chine & import.
+Filtres (catégorie, niveau, prix, durée, format en ligne/présentiel), recherche instantanée, tri, packs.
+
+### 7.5 Page détaillée d'une formation — TOUT doit être visible
+
+Dès qu'on clique sur une formation, la personne voit **toutes les informations, bien alignées** :
+
+- **Fiche récapitulative** (bloc clair en haut, type « fiche technique ») : durée totale (ex. 12 h 40 min), **nombre de modules**, **nombre de leçons**, nombre de vidéos, de PDF/ressources, de quiz, niveau, langue, format (vidéo à la demande / présentiel / hybride), accès (à vie / durée), certificat oui/non, date de dernière mise à jour, nombre d'inscrits, note ⭐ et nombre d'avis, appareils compatibles (téléphone, ordinateur, hors ligne).
+- **Vidéo de présentation** hébergée sur la plateforme.
+- **Encadré d'achat** sticky (barre fixe en bas sur mobile) : prix barré, prix promo en FCFA + équivalent EUR, compte à rebours, « Acheter maintenant », « Payer via WhatsApp », code promo, paiement en plusieurs fois, **vrais logos** des moyens de paiement, garantie.
+- **Ce que tu vas apprendre**, **résultats concrets attendus**.
+- **Pour qui / pour qui ce n'est pas**, **prérequis**, **matériel nécessaire**.
+- **Programme complet** : chaque module avec son titre, sa durée et son nombre de leçons ; chaque leçon avec **son titre, sa durée, son type** (vidéo, PDF, quiz, exercice) et l'indication **Aperçu gratuit** pour les leçons ouvertes. Bouton « Tout déplier ».
+- Description longue (éditeur riche), bonus avec leur valeur, formateur, témoignages et avis (répartition des étoiles), réalisations d'élèves, garantie, FAQ, formations complémentaires, CTA final.
+
+Chaque information est saisie dans l'admin et **calculée automatiquement** quand c'est possible (durée totale et nombre de leçons à partir des vidéos uploadées).
+
+### 7.6 Boutique de produits digitaux
+
+E-books, packs de prompts, templates Canva, guides PDF, fichiers. Page produit avec aperçu (pages d'exemple), contenu détaillé, format et taille du fichier, avis, achat → téléchargement sécurisé immédiat + envoi par e-mail.
+
+### 7.7 Masterclass gratuites (mercredi & samedi)
+
+- Présentation, thèmes à venir, horaire `[À COMPLÉTER]`, lieu (BOUJIEKA Agence, Douala — carte et itinéraire), places limitées.
+- **Inscription** (nom, WhatsApp, e-mail, thème) → confirmation + rappel automatique la veille et le jour même.
+- Option de suivi en ligne (lien live) et replays réservés aux membres.
+- Galerie photos des masterclass passées.
+
+### 7.8 Programme TRANSMISSION (section à part, très soignée)
+
+- Page dédiée avec identité propre (déclinaison du rouge, typographie forte) : manifeste du programme, pourquoi il est **gratuit**, thèmes abordés (IA, création de contenu, visuels, infographie, montage vidéo, marketing digital, entrepreneuriat, produits digitaux).
+- **Carte interactive** des villes visitées et à venir, compteur (villes, participants, conférences), galerie photos/vidéos par étape, témoignages des organisateurs.
+- **Formulaire « Inviter TRANSMISSION dans ma ville / mon organisation »** : type de structure (église, école, université, association, assemblée, entreprise, mairie, autre), ville et pays, nom de la structure, responsable, téléphone/WhatsApp, e-mail, nombre de participants estimé, dates souhaitées, salle et matériel disponibles, thèmes souhaités, message. → notification à Roger (e-mail + WhatsApp), suivi dans l'admin (statut : reçue, en discussion, confirmée, réalisée).
+- Inscription « Être informé quand TRANSMISSION passe dans ma ville ».
+- Espace partenaires/sponsors.
+
+### 7.9 Conférences, entreprises, coaching
+
+- **Conférences / inviter Roger** : thèmes, formats (keynote, atelier, panel), vidéos d'interventions, kit presse, formulaire de demande.
+- **Entreprises** : formation du personnel (catalogue de modules, durée, en intra-entreprise ou à l'académie), formation sur mesure, demande de devis.
+- **Coaching & accompagnement** : formules (consultation privée, coaching mensuel, accompagnement VIP sur candidature), tableau comparatif, **réservation** (Cal.com, fuseau Douala) avec paiement avant confirmation, formulaire de candidature.
+
+### 7.10 Achat à l'international
+
+Pays avec vrais drapeaux, étapes du processus, ce qui est inclus, tarifs/commission, délais, transport vers Douala, témoignages de clients, FAQ, formulaire de demande (produit recherché, quantité, budget, pays), lien vers la formation « Acheter en Chine ».
+
+### 7.11 Communauté, réalisations, blog, affiliation, contact
+
+- **Communauté** : gratuite (chaîne WhatsApp, Telegram, Facebook) + **espace privé** dans la plateforme (fil d'actualité, astuces de Roger, espaces thématiques, questions-réponses, victoires des membres, lives et replays, badges, modération) + **abonnement VIP** payant.
+- **Réalisations & témoignages** : études de cas, mur de témoignages, vidéos, captures, soumission par les élèves avec validation.
+- **Blog** : astuces, SEO, partage WhatsApp.
+- **Affiliation** : lien unique, commissions, retraits Mobile Money.
+- **Contact** : formulaire avec choix du motif (formation, service, entreprise, conférence, TRANSMISSION, achat international, presse, autre), WhatsApp, e-mail, adresse, carte, horaires.
 
 ---
 
-## 9. MODÈLE DE DONNÉES (indicatif)
+## 8. ASSISTANT IA « ROGER IA »
 
-Concevoir le schéma relationnel incluant au minimum : `User`, `Profile`, `Role`, `Session/Device`, `Course`, `Category`, `Module`, `Lesson`, `Resource`, `Quiz`, `Question`, `Enrollment`, `LessonProgress`, `Note`, `LessonComment`, `Certificate`, `Product` (produits digitaux), `Bundle`, `Order`, `OrderItem`, `Payment`, `PaymentProvider`, `Installment`, `Coupon`, `Refund`, `Invoice`, `Review`, `Testimonial`, `Showcase` (réalisations), `BlogPost`, `LeadMagnet`, `Subscriber`, `CoachingOffer`, `CoachingApplication`, `Booking`, `CommunitySpace`, `CommunityPost`, `CommunityComment`, `Reaction`, `Membership` (abonnement VIP), `Affiliate`, `Referral`, `Commission`, `Payout`, `Notification`, `SiteSetting`, `AuditLog`, `WebhookEvent` (pour l'idempotence).
+Un assistant conversationnel disponible sur tout le site (bulle en bas à droite, aux couleurs de la marque, avec photo/avatar de Roger) et en page plein écran `/roger-ia`.
 
-Fournis les migrations et un **script de seed** avec des données de démonstration réalistes (3 formations exemples : « IA pour entrepreneurs africains », « Marketing digital & Facebook Ads », « Vendre en ligne avec ChatGPT et Canva », témoignages fictifs clairement marqués comme exemples à remplacer).
-
----
-
-## 10. SÉCURITÉ & CONFORMITÉ
-
-- Validation de toutes les entrées côté serveur (Zod), protection CSRF/XSS, en-têtes de sécurité (CSP, HSTS), limitation de débit (rate limiting) sur l'authentification, le paiement et le contact.
-- Vérification de signature de **tous** les webhooks de paiement.
-- Mots de passe hachés (Argon2/bcrypt), sessions sécurisées, 2FA optionnelle pour l'admin.
-- Contenu payant protégé par contrôle d'accès côté serveur + URLs signées expirantes.
-- Sauvegardes automatiques de la base de données.
-- Conformité à la **réglementation camerounaise sur la protection des données personnelles** et bonnes pratiques RGPD (diaspora) : consentement cookies, politique de confidentialité, droit d'accès/suppression des données, export des données.
-- Pages légales rédigées en français (modèles à faire relire), mentionnant l'éditeur : Roger BOUJIEKA, Douala, Cameroun, `[NIU / RCCM À COMPLÉTER]`.
+- **Rôle :** renseigner les visiteurs automatiquement, 24 h/24 : formations (contenu, prix, durée, nombre de leçons), services, masterclass (prochaine date, lieu), TRANSMISSION (comment inviter), accompagnement, achat en Chine, paiement Mobile Money, accès au compte, problèmes techniques simples.
+- **Technologie :** API Claude d'Anthropic avec le SDK officiel `@anthropic-ai/sdk`, appel **uniquement côté serveur** (route API), réponse en **streaming**, clé `ANTHROPIC_API_KEY` en variable d'environnement. Utilise un modèle Claude récent et économique adapté au chat (consulte la documentation Anthropic pour l'identifiant à jour) et active le **prompt caching** sur le prompt système.
+- **Connaissances :** le prompt système est construit **automatiquement depuis la base de données** (formations, prix, services, agenda, FAQ, infos de contact) pour que l'assistant soit toujours à jour. Ajoute des **outils (tool use)** : `rechercher_formations`, `prochaine_masterclass`, `details_service`, `creer_lead` (enregistre nom + WhatsApp + besoin), `inscription_masterclass`.
+- **Personnalité :** parle comme Roger : chaleureux, direct, motivant, en français simple (répond en anglais si on lui écrit en anglais). Ne promet jamais de revenus garantis, n'invente pas de prix ni de dates : si l'info n'existe pas, il propose de **continuer sur WhatsApp** avec l'équipe (bouton avec résumé de la conversation pré-rempli).
+- **Conversion :** propose les bonnes formations avec cartes cliquables, bouton d'achat, inscription aux masterclass, prise de rendez-vous.
+- **Pour les membres connectés :** connaît leurs formations et leur progression, aide à retrouver une leçon.
+- **Admin :** historique des conversations, leads générés, questions fréquentes sans réponse (pour améliorer la FAQ), activation/désactivation, message d'accueil modifiable, limite de messages par visiteur et rate limiting pour maîtriser les coûts.
 
 ---
 
-## 11. PERFORMANCE, SEO & MOBILE
+## 9. PAIEMENTS — CHARIOW + MOBILE MONEY
 
-- **Mobile-first** absolu ; tests sur petits écrans (360 px).
-- Objectif **Lighthouse ≥ 90** (Performance, Accessibilité, SEO, Bonnes pratiques) sur mobile.
-- Images optimisées (`next/image`, AVIF/WebP, lazy loading), polices auto-hébergées, code splitting, pas de bibliothèques lourdes inutiles, rendu serveur/statique pour les pages publiques.
-- Fonctionne correctement en **3G** : chargement progressif, skeletons, mode économie de données.
-- SEO : métadonnées dynamiques par page, Open Graph & Twitter Cards (belle image de partage générée dynamiquement pour chaque formation — important pour le partage sur WhatsApp et Facebook), `sitemap.xml`, `robots.txt`, URLs propres, données structurées (Course, Product, Review, FAQ, Organization, Person, Article), SEO local (Douala, Cameroun, Afrique francophone).
-
----
-
-## 12. INFORMATIONS À INTÉGRER (placeholders)
-
-- Nom : **Roger BOUJIEKA**
-- Ville : **Douala, Cameroun**
-- Téléphone / WhatsApp : `[À COMPLÉTER — format +237 6XX XX XX XX]`
-- E-mail professionnel : `[À COMPLÉTER]`
-- Nom de domaine : `[À COMPLÉTER — ex. rogerboujieka.com]`
-- Réseaux sociaux : Facebook `[À COMPLÉTER]`, Instagram `[À COMPLÉTER]`, TikTok `[À COMPLÉTER]`, YouTube `[À COMPLÉTER]`, LinkedIn `[À COMPLÉTER]`, chaîne WhatsApp / Telegram `[À COMPLÉTER]`
-- Photos professionnelles de Roger, logo, vidéos de présentation : `[À FOURNIR]` (utiliser des placeholders élégants en attendant)
-- Liste des formations, prix et contenus : `[À COMPLÉTER]`
-
-Centralise toutes ces informations dans un fichier de configuration unique (`config/site.ts`) et/ou dans les paramètres de l'admin pour pouvoir les modifier facilement.
+- **Chariow** prioritaire. **Lis la documentation officielle de l'API Chariow avant de coder** (authentification, création de paiement, webhooks, statuts, mode test) et implémente exactement selon cette doc ; si un point est ambigu, demande-moi au lieu d'inventer.
+- Moyens affichés (avec **vrais logos**) : Orange Money, MTN Mobile Money, Wave, Moov Money, Visa, Mastercard, PayPal (diaspora).
+- Flux : commande `PENDING` → paiement Chariow côté serveur → page « Valide le paiement sur ton téléphone » avec vérification automatique → **webhook signé** → commande `PAID` → **accès immédiat** → e-mail + reçu PDF + message WhatsApp. Idempotence des webhooks (table `WebhookEvent`).
+- Création automatique du compte à l'achat.
+- Couche d'abstraction `PaymentProvider` pour ajouter **NotchPay**, **Campay**, **CinetPay**, **Flutterwave**, **Stripe**, **PayPal**.
+- Codes promo, paiement en plusieurs fois, bundles, order bump, upsell, relance panier abandonné (e-mail + WhatsApp), **paiement manuel de secours** validé dans l'admin, factures PDF, remboursements.
+- Paiement aussi pour : coaching, consultations, places payantes d'événements, abonnement VIP, produits digitaux, acomptes de services.
 
 ---
 
-## 13. PLAN DE DÉVELOPPEMENT PAR PHASES
+## 10. ESPACE MEMBRE & LECTEUR DE COURS (formations hébergées sur la plateforme)
 
-**Phase 1 — MVP de lancement (priorité absolue, à livrer en premier) :**
-- Design system rouge/noir, layout, navigation, footer, bouton WhatsApp flottant.
-- Accueil complet animé, catalogue, page de vente dynamique, à propos, contact, FAQ, pages légales.
-- Authentification + espace membre + lecteur de cours (streaming Bunny, progression).
-- Paiement **Chariow** (Mobile Money + carte) avec webhook et accès automatique + paiement manuel de secours.
-- Admin : création de formations (modules, leçons, upload vidéo), commandes, clients, codes promo, témoignages.
-- E-mails transactionnels essentiels, SEO de base, Meta Pixel, déploiement en production.
-
-**Phase 2 :**
-- PWA installable + téléchargement hors ligne sécurisé, certificats, quiz, avis, réalisations, blog, lead magnets, relance panier, paiement en plusieurs fois, bundles/upsells.
-
-**Phase 3 :**
-- Communauté intégrée complète, abonnement VIP, accompagnement avec réservation et paiement, affiliation avec retraits Mobile Money, notifications push, API WhatsApp Business, version anglaise, fournisseurs de paiement additionnels.
+- Tableau de bord : mes formations et progression, « Reprendre », produits achetés, prochains événements et rendez-vous, annonces, certificats, factures, affiliation, profil.
+- **Lecteur** : HLS adaptatif (360p → 1080p), choix de qualité, vitesse, sous-titres, reprise automatique, **mode économie de données / audio seul**, sommaire latéral, leçon suivante automatique, onglets description / ressources / notes / questions-commentaires / quiz, « Marquer comme terminée », **watermark dynamique** (nom + téléphone).
+- **Hors ligne sur téléphone** : via la **PWA** (téléchargement chiffré dans l'application, lecture sans internet, gestion de l'espace, revalidation de licence tous les 30 jours) ; option par formation de téléchargement MP4 via URL signée avec watermark et nombre de téléchargements limité ; PDF avec watermark.
+- Sécurité : accès vérifié côté serveur, URLs expirantes, 2 appareils max par compte, détection de partage.
+- **Certificats** PDF (design rouge/noir, signature de Roger, QR code vérifiable).
 
 ---
 
-## 14. LIVRABLES ATTENDUS
+## 11. AUTOMATISATIONS & NOTIFICATIONS
 
-1. Code source complet, organisé, typé et documenté dans ce dépôt.
-2. `README.md` en français expliquant : installation, variables d'environnement (`.env.example` complet), lancement en local, migrations/seed, déploiement sur Vercel, configuration de Chariow, Bunny Stream, Resend et du domaine.
-3. **Guide d'utilisation de l'admin** en français pour Roger (`docs/GUIDE_ADMIN.md`) : comment ajouter une formation, uploader des vidéos, créer un code promo, valider un paiement manuel, publier un témoignage, etc.
-4. Tests des parcours critiques (inscription → achat → accès au cours).
-5. Checklist de mise en production (domaine, HTTPS, clés de paiement en mode live, webhooks, sauvegardes, pixels).
+E-mails (bienvenue, achat, accès, reçu, échec de paiement, relance panier, rappel masterclass, rappel rendez-vous, nouvelle leçon, certificat, invitation TRANSMISSION reçue/confirmée), WhatsApp (liens pré-remplis partout + architecture prête pour l'**API WhatsApp Business Cloud**), notifications push PWA, newsletter (export / Brevo / Systeme.io), webhooks sortants Make/Zapier.
 
 ---
 
-## 15. MÉTHODE DE TRAVAIL
+## 12. ADMINISTRATION `/admin`
 
-- Commence par me présenter : l'architecture, l'arborescence des dossiers, le schéma de base de données et le plan de la Phase 1. Puis développe.
-- Avance par étapes, commite régulièrement avec des messages clairs.
-- Pose-moi des questions uniquement quand une information est vraiment indispensable (ex. détails de l'API Chariow, prix) ; sinon, fais des choix professionnels raisonnables et signale-les.
-- Chaque composant doit être réutilisable, responsive et animé avec soin.
-- À la fin de chaque phase, donne-moi un récapitulatif de ce qui est fait, de ce qui reste et de ce que je dois configurer moi-même (comptes, clés API, contenus).
+Tout se gère **sans toucher au code** :
 
-**Objectif final :** une plateforme e-learning premium, rapide, sécurisée et rentable, digne des meilleures plateformes internationales, mais pensée pour l'Afrique et le Cameroun — qui donne envie d'acheter dès la première visite et permet à Roger BOUJIEKA de publier et vendre de nouvelles formations en toute autonomie.
+- Tableau de bord : CA (jour/semaine/mois), ventes, inscrits, conversion, top formations, leads, demandes en attente.
+- **Formations** : création/édition/duplication, constructeur modules/leçons en glisser-déposer, **upload vidéo direct** avec progression, ressources, quiz, calcul automatique durée/nombre de leçons, aperçu de la page, drip, options de téléchargement, certificat, programmation.
+- **Produits digitaux**, **services** (pages, tarifs), **événements** (masterclass récurrentes mercredi/samedi, conférences, agenda, inscrits, présence, export de liste).
+- **TRANSMISSION** : demandes d'invitation avec statuts, villes, galerie, compteurs.
+- **Demandes** : devis entreprises, conférences, achat international, candidatures coaching, contact — avec statut et notes.
+- Commandes, clients, codes promo, témoignages, réalisations, blog, communauté (modération), affiliés, **Roger IA** (conversations, leads, réglages), contenus du site (textes de l'accueil, barre d'annonce, chiffres, liens, numéro WhatsApp), paramètres de paiement et de tracking, rôles (Super-admin, Admin, Support, Modérateur), journal d'activité.
+
+---
+
+## 13. MODÈLE DE DONNÉES (indicatif)
+
+`User`, `Profile`, `Role`, `Device`, `Course`, `Category`, `Module`, `Lesson`, `Resource`, `Quiz`, `Question`, `Enrollment`, `LessonProgress`, `Note`, `LessonComment`, `Certificate`, `DigitalProduct`, `Bundle`, `Service`, `ServiceRequest`, `Event` (avec récurrence), `EventRegistration`, `TransmissionCity`, `TransmissionInvitation`, `CoachingOffer`, `CoachingApplication`, `Booking`, `SourcingRequest` (achat international), `QuoteRequest`, `Order`, `OrderItem`, `Payment`, `Installment`, `Coupon`, `Refund`, `Invoice`, `Review`, `Testimonial`, `Showcase`, `PressItem`, `BlogPost`, `LeadMagnet`, `Subscriber`, `Lead`, `ChatConversation`, `ChatMessage`, `CommunitySpace`, `CommunityPost`, `CommunityComment`, `Reaction`, `Membership`, `Affiliate`, `Referral`, `Commission`, `Payout`, `Notification`, `SiteSetting`, `AuditLog`, `WebhookEvent`.
+
+Migrations + **seed** réaliste : formations exemples (ex. « Marketing digital de A à Z », « Créer du contenu qui vend », « L'IA pour entrepreneurs », « Vendre des produits digitaux », « Acheter en Chine sans se faire arnaquer », « Montage vidéo sur CapCut »), services, prochaines masterclass, une étape TRANSMISSION — tout contenu fictif clairement marqué « exemple à remplacer ».
+
+---
+
+## 14. SÉCURITÉ, PERFORMANCE, SEO
+
+- Validation Zod côté serveur, CSP/HSTS, rate limiting (auth, paiement, formulaires, Roger IA), webhooks signés, mots de passe hachés, 2FA admin, sauvegardes, conformité à la loi camerounaise sur les données personnelles et bonnes pratiques RGPD, pages légales (éditeur : Roger BOUJIEKA / Groupe BOUJIEKA, Douala, `[NIU / RCCM À COMPLÉTER]`).
+- Mobile-first (tests à 360 px), **Lighthouse mobile ≥ 90**, images AVIF/WebP, animations lourdes désactivées sur appareils faibles, fonctionne en 3G.
+- SEO : métadonnées dynamiques, **images de partage générées pour chaque formation/événement** (important pour WhatsApp et Facebook), sitemap, données structurées (Person, Organization, Course, Product, Event, Review, FAQ, Article, LocalBusiness), SEO local (Douala, Cameroun, Afrique francophone).
+
+---
+
+## 15. INFORMATIONS À INTÉGRER
+
+- Nom : **Roger BOUJIEKA** — PDG du **Groupe BOUJIEKA** `[À CONFIRMER]`
+- Agence : **BOUJIEKA Agence** `[À CONFIRMER]` — adresse à Douala `[À COMPLÉTER]`
+- Académie : **BOUJIEKA Académie** `[À CONFIRMER]`
+- Masterclass gratuites : **mercredi et samedi**, horaire `[À COMPLÉTER]`
+- Téléphone / WhatsApp : `[À COMPLÉTER — +237 6XX XX XX XX]`
+- E-mail : `[À COMPLÉTER]` — Domaine : `[À COMPLÉTER]`
+- Réseaux : Facebook, Instagram, TikTok, YouTube, LinkedIn, chaîne WhatsApp, Telegram `[À COMPLÉTER]`
+- Photos, vidéos, logo de Roger et du Groupe : `[À FOURNIR]`
+- Formations, prix, services et tarifs : `[À COMPLÉTER]`
+
+Tout est centralisé dans `config/site.ts` et dans les paramètres de l'admin.
+
+---
+
+## 16. PLAN PAR PHASES
+
+**Phase 1 — Lancement (priorité) :**
+Direction artistique complète, accueil, à propos, services (pages), académie (catalogue + page détaillée), masterclass (inscription), TRANSMISSION (page + formulaire d'invitation), contact, FAQ, pages légales ; authentification, espace membre, lecteur de cours (Bunny) ; paiement **Chariow** + paiement manuel ; admin (formations, commandes, clients, demandes, événements, coupons, témoignages) ; **Roger IA** version de base ; e-mails essentiels ; SEO + pixels ; déploiement.
+
+**Phase 2 :** boutique produits digitaux, PWA + hors ligne, certificats, quiz, avis, réalisations, blog, presse, entreprises & conférences, achat international, coaching avec réservation, relances, paiements en plusieurs fois, Roger IA avec outils.
+
+**Phase 3 :** communauté complète + VIP, affiliation, notifications push, API WhatsApp Business, version anglaise, fournisseurs de paiement additionnels.
+
+---
+
+## 17. LIVRABLES
+
+1. Code source complet et documenté.
+2. `README.md` en français : installation, `.env.example`, lancement, migrations/seed, déploiement Vercel, configuration Chariow, Bunny, Resend, Anthropic, domaine.
+3. `docs/GUIDE_ADMIN.md` : ajouter une formation, uploader une vidéo, créer un événement, traiter une invitation TRANSMISSION, valider un paiement manuel, régler Roger IA…
+4. `docs/LOGOS_A_FOURNIR.md` et `docs/PHOTOS_A_FOURNIR.md` (liste précise avec formats et dimensions).
+5. Tests des parcours critiques.
+6. Checklist de mise en production.
+
+---
+
+## 18. MÉTHODE DE TRAVAIL
+
+- Commence par me présenter : la direction artistique (palette, typographies, 2–3 principes de mise en page, exemple de hero décrit), l'arborescence, le schéma de données et le plan de la Phase 1. Ensuite, développe.
+- Commits réguliers et clairs.
+- Ne me pose des questions que si c'est indispensable (API Chariow, prix, informations manquantes) ; sinon, fais des choix professionnels et signale-les.
+- À la fin de chaque phase : récapitulatif de ce qui est fait, de ce qui reste, et de ce que je dois fournir ou configurer.
+
+**Objectif final :** le site officiel d'un entrepreneur africain reconnu — crédible, vivant, rapide, avec de vrais logos et de vraies photos — qui présente Roger BOUJIEKA, ses services, ses événements et le programme TRANSMISSION, vend et héberge ses formations, et convertit chaque visiteur en élève, client ou partenaire.
