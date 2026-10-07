@@ -1,0 +1,24 @@
+{
+  "name": "kle",
+  "private": true,
+  "description": "Klé — location de logements sans démarcheur, entre personnes vérifiées.",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm -r --workspace-concurrency=1 build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r --workspace-concurrency=1 test",
+    "dev:api": "pnpm --filter @kle/api dev",
+    "dev:web": "pnpm --filter @kle/web dev",
+    "dev:admin": "pnpm --filter @kle/admin dev",
+    "db:migrate": "pnpm --filter @kle/api db:migrate",
+    "db:seed": "pnpm --filter @kle/api db:seed",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "typescript": "~5.9.3"
+  }
+}

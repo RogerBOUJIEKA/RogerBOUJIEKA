@@ -1,0 +1,26 @@
+# Services locaux pour le développement : base de données (PostgreSQL + PostGIS) et Redis.
+# Lancer : docker compose up -d
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: kle
+      POSTGRES_PASSWORD: kle
+      POSTGRES_DB: kle
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./apps/api/scripts/create-test-db.sql:/docker-entrypoint-initdb.d/10-test-db.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kle']
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+
+volumes:
+  pgdata:
