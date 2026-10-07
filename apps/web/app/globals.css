@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+
+/* Identité Klé : vert de confiance, or de la clé, fond chaud. Polices système : pages légères. */
+@theme {
+  --color-brand: #0b6e4f;
+  --color-brand-dark: #08513a;
+  --color-brand-soft: #e3f1ea;
+  --color-gold: #f2a007;
+  --color-gold-soft: #fdf1d6;
+  --color-ink: #15201b;
+  --color-muted: #55645d;
+  --color-line: #e3e0d8;
+  --color-paper: #f7f5f0;
+  --color-danger: #b42318;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --radius-card: 1.25rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold-soft);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
