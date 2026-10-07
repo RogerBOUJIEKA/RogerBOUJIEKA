@@ -1,0 +1,24 @@
+{$SITE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy web:3000
+}
+
+www.{$SITE_DOMAIN} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}
+
+{$API_DOMAIN} {
+	encode zstd gzip
+	request_body {
+		max_size 200MB
+	}
+	reverse_proxy api:3001
+}
+
+{$ADMIN_DOMAIN} {
+	encode zstd gzip
+	# Pour restreindre le back-office aux adresses de l'équipe, décommenter et adapter :
+	# @outside not remote_ip 203.0.113.10/32
+	# respond @outside 403
+	reverse_proxy admin:3002
+}

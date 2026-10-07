@@ -1,0 +1,86 @@
+# Déploiement de Klé sur un serveur (VPS au Cameroun ou à l'étranger, selon la décision
+# prise avec le juriste au titre de la loi n° 2024/017).
+#
+#   cp .env.example .env   # puis remplir
+#   docker compose up -d --build
+#
+# Caddy obtient et renouvelle seul les certificats HTTPS des trois domaines.
+name: kle
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kle
+      POSTGRES_DB: kle
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?à définir dans .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kle']
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redisdata:/data
+
+  api:
+    build: { context: .., target: api }
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://kle:${POSTGRES_PASSWORD}@postgres:5432/kle
+      REDIS_URL: redis://redis:6379
+      PUBLIC_API_URL: https://${API_DOMAIN}
+      WEB_URL: https://${SITE_DOMAIN}
+      CORS_ORIGINS: https://${SITE_DOMAIN},https://${ADMIN_DOMAIN}
+      STORAGE_LOCAL_DIR: /data/storage
+    volumes:
+      - uploads:/data/storage
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_started }
+
+  web:
+    build:
+      context: ..
+      target: web
+      args:
+        NEXT_PUBLIC_SITE_URL: https://${SITE_DOMAIN}
+        NEXT_PUBLIC_WHATSAPP_NUMBER: ${WHATSAPP_CONTACT_NUMBER:-}
+    restart: unless-stopped
+    environment:
+      API_URL: http://api:3001
+    depends_on: [api]
+
+  admin:
+    build: { context: .., target: admin }
+    restart: unless-stopped
+    environment:
+      API_URL: http://api:3001
+    depends_on: [api]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ['80:80', '443:443']
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+      API_DOMAIN: ${API_DOMAIN}
+      ADMIN_DOMAIN: ${ADMIN_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddydata:/data
+    depends_on: [web, api, admin]
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
+  caddydata:

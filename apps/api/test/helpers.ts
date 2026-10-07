@@ -21,8 +21,8 @@ export interface TestContext {
   http: () => ReturnType<typeof request>;
 }
 
-export async function createTestApp(): Promise<TestContext> {
-  const config = loadConfig();
+export async function createTestApp(env: Record<string, string> = {}): Promise<TestContext> {
+  const config = loadConfig({ ...process.env, ...env });
   const moduleRef = await Test.createTestingModule({ imports: [AppModule.forRoot(config)] }).compile();
   const app = moduleRef.createNestApplication({ rawBody: true, logger: ['error'] });
   configureApp(app, config);

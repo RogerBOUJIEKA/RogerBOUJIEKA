@@ -1,6 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { and, count, desc, eq, gte, isNull, ne } from 'drizzle-orm';
+import { and, count, desc, eq, gte, isNotNull, isNull, ne } from 'drizzle-orm';
 import { Clock, DAY, HOUR } from '../common/clock.js';
 import { hmac, randomCode, randomDigits, safeEqual, verifyTotp } from '../common/crypto.js';
 import { forbidden } from '../common/errors.js';
@@ -29,6 +29,14 @@ export class AuthService {
   /** Envoie un code de connexion par WhatsApp ou SMS. Un numéro = un compte. */
   async requestOtp(phone: string, channel: 'sms' | 'whatsapp') {
     const now = this.clock.now();
+    if (this.config.LAUNCH_PHASE === 'waitlist') {
+      // Phase 0 : seule l'équipe se connecte (aucun compte public n'est créé).
+      const [staff] = await this.db
+        .select({ id: users.id })
+        .from(users)
+        .where(and(eq(users.phone, phone), isNotNull(users.staffRole)));
+      if (!staff) throw forbidden('not_launched', 'Klé ouvre bientôt. Inscris-toi sur la liste d’attente.');
+    }
     if (await isBannedIdentity(this.db, this.config.APP_SECRET, 'phone', phone)) {
       throw forbidden('account_banned', 'Ce numéro ne peut plus utiliser Klé.');
     }

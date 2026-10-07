@@ -6,6 +6,11 @@ const bool = z
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  /**
+   * `waitlist` (phase 0) : seules la liste d'attente, la lecture publique et l'équipe sont ouvertes ;
+   * paiements, WhatsApp et stockage S3 ne sont pas encore nécessaires. `v1` : tout est ouvert.
+   */
+  LAUNCH_PHASE: z.enum(['waitlist', 'v1']).default('v1'),
   PORT: z.coerce.number().int().default(3001),
   DATABASE_URL: z.string().default('postgres://kle:kle@localhost:5432/kle'),
   /** Sans Redis, les notifications partent directement au lieu de passer par la file BullMQ. */
@@ -55,9 +60,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     if (config.JWT_SECRET.startsWith('dev-only')) problems.push('JWT_SECRET');
     if (config.APP_SECRET.startsWith('dev-only')) problems.push('APP_SECRET');
     if (config.OTP_DEV_ECHO) problems.push('OTP_DEV_ECHO doit être false');
-    if (config.PAYMENT_PROVIDER === 'fake') problems.push('PAYMENT_PROVIDER');
-    if (config.NOTIFY_DRIVER === 'log') problems.push('NOTIFY_DRIVER');
-    if (config.STORAGE_DRIVER === 'local') problems.push('STORAGE_DRIVER');
+    if (config.LAUNCH_PHASE === 'v1') {
+      if (config.PAYMENT_PROVIDER === 'fake') problems.push('PAYMENT_PROVIDER');
+      if (config.NOTIFY_DRIVER === 'log') problems.push('NOTIFY_DRIVER');
+      if (config.STORAGE_DRIVER === 'local') problems.push('STORAGE_DRIVER');
+    }
     if (problems.length) {
       throw new Error(`Configuration de production incomplète : ${problems.join(', ')}`);
     }
