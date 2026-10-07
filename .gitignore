@@ -8,9 +8,10 @@ coverage/
 .env.*
 !.env.example
 .turbo/
-storage/
+# Fichiers envoyés en développement (pièces, vidéos) : jamais versionnés.
+/apps/api/storage/
 next-env.d.ts
 .DS_Store
-storage-test/
+/apps/api/storage-test/
 # Sauvegardes Redis locales (peuvent contenir des données personnelles)
 *.rdb
