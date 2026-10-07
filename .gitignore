@@ -12,3 +12,5 @@ storage/
 next-env.d.ts
 .DS_Store
 storage-test/
+# Sauvegardes Redis locales (peuvent contenir des données personnelles)
+*.rdb
