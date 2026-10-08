@@ -1,4 +1,4 @@
-"""Synthesized Afro-house track, 120 BPM, A minor (Am–F–C–G), 84.00 s, arranged on the spot's timeline.
+"""Synthesized Afro-house track, 120 BPM, A minor (Am–F–C–G), 88.00 s, arranged on the spot's timeline.
 
 python3 scripts/music.py audio/music.wav
 """
@@ -7,7 +7,7 @@ import numpy as np
 from scipy.signal import butter, sosfilt, sosfilt_zi, fftconvolve
 
 SR = 48000
-DUR = 84.0
+DUR = 88.0
 N = int(SR * DUR)
 BEAT = 0.5
 rng = np.random.default_rng(120)
@@ -197,24 +197,24 @@ def sections(t):
     """What plays at bar-start time t."""
     return dict(
         intro=t < 6, tense=6 <= t < 12, brk=12 <= t < 14, drop=14 <= t < 60, bd=60 <= t < 66,
-        back=66 <= t < 72, drop2=72 <= t < 78, outro=78 <= t < 83,
+        back=66 <= t < 72, drop2=72 <= t < 78, outro=78 <= t < 87,
     )
 
 
 def build():
     drums, bass, harm, lead, fxb = Bus(), Bus(), Bus(), Bus(), Bus()
     K = kick()
-    for b in range(42):
+    for b in range(44):
         t0 = b * 2.0
         s = sections(t0)
-        if s["brk"] or t0 >= 83:
+        if s["brk"] or t0 >= 87:
             continue
         ch = b % 4
         full = s["drop"] or s["drop2"] or s["back"]
         drums_on = not s["bd"]
         for q in range(16):  # 16ths
             t = t0 + q * S16
-            if t >= 83.0:
+            if t >= 87.0:
                 break
             beat = q // 4
             fill = full and any(abs(t - c) < 1.0 + 1e-6 and t < c for c in (28, 36, 44, 52, 60)) and t >= 0
@@ -275,9 +275,9 @@ def build():
     for m in (45, 57, 60, 64, 69):
         stab += pad_chord([m], 0.6) * 0.5
     hit = reverb(np.stack([kick() * 1.2, kick() * 1.2], 1)[: len(stab)] + stab[: len(kick())] if False else stab, 4.0, 0.55, 7)
-    fxb.put(hit, 83.0, 0.9)
-    fxb.put(np.stack([kick(1.2)] * 2, 1), 83.0, 1.0)
-    fxb.put(reverb(crash(3.0), 3.0, 0.4, 9), 83.0, 0.4)
+    fxb.put(hit, 87.0, 0.9)
+    fxb.put(np.stack([kick(1.2)] * 2, 1), 87.0, 1.0)
+    fxb.put(reverb(crash(3.0), 3.0, 0.4, 9), 87.0, 0.4)
 
     # side-chain pump from the kick on bass/harmony
     t = np.arange(len(harm.b)) / SR

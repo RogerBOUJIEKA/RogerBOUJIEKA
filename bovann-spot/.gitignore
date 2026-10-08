@@ -4,3 +4,5 @@ out/preview_v.mp4
 audio/mix_pre.wav
 __pycache__/
 stills/
+out/render.log
+stills2/

@@ -1,5 +1,5 @@
 // Frame engine: every pixel is a pure function of the frame number f (29.97 fps units, fractional for the 59.94 master).
-export const W = 1920, H = 1080, FPS = 29.97, DUR = 84, LAST_F = 2517;
+export const W = 1920, H = 1080, FPS = 29.97, DUR = 88, LAST_F = 2637;
 export const C = {
   night: "#000910", slate: "#28323A", navy: "#273D4E", red: "#DC0C15", hot: "#EE5328",
   page: "#F1F4FA", white: "#FFFFFF", grey: "#444444", soft: "#9AA6B2", pale: "#E5EAEE",

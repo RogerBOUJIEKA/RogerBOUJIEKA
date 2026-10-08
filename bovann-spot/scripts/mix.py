@@ -7,10 +7,10 @@ sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from split_vo import load, split
 
 SR = 48000
-N = int(84.0 * SR)
+N = int(88.0 * SR)
 # Start time of each line inside its scene window (s).
 STARTS = [0.45, 6.3, 12.1, 14.35, 20.4, 28.4, 36.4, 44.4, 52.4, 62.8, 68.9, 72.25, 76.3]
-WINDOW_END = [6, 12, 14, 20, 28, 36, 44, 52, 60, 66, 72, 76, 84]
+WINDOW_END = [6, 12, 14, 20, 28, 36, 44, 52, 60, 66, 72, 76, 80]
 
 
 def wav(p):
@@ -60,7 +60,7 @@ r = subprocess.run(["ffmpeg", "-hide_banner", "-i", pre, "-af", "loudnorm=I=-14:
 mtr = json.loads(re.search(r"\{[^{}]*\"input_i\"[^{}]*\}", r, re.S).group(0))
 af = ("loudnorm=I=-14:TP=-1.5:LRA=11:linear=true:measured_I={input_i}:measured_TP={input_tp}:measured_LRA={input_lra}:"
       "measured_thresh={input_thresh}:offset={target_offset}").format(**mtr)
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", pre, "-af", af + ",aresample=48000", "-t", "84", "-c:a", "pcm_s16le", sys.argv[2]], check=True)
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", pre, "-af", af + ",aresample=48000", "-t", "88", "-c:a", "pcm_s16le", sys.argv[2]], check=True)
 r = subprocess.run(["ffmpeg", "-hide_banner", "-i", sys.argv[2], "-af", "loudnorm=I=-14:TP=-1:print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
 chk = json.loads(re.search(r"\{[^{}]*\"input_i\"[^{}]*\}", r, re.S).group(0))
 print(f"final: {chk['input_i']} LUFS, true peak {chk['input_tp']} dBTP")

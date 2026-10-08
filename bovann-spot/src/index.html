@@ -12,7 +12,7 @@
 </head>
 <body>
 <canvas id="stage" width="1920" height="1080"></canvas>
-<div id="ui"><input id="f" type="range" min="0" max="2517" step="0.5" value="60" style="width:60vw"> <span id="lab"></span></div>
+<div id="ui"><input id="f" type="range" min="0" max="2637" step="0.5" value="60" style="width:60vw"> <span id="lab"></span></div>
 <script type="module">
   const fonts = [
     ["Raleway", "raleway-latin-700-normal", 700], ["Raleway", "raleway-latin-800-normal", 800],
@@ -27,7 +27,7 @@
     await spot.init();
     return spot;
   })();
-  window.spot = { DUR: 84, ready: ready.then(() => true), renderFrame: async (f) => (await ready).renderFrame(f) };
+  window.spot = { DUR: 88, ready: ready.then(() => true), renderFrame: async (f) => (await ready).renderFrame(f) };
   if (location.search.includes("render")) document.body.classList.add("render");
   else ready.then((s) => { const r = document.getElementById("f"), lab = document.getElementById("lab"); const go = () => { s.renderFrame(+r.value); lab.textContent = `f${r.value}  ${(r.value / 29.97).toFixed(2)} s`; }; r.oninput = go; go(); });
 </script>

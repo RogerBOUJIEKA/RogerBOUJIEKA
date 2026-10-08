@@ -7,7 +7,7 @@ sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from sfxlib import Mix, SR, tt, band_noise, reverb, whoosh, impact, shimmer, click, ding, zip_up, chime, stamp
 
 rs = np.random.default_rng(84)
-m = Mix(84.0)
+m = Mix(88.0)
 
 
 def pan_sweep(sig, p0, p1):
@@ -129,7 +129,7 @@ for k, t in enumerate((17.0, 17.5, 18.0, 18.5, 19.0)):
 
 # ---------- cut whooshes, panned with the motion ----------
 for t, p0, p1 in ((5.94, -0.3, 0.6), (11.95, 0.7, -0.7), (13.95, 0, 0), (19.92, 0.7, -0.7), (27.93, 0, 0), (35.94, 0, 0),
-                  (43.94, -0.7, 0.7), (51.92, 0, 0), (59.93, 0, 0), (65.93, 0, 0), (71.94, 0, 0), (75.94, 0, 0), (77.94, 0, 0)):
+                  (43.94, -0.7, 0.7), (51.92, 0, 0), (59.93, 0, 0), (65.93, 0, 0), (71.94, 0, 0), (75.94, 0, 0), (79.94, 0, 0)):
     cut_whoosh(t, p0, p1)
 
 # ---------- pillar beds (quiet) ----------
@@ -192,13 +192,13 @@ m.put(np.sin(2 * np.pi * np.cumsum(500 + 500 * np.minimum(1, u / 0.08)) / SR) * 
 m.put(click(2400, 0.05, 0.01), 77.0, 0.3)
 m.put(chime(), 77.05, 0.22)
 
-# ---------- S10 end ----------
-m.put(impact(70, 34, 1.6), 78.0, 0.7)
-m.put(shimmer(2.0, 24, seed=10), 78.0, 0.18)
-m.put(zip_up(0.5, 300, 2000), 78.4, 0.15)
-for t in (79.0, 79.5, 80.0, 80.5):
+# ---------- S10 end (80–88 s) ----------
+m.put(impact(70, 34, 1.6), 80.0, 0.7)
+m.put(shimmer(2.0, 24, seed=10), 80.0, 0.18)
+m.put(zip_up(0.5, 300, 2000), 80.4, 0.15)
+for t in (81.0, 81.5, 82.0, 82.5):
     m.put(click(2800, 0.03, 0.005), t, 0.1)
-m.put(impact(70, 30, 2.5), 83.0, 0.8)
-m.put(shimmer(1.0, 12, seed=11), 83.0, 0.12)
+m.put(impact(70, 30, 2.5), 87.0, 0.8)
+m.put(shimmer(1.0, 12, seed=11), 87.0, 0.12)
 
 m.save(sys.argv[1], 0.6)
