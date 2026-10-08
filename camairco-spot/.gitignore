@@ -10,3 +10,4 @@ long/out/.chunks-*
 long/out_render.log
 out/.chunks-*
 __pycache__/
+out/video_v*.mp4

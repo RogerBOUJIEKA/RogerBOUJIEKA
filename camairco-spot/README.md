@@ -4,7 +4,7 @@ Deux films publicitaires en français pour Camair-Co, en 1920×1080 à 30 i/s, a
 
 | Version | Fichier | Sources |
 |---|---|---|
-| **1 min 28 s** | [`long/out/camairco-spot-88s.mp4`](long/out/camairco-spot-88s.mp4) | `long/` |
+| **1 min 28 s** | [`long/out/camairco-spot-88s.mp4`](long/out/camairco-spot-88s.mp4) (43 Mo), copie légère [`camairco-spot-88s-web.mp4`](long/out/camairco-spot-88s-web.mp4) (27 Mo) | `long/` |
 | **15 s** | [`out/camairco-spot-15s.mp4`](out/camairco-spot-15s.mp4) | `src/`, `audio/` |
 
 Voix : ElevenLabs « Cassandra – narration chaleureuse » (eleven_multilingual_v2). Musique : ElevenLabs Music, instrumentale et vérifiée sans chant. Design sonore : synthétisé (`scripts/sfxlib.py`).
