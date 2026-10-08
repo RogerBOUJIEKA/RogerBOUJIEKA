@@ -1,0 +1,5 @@
+node_modules/
+audio/premix.wav
+out/*.log
+out/video_v*.mp4
+out/frames/

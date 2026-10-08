@@ -1,0 +1,21 @@
+{
+  "name": "camairco-spot",
+  "version": "1.0.0",
+  "description": "Camair-Co 15s motion design spot",
+  "scripts": {
+    "geo": "node scripts/build_geo.mjs",
+    "render": "node scripts/render.mjs video out/video.mp4 30 5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/montserrat": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  },
+  "private": true
+}
