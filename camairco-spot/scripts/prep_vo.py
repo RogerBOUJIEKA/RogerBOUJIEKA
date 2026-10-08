@@ -3,7 +3,7 @@
 Cuts happen inside detected silences only, then a gentle time-stretch is applied.
 Writes audio/vo.wav and prints the segment timings used by the animation.
 """
-import json, subprocess, sys
+import json, os, subprocess, sys
 import numpy as np
 
 SR = 48000
@@ -42,6 +42,7 @@ tmp = OUT + ".tmp.f32"
 y.astype(np.float32).tofile(tmp)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", tmp,
                 "-af", f"atempo={TEMPO},adelay={int(LEAD*1000)}", "-ar", str(SR), OUT], check=True)
+os.remove(tmp)
 for seg in timeline:
     seg["start"] = round(LEAD + seg["start"] / TEMPO, 3); seg["end"] = round(LEAD + seg["end"] / TEMPO, 3)
 print(json.dumps(timeline, ensure_ascii=False, indent=1))
