@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Bovann Group — spot 84 s</title>
+<style>
+  html, body { margin: 0; background: #000910; }
+  canvas { display: block; width: 100vw; height: auto; max-height: 100vh; object-fit: contain; }
+  body:not(.render) #ui { position: fixed; left: 12px; bottom: 12px; color: #E5EAEE; font: 13px Inter, sans-serif; }
+  .render #ui { display: none; }
+</style>
+</head>
+<body>
+<canvas id="stage" width="1920" height="1080"></canvas>
+<div id="ui"><input id="f" type="range" min="0" max="2517" step="0.5" value="60" style="width:60vw"> <span id="lab"></span></div>
+<script type="module">
+  const fonts = [
+    ["Raleway", "raleway-latin-700-normal", 700], ["Raleway", "raleway-latin-800-normal", 800],
+    ["Roboto", "roboto-latin-400-normal", 400], ["Roboto", "roboto-latin-500-normal", 500],
+    ["Inter", "inter-latin-500-normal", 500], ["Inter", "inter-latin-600-normal", 600],
+    ["Roboto Mono", "roboto-mono-latin-400-normal", 400],
+  ];
+  const ready = (async () => {
+    await Promise.all(fonts.map(async ([fam, file, w]) => { const ff = new FontFace(fam, `url(fonts/${file}.woff2)`, { weight: String(w) }); await ff.load(); document.fonts.add(ff); }));
+    await document.fonts.ready;
+    const spot = await import("./spot.js");
+    await spot.init();
+    return spot;
+  })();
+  window.spot = { DUR: 84, ready: ready.then(() => true), renderFrame: async (f) => (await ready).renderFrame(f) };
+  if (location.search.includes("render")) document.body.classList.add("render");
+  else ready.then((s) => { const r = document.getElementById("f"), lab = document.getElementById("lab"); const go = () => { s.renderFrame(+r.value); lab.textContent = `f${r.value}  ${(r.value / 29.97).toFixed(2)} s`; }; r.oninput = go; go(); });
+</script>
+</body>
+</html>
