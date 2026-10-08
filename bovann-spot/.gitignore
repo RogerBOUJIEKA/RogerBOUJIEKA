@@ -6,3 +6,5 @@ __pycache__/
 stills/
 out/render.log
 stills2/
+out/*.mp4
+!out/bovann-preview-0-20s-540p.mp4
