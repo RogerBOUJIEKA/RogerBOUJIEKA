@@ -4,3 +4,9 @@ out/*.log
 out/video_v*.mp4
 out/frames/
 *.f32
+long/audio/premix.wav
+long/out/video_long_v*.mp4
+long/out/.chunks-*
+long/out_render.log
+out/.chunks-*
+__pycache__/

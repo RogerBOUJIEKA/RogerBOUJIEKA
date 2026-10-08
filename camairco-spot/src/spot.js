@@ -123,7 +123,7 @@
   }
   function glowDot(c, x, y, r, col, a = 1) {
     const g = c.createRadialGradient(x, y, 0, x, y, r);
-    g.addColorStop(0, col); g.addColorStop(1, "rgba(0,0,0,0)");
+    g.addColorStop(0, col); g.addColorStop(1, col.replace(/[\d.]+\)$/, "0)")); // fade to the same hue, not to black
     c.save(); c.globalAlpha *= a; c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill(); c.restore();
   }
   function ring(c, x, y, r, w, col, a) {
@@ -769,7 +769,7 @@
     ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
     // flashes
     const f1 = t > 0.4 ? Math.max(0, 1 - (t - 0.4) / 0.35) * prog(t, 0.36, 0.42) : 0;
-    const f2 = prog(t, 12.18, 12.35) * (1 - prog(t, 12.35, 12.75));
+    const f2 = prog(t, 12.18, 12.35) * (1 - prog(t, 12.35, 12.6));
     if (f1 > 0) { ctx.save(); ctx.globalCompositeOperation = "screen"; ctx.fillStyle = `rgba(255,205,110,${f1 * 0.42})`; ctx.fillRect(0, 0, W, H); ctx.restore(); }
     if (f2 > 0) { ctx.fillStyle = `rgba(255,244,214,${f2 * 0.92})`; ctx.fillRect(0, 0, W, H); }
     // film grain
@@ -815,6 +815,10 @@
     ctx.restore();
   }
 
+  // sub-frame count per output frame: more samples where the camera moves fast
+  const FAST = [[0.4, 1.15], [2.8, 3.7], [4.9, 5.85], [8.45, 8.95], [9.95, 10.45], [11.9, 12.5]];
+  const samplesAt = (t) => (FAST.some(([a, b]) => t >= a && t <= b) ? 12 : 4);
+
   function renderFrame(t, samples = 1, shutter = 1 / 60) {
     if (samples <= 1) { render(t); out.globalAlpha = 1; out.drawImage(buf, 0, 0); return; }
     for (let k = 0; k < samples; k++) {
@@ -828,7 +832,7 @@
     `900 40px ${MONT}`, `800 40px ${MONT}`, `600 40px ${MONT}`, `700 italic 40px ${PLAY}`, `600 italic 40px ${PLAY}`, `500 40px ${MONO}`, `700 40px ${MONO}`,
   ].map((f) => document.fonts.load(f, "AÉÀ’é"))).then(() => document.fonts.ready);
 
-  window.spot = { DUR, T, ready: fontsReady, renderFrame };
+  window.spot = { DUR, T, ready: fontsReady, renderFrame, samplesAt };
 
   // ───────────────────────── live preview ─────────────────────────
   if (new URLSearchParams(location.search).has("render")) { document.body.classList.add("render"); return; }

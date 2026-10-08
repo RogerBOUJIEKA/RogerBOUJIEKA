@@ -1,10 +1,11 @@
 {
   "name": "camairco-spot",
   "version": "1.0.0",
-  "description": "Camair-Co 15s motion design spot",
+  "description": "Camair-Co motion design spots (15 s and 88 s)",
   "scripts": {
     "geo": "node scripts/build_geo.mjs",
-    "render": "node scripts/render.mjs video out/video.mp4 30 5"
+    "render:15": "node scripts/render.mjs video src/index.html out/video.mp4 30 3",
+    "render:88": "node scripts/render.mjs video long/src/index.html long/out/video.mp4 30 3"
   },
   "keywords": [],
   "author": "",

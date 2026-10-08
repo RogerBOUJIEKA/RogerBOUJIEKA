@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camair-Co Spot 88s</title>
+<style>
+  @font-face { font-family: "Montserrat"; font-weight: 400; src: url(../../src/fonts/montserrat-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Montserrat"; font-weight: 600; src: url(../../src/fonts/montserrat-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Montserrat"; font-weight: 800; src: url(../../src/fonts/montserrat-latin-800-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Montserrat"; font-weight: 900; src: url(../../src/fonts/montserrat-latin-900-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Playfair Display"; font-style: italic; font-weight: 600; src: url(../../src/fonts/playfair-display-latin-600-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Playfair Display"; font-style: italic; font-weight: 700; src: url(../../src/fonts/playfair-display-latin-700-italic.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url(../../src/fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 700; src: url(../../src/fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2"); }
+  :root { --bg: #020a06; --fg: #f4efe4; --muted: #8fa89a; --accent: #f9b71c; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: "Montserrat", system-ui, sans-serif; }
+  body.render { overflow: hidden; }
+  #stage { display: block; width: 100%; max-width: 1920px; aspect-ratio: 16 / 9; margin: 0 auto; background: #000; }
+  body.render #stage { width: 1920px; height: 1080px; max-width: none; }
+  #controls { display: flex; gap: 12px; align-items: center; max-width: 1920px; margin: 12px auto; padding: 0 16px; box-sizing: border-box; }
+  body.render #controls { display: none; }
+  #controls button { font: 600 14px "Montserrat"; background: var(--accent); color: #111; border: 0; border-radius: 6px; padding: 8px 16px; cursor: pointer; }
+  #controls input { flex: 1; accent-color: var(--accent); }
+  #controls span { font: 500 13px "JetBrains Mono"; color: var(--muted); min-width: 64px; text-align: right; }
+</style>
+</head>
+<body>
+<canvas id="stage" width="1920" height="1080"></canvas>
+<div id="controls">
+  <button id="play">Lecture</button>
+  <input id="scrub" type="range" min="0" max="88" step="0.001" value="0">
+  <span id="time">0.00 s</span>
+</div>
+<audio id="audio" src="../out/camairco-spot-88s-audio.m4a" preload="auto"></audio>
+<script src="../../src/vendor/d3-array.min.js"></script>
+<script src="../../src/vendor/d3-geo.min.js"></script>
+<script src="../../src/geo.js"></script>
+<script src="timing.js"></script>
+<script src="long.js"></script>
+</body>
+</html>
