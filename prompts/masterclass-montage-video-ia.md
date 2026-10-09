@@ -1,32 +1,41 @@
 # Prompt — Affiche masterclass « Montage vidéo 10X plus vite avec l'IA »
 
-> **Fichiers joints à ce prompt :**
-> 1. Une **affiche de référence** (pour le style et la mise en page)
-> 2. **Ma photo** (le formateur)
-> 3. **Mon logo officiel « RB – Roger BOUJIEKA »** (organisateur)
-> 4. Les **logos des partenaires**
+## Fichiers à joindre avec ce prompt
+
+| # | Fichier | Rôle sur l'affiche |
+|---|---------|--------------------|
+| 1 | Affiche de référence | Style et mise en page |
+| 2 | Photo de Roger BOUJIEKA (chemise à carreaux, fond bleu) | Photo du formateur |
+| 3 | Logo **RB – ROGER BOUJIEKA** (rouge et blanc) | Logo officiel, organisateur, en haut |
+| 4 | Logo **TRANSMISSION** (blanc et or) | Partenaire |
+| 5 | Logo **Boujieka agency** (rouge et blanc) | Partenaire |
+| 6 | Logo **IZIVOICE** (orange) | Partenaire |
+| 7 | Logos officiels **CapCut, Adobe Premiere Pro, Adobe After Effects** | Bloc « Fini les heures sur… » (barrés) |
+| 8 | Logos officiels **Claude, ElevenLabs** | Bloc « Monte avec l'IA » |
 
 ---
 
-Tu es un directeur artistique expert en affiches de formation premium. Crée une affiche promotionnelle **propre, réaliste, aérée et professionnelle** pour une masterclass en ligne, en t'inspirant du style et de la mise en page de l'affiche de référence jointe.
+Tu es un directeur artistique expert en affiches de formation premium. Crée une affiche promotionnelle **propre, réaliste, aérée et professionnelle** pour une masterclass en ligne. Inspire-toi du style et de la mise en page de l'affiche de référence jointe.
 
-**Règle n°1 : NE PAS SATURER L'AFFICHE.** Beaucoup d'espace de respiration, peu d'éléments, seulement les informations essentielles. Mieux vaut moins d'éléments, mais parfaitement lisibles.
+**RÈGLE N°1 : NE PAS SATURER L'AFFICHE.** Beaucoup d'espace de respiration, peu d'éléments, seulement l'essentiel. Chaque élément doit être parfaitement lisible.
+
+**RÈGLE N°2 : LOGOS RÉELS UNIQUEMENT.** Tous les logos sont fournis en fichiers joints. Utilise-les **tels quels** : pas de redessin, pas de déformation, pas de changement de couleur, pas de logo inventé. Aucun logo dessiné ou approximatif.
 
 ## 1. Le formateur (photo jointe)
-- Utilise **ma photo jointe** et garde **exactement mon visage**, mes traits, ma couleur de peau et ma coiffure. Ne modifie pas mon identité.
-- **Habille-moi d'une veste de costume / blazer élégant** (style formateur professionnel, chemise ou t-shirt sobre en dessous), réaliste et bien ajusté.
-- Sur ma photo, je regarde droit devant. **Repositionne-moi de trois-quarts, le regard légèrement tourné sur le côté** (vers le titre), posture confiante, comme sur les affiches pro de formateurs.
-- Cadrage buste, détouré proprement, placé sur un côté de l'affiche (droite ou gauche, comme sur la référence).
-- Rendu **photoréaliste** : éclairage studio cohérent avec le fond, ombres naturelles, aucun effet « IA » artificiel.
-- Sous la photo : **Roger BOUJIEKA**, et en dessous « Formateur ».
+- Garde **exactement mon visage** : traits, couleur de peau, coupe de cheveux, barbe et lunettes. Ne change pas mon identité.
+- **Remplace la chemise à carreaux par une veste de costume (blazer) noire ou bleu nuit**, cintrée, réaliste, portée par-dessus le t-shirt noir. Garde la chaîne avec la croix dorée et la montre.
+- Sur ma photo, je regarde la caméra. **Repositionne-moi de trois-quarts, le regard tourné sur le côté** (vers le titre), posture confiante de formateur. Garde la main posée près du visage comme sur la photo, ou mets les bras croisés.
+- Supprime le fond bleu. Détoure-moi proprement, en cadrage buste, sur un côté de l'affiche (comme sur la référence).
+- Rendu **photoréaliste** : éclairage studio cohérent avec le fond (léger contre-jour rouge), ombres naturelles, aucun effet « IA » artificiel.
+- Près de la photo : **Roger BOUJIEKA**, et en dessous « Formateur ».
 
-## 2. Logo organisateur (en haut)
-- Place **mon logo officiel « RB – Roger BOUJIEKA »** (fichier joint) **en haut de l'affiche**, bien visible : c'est moi l'organisateur.
-- Utilise le fichier tel quel. Ne le redessine pas, ne le déforme pas.
+## 2. Logo officiel (en haut)
+- Place le logo **RB – ROGER BOUJIEKA** (rouge et blanc) **en haut de l'affiche**, bien visible : c'est le logo de l'organisateur.
+- Ce logo contient du **texte blanc** : place-le sur une zone sombre pour qu'il reste lisible.
 
 ## 3. Titre principal (l'élément le plus visible)
 **MONTE TES VIDÉOS 10X PLUS VITE AVEC L'IA**
-- « 10X PLUS VITE » en plus grand, couleur d'accent, avec un léger effet de vitesse (traînée lumineuse discrète).
+- « 10X PLUS VITE » en plus grand, en **rouge (couleur du logo RB)**, avec une légère traînée lumineuse de vitesse.
 
 ## 4. Sous-titre
 **Montage vidéo & Motion Design avec l'Intelligence Artificielle**
@@ -39,8 +48,11 @@ Transforme tes idées et tes rushs en vidéos fluides et professionnelles, direc
 - ✅ Créer du motion design pro sans logiciel complexe
 - ✅ Les techniques et stratégies des créateurs pro
 
-## 7. « Fini l'ancienne méthode » (petit, discret)
-Une seule ligne compacte : « Fini les heures sur… » suivie des petites icônes de **CapCut, Premiere Pro et After Effects**, chacune barrée d'une **petite croix rouge ❌**. Cet élément doit rester **secondaire** et ne pas surcharger l'affiche.
+## 7. Comparaison « avant / maintenant » (une seule ligne, compacte et élégante)
+- **À gauche :** « Fini les heures sur… » suivi des **logos officiels de CapCut, Premiere Pro et After Effects** (fichiers joints), en petit, légèrement désaturés, chacun barré d'une **croix rouge ❌** nette.
+- **Une flèche →**
+- **À droite :** « Monte avec l'IA » suivi des **logos officiels de Claude et ElevenLabs** (fichiers joints), en couleur, avec une petite **coche verte ✅**.
+- Ce bloc reste **secondaire** : petite taille, bien aligné, sans surcharger l'affiche.
 
 ## 8. Informations pratiques (une ligne d'icônes ou une petite grille)
 📅 Vendredi 16 octobre · 🕖 19h – 21h · 💻 100 % en ligne · 🎥 Replay disponible · 📚 Ressources incluses
@@ -51,19 +63,20 @@ Une seule ligne compacte : « Fini les heures sur… » suivie des petites icôn
 - Mention : 🎁 Accès au groupe privé de la masterclass.
 
 ## 10. Appel à l'action
-Bouton bien contrasté : **INSCRIPTIONS OUVERTES**
+Bouton rouge bien contrasté : **INSCRIPTIONS OUVERTES**
 
 ## 11. Bandeau du bas : « Partenaires »
-- Un bandeau fin et propre tout en bas, avec le titre **« Partenaires »**.
-- Place les **logos des partenaires joints**, alignés, de même hauteur, bien espacés, sur fond uni (blanc ou sombre selon le contraste).
-- Utilise les fichiers tels quels : ne pas redessiner, déformer ou inventer de logo. N'ajoute **aucun logo qui n'a pas été fourni**.
+- Un bandeau fin et propre tout en bas, sur **fond sombre** (les logos contiennent du texte blanc), avec le titre discret **« Partenaires »**.
+- Place les 3 logos partenaires joints : **TRANSMISSION**, **Boujieka agency** et **IZIVOICE**.
+- Logos alignés, de même hauteur visuelle, bien espacés, utilisés tels quels.
+- N'ajoute aucun autre logo dans ce bandeau.
 
 ## Style visuel
-- S'inspirer de l'**affiche de référence** jointe (composition, ambiance, niveau de finition).
-- Fond sombre et élégant (noir / bleu nuit) avec **une ou deux couleurs d'accent** maximum (ex. violet + cyan).
-- Quelques éléments discrets liés au montage vidéo (timeline stylisée, waveform), en arrière-plan et en transparence. Jamais au premier plan.
+- S'inspirer de l'**affiche de référence** jointe (composition, ambiance, finition).
+- **Palette alignée sur le logo RB :** fond noir / anthracite profond, **rouge vif (#FF0020)** comme couleur d'accent principale, texte blanc. Une touche d'or discrète est possible pour rappeler le partenaire TRANSMISSION.
+- Quelques éléments discrets liés au montage vidéo (timeline stylisée, waveform audio, lignes de vitesse), en arrière-plan et en transparence. Jamais au premier plan.
 - Typographie moderne, grasse, très lisible sur téléphone.
-- Ordre de lecture : **logo RB → titre → sous-titre → photo du formateur → puces → infos → prix → CTA → partenaires**.
+- **Ordre de lecture :** logo RB → titre → sous-titre → photo du formateur → puces → avant / maintenant → infos → prix → CTA → partenaires.
 
 ## Format
 - Carré **1080×1080** (feed Instagram / Facebook)
@@ -71,5 +84,5 @@ Bouton bien contrasté : **INSCRIPTIONS OUVERTES**
 
 ## Contraintes strictes
 - Textes en français, **exactement comme fournis**, sans faute ni texte inventé.
-- Aucune déformation du visage ni des logos.
-- Aucun élément superflu : affiche **propre, réaliste, premium et aérée**.
+- Aucune déformation du visage ni des logos. Logos réels uniquement.
+- Affiche **propre, réaliste, premium et aérée**, jamais saturée.
