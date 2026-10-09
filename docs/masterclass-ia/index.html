@@ -287,16 +287,6 @@ p{margin:0}
 .pack li.phl{font-weight:700}
 .pack .count{margin-top:22px}
 .pack .btn{margin-top:18px}
-/* Chariow checkout widget slot */
-.cw-slot{margin-top:18px;display:grid;gap:10px;justify-items:center;border-radius:20px;transition:box-shadow .3s}
-.cw-slot #chariow-widget{width:100%;display:flex;justify-content:center}
-.cw-slot #chariow-widget:empty{display:none}
-.cw-wait{display:flex;align-items:center;gap:10px;justify-content:center;width:100%;padding:16px;border-radius:999px;background:var(--red-soft);color:var(--fg);font:700 14px/1.3 var(--body)}
-.cw-wait i{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--red);border-right-color:transparent;animation:spin .8s linear infinite;flex:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-.cw-slot.ready .cw-wait{display:none}
-.cw-slot.flash{animation:flash 1.4s var(--ease)}
-@keyframes flash{30%{box-shadow:0 0 0 6px color-mix(in srgb,var(--red) 45%,transparent)}}
 .pay{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line2)}
 .pay .lbl{display:flex;align-items:center;gap:8px;font:700 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .pay .lbl .ic{width:15px;height:15px}
@@ -389,7 +379,7 @@ footer{padding:18px 16px 110px;text-align:center;color:var(--faint);font-size:12
     <div class="sp"></div>
     <div class="tog" role="group" aria-label="Langue / Language"><button id="lang-fr" aria-pressed="true">FR</button><button id="lang-en" aria-pressed="false">EN</button></div>
     <div class="tog" role="group" aria-label="Thème"><button id="th-day" aria-pressed="false" aria-label="Mode jour"><svg class="ic"><use href="#i-sun"/></svg></button><button id="th-night" aria-pressed="false" aria-label="Mode nuit"><svg class="ic"><use href="#i-moon"/></svg></button></div>
-    <a class="btn btn-red js-cta" href="#offre"><span data-i18n="cta_short">Réserver ma place</span></a>
+    <a class="btn btn-red js-cta" href="https://rogerboujieka237.mychariow.shop/prd_gy9104l1/checkout"><span data-i18n="cta_short">Réserver ma place</span></a>
   </div>
 </header>
 
@@ -402,7 +392,7 @@ footer{padding:18px 16px 110px;text-align:center;color:var(--faint);font-size:12
       <h1 class="h1" data-i18n="hero_h1"><span class="ln"><span style="--i:0">Montez vos vidéos</span></span><span class="ln"><span style="--i:1"><span class="hl">10X</span> plus vite</span></span><span class="ln"><span style="--i:2" class="soft">avec l'IA.</span></span></h1>
       <p class="lead sub in" style="--d:.5s" data-i18n="hero_sub">Apprenez le montage vidéo et le motion design avec les bons outils, <b>même depuis votre téléphone</b>. Puis transformez cette compétence en revenus.</p>
       <div class="price-line in" style="--d:.6s"><span class="price-now">15 000<small>FCFA</small></span><span class="price-was">25 000 FCFA</span><span class="tag" data-i18n="limited">Places limitées</span></div>
-      <div class="in" style="--d:.7s"><a class="btn btn-red btn-full js-cta" href="#offre"><span data-i18n="cta_main">Je réserve ma place</span><span class="arr">→</span></a></div>
+      <div class="in" style="--d:.7s"><a class="btn btn-red btn-full js-cta" href="https://rogerboujieka237.mychariow.shop/prd_gy9104l1/checkout"><span data-i18n="cta_main">Je réserve ma place</span><span class="arr">→</span></a></div>
       <div class="facts in" style="--d:.8s">
         <span class="chip ph"><svg class="ic"><use href="#i-phone"/></svg><span data-i18n="hf1">Accessible depuis un smartphone</span></span>
         <span class="chip"><svg class="ic"><use href="#i-clock"/></svg><span data-i18n="hf2">2 h en direct</span></span>
@@ -561,19 +551,7 @@ footer{padding:18px 16px 110px;text-align:center;color:var(--faint);font-size:12
       <div class="price"><b>15 000</b><em>FCFA</em><span class="price-was">25 000 FCFA</span></div>
       <ul data-i18n="pk_list"><li>2 h de masterclass en direct, vendredi 16 octobre de 19h à 21h</li><li class="phl">À suivre et à appliquer depuis votre smartphone</li><li>Des rushes au spot en motion design, étape par étape</li><li>Le bonus monétisation : trouver des clients et vendre la compétence</li><li>Le replay et le PDF des présentations</li><li>Les ressources de la masterclass</li><li>L'accès direct au groupe privé après le paiement</li></ul>
       <div class="count js-count" aria-live="off"><span class="lbl" data-i18n="count_lbl">Début dans</span><div class="u"><b data-u="d">0</b><span data-i18n="u_d">jours</span></div><div class="u"><b data-u="h">00</b><span data-i18n="u_h">heures</span></div><div class="u"><b data-u="m">00</b><span data-i18n="u_m">min</span></div><div class="u"><b data-u="s">00</b><span data-i18n="u_s">sec</span></div></div>
-      <div class="cw-slot" id="buy-slot">
-        <!-- Chariow Widget (official checkout button) -->
-        <div id="chariow-widget" data-product-id="prd_gy9104l1"
-            data-store-domain="rogerboujieka237.mychariow.shop"
-            data-style="tap"
-            data-border-style="rounded"
-            data-cta-width="xs"
-            data-background-color="#FFFFFF"
-            data-cta-animation="none"
-            data-locale="fr"
-            data-primary-color="#ff0004"></div>
-        <div class="cw-wait" role="status"><i></i><span data-i18n="cw_wait">Chargement du paiement sécurisé…</span></div>
-      </div>
+      <a class="btn btn-red btn-full js-cta" id="buy" href="https://rogerboujieka237.mychariow.shop/prd_gy9104l1/checkout"><span data-i18n="cta_buy">Je réserve ma place</span><span class="arr">→</span></a>
       <div class="pay"><span class="lbl"><svg class="ic"><use href="#i-lock"/></svg><span data-i18n="pay_lbl">Paiement sécurisé</span></span><div class="methods"><img src="media/pay/orange-money.svg" alt="Orange Money" width="60" height="36"><img src="media/pay/momo-mtn.webp" alt="MoMo MTN Mobile Money" width="60" height="36"><img src="media/pay/moov-money.svg" alt="Moov Money" width="60" height="36"><img class="cd" src="media/pay/visa.svg" alt="Visa" width="54" height="36"><img class="cd" src="media/pay/mastercard.svg" alt="Mastercard" width="54" height="36"></div></div>
       <div class="access"><svg class="ic"><use href="#i-check"/></svg><span data-i18n="access">Après le paiement, vous accédez directement au groupe privé de la masterclass.</span></div>
       <ol class="steps" data-i18n="steps"><li><span><b>Réservez</b> votre place</span></li><li><span><b>Payez</b> par Mobile Money ou par carte</span></li><li><span><b>Rejoignez</b> le groupe privé et recevez le lien du direct</span></li></ol>
@@ -605,7 +583,7 @@ footer{padding:18px 16px 110px;text-align:center;color:var(--faint);font-size:12
       <h2 data-i18n="fn_h">Votre téléphone suffit. Il ne manque que votre place.</h2>
       <p data-i18n="fn_p">15 000 FCFA au lieu de 25 000 FCFA, tant qu'il reste des places. Replay et PDF inclus.</p>
       <div class="count js-count" aria-live="off"><span class="lbl" data-i18n="count_lbl">Début dans</span><div class="u"><b data-u="d">0</b><span data-i18n="u_d">jours</span></div><div class="u"><b data-u="h">00</b><span data-i18n="u_h">heures</span></div><div class="u"><b data-u="m">00</b><span data-i18n="u_m">min</span></div><div class="u"><b data-u="s">00</b><span data-i18n="u_s">sec</span></div></div>
-      <a class="btn btn-white js-cta" href="#offre"><span data-i18n="cta_main">Je réserve ma place</span><span class="arr">→</span></a>
+      <a class="btn btn-white js-cta" href="https://rogerboujieka237.mychariow.shop/prd_gy9104l1/checkout"><span data-i18n="cta_main">Je réserve ma place</span><span class="arr">→</span></a>
     </div>
   </div>
 </section>
@@ -619,13 +597,12 @@ footer{padding:18px 16px 110px;text-align:center;color:var(--faint);font-size:12
 </div></div>
 <footer><span data-i18n="foot">© 2026 Roger BOUJIEKA · Boujieka Academy · Masterclass « Montage vidéo &amp; Motion Design avec l'IA »</span></footer>
 
-<div class="mbar" id="mbar"><div class="p">15 000 F<small data-i18n="mbar_s">AU LIEU DE 25 000</small></div><a class="btn btn-red js-cta" href="#offre"><span data-i18n="cta_short">Réserver ma place</span><span class="arr">→</span></a></div>
+<div class="mbar" id="mbar"><div class="p">15 000 F<small data-i18n="mbar_s">AU LIEU DE 25 000</small></div><a class="btn btn-red js-cta" href="https://rogerboujieka237.mychariow.shop/prd_gy9104l1/checkout"><span data-i18n="cta_short">Réserver ma place</span><span class="arr">→</span></a></div>
 
 <script>
 /* ===== Configuration =====
-   PRODUCT_URL: optional direct link to the Chariow product page. When set, every booking button opens it.
-   When empty, the booking buttons trigger the Chariow widget placed in the pack (#chariow-widget). */
-const PRODUCT_URL = "";
+   CHECKOUT_URL: the Chariow checkout of the masterclass. Every booking button opens it. */
+const CHECKOUT_URL = "https://rogerboujieka237.mychariow.shop/prd_gy9104l1/checkout";
 const START = Date.parse("2026-10-16T18:00:00Z"); // 19:00 GMT+1
 const END = Date.parse("2026-10-16T20:00:00Z");
 
@@ -670,7 +647,7 @@ const EN = {
   of_eye:"Your seat", of_h:"One pack, everything included.", pk_name:"Masterclass pack",
   pk_list:'<li>2-hour live masterclass, Friday October 16, 7 to 9 pm</li><li class="phl">Follow and apply it from your smartphone</li><li>From raw footage to a motion design ad, step by step</li><li>The monetisation bonus: find clients and sell the skill</li><li>The replay and the slides PDF</li><li>The masterclass resources</li><li>Direct access to the private group after payment</li>',
   count_lbl:"Starts in", u_d:"days", u_h:"hours", u_m:"min", u_s:"sec",
-  cw_wait:"Loading secure payment…", pay_lbl:"Secure payment",
+  cta_buy:"Book my seat", pay_lbl:"Secure payment",
   access:"Right after payment, you get direct access to the masterclass private group.",
   steps:"<li><span><b>Book</b> your seat</span></li><li><span><b>Pay</b> by Mobile Money or card</span></li><li><span><b>Join</b> the private group and get the live link</span></li>",
   fq_h:"Your questions, my answers.",
@@ -718,23 +695,7 @@ function tick() {
 setInterval(tick, 1000);
 
 /* ---------- checkout: every booking button goes straight to the payment page ---------- */
-const cw = document.getElementById('chariow-widget'), slot = document.getElementById('buy-slot');
-function cwButton() {
-  for (const r of [cw, cw.shadowRoot]) { if (!r) continue; const b = r.querySelector('a[href^="http"], button, [role="button"]'); if (b) return b; }
-  return null;
-}
-new MutationObserver(() => { if (cw.childElementCount) slot.classList.add('ready'); }).observe(cw, { childList: true, subtree: true });
-setTimeout(() => { if (!slot.classList.contains('ready')) { const w = slot.querySelector('.cw-wait span'); w.removeAttribute('data-i18n'); w.textContent = document.documentElement.lang === 'en' ? 'Payment button not loaded: check your connection and reload the page.' : 'Le bouton de paiement ne s\'est pas chargé : vérifiez votre connexion et rechargez la page.'; } }, 12000);
-document.querySelectorAll('.js-cta').forEach(a => {
-  if (PRODUCT_URL) { a.href = PRODUCT_URL; a.rel = 'noopener'; return; }
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const b = cwButton();
-    if (b) { if (b.tagName === 'A') location.href = b.href; else b.click(); return; }
-    slot.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    slot.classList.remove('flash'); void slot.offsetWidth; slot.classList.add('flash');
-  });
-});
+document.querySelectorAll('.js-cta').forEach(a => { a.href = CHECKOUT_URL; });
 
 /* ---------- tabs ---------- */
 const tabs = [...document.querySelectorAll('[role="tab"]')], ind = document.querySelector('.tabs .ind');
@@ -812,19 +773,6 @@ setTheme(T, false); if (L === 'en') setLang('en'); else { tick(); moveInd(); }
 const deep = tabs.find(b => b.id === 'tab-' + H); if (deep) { openTab(deep); document.getElementById('details').scrollIntoView(); }
 matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { if (!document.documentElement.getAttribute('data-theme')) setTheme(null, false); });
 
-/* ---------- Chariow widget loader (official snippet) ---------- */
-cw.dataset.locale = L === 'en' ? 'en' : 'fr';
-(function() {
-  var script = document.createElement('script');
-  script.src = 'https://js.chariowcdn.com/v1/widget.min.js';
-  script.async = true;
-  document.head.appendChild(script);
-
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://js.chariowcdn.com/v1/widget.min.css';
-  document.head.appendChild(link);
-})();
 </script>
 </body>
 </html>
