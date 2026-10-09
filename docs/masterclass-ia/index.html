@@ -292,8 +292,8 @@ p{margin:0}
 .pay .lbl{display:flex;align-items:center;gap:8px;font:700 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .pay .lbl .ic{width:15px;height:15px}
 .methods{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.pm{padding:8px 11px;border-radius:10px;font:800 12.5px/1 var(--body);letter-spacing:-.01em}
-.pm.om{background:#ff7900;color:#111}.pm.mtn{background:#ffcb05;color:#111}.pm.moov{background:#0b5cad;color:#fff}.pm.wave{background:#1dc8f2;color:#062b3a}.pm.card{background:var(--bg2);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line2)}
+.methods img{height:32px;width:auto;border-radius:5px}
+.methods img.cd{box-shadow:0 0 0 1px var(--line2)}
 .access{margin-top:16px;display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;font-weight:600}
 .access .ic{color:var(--ok);margin-top:1px}
 .steps{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
@@ -554,7 +554,7 @@ footer{padding:18px 16px 110px;text-align:center;color:var(--faint);font-size:12
       <div class="count js-count" aria-live="off"><span class="lbl" data-i18n="count_lbl">Début dans</span><div class="u"><b data-u="d">0</b><span data-i18n="u_d">jours</span></div><div class="u"><b data-u="h">00</b><span data-i18n="u_h">heures</span></div><div class="u"><b data-u="m">00</b><span data-i18n="u_m">min</span></div><div class="u"><b data-u="s">00</b><span data-i18n="u_s">sec</span></div></div>
       <a class="btn btn-red btn-full js-cta" id="buy" href="#offre"><span data-i18n="cta_buy">Je réserve ma place</span><span class="arr">→</span></a>
       <div class="pending" id="pending" role="status" data-i18n="pending">Le paiement en ligne s'ouvre très bientôt. Revenez dans quelques instants.</div>
-      <div class="pay"><span class="lbl"><svg class="ic"><use href="#i-lock"/></svg><span data-i18n="pay_lbl">Paiement sécurisé</span></span><div class="methods"><span class="pm om">Orange Money</span><span class="pm mtn">MTN MoMo</span><span class="pm moov">Moov Money</span><span class="pm wave">Wave</span><span class="pm card" data-i18n="pay_card">Carte bancaire</span></div></div>
+      <div class="pay"><span class="lbl"><svg class="ic"><use href="#i-lock"/></svg><span data-i18n="pay_lbl">Paiement sécurisé</span></span><div class="methods"><img src="media/pay/orange-money.svg" alt="Orange Money" width="60" height="36"><img src="media/pay/momo-mtn.webp" alt="MoMo MTN Mobile Money" width="60" height="36"><img src="media/pay/moov-money.svg" alt="Moov Money" width="60" height="36"><img class="cd" src="media/pay/visa.svg" alt="Visa" width="54" height="36"><img class="cd" src="media/pay/mastercard.svg" alt="Mastercard" width="54" height="36"></div></div>
       <div class="access"><svg class="ic"><use href="#i-check"/></svg><span data-i18n="access">Après le paiement, vous accédez directement au groupe privé de la masterclass.</span></div>
       <ol class="steps" data-i18n="steps"><li><span><b>Réservez</b> votre place</span></li><li><span><b>Payez</b> par Mobile Money ou par carte</span></li><li><span><b>Rejoignez</b> le groupe privé et recevez le lien du direct</span></li></ol>
     </div>
@@ -649,7 +649,7 @@ const EN = {
   of_eye:"Your seat", of_h:"One pack, everything included.", pk_name:"Masterclass pack",
   pk_list:'<li>2-hour live masterclass, Friday October 16, 7 to 9 pm</li><li class="phl">Follow and apply it from your smartphone</li><li>From raw footage to a motion design ad, step by step</li><li>The monetisation bonus: find clients and sell the skill</li><li>The replay and the slides PDF</li><li>The masterclass resources</li><li>Direct access to the private group after payment</li>',
   count_lbl:"Starts in", u_d:"days", u_h:"hours", u_m:"min", u_s:"sec",
-  pending:"Online payment opens very soon. Please come back in a moment.", pay_lbl:"Secure payment", pay_card:"Bank card",
+  pending:"Online payment opens very soon. Please come back in a moment.", pay_lbl:"Secure payment",
   access:"Right after payment, you get direct access to the masterclass private group.",
   steps:"<li><span><b>Book</b> your seat</span></li><li><span><b>Pay</b> by Mobile Money or card</span></li><li><span><b>Join</b> the private group and get the live link</span></li>",
   fq_h:"Your questions, my answers.",
