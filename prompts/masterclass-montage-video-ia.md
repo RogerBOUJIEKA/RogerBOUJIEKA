@@ -10,8 +10,8 @@
 | 4 | Logo **TRANSMISSION** (blanc et or) | Partenaire |
 | 5 | Logo **Boujieka agency** (rouge et blanc) | Partenaire |
 | 6 | Logo **IZIVOICE** (orange) | Partenaire |
-| 7 | Logos officiels **CapCut, Adobe Premiere Pro, Adobe After Effects** | Bloc « Fini les heures sur… » (barrés) |
-| 8 | Logos officiels **Claude, ElevenLabs** | Bloc « Monte avec l'IA » |
+| 7 | Logos officiels **CapCut, Adobe Premiere Pro, Adobe After Effects** | Bloc « Avant » (barrés) |
+| 8 | Logos officiels **Claude, ElevenLabs** | Bloc « Maintenant » |
 
 ---
 
@@ -33,39 +33,43 @@ Tu es un directeur artistique expert en affiches de formation premium. Crée une
 - Place le logo **RB – ROGER BOUJIEKA** (rouge et blanc) **en haut de l'affiche**, bien visible : c'est le logo de l'organisateur.
 - Ce logo contient du **texte blanc** : place-le sur une zone sombre pour qu'il reste lisible.
 
-## 3. Titre principal (l'élément le plus visible)
+## 3. Surtitre (juste au-dessus du titre)
+**FINI LES HEURES… ET LES JOURS DE MONTAGE !**
+- Plus petit que le titre, en blanc, avec « HEURES » et « JOURS » barrés d'un trait rouge ou en rouge.
+
+## 4. Titre principal (l'élément le plus visible)
 **MONTE TES VIDÉOS 10X PLUS VITE AVEC L'IA**
 - « 10X PLUS VITE » en plus grand, en **rouge (couleur du logo RB)**, avec une légère traînée lumineuse de vitesse.
 
-## 4. Sous-titre
+## 5. Sous-titre
 **Montage vidéo & Motion Design avec l'Intelligence Artificielle**
 
-## 5. Accroche (une ligne)
+## 6. Accroche (une ligne)
 Transforme tes idées et tes rushs en vidéos fluides et professionnelles, directement avec l'IA.
 
-## 6. Ce que tu vas apprendre (3 puces maximum)
+## 7. Ce que tu vas apprendre (3 puces maximum)
 - ✅ Monter tes vidéos avec l'IA, 10X plus vite
 - ✅ Créer du motion design pro sans logiciel complexe
 - ✅ Les techniques et stratégies des créateurs pro
 
-## 7. Comparaison « avant / maintenant » (une seule ligne, compacte et élégante)
-- **À gauche :** « Fini les heures sur… » suivi des **logos officiels de CapCut, Premiere Pro et After Effects** (fichiers joints), en petit, légèrement désaturés, chacun barré d'une **croix rouge ❌** nette.
+## 8. Comparaison « avant / maintenant » (une seule ligne, compacte et élégante)
+- **À gauche :** « Avant : » suivi des **logos officiels de CapCut, Premiere Pro et After Effects** (fichiers joints), en petit, légèrement désaturés, chacun barré d'une **croix rouge ❌** nette.
 - **Une flèche →**
-- **À droite :** « Monte avec l'IA » suivi des **logos officiels de Claude et ElevenLabs** (fichiers joints), en couleur, avec une petite **coche verte ✅**.
+- **À droite :** « Maintenant : » suivi des **logos officiels de Claude et ElevenLabs** (fichiers joints), en couleur, avec une petite **coche verte ✅**.
 - Ce bloc reste **secondaire** : petite taille, bien aligné, sans surcharger l'affiche.
 
-## 8. Informations pratiques (une ligne d'icônes ou une petite grille)
+## 9. Informations pratiques (une ligne d'icônes ou une petite grille)
 📅 Vendredi 16 octobre · 🕖 19h – 21h · 💻 100 % en ligne · 🎥 Replay disponible · 📚 Ressources incluses
 
-## 9. Prix et urgence
+## 10. Prix et urgence
 - **15 000 FCFA** en grand, avec ~~25 000 FCFA~~ barré à côté.
 - Petit badge : **Places limitées**.
 - Mention : 🎁 Accès au groupe privé de la masterclass.
 
-## 10. Appel à l'action
+## 11. Appel à l'action
 Bouton rouge bien contrasté : **INSCRIPTIONS OUVERTES**
 
-## 11. Bandeau du bas : « Partenaires »
+## 12. Bandeau du bas : « Partenaires »
 - Un bandeau fin et propre tout en bas, sur **fond sombre** (les logos contiennent du texte blanc), avec le titre discret **« Partenaires »**.
 - Place les 3 logos partenaires joints : **TRANSMISSION**, **Boujieka agency** et **IZIVOICE**.
 - Logos alignés, de même hauteur visuelle, bien espacés, utilisés tels quels.
@@ -76,7 +80,7 @@ Bouton rouge bien contrasté : **INSCRIPTIONS OUVERTES**
 - **Palette alignée sur le logo RB :** fond noir / anthracite profond, **rouge vif (#FF0020)** comme couleur d'accent principale, texte blanc. Une touche d'or discrète est possible pour rappeler le partenaire TRANSMISSION.
 - Quelques éléments discrets liés au montage vidéo (timeline stylisée, waveform audio, lignes de vitesse), en arrière-plan et en transparence. Jamais au premier plan.
 - Typographie moderne, grasse, très lisible sur téléphone.
-- **Ordre de lecture :** logo RB → titre → sous-titre → photo du formateur → puces → avant / maintenant → infos → prix → CTA → partenaires.
+- **Ordre de lecture :** logo RB → surtitre → titre → sous-titre → photo du formateur → puces → avant / maintenant → infos → prix → CTA → partenaires.
 
 ## Format
 - Carré **1080×1080** (feed Instagram / Facebook)
