@@ -48,6 +48,7 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `nom` | nom du fichier PNG de la variante |
 | `ligne1`, `ligne2` | les 2 lignes du titre (mises en MAJUSCULES automatiquement) |
 | `jaune` | `1` ou `2` : numéro de la ligne placée dans le bandeau jaune (2 par défaut) |
+| `[…]` dans une ligne | garde ce passage tel quel, sans majuscules, par exemple `1 500 F/[m²]` |
 | `{…}` dans la ligne blanche | met ce passage en jaune, par exemple `"{≠} investissement"` |
 | `fond` | photo de fond |
 | `fond_avant`, `fond_apres` | fond coupé en deux pour un titre avant/après (remplace `fond`) |
@@ -63,6 +64,8 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `fleche` | `{ de: [x,y], vers: [x,y], courbure: 0.3, epaisseur: 16 }` : flèche rouge courbe |
 | `police` | `"anton"` (par défaut) ou `"bebas"` |
 | `flou`, `luminosite`, `saturation` | réglages fins du fond (par défaut : 3, 0.78 et 1.25) |
+| `vif` | `true` : couleurs plus saturées et plus contrastées (fond et personnes) |
+| `halo` (global ou par personne) | couleur d'une lumière douce derrière la tête, par exemple `"rgba(255,170,40,.9)"` |
 | `fond_position` | cadrage du fond (CSS `background-position`), par exemple `"50% 20%"` pour montrer le haut d'un immeuble |
 
 Placement automatique, conforme à la charte :

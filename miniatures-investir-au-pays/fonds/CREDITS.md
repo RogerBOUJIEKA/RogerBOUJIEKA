@@ -15,3 +15,9 @@ Chaque fond utilise dans une miniature est note ici.
 | `pexels-8515596-portefeuille-vide.jpg` | Pexels | Towfiqu barbhuiya (d'apres les resultats de recherche) | https://www.pexels.com/photo/person-holding-an-empty-wallet-8515596/ | Licence Pexels (gratuite) | 2026-10-13 |
 | `pexels-12001949-portefeuille-vide-bleu.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/a-person-holding-an-empty-wallet-12001949/ | Licence Pexels (gratuite) | 2026-10-13 |
 | `pexels-7230878-liasse-en-feu.jpg` | Pexels | MART PRODUCTION (d'apres les resultats de recherche) | https://www.pexels.com/photo/person-holding-burning-money-7230878/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-29973772-terrain-brousse.jpg` | Pexels | a confirmer (Tanzanie d'apres la recherche) | https://www.pexels.com/photo/serengeti-fallen-tree-in-african-savanna-landscape-29973772/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-34188580-villa-moderne.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/modern-villa-in-dubai-residential-area-34188580/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-35313822-lotissement-aerien.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/aerial-view-of-expansive-housing-development-35313822/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-35329736-lagos-tour-front-de-mer.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/modern-skyscraper-by-lagos-waterfront-35329736/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-29773805-plage-rochers-palmiers.jpg` | Pexels | a confirmer (plage tropicale, pas Kribi) | https://www.pexels.com/photo/tropical-beach-with-palm-trees-and-clear-ocean-29773805/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-35174931-quartier-ghana-drone.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/aerial-view-of-sowutoum-neighborhood-in-ghana-35174931/ | Licence Pexels (gratuite) | 2026-10-13 |

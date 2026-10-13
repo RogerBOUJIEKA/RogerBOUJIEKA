@@ -1,0 +1,121 @@
+{
+  "sortie": "sorties",
+  "base": {
+    "vif": true
+  },
+  "variantes": [
+    {
+      "nom": "1-7-5m-64m",
+      "ligne1": "7,5 M {→} 64 M",
+      "ligne2": "FCFA",
+      "jaune": 2,
+      "fond_avant": "../../fonds/pexels-29973772-terrain-brousse.jpg",
+      "fond_apres": "../../fonds/pexels-34188580-villa-moderne.jpg",
+      "etiquette": {
+        "texte": "AVANT",
+        "x": 44,
+        "y": 40
+      },
+      "personnes": [
+        {
+          "photo": "simo:poing-sourire-chemise-bleue",
+          "role": "philippe",
+          "halo": "rgba(255,180,40,.95)"
+        }
+      ],
+      "fleche": {
+        "de": [
+          150,
+          650
+        ],
+        "vers": [
+          650,
+          600
+        ],
+        "courbure": 0.25
+      }
+    },
+    {
+      "nom": "2-x10-terrain",
+      "ligne1": "J'ai fait {x10}",
+      "ligne2": "avec un terrain",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-35313822-lotissement-aerien.jpg",
+      "fleche": {
+        "de": [
+          300,
+          45
+        ],
+        "vers": [
+          640,
+          205
+        ],
+        "courbure": -0.3
+      },
+      "personnes": [
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "halo": "rgba(255,140,30,.95)"
+        }
+      ]
+    },
+    {
+      "nom": "3-ils-achetent-afrique",
+      "ligne1": "Ils achètent l'Afrique…",
+      "ligne2": "et toi ?",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-35329736-lagos-tour-front-de-mer.jpg",
+      "fond_position": "50% 35%",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "halo": "rgba(60,200,255,.9)"
+        }
+      ]
+    },
+    {
+      "nom": "4-terrain-kribi",
+      "ligne1": "Terrain à 1 500 F/[m²]",
+      "ligne2": "à {Kribi}",
+      "jaune": 1,
+      "fond": "../../fonds/pexels-29773805-plage-rochers-palmiers.jpg",
+      "personnes": [
+        {
+          "photo": "simo:sourire-mains-hanches-chemise-bleue",
+          "role": "philippe",
+          "recadrage": 0.55,
+          "halo": "rgba(255,210,60,.9)"
+        }
+      ]
+    },
+    {
+      "nom": "5-un-terrain-chaque-annee",
+      "ligne1": "Achète un terrain",
+      "ligne2": "chaque année",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-35174931-quartier-ghana-drone.jpg",
+      "personnes": [
+        {
+          "photo": "simo:poing-sourire-chemise-bleue",
+          "role": "philippe",
+          "halo": "rgba(120,255,120,.75)"
+        }
+      ],
+      "fleche": {
+        "de": [
+          80,
+          190
+        ],
+        "vers": [
+          560,
+          95
+        ],
+        "courbure": -0.22
+      }
+    }
+  ]
+}

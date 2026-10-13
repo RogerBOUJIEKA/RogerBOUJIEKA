@@ -20,7 +20,9 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 // {texte} dans une ligne blanche => texte en jaune (symboles, ex : {≠}).
 // Anton dessine « ≠ » comme « = » : on trace la barre oblique en CSS.
-const balisage = (s) => esc(s.toUpperCase())
+// MAJUSCULES partout, sauf les passages entre [crochets] gardes tels quels (ex : 1 500 F/[m²]).
+const maj = (s) => s.split(/(\[[^\]]*\])/).map((x) => (x.startsWith('[') ? x.slice(1, -1) : x.toUpperCase())).join('');
+const balisage = (s) => esc(maj(s))
   .replace(/\{([^}]*)\}/g, '<span class="sym">$1</span>')
   .replace(/≠/g, '<span class="diff">=</span>');
 
@@ -40,13 +42,14 @@ function construireHTML(c, base) {
   const jaune = c.jaune ?? 2; // numero de la ligne dans le bandeau jaune
   const lignes = [c.ligne1, c.ligne2].map((t, i) =>
     i + 1 === jaune
-      ? `<div class="ligne"><span class="bandeau">${esc(t.toUpperCase()).replace(/[{}]/g, '')}</span></div>`
+      ? `<div class="ligne"><span class="bandeau">${esc(maj(t)).replace(/[{}]/g, '')}</span></div>`
       : `<div class="ligne"><span class="blanc">${balisage(t)}</span></div>`);
 
   // Fond : une photo, ou deux moities (avant / apres).
   // Fond reconnaissable : legerement floute et assombri ; le degrade noir assure la lisibilite du texte.
-  const flou = c.flou ?? 3, lum = c.luminosite ?? 0.78, sat = c.saturation ?? 1.25;
-  const filtre = `filter: blur(${flou}px) brightness(${lum}) saturate(${sat}); background-position:${c.fond_position ?? 'center'};`;
+  // vif : couleurs plus saturees et plus de contraste (fond et personnes), toujours dans la charte.
+  const flou = c.flou ?? 3, lum = c.luminosite ?? (c.vif ? 0.88 : 0.78), sat = c.saturation ?? (c.vif ? 1.55 : 1.25);
+  const filtre = `filter: blur(${flou}px) brightness(${lum}) saturate(${sat})${c.vif ? ' contrast(1.12)' : ''}; background-position:${c.fond_position ?? 'center'};`;
   const fond = c.fond_avant
     ? `<div class="fond" style="${filtre} right:50%; background-image:url('${url(c.fond_avant, base)}')"></div>
        <div class="fond" style="${filtre} left:50%; background-image:url('${url(c.fond_apres, base)}')"></div>
@@ -78,7 +81,14 @@ function construireHTML(c, base) {
       ? `<div class="harmonie" data-zone="${z.left},${z.width}" style="${cadre};opacity:${harmonie};
           -webkit-mask-image:url('${src}');mask-image:url('${src}')"></div>`
       : '';
-    return `<img class="personne" style="${cadre};filter:${filtrePersonne(p)}" src="${src}">${calque}`;
+    const pv = c.vif ? { ...p, etalonnage: { contraste: 1.12, saturation: 1.22, ...p.etalonnage } } : p;
+    // Halo : lumiere coloree derriere la tete (eclairage de studio), en mode ecran.
+    const couleurHalo = p.halo ?? c.halo;
+    const halo = couleurHalo
+      ? `<div class="halo" style="left:${W * (z.left + z.width / 2) + (p.decalage_x ?? 0) - 380}px; top:${H * (1 - z.haut) - 140}px;
+          background:radial-gradient(closest-side, ${couleurHalo}, transparent)"></div>`
+      : '';
+    return `${halo}<img class="personne" style="${cadre};filter:${filtrePersonne(pv)}" src="${src}">${calque}`;
   }).join('\n');
 
   // Accents optionnels.
@@ -117,6 +127,7 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .couture { position:absolute; top:0; bottom:0; left:calc(50% - 3px); width:6px; background:#000; }
 .degrade { position:absolute; inset:0; background:${degrade}; }
 .personne { position:absolute; object-fit:contain; object-position:bottom center; }
+.halo { position:absolute; width:760px; height:760px; mix-blend-mode:screen; opacity:.75; pointer-events:none; }
 .harmonie { position:absolute; mix-blend-mode:soft-light; pointer-events:none;
   -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   -webkit-mask-position:bottom center; mask-position:bottom center; }
