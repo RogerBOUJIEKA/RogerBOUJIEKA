@@ -204,7 +204,8 @@ function filtrePersonne(p) {
     e.teinte ? `hue-rotate(${e.teinte}deg)` : '', e.sepia ? `sepia(${e.sepia})` : '',
   ];
   if (p.lumiere_contour) f.push(`drop-shadow(0 0 1.5px ${p.lumiere_contour})`, `drop-shadow(0 0 5px ${p.lumiere_contour}aa)`);
-  f.push('drop-shadow(0 0 18px rgba(0,0,0,.65))', 'drop-shadow(8px 10px 14px rgba(0,0,0,.5))');
+  // Ombre douce et naturelle (regle 10) : presente, jamais supprimee.
+  f.push('drop-shadow(0 0 14px rgba(0,0,0,.45))', 'drop-shadow(6px 8px 11px rgba(0,0,0,.35))');
   return f.filter(Boolean).join(' ');
 }
 

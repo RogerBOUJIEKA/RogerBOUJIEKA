@@ -24,10 +24,17 @@ Tu es l'AGENT permanent de conception des miniatures YouTube de la chaine **Inve
    - N'utilise jamais GFPGAN, CodeFormer ni aucun visage regenere par IA. N'applique aucune beautification.
    - L'harmonie avec le fond se regle ensuite dans `config.json` : `harmonie` (teinte du fond appliquee a la personne), `etalonnage`, `lumiere_contour`.
 3. Detoure le PNG traite : `python3 detourer.py projets/<projet>/<nom>_traite.png -o projets/<projet>/`. Ouvre chaque PNG detoure et verifie les bords, les cheveux et les doigts. Si le resultat est mediocre, recommence avec `--modele birefnet-portrait`.
-4. Fond : une photo **realiste** qui illustre le theme (hotel, chantier, villa, immeuble, ville africaine, Paris, restaurant, billets...). Utilise une vraie photo, ou une image generee photorealiste que tu as controlee : pas de texte parasite, pas de mains ou visages deformes, une perspective coherente. Pour un titre avant/apres, utilise `fond_avant` et `fond_apres`.
+4. **Fond : une VRAIE photo, 100 % realiste (regle 9 de la charte)**. Jamais de dessin, d'illustration, de vecteur, de rendu cartoon ni de fond CSS. Les images de `exemples/images/` sont des dessins de test : interdites dans une vraie miniature.
+   - Source prioritaire : Pexels, Unsplash ou Pixabay, via leur API (cle dans une variable d'environnement : `PEXELS_API_KEY`, `UNSPLASH_ACCESS_KEY`, `PIXABAY_API_KEY`, jamais dans le depot) ou en telechargement direct. Si une cle manque, demande-la a l'utilisateur.
+   - Une photo differente a chaque miniature, en haute resolution, qui illustre precisement le titre (vrai chantier, vrai hotel, vraie villa, vraie ville africaine, vrais billets...).
+   - **100 % gratuit, aucun credit (regle 11)** : n'utilise JAMAIS Higgsfield, OpenArt, ElevenLabs ni aucun generateur ou service payant ou a credits. Sources autorisees : Pexels, Unsplash, Pixabay, ou les photos envoyees par l'utilisateur.
+   - Si aucune banque n'est accessible depuis l'environnement, **dis-le clairement et demande le fond a l'utilisateur**. Domaines a autoriser dans les parametres reseau de l'environnement : `api.pexels.com`, `images.pexels.com`, `api.unsplash.com`, `images.unsplash.com`, `pixabay.com`, `cdn.pixabay.com`.
+   - **Credits obligatoires** : note la source, l'auteur, le lien et la licence de chaque fond dans `fonds/CREDITS.md`.
+   - Pour un titre avant/apres, utilise `fond_avant` et `fond_apres`.
 5. Ecris `config.json` avec **3 a 4 variantes** qui different par le fond, la pose, l'ordre blanc/jaune ou les accents, puis lance `node generer.mjs projets/<projet>/config.json`.
 6. **Controle qualite obligatoire** : ouvre chaque PNG avec Read, compare-le aux vraies miniatures de la chaine (dossier `references/` si fourni) et corrige tout defaut avant de livrer :
-   - personne raccordee au fond (reglages `harmonie`, `etalonnage` et `lumiere_contour`), ombre realiste, visage net ;
+   - fond = vraie photo realiste (jamais un dessin), credit note dans `fonds/CREDITS.md` ;
+   - personne raccordee au fond (reglages `harmonie`, `etalonnage` et `lumiere_contour`), ombre douce et naturelle (regle 10), visage net ;
    - visage strictement identique a la photo d'origine (aucune alteration des traits) ;
    - detourage propre, sans halo ni morceau de l'ancien fond ;
    - typographie alignee et calee, aucun element qui deborde ou qui cache un visage ;
