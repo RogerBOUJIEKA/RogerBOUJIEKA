@@ -6,7 +6,7 @@
     "fond": "images/ville.jpg",
     "personnes": [
       {
-        "photo": "images/philippe_detoure.png",
+        "photo": "images/philippe_traite_detoure.png",
         "role": "philippe"
       }
     ]
@@ -16,7 +16,7 @@
       "nom": "1-solo-jaune-bas",
       "personnes": [
         {
-          "photo": "images/philippe_detoure.png",
+          "photo": "images/philippe_traite_detoure.png",
           "role": "philippe",
           "lumiere_contour": "#ffc27a",
           "etalonnage": {
@@ -65,11 +65,11 @@
       "signature": true,
       "personnes": [
         {
-          "photo": "images/philippe_detoure.png",
+          "photo": "images/philippe_traite_detoure.png",
           "role": "philippe"
         },
         {
-          "photo": "images/invite_detoure.png",
+          "photo": "images/invite_traite_detoure.png",
           "role": "invite"
         }
       ]

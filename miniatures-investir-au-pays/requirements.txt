@@ -1,0 +1,6 @@
+rembg[cpu]
+onnx
+onnxruntime
+opencv-python-headless
+numpy
+pillow

@@ -1,3 +1,8 @@
 node_modules/
 __pycache__/
 *.tmp.html
+
+# Intermediaires regeneres (lourds, 4K)
+*_traite.png
+*_traite_detoure.png
+*_comparaison.png

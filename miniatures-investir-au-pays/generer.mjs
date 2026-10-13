@@ -62,13 +62,20 @@ function construireHTML(c, base) {
     const z = zones[i];
     const ech = p.echelle ?? 1;
     const h = H * z.haut * ech;
-    const style = [
+    const cadre = [
       `left:${W * z.left + (p.decalage_x ?? 0)}px`, `width:${W * z.width}px`,
       `height:${h}px`, `bottom:${-(p.decalage_y ?? 0)}px`,
       p.miroir ? 'transform:scaleX(-1)' : '',
-      `filter:${filtrePersonne(p)}`,
     ].join(';');
-    return `<img class="personne" style="${style}" src="${url(p.photo, base)}">`;
+    const src = url(p.photo, base);
+    // Harmonie : calque de la couleur du fond, en lumiere tamisee, ecrete sur la personne
+    // (couleur mesuree dans la page, derriere la personne). 0 = desactive.
+    const harmonie = p.harmonie ?? c.harmonie ?? 0.35;
+    const calque = harmonie > 0
+      ? `<div class="harmonie" data-zone="${z.left},${z.width}" style="${cadre};opacity:${harmonie};
+          -webkit-mask-image:url('${src}');mask-image:url('${src}')"></div>`
+      : '';
+    return `<img class="personne" style="${cadre};filter:${filtrePersonne(p)}" src="${src}">${calque}`;
   }).join('\n');
 
   // Accents optionnels.
@@ -107,6 +114,9 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .couture { position:absolute; top:0; bottom:0; left:calc(50% - 3px); width:6px; background:#000; }
 .degrade { position:absolute; inset:0; background:${degrade}; }
 .personne { position:absolute; object-fit:contain; object-position:bottom center; }
+.harmonie { position:absolute; mix-blend-mode:soft-light; pointer-events:none;
+  -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:bottom center; mask-position:bottom center; }
 #texte { position:absolute; display:flex; flex-direction:column; gap:14px; z-index:5; }
 .ligne { white-space:nowrap; line-height:1; font-family:${c.police === 'bebas' ? "'BebasLocal','Bebas Neue'" : "'AntonLocal','Anton'"}; }
 .blanc, .bandeau { width:max-content; }
@@ -132,6 +142,33 @@ ${accents}
 </div>
 <script>
 // Ajuste chaque ligne a la largeur de la zone (texte enorme), puis l'ensemble a la hauteur.
+// Couleur moyenne du fond derriere chaque personne -> calque d'harmonie (sature un peu).
+window.harmoniser = async () => {
+  const fonds = [...document.querySelectorAll('.fond')];
+  const c = document.createElement('canvas'); c.width = ${W / 10}; c.height = ${H / 10};
+  const ctx = c.getContext('2d');
+  for (const f of fonds) {
+    const img = new Image();
+    img.src = getComputedStyle(f).backgroundImage.slice(5, -2);
+    await img.decode();
+    const r = f.getBoundingClientRect();
+    // reproduit background-size: cover dans la zone du fond
+    const k = Math.max(r.width / img.width, r.height / img.height);
+    const w = img.width * k, h = img.height * k;
+    ctx.drawImage(img, (r.left + (r.width - w) / 2) / 10, (r.top + (r.height - h) / 2) / 10, w / 10, h / 10);
+  }
+  for (const d of document.querySelectorAll('.harmonie')) {
+    const [g, l] = d.dataset.zone.split(',').map(Number);
+    const px = ctx.getImageData(Math.round(g * c.width), 0, Math.max(1, Math.round(l * c.width)), c.height).data;
+    let R = 0, V = 0, B = 0, n = 0;
+    for (let i = 0; i < px.length; i += 4) { R += px[i]; V += px[i + 1]; B += px[i + 2]; n++; }
+    [R, V, B] = [R / n, V / n, B / n];
+    const m = (R + V + B) / 3, sat = 1.6;
+    const t = (x) => Math.round(Math.min(255, Math.max(0, m + (x - m) * sat)));
+    d.style.background = 'rgb(' + t(R) + ',' + t(V) + ',' + t(B) + ')';
+  }
+};
+
 window.ajuster = () => {
   const t = document.getElementById('texte');
   const largeur = ${duo ? W - 80 : 680}, hauteurMax = ${duo ? 250 : 600}, max = ${duo ? 140 : 210};
@@ -200,7 +237,8 @@ async function main() {
   fs.mkdirSync(sortie, { recursive: true });
   const variantes = cfg.variantes?.length ? cfg.variantes : [{}];
 
-  const navigateur = await chromium.launch({ executablePath: chromiumPath() });
+  // Lecture des pixels du fond (harmonie) depuis des fichiers locaux.
+  const navigateur = await chromium.launch({ executablePath: chromiumPath(), args: ['--allow-file-access-from-files'] });
   const page = await navigateur.newPage({ viewport: { width: W, height: H } });
   const fichiers = [];
   try {
@@ -216,6 +254,7 @@ async function main() {
       await page.goto(pathToFileURL(tmp).href, { waitUntil: 'load', timeout: 20000 }).catch(() => {});
       await page.evaluate(() => Promise.all(['AntonLocal', 'BebasLocal', 'SignatureLocal']
         .map((f) => document.fonts.load(`100px ${f}`, 'AZ≠'))));
+      await page.evaluate(() => window.harmoniser());
       await page.evaluate(() => window.ajuster());
       const dest = path.join(sortie, `${v.nom ?? `variante-${i + 1}`}.png`);
       await page.locator('#m').screenshot({ path: dest });

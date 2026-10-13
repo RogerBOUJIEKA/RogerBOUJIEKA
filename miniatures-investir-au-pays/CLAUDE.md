@@ -10,14 +10,21 @@ Tu es l'AGENT permanent de conception des miniatures YouTube de la chaine **Inve
 
 ## Procedure a chaque demande
 1. Cree `projets/AAAA-MM-JJ-slug-du-titre/` et copies-y les photos recues.
-2. Detoure : `python3 detourer.py photos... -o projets/<projet>/`. Ouvre chaque PNG detoure et verifie les bords, les cheveux et les doigts. Si le resultat est mediocre, recommence avec `--modele birefnet-portrait`.
-3. Fond : une photo **realiste** qui illustre le theme (hotel, chantier, villa, immeuble, ville africaine, Paris, restaurant, billets...). Utilise une vraie photo, ou une image generee photorealiste que tu as controlee : pas de texte parasite, pas de mains ou visages deformes, une perspective coherente. Pour un titre avant/apres, utilise `fond_avant` et `fond_apres`.
-4. Ecris `config.json` avec **3 a 4 variantes** qui different par le fond, la pose, l'ordre blanc/jaune ou les accents, puis lance `node generer.mjs projets/<projet>/config.json`.
-5. **Controle qualite obligatoire** : ouvre chaque PNG avec Read, compare-le aux vraies miniatures de la chaine (dossier `references/` si fourni) et corrige tout defaut avant de livrer :
-   - personne raccordee au fond (reglages `etalonnage` et `lumiere_contour`), ombre realiste, visage net ;
+2. **Traitement photo pro AVANT tout detourage (regle 7 de la charte)** : `python3 traiter_photo.py photos... -o projets/<projet>/`.
+   - Le script upscale en haute definition (Real-ESRGAN, sans modele de visage), debruite legerement, corrige la balance des blancs, l'exposition et le contraste, puis applique une nettete moderee.
+   - Il produit `<nom>_traite.png` et `<nom>_comparaison.png` (original et traite cote a cote). **Ouvre la comparaison** : le visage doit etre EXACTEMENT le meme (traits, forme, yeux, nez, bouche, age, couleur de peau, coiffure, expression).
+   - Au moindre doute sur la ressemblance, relance avec `--sans-couleur`, ou garde l'original simplement upscale (`--upscale-seul`).
+   - N'utilise jamais GFPGAN, CodeFormer ni aucun visage regenere par IA. N'applique aucune beautification.
+   - L'harmonie avec le fond se regle ensuite dans `config.json` : `harmonie` (teinte du fond appliquee a la personne), `etalonnage`, `lumiere_contour`.
+3. Detoure le PNG traite : `python3 detourer.py projets/<projet>/<nom>_traite.png -o projets/<projet>/`. Ouvre chaque PNG detoure et verifie les bords, les cheveux et les doigts. Si le resultat est mediocre, recommence avec `--modele birefnet-portrait`.
+4. Fond : une photo **realiste** qui illustre le theme (hotel, chantier, villa, immeuble, ville africaine, Paris, restaurant, billets...). Utilise une vraie photo, ou une image generee photorealiste que tu as controlee : pas de texte parasite, pas de mains ou visages deformes, une perspective coherente. Pour un titre avant/apres, utilise `fond_avant` et `fond_apres`.
+5. Ecris `config.json` avec **3 a 4 variantes** qui different par le fond, la pose, l'ordre blanc/jaune ou les accents, puis lance `node generer.mjs projets/<projet>/config.json`.
+6. **Controle qualite obligatoire** : ouvre chaque PNG avec Read, compare-le aux vraies miniatures de la chaine (dossier `references/` si fourni) et corrige tout defaut avant de livrer :
+   - personne raccordee au fond (reglages `harmonie`, `etalonnage` et `lumiere_contour`), ombre realiste, visage net ;
+   - visage strictement identique a la photo d'origine (aucune alteration des traits) ;
    - detourage propre, sans halo ni morceau de l'ancien fond ;
    - typographie alignee et calee, aucun element qui deborde ou qui cache un visage ;
    - un rendu de graphiste Photoshop, jamais l'aspect d'un montage IA.
-6. Livre les PNG (et `_planche.png`) a l'utilisateur, puis commit et push sur la branche de travail.
+7. Livre les PNG (et `_planche.png`) a l'utilisateur, puis commit et push sur la branche de travail.
 
 Voir [README.md](README.md) pour tous les champs du JSON.
