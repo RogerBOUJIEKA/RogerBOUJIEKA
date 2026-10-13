@@ -78,17 +78,17 @@ function construireHTML(c, base) {
     // (couleur mesuree dans la page, derriere la personne). 0 = desactive.
     const harmonie = p.harmonie ?? c.harmonie ?? 0.35;
     const calque = harmonie > 0
-      ? `<div class="harmonie" data-zone="${z.left},${z.width}" style="${cadre};opacity:${harmonie};
+      ? `<div class="harmonie" data-p="${i}" data-zone="${z.left},${z.width}" style="${cadre};opacity:${harmonie};
           -webkit-mask-image:url('${src}');mask-image:url('${src}')"></div>`
       : '';
     const pv = c.vif ? { ...p, etalonnage: { contraste: 1.12, saturation: 1.22, ...p.etalonnage } } : p;
     // Halo : lumiere coloree derriere la tete (eclairage de studio), en mode ecran.
     const couleurHalo = p.halo ?? c.halo;
     const halo = couleurHalo
-      ? `<div class="halo" style="left:${W * (z.left + z.width / 2) + (p.decalage_x ?? 0) - 380}px; top:${H * (1 - z.haut) - 140}px;
+      ? `<div class="halo" data-p="${i}" style="left:${W * (z.left + z.width / 2) + (p.decalage_x ?? 0) - 380}px; top:${H * (1 - z.haut) - 140}px;
           background:radial-gradient(closest-side, ${couleurHalo}, transparent)"></div>`
       : '';
-    return `${halo}<img class="personne" style="${cadre};filter:${filtrePersonne(pv)}" src="${src}">${calque}`;
+    return `${halo}<img class="personne" data-p="${i}" style="${cadre};filter:${filtrePersonne(pv)}" src="${src}">${calque}`;
   }).join('\n');
 
   // Accents optionnels.
@@ -181,6 +181,33 @@ window.harmoniser = async () => {
     const t = (x) => Math.round(Math.min(255, Math.max(0, m + (x - m) * sat)));
     d.style.background = 'rgb(' + t(R) + ',' + t(V) + ',' + t(B) + ')';
   }
+};
+
+// Marge d'air au-dessus de la tete (regle 12) : le haut du crane (haut du detourage, recadre au
+// plus pres du sujet) doit etre a au moins ~4-8 % du bord haut. Sinon on descend la personne,
+// sans changer sa taille.
+window.placer = async () => {
+  // Trop haut (< 30 px) : on descend. Seul a l'image et trop bas (> 58 px, 8 %) : on remonte.
+  // En duo, les tetes restent sous le texte place en haut.
+  const marge = ${c.marge_haut ?? 45}, minimum = 30, maximum = ${duo ? 'Infinity' : 58};
+  const hautTete = (img) => {
+    const r = img.getBoundingClientRect();
+    const hRendu = Math.min(r.height, r.width * img.naturalHeight / img.naturalWidth);
+    return r.bottom - hRendu - document.getElementById('m').getBoundingClientRect().top;
+  };
+  const marges = [];
+  for (const img of document.querySelectorAll('img.personne')) {
+    await img.decode();
+    const haut = hautTete(img);
+    if (haut >= minimum && haut <= maximum) { marges.push(Math.round(haut)); continue; }
+    const d = marge - haut;
+    for (const el of document.querySelectorAll('[data-p="' + img.dataset.p + '"]')) {
+      if (el.classList.contains('halo')) el.style.top = (parseFloat(el.style.top) + d) + 'px';
+      else el.style.bottom = (parseFloat(el.style.bottom) - d) + 'px';
+    }
+    marges.push(Math.round(hautTete(img)));
+  }
+  return marges;
 };
 
 window.ajuster = () => {
@@ -279,12 +306,13 @@ async function main() {
       await page.evaluate(() => Promise.all(['AntonLocal', 'BebasLocal', 'SignatureLocal']
         .map((f) => document.fonts.load(`100px ${f}`, 'AZ≠'))));
       await page.evaluate(() => window.harmoniser());
+      const marges = await page.evaluate(() => window.placer());
       await page.evaluate(() => window.ajuster());
       const dest = path.join(sortie, `${v.nom ?? `variante-${i + 1}`}.png`);
       await page.locator('#m').screenshot({ path: dest });
       if (!process.env.GARDER_HTML) fs.unlinkSync(tmp);
       fichiers.push(dest);
-      console.log(dest);
+      console.log(`${dest}  (air au-dessus de la tete : ${marges.join(', ')} px)`);
     }
     if (fichiers.length > 1) {
       const dest = path.join(sortie, '_planche.png');

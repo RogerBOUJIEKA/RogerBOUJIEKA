@@ -66,6 +66,7 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `flou`, `luminosite`, `saturation` | réglages fins du fond (par défaut : 3, 0.78 et 1.25) |
 | `vif` | `true` : couleurs plus saturées et plus contrastées (fond et personnes) |
 | `halo` (global ou par personne) | couleur d'une lumière douce derrière la tête, par exemple `"rgba(255,170,40,.9)"` |
+| `marge_haut` | air minimum au-dessus de la tête, en px (défaut 45, soit 6 % de 720) ; appliqué automatiquement (règle 12) |
 | `fond_position` | cadrage du fond (CSS `background-position`), par exemple `"50% 20%"` pour montrer le haut d'un immeuble |
 
 Placement automatique, conforme à la charte :

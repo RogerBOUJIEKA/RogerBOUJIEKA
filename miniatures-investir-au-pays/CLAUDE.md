@@ -36,6 +36,7 @@ Tu es l'AGENT permanent de conception des miniatures YouTube de la chaine **Inve
    - fond = vraie photo realiste (jamais un dessin), credit note dans `fonds/CREDITS.md` ;
    - personne raccordee au fond (reglages `harmonie`, `etalonnage` et `lumiere_contour`), ombre douce et naturelle (regle 10), visage net ;
    - visage strictement identique a la photo d'origine (aucune alteration des traits) ;
+   - **marge d'air au-dessus de la tete (regle 12)** : 30 a 55 px sur 720, jamais de crane qui touche ou depasse le bord haut. Le generateur la garantit automatiquement (`marge_haut`, 45 px par defaut) ; verifie-la a l'oeil, menton et epaules non coupes ;
    - detourage propre, sans halo ni morceau de l'ancien fond ;
    - typographie alignee et calee, aucun element qui deborde ou qui cache un visage ;
    - un rendu de graphiste Photoshop, jamais l'aspect d'un montage IA.
