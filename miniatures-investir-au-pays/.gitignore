@@ -6,3 +6,6 @@ __pycache__/
 *_traite.png
 *_traite_detoure.png
 *_comparaison.png
+# Les detourages de la bibliotheque de Philippe Simo sont versionnes
+!personnes/**/*.png
+personnes/**/controles/

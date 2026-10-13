@@ -52,7 +52,7 @@ def _srgb(lin):
     return (np.where(x <= 0.0031308, x * 12.92, 1.055 * x ** (1 / 2.4) - 0.055) * 255 + 0.5).astype(np.uint8)
 
 
-def balance_des_blancs(rgb: np.ndarray, force: float = 0.85) -> tuple[np.ndarray, str]:
+def balance_des_blancs(rgb: np.ndarray, force: float = 0.85, forcee: bool = False) -> tuple[np.ndarray, str]:
     """Neutralise la dominante par des gains R/G/B (comme un pipette "gris" Photoshop).
 
     Les gains sont mesures sur les pixels les plus neutres de l'image (fond gris, chemise
@@ -60,14 +60,21 @@ def balance_des_blancs(rgb: np.ndarray, force: float = 0.85) -> tuple[np.ndarray
     bleu. Les gains multiplicatifs en lumiere lineaire inversent une vraie dominante sans
     denaturer les tons fonces (peau).
     """
+    # Un fond blanc pur (studio) prouve que la photo est deja equilibree : on n'y touche pas.
+    blanc_pur = (rgb.min(axis=2) >= 250).mean()
+    if blanc_pur > 0.03 and not forcee:
+        return rgb, f"balance des blancs : fond blanc pur ({blanc_pur:.0%}), photo deja neutre, inchangee"
     lab = cv2.cvtColor(rgb, cv2.COLOR_RGB2LAB).astype(np.float32)
     L, chroma = lab[..., 0], np.hypot(lab[..., 1] - 128, lab[..., 2] - 128)
-    utiles = (L > 40) & (L < 245)
+    utiles = (L > 40) & (rgb.max(axis=2) < 250)  # pas de pixels ecretes
     if utiles.mean() < 0.05:
         return rgb, "balance des blancs : image trop sombre ou brulee, inchangee"
     seuil = np.percentile(chroma[utiles], 8)
     neutres = utiles & (chroma <= seuil)
-    if seuil > 30 or neutres.sum() < 500:
+    # Seuls des gris VRAIMENT neutres servent de reference (une chemise bleu clair, un mur
+    # beige ne sont pas des gris) : au-dela de 15, on ne corrige pas.
+    # --forcer-balance (dominante vue a l'oeil) : tolere des gris franchement teintes.
+    if seuil > (35 if forcee else 15) or neutres.sum() < 500:
         return rgb, f"balance des blancs : pas de zone neutre fiable (chroma min {seuil:.0f}), inchangee"
     lin = _lineaire(rgb)
     moy = lin[neutres].mean(axis=0)
@@ -231,7 +238,7 @@ def traiter(src: Path, dest_dir: Path, args, sess) -> None:
     k = img.shape[0] / h
     boite_img = tuple(round(v * k) for v in boite)
     if not args.upscale_seul and not args.sans_couleur:
-        img, msg1 = balance_des_blancs(img)
+        img, msg1 = balance_des_blancs(img, forcee=args.forcer_balance)
         img, msg2 = exposition_contraste(img, boite_img)
         print(f"  {msg1}\n  {msg2}")
     if not args.upscale_seul:
@@ -258,6 +265,8 @@ def main() -> None:
     p.add_argument("--debruitage", type=float, help="intensite 0-10 (defaut : automatique selon le bruit mesure)")
     p.add_argument("--lissage", type=float, default=0.5,
                    help="lissage Real-ESRGAN 0-1 (0 = garde le grain naturel, 1 = lisse ; defaut 0.5)")
+    p.add_argument("--forcer-balance", action="store_true",
+                   help="dominante forte vue a l'oeil : corrige meme si les gris de reference sont tres teintes")
     p.add_argument("--sans-couleur", action="store_true", help="pas de correction de couleur/exposition")
     p.add_argument("--upscale-seul", action="store_true", help="uniquement la super-resolution, rien d'autre")
     args = p.parse_args()

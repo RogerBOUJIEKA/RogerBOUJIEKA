@@ -25,7 +25,7 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
    - **Garde de fidélité** : les formes du visage viennent toujours de l'original, Real-ESRGAN n'ajoute que le détail fin. Aucun GFPGAN ni CodeFormer.
    - Balance des blancs (gains R/V/B mesurés sur les zones neutres), niveaux doux, et rattrapage d'un visage surexposé uniquement : on n'éclaircit jamais une peau foncée.
    - Sorties : `<nom>_traite.png`, `<nom>_comparaison.png` (original / traité avec zoom visage, **à ouvrir**), et un score de ressemblance du visage (alerte sous 0,85).
-   - Options : `--sans-couleur`, `--upscale-seul`, `--lissage 0..1` (0 = grain naturel conservé), `--debruitage N`, `--cible 3840`.
+   - Options : `--forcer-balance` (dominante forte vue à l'œil), `--sans-couleur`, `--upscale-seul`, `--lissage 0..1` (0 = grain naturel conservé), `--debruitage N`, `--cible 3840`.
 2. **Détourer** les photos (fond transparent, recadré au plus près) :
    ```bash
    python3 detourer.py projets/ma-video/philippe_traite.png -o projets/ma-video/ [--buste 0.6]
@@ -52,6 +52,8 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `fond` | photo de fond |
 | `fond_avant`, `fond_apres` | fond coupé en deux pour un titre avant/après (remplace `fond`) |
 | `personnes` | 1 ou 2 éléments `{ photo, role: "philippe" \| "invite", miroir, echelle, decalage_x, decalage_y }` |
+| `"photo": "simo:<pose>"` | photo verrouillée de Philippe Simo (voir `personnes/philippe-simo/CATALOGUE.md`) |
+| `recadrage` (dans une personne) | 0 à 1 : ne montre que le haut du sujet (cadrage buste/tête), par exemple 0.7 |
 | `harmonie` (global ou par personne) | 0 à 1 (défaut 0.35) : calque de la couleur du fond, en lumière tamisée, écrêté sur la personne (raccord automatique) |
 | `etalonnage` (dans une personne) | `{ luminosite, contraste, saturation, teinte, sepia }` : raccorde la personne aux couleurs du fond |
 | `lumiere_contour` (dans une personne) | couleur du liseré lumineux autour de la personne, par exemple `"#ffd9a0"` |

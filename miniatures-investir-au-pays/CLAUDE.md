@@ -5,12 +5,19 @@ Tu es l'AGENT permanent de conception des miniatures YouTube de la chaine **Inve
 **Lis et applique [CHARTE.md](CHARTE.md) a chaque demande, sans jamais la modifier.** La charte graphique est fixe : seul le fond change d'une miniature a l'autre.
 
 ## Repartition des roles
-- **L'utilisateur fournit** : le titre, les photos de Philippe et/ou de l'invite, le nom de l'invite (et parfois le sujet).
+- **L'utilisateur fournit** : le titre, les photos des invites et le nom de l'invite (et parfois le sujet). Les photos de Philippe Simo sont deja dans la bibliotheque.
 - **Tu geres tout le reste** : le choix et la creation du fond (une photo realiste qui illustre le titre et le sujet), le detourage, le placement, le flou, le degrade noir, les accents (fleche, etiquette AVANT) et la signature du nom de l'invite.
 
+## Philippe Simo : photos verrouillees (regle 8 de la charte)
+- Les photos de Philippe Simo sont deja enregistrees, traitees et detourees dans `personnes/philippe-simo/`. Lis [personnes/philippe-simo/CATALOGUE.md](personnes/philippe-simo/CATALOGUE.md) a chaque demande.
+- L'utilisateur n'envoie plus que les photos des **invites** (avec leur nom). Ne lui redemande jamais de photo de Philippe.
+- « Monsieur Simo », « Philippe », « Simo » : c'est toi qui choisis la photo selon les regles du catalogue (emotion du titre, orientation, tenue, contraste avec l'invite et le fond). Appelle-la dans le JSON avec `"photo": "simo:<pose>"`.
+- Trois cas possibles : Philippe seul, l'invite seul, ou les deux (invite a gauche, Philippe a droite).
+- Dans les 3 a 4 variantes d'une demande, fais varier les photos de Philippe quand c'est pertinent.
+
 ## Procedure a chaque demande
-1. Cree `projets/AAAA-MM-JJ-slug-du-titre/` et copies-y les photos recues.
-2. **Traitement photo pro AVANT tout detourage (regle 7 de la charte)** : `python3 traiter_photo.py photos... -o projets/<projet>/`.
+1. Cree `projets/AAAA-MM-JJ-slug-du-titre/` et copies-y les photos recues (celles des invites ; Philippe est deja dans la bibliotheque).
+2. **Traitement photo pro AVANT tout detourage (regle 7 de la charte)** : `python3 traiter_photo.py photos... -o projets/<projet>/`. Si tu vois une dominante a l'oeil et que le script ne l'a pas corrigee, relance avec `--forcer-balance`.
    - Le script upscale en haute definition (Real-ESRGAN, sans modele de visage), debruite legerement, corrige la balance des blancs, l'exposition et le contraste, puis applique une nettete moderee.
    - Il produit `<nom>_traite.png` et `<nom>_comparaison.png` (original et traite cote a cote). **Ouvre la comparaison** : le visage doit etre EXACTEMENT le meme (traits, forme, yeux, nez, bouche, age, couleur de peau, coiffure, expression).
    - Au moindre doute sur la ressemblance, relance avec `--sans-couleur`, ou garde l'original simplement upscale (`--upscale-seul`).

@@ -61,13 +61,15 @@ function construireHTML(c, base) {
   const personnes = pers.map((p, i) => {
     const z = zones[i];
     const ech = p.echelle ?? 1;
-    const h = H * z.haut * ech;
+    // recadrage r (0-1) : zoom 1/r ancre en bas au centre ; seul le haut du sujet (fraction r) reste visible.
+    const r = p.recadrage ?? 1;
+    const h = H * z.haut * ech / r;
     const cadre = [
-      `left:${W * z.left + (p.decalage_x ?? 0)}px`, `width:${W * z.width}px`,
-      `height:${h}px`, `bottom:${-(p.decalage_y ?? 0)}px`,
+      `left:${W * (z.left + z.width / 2) - W * z.width / r / 2 + (p.decalage_x ?? 0)}px`, `width:${W * z.width / r}px`,
+      `height:${h}px`, `bottom:${-(p.decalage_y ?? 0) - h * (1 - r)}px`,
       p.miroir ? 'transform:scaleX(-1)' : '',
     ].join(';');
-    const src = url(p.photo, base);
+    const src = url(photoPersonne(p.photo), base);
     // Harmonie : calque de la couleur du fond, en lumiere tamisee, ecrete sur la personne
     // (couleur mesuree dans la page, derriere la personne). 0 = desactive.
     const harmonie = p.harmonie ?? c.harmonie ?? 0.35;
@@ -182,6 +184,15 @@ window.ajuster = () => {
   if (h > hauteurMax) for (const s of spans) s.parentElement.style.fontSize = parseFloat(s.parentElement.style.fontSize) * hauteurMax / h + 'px';
 };
 </script></body></html>`;
+}
+
+// "simo:<pose>" => photo verrouillee de Philippe Simo (personnes/philippe-simo/simo-<pose>.png).
+function photoPersonne(photo) {
+  const m = /^simo:(.+)$/.exec(photo);
+  if (!m) return photo;
+  const f = path.join(ICI, 'personnes', 'philippe-simo', `simo-${m[1].replace(/^simo-/, '')}.png`);
+  if (!fs.existsSync(f)) throw new Error(`photo de Philippe Simo inconnue : ${photo} (voir personnes/philippe-simo/CATALOGUE.md)`);
+  return f;
 }
 
 // Raccord personne / fond : etalonnage { luminosite, contraste, saturation, teinte (deg), sepia },
