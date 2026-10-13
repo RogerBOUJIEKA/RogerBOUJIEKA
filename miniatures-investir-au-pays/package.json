@@ -1,0 +1,13 @@
+{
+  "name": "miniatures-investir-au-pays",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Generateur de miniatures YouTube pour la chaine Investir Au Pays (charte fixe, rendu PNG 1280x720)",
+  "type": "module",
+  "scripts": {
+    "test": "python3 exemples/creer_placeholders.py && python3 detourer.py exemples/images/philippe.jpg exemples/images/invite.jpg -o exemples/images && node generer.mjs exemples/test.json"
+  },
+  "dependencies": {
+    "playwright": "1.56.1"
+  }
+}
