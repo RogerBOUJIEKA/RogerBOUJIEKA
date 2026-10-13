@@ -1,0 +1,90 @@
+{
+  "sortie": "sorties",
+  "base": {},
+  "variantes": [
+    {
+      "nom": "1-ton-argent-fuit",
+      "ligne1": "Ton argent",
+      "ligne2": "fuit !",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-4588670-billets-qui-brulent.jpg",
+      "fond_position": "50% 40%",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ]
+    },
+    {
+      "nom": "2-arrete-passoire",
+      "ligne1": "Arrête d'être",
+      "ligne2": "une passoire",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-6719878-tirelire-brisee.jpg",
+      "personnes": [
+        {
+          "photo": "invite-polo-raye_traite_detoure.png",
+          "role": "invite",
+          "recadrage": 0.6
+        },
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.75
+        }
+      ]
+    },
+    {
+      "nom": "3-toujours-fauche",
+      "ligne1": "Pourquoi tu es",
+      "ligne2": "toujours fauché",
+      "jaune": 1,
+      "fond": "../../fonds/pexels-8515596-portefeuille-vide.jpg",
+      "personnes": [
+        {
+          "photo": "invite-pull-marron_traite_detoure.png",
+          "role": "invite",
+          "recadrage": 0.72,
+          "decalage_x": 80
+        }
+      ]
+    },
+    {
+      "nom": "4-salaire-deja-vide",
+      "ligne1": "Salaire reçu...",
+      "ligne2": "déjà vide ?",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-12001949-portefeuille-vide-bleu.jpg",
+      "personnes": [
+        {
+          "photo": "invite-pull-marron_traite_detoure.png",
+          "role": "invite",
+          "recadrage": 0.6
+        },
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ]
+    },
+    {
+      "nom": "5-erreur-qui-ruine",
+      "ligne1": "L'erreur qui",
+      "ligne2": "te ruine",
+      "jaune": 2,
+      "fond": "../../fonds/pexels-7230878-liasse-en-feu.jpg",
+      "fond_position": "50% 30%",
+      "personnes": [
+        {
+          "photo": "invite-polo-raye_traite_detoure.png",
+          "role": "invite",
+          "recadrage": 0.72,
+          "decalage_x": 70
+        }
+      ]
+    }
+  ]
+}
