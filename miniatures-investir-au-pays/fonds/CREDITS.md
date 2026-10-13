@@ -21,3 +21,4 @@ Chaque fond utilise dans une miniature est note ici.
 | `pexels-35329736-lagos-tour-front-de-mer.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/modern-skyscraper-by-lagos-waterfront-35329736/ | Licence Pexels (gratuite) | 2026-10-13 |
 | `pexels-29773805-plage-rochers-palmiers.jpg` | Pexels | a confirmer (plage tropicale, pas Kribi) | https://www.pexels.com/photo/tropical-beach-with-palm-trees-and-clear-ocean-29773805/ | Licence Pexels (gratuite) | 2026-10-13 |
 | `pexels-35174931-quartier-ghana-drone.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/aerial-view-of-sowutoum-neighborhood-in-ghana-35174931/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `pexels-35482397-skyline-grues-crepuscule.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/city-skyline-at-dusk-with-construction-cranes-35482397/ | Licence Pexels (gratuite) | 2026-10-13 |

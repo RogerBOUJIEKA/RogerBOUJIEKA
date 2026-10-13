@@ -37,7 +37,7 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
    ```bash
    node generer.mjs projets/ma-video/config.json
    ```
-   On obtient un PNG 1280x720 par variante, plus `_planche.png`, qui montre toutes les variantes côte à côte.
+   On obtient un PNG 1280x720 par variante, `_planche.png` (toutes les variantes en grand) et `_mobile.png` (chaque variante à 320x180, comme sur téléphone).
 
 ## Champs du JSON
 
@@ -61,9 +61,13 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `invite` | nom de l'invité, utilisé par la signature |
 | `signature` | `true`, ou `{ texte, x, y }` : signature manuscrite blanche en bas |
 | `etiquette` | `"AVANT"`, ou `{ texte, x, y }` : petite étiquette rouge |
-| `fleche` | `{ de: [x,y], vers: [x,y], courbure: 0.3, epaisseur: 16 }` : flèche rouge courbe |
+| `fleche` | `{ de: [x,y], vers: [x,y], courbure: 0.3, epaisseur: 10 }` : flèche rouge courbe fine (une seule, si elle sert le message) |
 | `police` | `"anton"` (par défaut) ou `"bebas"` |
 | `flou`, `luminosite`, `saturation` | réglages fins du fond (par défaut : 3, 0.78 et 1.25) |
+| `ambiance` | `reussite`, `argent`, `alerte`, `nuit` ou `neutre` : étalonnage du fond, couleur de la lumière, rayons et flare, vignettage (direction artistique premium) |
+| `source_lumiere` | `[x, y]` de la source de lumière (rayons, flare, côté du rim light), par défaut `[1080, -40]` |
+| `lumiere` | couleur imposée de la lumière (rim light, halo) ; sinon mesurée dans le fond |
+| `premium` | `false` pour désactiver le rim light, l'éclairage du visage et le halo automatique |
 | `vif` | `true` : couleurs plus saturées et plus contrastées (fond et personnes) |
 | `halo` (global ou par personne) | couleur d'une lumière douce derrière la tête, par exemple `"rgba(255,170,40,.9)"` |
 | `marge_haut` | air minimum au-dessus de la tête, en px (défaut 45, soit 6 % de 720) ; appliqué automatiquement (règle 12) |

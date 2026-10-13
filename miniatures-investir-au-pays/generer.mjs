@@ -35,6 +35,17 @@ function chromiumPath() {
   return undefined; // Playwright prend son navigateur par defaut
 }
 
+// --- direction artistique premium -------------------------------------------
+// Ambiance selon l'emotion du titre : etalonnage du fond, couleur de la lumiere (rim light,
+// halo), rayons/flare discrets, vignettage. Toujours subtil et realiste, jamais kitsch.
+const AMBIANCES = {
+  reussite: { teinte: 'rgba(255,170,60,.42)', lumiere: '#ffd18a', rayons: true, vignette: 0.45 },
+  argent:   { teinte: 'rgba(255,196,40,.40)', lumiere: '#ffd36e', rayons: false, vignette: 0.5 },
+  alerte:   { teinte: 'rgba(30,110,255,.38)', lumiere: '#9fd2ff', rayons: false, vignette: 0.65, contraste: 1.18 },
+  nuit:     { teinte: 'rgba(40,80,255,.35)', lumiere: '#86b8ff', rayons: false, vignette: 0.55 },
+  neutre:   { teinte: null, lumiere: null, rayons: false, vignette: 0.4 },
+};
+
 // --- construction de la page ------------------------------------------------
 
 function construireHTML(c, base) {
@@ -48,13 +59,28 @@ function construireHTML(c, base) {
   // Fond : une photo, ou deux moities (avant / apres).
   // Fond reconnaissable : legerement floute et assombri ; le degrade noir assure la lisibilite du texte.
   // vif : couleurs plus saturees et plus de contraste (fond et personnes), toujours dans la charte.
+  const amb = AMBIANCES[c.ambiance ?? 'neutre'] ?? AMBIANCES.neutre;
   const flou = c.flou ?? 3, lum = c.luminosite ?? (c.vif ? 0.88 : 0.78), sat = c.saturation ?? (c.vif ? 1.55 : 1.25);
-  const filtre = `filter: blur(${flou}px) brightness(${lum}) saturate(${sat})${c.vif ? ' contrast(1.12)' : ''}; background-position:${c.fond_position ?? 'center'};`;
+  const contraste = amb.contraste ?? (c.vif ? 1.12 : 1);
+  const filtre = `filter: blur(${flou}px) brightness(${lum}) saturate(${sat}) contrast(${contraste}); background-position:${c.fond_position ?? 'center'};`;
+  // Rayons de soleil + flare discrets depuis une source (coin haut cote personne par defaut).
+  const [sx, sy] = c.source_lumiere ?? [1080, -40];
+  const effetsFond = [
+    amb.teinte ? `<div class="etal" style="background:${amb.teinte}"></div>` : '',
+    (c.rayons ?? amb.rayons) ? `<div class="rayons" style="background:repeating-conic-gradient(from 0deg at ${sx}px ${sy}px,
+        rgba(255,226,170,0) 0deg, rgba(255,226,170,.34) 1.6deg, rgba(255,226,170,0) 4.5deg);
+        -webkit-mask-image:radial-gradient(circle at ${sx}px ${sy}px, #000 0%, transparent 75%);
+        mask-image:radial-gradient(circle at ${sx}px ${sy}px, #000 0%, transparent 75%)"></div>
+      <div class="flare" style="background:radial-gradient(circle at ${sx}px ${sy}px, rgba(255,236,190,.55), rgba(255,200,120,.12) 18%, transparent 40%),
+        radial-gradient(circle at ${sx - (sx - 640) * 0.55}px ${sy + (360 - sy) * 0.55}px, rgba(255,230,180,.10) 0, rgba(255,230,180,.10) 28px, transparent 30px),
+        radial-gradient(circle at ${sx - (sx - 640) * 0.8}px ${sy + (360 - sy) * 0.8}px, rgba(180,220,255,.08) 0, rgba(180,220,255,.08) 16px, transparent 18px)"></div>` : '',
+  ].join('');
   const fond = c.fond_avant
     ? `<div class="fond" style="${filtre} right:50%; background-image:url('${url(c.fond_avant, base)}')"></div>
        <div class="fond" style="${filtre} left:50%; background-image:url('${url(c.fond_apres, base)}')"></div>
        <div class="couture"></div>`
     : `<div class="fond" style="${filtre} background-image:url('${url(c.fond, base)}')"></div>`;
+  const lumiere = c.lumiere ?? amb.lumiere; // null => couleur mesuree dans le fond (window.harmoniser)
 
   // Personnes : solo => a droite ~45 % ; duo => invite a gauche, Philippe a droite.
   let pers = c.personnes;
@@ -82,13 +108,25 @@ function construireHTML(c, base) {
           -webkit-mask-image:url('${src}');mask-image:url('${src}')"></div>`
       : '';
     const pv = c.vif ? { ...p, etalonnage: { contraste: 1.12, saturation: 1.22, ...p.etalonnage } } : p;
+    // Rim light : liseré de lumiere sur les bords (visage, epaules, crane), calcule a partir de la
+    // forme exacte de la personne : image - image decalee. Cote fort = cote de la source de lumiere.
+    const premium = c.premium !== false;
+    const rim = (dx, dy, op) => `<div class="rim" data-p="${i}" style="${cadre};opacity:${op};
+        -webkit-mask-image:url('${src}'),url('${src}'); mask-image:url('${src}'),url('${src}');
+        -webkit-mask-position:bottom center, calc(50% + ${dx}px) calc(100% + ${dy}px);
+        mask-position:bottom center, calc(50% + ${dx}px) calc(100% + ${dy}px);
+        -webkit-mask-composite:source-out; mask-composite:subtract"></div>`;
+    // image - image decalee vers la droite => liseré sur le bord gauche. Source a gauche => sens 1.
+    const sens = (sx < W * (z.left + z.width / 2)) ? 1 : -1;
+    const lumieres = premium ? rim(3 * sens, 2.5, 0.5) + rim(-2 * sens, 2, 0.18) +
+      `<div class="visage" data-p="${i}" style="${cadre};-webkit-mask-image:url('${src}');mask-image:url('${src}')"></div>` : '';
     // Halo : lumiere coloree derriere la tete (eclairage de studio), en mode ecran.
-    const couleurHalo = p.halo ?? c.halo;
+    const couleurHalo = p.halo ?? c.halo ?? (premium ? 'auto' : null);
     const halo = couleurHalo
       ? `<div class="halo" data-p="${i}" style="left:${W * (z.left + z.width / 2) + (p.decalage_x ?? 0) - 380}px; top:${H * (1 - z.haut) - 140}px;
-          background:radial-gradient(closest-side, ${couleurHalo}, transparent)"></div>`
+          background:radial-gradient(closest-side, ${couleurHalo === 'auto' ? 'var(--halo)' : couleurHalo}, transparent)"></div>`
       : '';
-    return `${halo}<img class="personne" data-p="${i}" style="${cadre};filter:${filtrePersonne(pv)}" src="${src}">${calque}`;
+    return `${halo}<img class="personne" data-p="${i}" style="${cadre};filter:${filtrePersonne(pv)}" src="${src}">${calque}${lumieres}`;
   }).join('\n');
 
   // Accents optionnels.
@@ -122,7 +160,17 @@ function construireHTML(c, base) {
 @font-face { font-family:'SignatureLocal'; src:url('${url('MrsSaintDelafield.ttf', fontes)}'); }
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
-#m { position:relative; width:${W}px; height:${H}px; overflow:hidden; }
+#m { position:relative; width:${W}px; height:${H}px; overflow:hidden; --lumiere:${lumiere ?? '#ffe2b0'}; --halo:rgba(255,220,160,.55); }
+.etal, .rayons, .flare, .vignette { position:absolute; inset:0; pointer-events:none; }
+.etal { mix-blend-mode:soft-light; }
+.rayons { mix-blend-mode:screen; filter:blur(5px); opacity:.8; }
+.flare { mix-blend-mode:screen; }
+.vignette { z-index:4; }
+.rim { position:absolute; pointer-events:none; background:var(--lumiere); mix-blend-mode:screen; filter:blur(1.6px);
+  -webkit-mask-size:contain, contain; mask-size:contain, contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+.visage { position:absolute; pointer-events:none; mix-blend-mode:soft-light;
+  -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:bottom center; mask-position:bottom center; }
 .fond { position:absolute; inset:0; background-size:cover; background-position:center; transform:scale(1.06); }
 .couture { position:absolute; top:0; bottom:0; left:calc(50% - 3px); width:6px; background:#000; }
 .degrade { position:absolute; inset:0; background:${degrade}; }
@@ -135,22 +183,25 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .ligne { white-space:nowrap; line-height:1; font-family:${c.police === 'bebas' ? "'BebasLocal','Bebas Neue'" : "'AntonLocal','Anton'"}; }
 .blanc, .bandeau { width:max-content; }
 .blanc { color:#fff; display:inline-block;
-  text-shadow: 5px 6px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 0 22px rgba(0,0,0,.9), 8px 12px 18px rgba(0,0,0,.85); }
+  -webkit-text-stroke:.035em #000; paint-order:stroke fill;
+  text-shadow: 4px 6px 0 rgba(0,0,0,.95), 0 10px 28px rgba(0,0,0,.8), 0 0 46px rgba(0,0,0,.55), 0 0 2px rgba(255,255,255,.25); }
 .blanc .sym { color:${JAUNE}; }
 .diff { position:relative; display:inline-block; }
 .diff::after { content:''; position:absolute; left:50%; top:22%; width:.09em; height:62%; background:currentColor;
   transform:translateX(-50%) rotate(28deg); box-shadow:3px 4px 0 #000; }
 .bandeau { display:inline-block; background:${JAUNE}; color:#000; padding:.06em .14em .02em;
-  box-shadow: 6px 8px 0 rgba(0,0,0,.55); }
+  box-shadow: 5px 7px 0 rgba(0,0,0,.5), 0 14px 34px rgba(0,0,0,.6), 0 0 26px rgba(255,224,27,.22); }
 .etiquette { position:absolute; z-index:6; background:${ROUGE}; color:#fff; font-family:'AntonLocal','Anton';
   font-size:40px; line-height:1; padding:8px 16px 6px; box-shadow:4px 5px 0 rgba(0,0,0,.6); }
 .signature { position:absolute; z-index:6; color:#fff; font-family:'SignatureLocal','Mrs Saint Delafield';
   font-size:${c.taille_signature ?? 70}px; line-height:1; text-shadow:0 0 10px rgba(0,0,0,.9), 2px 3px 4px #000; }
-svg.fleche { position:absolute; inset:0; z-index:7; filter:drop-shadow(3px 4px 4px rgba(0,0,0,.7)); }
+svg.fleche { position:absolute; inset:0; z-index:7; filter:drop-shadow(2px 3px 3px rgba(0,0,0,.55)); }
 </style></head><body><div id="m">
 ${fond}
+${effetsFond}
 <div class="degrade"></div>
 ${personnes}
+<div class="vignette" style="background:radial-gradient(ellipse 75% 85% at 62% 45%, transparent 55%, rgba(0,0,0,${amb.vignette}) 100%)"></div>
 <div id="texte" style="${textePos}">${lignes.join('')}</div>
 ${accents}
 </div>
@@ -170,6 +221,22 @@ window.harmoniser = async () => {
     const k = Math.max(r.width / img.width, r.height / img.height);
     const w = img.width * k, h = img.height * k;
     ctx.drawImage(img, (r.left + (r.width - w) / 2) / 10, (r.top + (r.height - h) / 2) / 10, w / 10, h / 10);
+  }
+  // Couleur de la source de lumiere : moyenne des 8 % de pixels les plus lumineux du fond.
+  {
+    const px = ctx.getImageData(0, 0, c.width, c.height).data, lums = [];
+    for (let i = 0; i < px.length; i += 4) lums.push([0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2], i]);
+    lums.sort((a, b) => b[0] - a[0]);
+    let R = 0, V = 0, B = 0; const n = Math.max(1, Math.floor(lums.length * 0.08));
+    for (const [, i] of lums.slice(0, n)) { R += px[i]; V += px[i + 1]; B += px[i + 2]; }
+    [R, V, B] = [R / n, V / n, B / n];
+    const mx = Math.max(R, V, B, 1), m = (R + V + B) / 3;
+    const t = (x) => Math.round(Math.min(255, 255 * (m + (x - m) * 1.8) / mx));
+    const m_ = document.getElementById('m');
+    if (!${JSON.stringify(Boolean(lumiere))}) m_.style.setProperty('--lumiere', 'rgb(' + t(R) + ',' + t(V) + ',' + t(B) + ')');
+    const L = getComputedStyle(m_).getPropertyValue('--lumiere').trim();
+    m_.style.setProperty('--halo', L.startsWith('#')
+      ? L + '88' : L.replace('rgb(', 'rgba(').replace(')', ',.55)'));
   }
   for (const d of document.querySelectorAll('.harmonie')) {
     const [g, l] = d.dataset.zone.split(',').map(Number);
@@ -206,6 +273,23 @@ window.placer = async () => {
       else el.style.bottom = (parseFloat(el.style.bottom) - d) + 'px';
     }
     marges.push(Math.round(hautTete(img)));
+  }
+  // Eclairage doux du visage (dodge & burn) : on repere la tete dans le detourage (premieres
+  // lignes opaques) et on eclaire legerement le visage, en assombrissant un peu le bas du buste.
+  for (const v of document.querySelectorAll('.visage')) {
+    const img = document.querySelector('img.personne[data-p="' + v.dataset.p + '"]');
+    const cw = 160, ch = Math.round(cw * img.naturalHeight / img.naturalWidth);
+    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    const x = cv.getContext('2d'); x.drawImage(img, 0, 0, cw, ch);
+    const a = x.getImageData(0, 0, cw, ch).data;
+    let y0 = 0; while (y0 < ch && ![...Array(cw).keys()].some((i) => a[(y0 * cw + i) * 4 + 3] > 128)) y0++;
+    let sx = 0, n = 0;
+    for (let y = y0; y < Math.min(ch, y0 + ch * 0.12); y++) for (let i = 0; i < cw; i++) if (a[(y * cw + i) * 4 + 3] > 128) { sx += i; n++; }
+    const r = v.getBoundingClientRect();
+    const hR = Math.min(r.height, r.width * img.naturalHeight / img.naturalWidth), wR = hR * img.naturalWidth / img.naturalHeight;
+    const gx = (r.width - wR) / 2 + (n ? sx / n / cw : 0.5) * wR, gy = (r.height - hR) + (y0 / ch + 0.12) * hR;
+    v.style.background = 'radial-gradient(ellipse ' + (0.1 * hR) + 'px ' + (0.12 * hR) + 'px at ' + gx + 'px ' + gy + 'px, rgba(255,244,228,.6), rgba(255,244,228,0) 100%),' +
+      'linear-gradient(180deg, rgba(0,0,0,0) ' + (gy + 0.25 * hR) + 'px, rgba(0,0,0,.35) ' + r.height + 'px)';
   }
   return marges;
 };
@@ -249,19 +333,19 @@ function filtrePersonne(p) {
 }
 
 // Fleche rouge courbe : { de:[x,y], vers:[x,y], courbure: -0.4..0.4 }
-function fleche({ de, vers, courbure = 0.3, epaisseur = 16 }) {
+function fleche({ de, vers, courbure = 0.3, epaisseur = 10 }) {
   const [x1, y1] = de, [x2, y2] = vers;
   const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, dx = x2 - x1, dy = y2 - y1;
   const cx = mx - dy * courbure, cy = my + dx * courbure; // point de controle perpendiculaire
   // tangente en fin de courbe => orientation de la pointe
   const tx = x2 - cx, ty = y2 - cy, n = Math.hypot(tx, ty) || 1, ux = tx / n, uy = ty / n;
-  const L = epaisseur * 3, l = epaisseur * 2.1;
+  const L = epaisseur * 3.2, l = epaisseur * 2.1;
   const bx = x2 - ux * L, by = y2 - uy * L;
   const pts = `${x2},${y2} ${bx - uy * l},${by + ux * l} ${bx + uy * l},${by - ux * l}`;
   const d = `M${x1},${y1} Q${cx},${cy} ${bx + ux * 4},${by + uy * 4}`;
   return `<svg class="fleche" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <path d="${d}" fill="none" stroke="#fff" stroke-width="${epaisseur + 8}" stroke-linecap="round"/>
-  <polygon points="${pts}" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#fff" stroke-width="${epaisseur + 5}" stroke-linecap="round"/>
+  <polygon points="${pts}" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
   <path d="${d}" fill="none" stroke="${ROUGE}" stroke-width="${epaisseur}" stroke-linecap="round"/>
   <polygon points="${pts}" fill="${ROUGE}"/></svg>`;
 }
@@ -275,6 +359,12 @@ async function planche(page, fichiers, dest) {
     img{width:100%;display:block}figure{margin:0}figcaption{padding-top:4px}</style>${imgs}`);
   await page.waitForLoadState('load');
   await page.screenshot({ path: dest, fullPage: true });
+  // Controle mobile : chaque miniature a 320x180 (taille d'affichage sur telephone).
+  const petits = fichiers.map((f) => `<img src="${pathToFileURL(f).href}">`).join('');
+  await page.setContent(`<style>body{margin:0;padding:12px;background:#0f0f0f;display:flex;flex-wrap:wrap;gap:12px;width:1020px}
+    img{width:320px;height:180px;display:block;border-radius:8px}</style>${petits}`);
+  await page.waitForLoadState('load');
+  await page.screenshot({ path: dest.replace('_planche', '_mobile'), fullPage: true });
 }
 
 // --- principal ---------------------------------------------------------------
