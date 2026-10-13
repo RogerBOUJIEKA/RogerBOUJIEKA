@@ -42,6 +42,8 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `fond` | photo de fond |
 | `fond_avant`, `fond_apres` | fond coupé en deux pour un titre avant/après (remplace `fond`) |
 | `personnes` | 1 ou 2 éléments `{ photo, role: "philippe" \| "invite", miroir, echelle, decalage_x, decalage_y }` |
+| `etalonnage` (dans une personne) | `{ luminosite, contraste, saturation, teinte, sepia }` : raccorde la personne aux couleurs du fond |
+| `lumiere_contour` (dans une personne) | couleur du liseré lumineux autour de la personne, par exemple `"#ffd9a0"` |
 | `invite` | nom de l'invité, utilisé par la signature |
 | `signature` | `true`, ou `{ texte, x, y }` : signature manuscrite blanche en bas |
 | `etiquette` | `"AVANT"`, ou `{ texte, x, y }` : petite étiquette rouge |

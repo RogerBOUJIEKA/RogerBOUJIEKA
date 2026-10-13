@@ -66,6 +66,7 @@ function construireHTML(c, base) {
       `left:${W * z.left + (p.decalage_x ?? 0)}px`, `width:${W * z.width}px`,
       `height:${h}px`, `bottom:${-(p.decalage_y ?? 0)}px`,
       p.miroir ? 'transform:scaleX(-1)' : '',
+      `filter:${filtrePersonne(p)}`,
     ].join(';');
     return `<img class="personne" style="${style}" src="${url(p.photo, base)}">`;
   }).join('\n');
@@ -105,8 +106,7 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .fond { position:absolute; inset:0; background-size:cover; background-position:center; transform:scale(1.06); }
 .couture { position:absolute; top:0; bottom:0; left:calc(50% - 3px); width:6px; background:#000; }
 .degrade { position:absolute; inset:0; background:${degrade}; }
-.personne { position:absolute; object-fit:contain; object-position:bottom center;
-  filter: drop-shadow(0 0 18px rgba(0,0,0,.65)) drop-shadow(8px 10px 14px rgba(0,0,0,.5)) contrast(1.06) saturate(1.12); }
+.personne { position:absolute; object-fit:contain; object-position:bottom center; }
 #texte { position:absolute; display:flex; flex-direction:column; gap:14px; z-index:5; }
 .ligne { white-space:nowrap; line-height:1; font-family:${c.police === 'bebas' ? "'BebasLocal','Bebas Neue'" : "'AntonLocal','Anton'"}; }
 .blanc, .bandeau { width:max-content; }
@@ -145,6 +145,19 @@ window.ajuster = () => {
   if (h > hauteurMax) for (const s of spans) s.parentElement.style.fontSize = parseFloat(s.parentElement.style.fontSize) * hauteurMax / h + 'px';
 };
 </script></body></html>`;
+}
+
+// Raccord personne / fond : etalonnage { luminosite, contraste, saturation, teinte (deg), sepia },
+// lumiere_contour : couleur du liseré lumineux (ex "#ffd9a0" pour un coucher de soleil), puis ombres.
+function filtrePersonne(p) {
+  const e = p.etalonnage ?? {};
+  const f = [
+    `brightness(${e.luminosite ?? 1})`, `contrast(${e.contraste ?? 1.06})`, `saturate(${e.saturation ?? 1.12})`,
+    e.teinte ? `hue-rotate(${e.teinte}deg)` : '', e.sepia ? `sepia(${e.sepia})` : '',
+  ];
+  if (p.lumiere_contour) f.push(`drop-shadow(0 0 1.5px ${p.lumiere_contour})`, `drop-shadow(0 0 5px ${p.lumiere_contour}aa)`);
+  f.push('drop-shadow(0 0 18px rgba(0,0,0,.65))', 'drop-shadow(8px 10px 14px rgba(0,0,0,.5))');
+  return f.filter(Boolean).join(' ');
 }
 
 // Fleche rouge courbe : { de:[x,y], vers:[x,y], courbure: -0.4..0.4 }

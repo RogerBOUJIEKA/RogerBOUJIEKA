@@ -32,6 +32,11 @@ def detourer(src: Path, dest_dir: Path, session, buste: float | None) -> Path:
         if bbox:
             out = out.crop(bbox)
 
+    # Nettete forte (visage) sur les couches couleur uniquement.
+    rgb = out.convert("RGB").filter(ImageFilter.UnsharpMask(radius=2, percent=90, threshold=2))
+    rgb.putalpha(out.getchannel("A"))
+    out = rgb
+
     dest = dest_dir / f"{src.stem}_detoure.png"
     out.save(dest)
     return dest

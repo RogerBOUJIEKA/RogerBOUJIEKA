@@ -4,25 +4,74 @@
     "ligne1": "Arrêtez d'acheter",
     "ligne2": "des terrains !",
     "fond": "images/ville.jpg",
-    "personnes": [{ "photo": "images/philippe_detoure.png", "role": "philippe" }]
+    "personnes": [
+      {
+        "photo": "images/philippe_detoure.png",
+        "role": "philippe"
+      }
+    ]
   },
   "variantes": [
-    { "nom": "1-solo-jaune-bas" },
-    { "nom": "2-solo-jaune-haut", "jaune": 1, "ligne1": "Votre maison", "ligne2": "{≠} investissement !", "fond": "images/immeuble.jpg" },
+    {
+      "nom": "1-solo-jaune-bas",
+      "personnes": [
+        {
+          "photo": "images/philippe_detoure.png",
+          "role": "philippe",
+          "lumiere_contour": "#ffc27a",
+          "etalonnage": {
+            "luminosite": 0.95,
+            "teinte": -4
+          }
+        }
+      ]
+    },
+    {
+      "nom": "2-solo-jaune-haut",
+      "jaune": 1,
+      "ligne1": "Votre maison",
+      "ligne2": "{≠} investissement !",
+      "fond": "images/immeuble.jpg"
+    },
     {
       "nom": "3-avant-apres",
-      "ligne1": "Construire au pays", "ligne2": "en 6 mois !",
-      "fond_avant": "images/chantier.jpg", "fond_apres": "images/immeuble.jpg",
-      "etiquette": { "texte": "AVANT", "x": 40, "y": 40 },
-      "fleche": { "de": [470, 680], "vers": [690, 560], "courbure": 0.35 }
+      "ligne1": "Construire au pays",
+      "ligne2": "en 6 mois !",
+      "fond_avant": "images/chantier.jpg",
+      "fond_apres": "images/immeuble.jpg",
+      "etiquette": {
+        "texte": "AVANT",
+        "x": 40,
+        "y": 40
+      },
+      "fleche": {
+        "de": [
+          470,
+          680
+        ],
+        "vers": [
+          690,
+          560
+        ],
+        "courbure": 0.35
+      }
     },
     {
       "nom": "4-duo-signature",
-      "ligne1": "Il a bâti 12 villas", "ligne2": "sans banque...", "jaune": 2,
-      "invite": "Jean Kamga", "signature": true,
+      "ligne1": "Il a bâti 12 villas",
+      "ligne2": "sans banque...",
+      "jaune": 2,
+      "invite": "Jean Kamga",
+      "signature": true,
       "personnes": [
-        { "photo": "images/philippe_detoure.png", "role": "philippe" },
-        { "photo": "images/invite_detoure.png", "role": "invite" }
+        {
+          "photo": "images/philippe_detoure.png",
+          "role": "philippe"
+        },
+        {
+          "photo": "images/invite_detoure.png",
+          "role": "invite"
+        }
       ]
     }
   ]
