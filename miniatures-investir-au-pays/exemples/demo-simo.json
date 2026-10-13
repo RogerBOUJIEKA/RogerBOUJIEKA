@@ -1,14 +1,60 @@
 {
   "sortie": "sorties/demo-simo",
-  "base": { "fond": "images/ville.jpg" },
+  "base": {},
   "variantes": [
-    { "nom": "1-poing-sourire", "ligne1": "Investir au pays", "ligne2": "c'est possible !",
-      "personnes": [{ "photo": "simo:poing-sourire-chemise-bleue", "role": "philippe", "lumiere_contour": "#ffc27a" }] },
-    { "nom": "2-mains-jointes", "ligne1": "La vérité sur", "ligne2": "l'immobilier...", "jaune": 2, "fond": "images/immeuble.jpg",
-      "personnes": [{ "photo": "simo:mains-jointes-menton-chemise-blanche", "role": "philippe", "recadrage": 0.8 }] },
-    { "nom": "3-bras-croises", "ligne1": "Mes 3 secrets", "ligne2": "pour réussir !", "jaune": 1,
-      "personnes": [{ "photo": "simo:bras-croises-col-roule-noir", "role": "philippe", "recadrage": 0.8, "lumiere_contour": "#ffd9a0" }] },
-    { "nom": "4-mains-hanches", "ligne1": "Bienvenue", "ligne2": "au pays !", "fond": "images/immeuble.jpg",
-      "personnes": [{ "photo": "simo:sourire-mains-hanches-chemise-bleue", "role": "philippe", "recadrage": 0.55 }] }
+    {
+      "nom": "1-poing-sourire",
+      "ligne1": "Investir au pays",
+      "ligne2": "c'est possible !",
+      "fond": "../fonds/pexels-16940721-abidjan-tour-palmiers.jpg",
+      "personnes": [
+        {
+          "photo": "simo:poing-sourire-chemise-bleue",
+          "role": "philippe"
+        }
+      ],
+      "fond_position": "50% 25%"
+    },
+    {
+      "nom": "2-mains-jointes",
+      "ligne1": "La vérité sur",
+      "ligne2": "l'immobilier...",
+      "jaune": 2,
+      "fond": "../fonds/pexels-31533419-immeuble-residentiel-aerien.jpg",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ]
+    },
+    {
+      "nom": "3-bras-croises",
+      "ligne1": "Mes 3 secrets",
+      "ligne2": "pour réussir !",
+      "jaune": 1,
+      "fond": "../fonds/pexels-31817156-villa-luxe-piscine.jpg",
+      "personnes": [
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ]
+    },
+    {
+      "nom": "4-mains-hanches",
+      "ligne1": "Bienvenue",
+      "ligne2": "au pays !",
+      "fond": "../fonds/pexels-17290955-yaounde-vue-drone.jpg",
+      "personnes": [
+        {
+          "photo": "simo:sourire-mains-hanches-chemise-bleue",
+          "role": "philippe",
+          "recadrage": 0.55
+        }
+      ]
+    }
   ]
 }

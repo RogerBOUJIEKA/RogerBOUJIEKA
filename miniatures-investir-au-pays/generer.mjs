@@ -44,8 +44,9 @@ function construireHTML(c, base) {
       : `<div class="ligne"><span class="blanc">${balisage(t)}</span></div>`);
 
   // Fond : une photo, ou deux moities (avant / apres).
-  const flou = c.flou ?? 3, lum = c.luminosite ?? 0.62, sat = c.saturation ?? 1.3;
-  const filtre = `filter: blur(${flou}px) brightness(${lum}) saturate(${sat});`;
+  // Fond reconnaissable : legerement floute et assombri ; le degrade noir assure la lisibilite du texte.
+  const flou = c.flou ?? 3, lum = c.luminosite ?? 0.78, sat = c.saturation ?? 1.25;
+  const filtre = `filter: blur(${flou}px) brightness(${lum}) saturate(${sat}); background-position:${c.fond_position ?? 'center'};`;
   const fond = c.fond_avant
     ? `<div class="fond" style="${filtre} right:50%; background-image:url('${url(c.fond_avant, base)}')"></div>
        <div class="fond" style="${filtre} left:50%; background-image:url('${url(c.fond_apres, base)}')"></div>

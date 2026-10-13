@@ -62,7 +62,8 @@ Si Chromium n'est pas trouvé automatiquement : `CHROMIUM_PATH=/chemin/vers/chro
 | `etiquette` | `"AVANT"`, ou `{ texte, x, y }` : petite étiquette rouge |
 | `fleche` | `{ de: [x,y], vers: [x,y], courbure: 0.3, epaisseur: 16 }` : flèche rouge courbe |
 | `police` | `"anton"` (par défaut) ou `"bebas"` |
-| `flou`, `luminosite`, `saturation` | réglages fins du fond (par défaut : 3, 0.62 et 1.3) |
+| `flou`, `luminosite`, `saturation` | réglages fins du fond (par défaut : 3, 0.78 et 1.25) |
+| `fond_position` | cadrage du fond (CSS `background-position`), par exemple `"50% 20%"` pour montrer le haut d'un immeuble |
 
 Placement automatique, conforme à la charte :
 - **1 personne** : la personne est à droite (environ 45 % de la largeur) et le texte à gauche, avec un dégradé noir à gauche et en bas.
