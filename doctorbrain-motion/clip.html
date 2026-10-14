@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Doctor Brain Clip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ---------- Palette (à ajuster selon la charte officielle) ---------- */
+:root{
+  --blue:#1E40AF; --blue2:#2563EB; --sky:#60A5FA; --cyan:#22D3EE; --violet:#7C3AED; --pink:#EC4899;
+  --ink:#0F172A; --muted:#64748B; --line:#E2E8F0; --bg:#EEF2F8; --ok:#16A34A; --page:#0B0F19;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --page:#05070C; } }
+:root[data-theme="dark"]{ --page:#05070C; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--page);overflow:hidden;font-family:Inter,"Inter Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;background:#fff;transform-origin:0 0;color:var(--ink)}
+#stage.short{width:1080px;height:1920px}
+.layer,.scene{position:absolute;inset:0}
+.scene{display:none}
+.center{display:flex;align-items:center;justify-content:center}
+.w{display:inline-block;white-space:pre}
+.blob{position:absolute;left:0;top:0;border-radius:50%;filter:blur(90px)}
+
+/* Typo */
+.hl{font-weight:700;letter-spacing:-.045em;line-height:1.05;text-align:center;color:var(--ink)}
+.xxl{font-size:200px}.xl{font-size:150px}.lg{font-size:110px}.md{font-size:80px}
+.short .xxl{font-size:150px}.short .xl{font-size:118px}.short .lg{font-size:92px}.short .md{font-size:72px}
+.short .hl{max-width:960px}
+.w.acc,.grad .w{background:linear-gradient(100deg,var(--cyan),var(--blue2) 55%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .04em}
+.cyanText .w{background:linear-gradient(100deg,#2DE1F5,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted)}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:30px}
+.short .logo{flex-direction:column;gap:26px}
+.mark{width:160px;height:160px;flex:none}
+.word{font-weight:800;letter-spacing:-.04em;font-size:104px;line-height:.95;color:var(--ink)}
+.word span{color:var(--blue2)}
+
+/* Cartes / panneaux */
+.glass{background:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.95);box-shadow:0 30px 80px rgba(30,64,175,.14),inset 0 1px 0 #fff}
+.panel{background:#fff;border-radius:40px;box-shadow:0 40px 100px rgba(30,64,175,.14);padding:40px 44px}
+.panel h4{font-size:26px;color:var(--muted);font-weight:600;letter-spacing:-.01em;margin-bottom:24px}
+
+/* En-tête de module */
+.mh{position:absolute;left:0;right:0;top:64px;display:flex;justify-content:center;z-index:5}
+.short .mh{top:220px}
+.mhp{display:flex;align-items:center;gap:18px;padding:12px 34px 12px 12px;border-radius:999px;background:#fff;box-shadow:0 18px 50px rgba(30,64,175,.16)}
+.mhp .n{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:24px;background:linear-gradient(135deg,var(--cyan),var(--blue2) 60%,var(--violet))}
+.mhp svg{width:40px;height:40px}
+.mhp b{font-size:36px;letter-spacing:-.03em}
+.mod{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-top:120px}
+.short .mod{padding-top:200px}
+
+/* Watermark */
+#wm{position:absolute;right:56px;top:48px;display:flex;align-items:center;gap:12px;font-weight:700;font-size:24px;color:#334155;letter-spacing:-.01em;z-index:40}
+#wm svg{width:38px;height:38px}
+.short #wm{right:50%;transform:translateX(50%);top:90px}
+
+/* Hook */
+.doc{position:absolute;left:0;top:0;width:250px;height:320px;border-radius:24px;background:#fff;box-shadow:0 24px 60px rgba(15,23,42,.16);padding:0 0 20px;overflow:hidden}
+.doc .dh{height:70px;display:flex;align-items:flex-end;padding:0 20px 12px;color:#fff;font-weight:800;font-size:15px;letter-spacing:.06em}
+.doc b{display:block;font-size:22px;letter-spacing:-.02em;padding:18px 20px 12px;line-height:1.15}
+.doc i{display:block;height:10px;border-radius:6px;background:#E2E8F0;margin:10px 20px 0}
+.capwrap{position:absolute;left:0;right:0;bottom:110px;display:flex;justify-content:center;z-index:6}
+.short .capwrap{bottom:300px}
+.cap{padding:26px 50px;border-radius:999px;font-size:64px;font-weight:700;letter-spacing:-.04em;background:rgba(255,255,255,.88);box-shadow:0 20px 60px rgba(15,23,42,.14);white-space:nowrap}
+.short .cap{font-size:54px;padding:22px 40px}
+.clock{position:absolute;left:50%;top:50%;width:320px;height:320px;margin:-160px 0 0 -160px}
+
+/* Accueil */
+.homewrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:190px}
+.short .homewrap{flex-direction:column-reverse;gap:80px;padding-top:120px}
+.phwrap{position:relative;width:400px;height:820px;flex:none}
+.phone{position:absolute;left:0;top:0;width:400px;height:820px;border-radius:64px;background:#0B1220;padding:14px;box-shadow:0 60px 120px rgba(15,23,42,.28),0 0 0 2px #334155 inset}
+.screen{width:100%;height:100%;border-radius:52px;background:#F8FAFC;overflow:hidden;position:relative;font-size:15px;color:var(--ink)}
+.notch{position:absolute;top:12px;left:50%;width:120px;height:34px;margin-left:-60px;border-radius:20px;background:#0B1220;z-index:3}
+.sbar{display:flex;justify-content:space-between;padding:18px 34px 0;font-weight:600;font-size:15px}
+.app{padding:30px 22px 0}
+.apphead{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.apphead svg{width:34px;height:34px}
+.streak{margin-top:16px;border-radius:22px;padding:18px;color:#fff;background:linear-gradient(120deg,var(--blue2),var(--violet));box-shadow:0 12px 30px rgba(37,99,235,.3)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tile{background:#fff;border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(15,23,42,.06);font-weight:600;font-size:14px}
+.tile i{display:flex;width:36px;height:36px;border-radius:11px;align-items:center;justify-content:center;margin-bottom:10px}
+.tile i svg{width:22px;height:22px}
+.float{position:absolute;width:120px;height:120px;border-radius:36px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#fff,#E0E7FF);box-shadow:0 25px 50px rgba(30,64,175,.18),inset 0 2px 0 #fff}
+.float svg{width:64px;height:64px}
+.chip{position:absolute;display:flex;align-items:center;gap:14px;padding:14px 24px 14px 14px;border-radius:22px;background:#fff;box-shadow:0 20px 50px rgba(15,23,42,.16);white-space:nowrap}
+.chip svg{width:52px;height:52px}
+.chip b{font-size:26px;letter-spacing:-.02em;display:block}
+.chip small{font-size:16px;color:var(--muted)}
+.hometext{display:flex;flex-direction:column;gap:14px}
+.hometext .hl{text-align:left}
+.short .hometext .hl{text-align:center}
+
+/* Rings */
+.ring{position:absolute;left:50%;top:50%;border-radius:999px}
+.pillw{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.pill{display:flex;align-items:center;gap:16px;padding:22px 30px 22px 40px;border-radius:999px;background:#fff;font-size:42px;font-weight:600;letter-spacing:-.03em;white-space:nowrap;box-shadow:0 20px 50px rgba(37,99,235,.25)}
+.short .pill{font-size:34px;padding:18px 24px 18px 32px}
+.pill .tag{background:var(--blue2);color:#fff;padding:10px 26px;border-radius:999px;font-weight:700}
+
+/* Leçons */
+.lecwrap{display:flex;gap:40px;align-items:stretch}
+.short .lecwrap{flex-direction:column;gap:32px}
+#specs{width:640px}#lesson{width:700px}
+.short #specs,.short #lesson{width:940px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.short .chips{grid-template-columns:1fr 1fr}
+.schip{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:20px;border:2px solid var(--line);font-size:24px;font-weight:600;background:#fff}
+.schip span{width:16px;height:16px;border-radius:50%;flex:none}
+.crumb{font-size:20px;color:var(--muted);font-weight:600}
+.ltitle{font-size:44px;font-weight:800;letter-spacing:-.035em;margin:8px 0 18px}
+.ltag{display:inline-block;background:#EFF6FF;color:var(--blue2);font-weight:700;padding:8px 18px;border-radius:999px;font-size:18px;margin-left:10px;vertical-align:middle}
+.lrow{display:flex;align-items:center;gap:18px;padding:18px 4px;border-top:1.5px solid #F1F5F9;font-size:26px;font-weight:600}
+.lrow .ln{width:46px;height:46px;border-radius:14px;background:#F1F5F9;color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.lrow .ck{margin-left:auto;width:40px;height:40px}
+
+/* Quiz */
+.cyc{display:grid;grid-template-columns:repeat(10,92px);gap:18px;justify-content:center}
+.short .cyc{grid-template-columns:repeat(5,120px);gap:28px}
+.day{display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:700;color:var(--muted);font-size:20px}
+.day .c{width:92px;height:92px;border-radius:50%;border:3px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;color:#94A3B8;font-weight:800}
+.short .day .c{width:120px;height:120px}
+.day.done .c{background:linear-gradient(135deg,var(--cyan),var(--blue2));border:0;color:#fff}
+.day.today .c{border:4px solid var(--blue2);color:var(--blue2)}
+.qcms{display:flex;gap:14px;justify-content:center;margin-top:40px;align-items:center;font-size:28px;font-weight:700}
+.qcms i{width:62px;height:62px;border-radius:18px;background:#EFF6FF;color:var(--blue2);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:22px}
+.card{width:1180px;border-radius:44px;padding:46px 54px;background:#fff;box-shadow:0 40px 100px rgba(30,64,175,.16);position:relative}
+.short .card{width:960px;padding:40px}
+.qhead{display:flex;align-items:center;gap:16px;font-size:24px;font-weight:600;color:var(--muted)}
+.qhead svg{width:46px;height:46px}
+.badge{margin-left:auto;background:#EFF6FF;color:var(--blue2);padding:10px 20px;border-radius:999px;font-weight:700;white-space:nowrap}
+.prog{height:10px;border-radius:9px;background:#E2E8F0;margin:24px 0 28px;overflow:hidden}
+.prog div{height:100%;border-radius:9px;background:linear-gradient(90deg,var(--cyan),var(--blue2))}
+.question{font-size:42px;font-weight:700;letter-spacing:-.03em;line-height:1.15}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+.short .opts{grid-template-columns:1fr}
+.opt{display:flex;align-items:center;gap:18px;padding:22px 24px;border-radius:24px;border:2.5px solid var(--line);font-size:29px;font-weight:600;color:#1E293B;background:#fff}
+.opt b{width:50px;height:50px;border-radius:15px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:23px;color:var(--muted);flex:none}
+.opt .ck{margin-left:auto;width:44px;height:44px;opacity:0}
+.points{position:absolute;right:70px;top:-36px;font-size:44px;font-weight:800;color:var(--ok);letter-spacing:-.03em}
+#board{width:820px;padding:36px 40px}
+.short #board{width:940px}
+.brows{position:relative;height:480px;margin-top:10px}
+.brow{position:absolute;left:0;right:0;height:84px;display:flex;align-items:center;gap:18px;padding:0 24px;border-radius:22px;font-size:28px;font-weight:600;background:#F8FAFC}
+.brow .r{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;background:#94A3B8;font-size:22px}
+.brow em{margin-left:auto;font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums}
+.brow.me{background:linear-gradient(90deg,#EFF6FF,#F5F3FF);outline:3px solid var(--blue2)}
+.up{color:var(--ok);font-weight:800;font-size:24px}
+
+/* Cas cliniques */
+#cas{width:1320px}
+.short #cas{width:960px}
+.steps{display:flex;align-items:flex-start;justify-content:space-between;position:relative;margin:6px 10px 30px}
+.steps .bar{position:absolute;left:40px;right:40px;top:26px;height:6px;border-radius:6px;background:#E2E8F0}
+.steps .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--cyan),var(--blue2));width:0}
+.st{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;width:150px;font-size:19px;font-weight:600;color:#94A3B8;text-align:center}
+.short .st{width:120px;font-size:16px}
+.st .c{width:58px;height:58px;border-radius:50%;background:#fff;border:3px solid #E2E8F0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#94A3B8}
+.st.on{color:var(--ink)}
+.st.on .c{border-color:var(--blue2);color:#fff;background:var(--blue2)}
+.cbody{position:relative;height:300px}
+.short .cbody{height:360px}
+.cstep{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.cstep small{font-size:22px;font-weight:700;color:var(--blue2);letter-spacing:.04em;text-transform:uppercase}
+.cstep p{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.short .cstep p{font-size:36px}
+.ecg{width:100%;height:150px}
+.cfoot{display:flex;justify-content:flex-end;margin-top:20px}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:18px 30px;border-radius:999px;background:var(--blue2);color:#fff;font-weight:700;font-size:24px}
+.btn svg{width:26px;height:26px}
+
+/* Syndromes */
+.fan{position:relative;width:1300px;height:600px}
+.short .fan{width:1000px;height:640px}
+.scard{position:absolute;left:50%;top:50%;width:400px;height:540px;margin:-270px 0 0 -200px;perspective:1600px}
+.short .scard{width:360px;height:520px;margin:-260px 0 0 -180px}
+.flip{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.face{position:absolute;inset:0;border-radius:36px;background:#fff;box-shadow:0 30px 80px rgba(30,64,175,.16);backface-visibility:hidden;padding:36px;display:flex;flex-direction:column}
+.face.back{transform:rotateY(180deg);background:linear-gradient(160deg,#fff,#EEF2FF)}
+.face .ico{width:110px;height:110px;border-radius:32px;display:flex;align-items:center;justify-content:center;margin-bottom:auto}
+.face .ico svg{width:64px;height:64px}
+.face h5{font-size:40px;font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.face .more{margin-top:18px;font-size:22px;font-weight:600;color:var(--blue2)}
+.crit{display:flex;align-items:center;gap:14px;font-size:25px;font-weight:600;margin-top:18px;line-height:1.2}
+.crit svg{width:36px;height:36px;flex:none}
+
+/* Anglais */
+.engwrap{display:flex;flex-direction:column;align-items:center;gap:30px}
+.fcard{position:relative;width:820px;height:280px;perspective:1600px}
+.short .fcard{width:940px;height:300px}
+.fcard .face{align-items:center;justify-content:center;text-align:center;padding:30px}
+.fcard .face small{font-size:22px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.fcard .face b{font-size:66px;letter-spacing:-.04em}
+.fcard .face.back b{background:linear-gradient(100deg,var(--cyan),var(--blue2),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pair{width:820px;display:flex;align-items:center;gap:20px;padding:20px 30px;border-radius:24px;font-size:28px;font-weight:600}
+.short .pair{width:940px}
+.pair em{margin-left:auto;font-style:normal;color:var(--blue2);font-weight:700}
+.pair svg{width:28px;height:28px}
+.done{display:flex;align-items:center;gap:14px;padding:16px 30px;border-radius:999px;background:#DCFCE7;color:#166534;font-size:26px;font-weight:700}
+.done svg{width:34px;height:34px}
+
+/* Campus */
+.campwrap{display:flex;flex-direction:column;align-items:center;gap:34px}
+.ctiles{display:flex;gap:30px}
+.short .ctiles{flex-direction:column;gap:20px}
+.ctile{width:400px;padding:32px;border-radius:32px;background:#fff;box-shadow:0 26px 70px rgba(30,64,175,.13);display:flex;flex-direction:column;gap:14px;border:3px solid transparent}
+.short .ctile{width:940px;flex-direction:row;align-items:center;gap:24px;padding:26px 30px}
+.ctile i{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;flex:none}
+.ctile i svg{width:40px;height:40px}
+.ctile b{font-size:34px;letter-spacing:-.03em;display:block}
+.ctile small{font-size:22px;color:var(--muted);font-weight:500}
+.shelf{width:1260px;padding:30px 36px}
+.short .shelf{width:940px}
+.tabs{display:flex;gap:12px;flex-wrap:wrap}
+.tab{padding:14px 24px;border-radius:999px;background:#F1F5F9;font-size:22px;font-weight:700;color:#475569}
+.tab.on{background:var(--blue2);color:#fff}
+.books{display:flex;gap:16px;align-items:flex-end;height:230px;margin-top:24px;overflow:hidden}
+.book{width:120px;border-radius:12px 12px 8px 8px;color:#fff;font-weight:700;font-size:17px;padding:14px 12px;display:flex;align-items:flex-end;line-height:1.15;box-shadow:0 12px 24px rgba(15,23,42,.15)}
+.short .book{width:128px}
+
+/* Wheel */
+.wheelwrap{display:flex;align-items:center;justify-content:center;gap:110px}
+.short .wheelwrap{flex-direction:column;gap:60px}
+.wheel{position:relative;width:640px;height:640px}
+.wheel svg.w8{width:100%;height:100%}
+.pointer{position:absolute;left:50%;top:-34px;width:60px;height:74px;margin-left:-30px;z-index:2}
+.hub{position:absolute;left:50%;top:50%;width:170px;height:170px;margin:-85px 0 0 -85px;border-radius:50%;background:#fff;box-shadow:0 14px 40px rgba(15,23,42,.25);display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:800;font-size:26px;color:var(--blue2);letter-spacing:-.02em}
+.hub svg{width:56px;height:56px;margin-bottom:4px}
+#wres{width:560px;text-align:left}
+.short #wres{width:860px;text-align:center}
+#wres small{font-size:22px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+#wres h3{font-size:60px;letter-spacing:-.04em;margin:10px 0 26px}
+
+/* Blog */
+.bwrap{display:flex;gap:34px}
+.short .bwrap{flex-direction:column;gap:26px}
+.bcard{width:470px;border-radius:34px;background:#fff;box-shadow:0 30px 80px rgba(30,64,175,.14);overflow:hidden;display:flex;flex-direction:column}
+.short .bcard{width:940px;flex-direction:row;height:290px}
+.bimg{height:250px;position:relative;overflow:hidden;flex:none}
+.short .bimg{width:340px;height:100%}
+.bimg span{position:absolute;border-radius:50%;filter:blur(2px)}
+.btxt{padding:30px 32px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+.btxt small{font-size:19px;font-weight:700;color:var(--blue2);letter-spacing:.06em;text-transform:uppercase}
+.btxt b{font-size:32px;letter-spacing:-.03em;line-height:1.15}
+.btxt em{font-style:normal;color:var(--muted);font-weight:600;font-size:21px}
+
+/* Outro */
+.spark{position:absolute;left:0;top:0;border-radius:4px}
+.cta{display:inline-flex;align-items:center;gap:14px;padding:24px 44px;border-radius:999px;background:linear-gradient(120deg,var(--cyan),var(--blue2) 50%,var(--violet));color:#fff;font-weight:700;font-size:36px;letter-spacing:-.02em;box-shadow:0 0 60px rgba(59,130,246,.55);white-space:nowrap}
+.short .cta{font-size:32px;padding:22px 36px}
+.url{font-size:34px;color:#CBD5E1;font-weight:600;letter-spacing:.01em}
+
+/* Curseur */
+#cursor{position:absolute;left:0;top:0;width:58px;height:58px;z-index:50}
+#cursor svg{width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+#clickfx{position:absolute;left:0;top:0;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid var(--blue2);z-index:49;opacity:0}
+
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;padding:10px 16px;background:rgba(0,0,0,.6);color:#fff;font:13px Inter,system-ui;z-index:10}
+#ui button,#ui a{background:#2563EB;color:#fff;border:0;border-radius:8px;padding:6px 14px;font:600 13px Inter,system-ui;cursor:pointer;text-decoration:none}
+#ui input{flex:1}
+body.render #ui{display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="bg" style="background:var(--bg)">
+    <div class="blob" style="width:760px;height:520px;background:#BFDBFE"></div>
+    <div class="blob" style="width:620px;height:460px;background:#C7D2FE"></div>
+    <div class="blob" style="width:700px;height:420px;background:#A5F3FC;opacity:.7"></div>
+    <div class="blob" style="width:520px;height:420px;background:#93C5FD;opacity:.8"></div>
+    <div class="blob" style="width:640px;height:380px;background:#DDD6FE;opacity:.8"></div>
+  </div>
+  <div class="layer" id="white" style="background:#fff"></div>
+
+  <!-- 1. Accroche -->
+  <section class="scene" id="hook">
+    <div class="layer" id="docs"></div>
+    <div class="clock" id="clock"><svg viewBox="0 0 320 320">
+      <defs><linearGradient id="clg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>
+      <circle cx="160" cy="160" r="150" fill="#fff" stroke="url(#clg)" stroke-width="14"/>
+      <g stroke="#CBD5E1" stroke-width="6" stroke-linecap="round">
+        <path d="M160 38v20M160 262v20M38 160h20M262 160h20"/></g>
+      <path id="hh" d="M160 160V96" stroke="#0F172A" stroke-width="12" stroke-linecap="round"/>
+      <path id="mmh" d="M160 160V62" stroke="#2563EB" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="160" cy="160" r="12" fill="#0F172A"/></svg></div>
+    <div class="layer center"><div class="hl xl cyanText" id="h1">Réviser la médecine…</div></div>
+    <div class="layer center"><div class="hl xl" id="h2">c'est parfois *se* *perdre.*</div></div>
+    <div class="capwrap"><div class="cap" id="c1">Des cours partout.</div></div>
+    <div class="capwrap"><div class="cap" id="c2">Des fiches qui s'empilent.</div></div>
+    <div class="capwrap"><div class="cap" id="c3">Et jamais assez de temps.</div></div>
+  </section>
+
+  <!-- 2. Méthode -->
+  <section class="scene" id="meth">
+    <div class="layer center"><div class="hl lg" id="m1">Et si tu révisais, *enfin…*</div></div>
+    <div class="layer center"><div class="hl xxl" id="m2">avec *méthode* ?</div></div>
+  </section>
+
+  <!-- 3. Bienvenue -->
+  <section class="scene" id="welc">
+    <div class="layer" id="wgroup">
+      <div class="ring" id="r1" style="background:#fff;box-shadow:0 0 120px rgba(255,255,255,.9)"></div>
+      <div class="ring" id="r2" style="background:#DBEAFE"></div>
+      <div class="ring" id="r3" style="background:#BFDBFE"></div>
+      <div class="pillw"><div class="pill" id="pill">Bienvenue sur <span class="tag">Doctor Brain</span><svg viewBox="0 0 64 64" data-ic="brain" style="width:60px;height:60px"></svg></div></div>
+    </div>
+  </section>
+
+  <!-- 4. Logo -->
+  <section class="scene" id="logo">
+    <div class="layer center" style="flex-direction:column;gap:44px">
+      <div class="logo" id="lg4"><svg class="mark" viewBox="0 0 120 120" data-ic="logo" id="mark4"></svg><div class="word" id="word4">Doctor <span>Brain</span></div></div>
+      <div class="hl" id="tag4" style="font-size:46px;font-weight:500;letter-spacing:-.02em;color:#475569">Réviser la médecine avec *méthode*</div>
+    </div>
+  </section>
+
+  <!-- 5. Accueil / plateforme -->
+  <section class="scene" id="home">
+    <div class="homewrap" id="homewrap">
+      <div class="phwrap" id="phwrap">
+        <div class="float" id="f1" style="left:-190px;top:30px"><svg viewBox="0 0 64 64" data-ic="brain"></svg></div>
+        <div class="float" id="f2" style="left:470px;top:90px"><svg viewBox="0 0 64 64" data-ic="steth"></svg></div>
+        <div class="float" id="f3" style="left:480px;top:560px"><svg viewBox="0 0 64 64" data-ic="pill"></svg></div>
+        <div class="float" id="f4" style="left:-200px;top:610px"><svg viewBox="0 0 64 64" data-ic="book"></svg></div>
+        <div class="phone" id="phoneA">
+          <div class="screen"><div class="notch"></div>
+            <div class="sbar"><span>9:41</span><span>●●● 100%</span></div>
+            <div class="app">
+              <div class="apphead"><svg viewBox="0 0 120 120" data-ic="logo"></svg>Doctor Brain</div>
+              <div style="margin-top:20px;font-size:24px;font-weight:800;letter-spacing:-.03em">Salut Léa,</div>
+              <div style="color:var(--muted);font-weight:500">Prête pour ta révision ?</div>
+              <div class="streak"><div style="font-size:13px;opacity:.85;font-weight:600">QUIZ DU JOUR · JOUR 4/10</div><div style="font-size:22px;font-weight:800;margin-top:6px">5 QCM t'attendent</div><div style="margin-top:12px;height:8px;border-radius:8px;background:rgba(255,255,255,.3)"><div style="width:30%;height:100%;border-radius:8px;background:#fff"></div></div></div>
+              <div class="tiles" id="tilesA"></div>
+            </div>
+          </div>
+        </div>
+        <div class="chip" id="chipA" style="left:-230px;top:420px"><svg viewBox="0 0 120 120" data-ic="logo"></svg><div><b>Doctor Brain</b><small>Réviser la médecine avec méthode</small></div></div>
+      </div>
+      <div class="hometext">
+        <div class="hl md" id="ht1">Tout pour réviser</div>
+        <div class="hl md" id="ht2">*pas* *à* *pas,*</div>
+        <div class="hl md" id="ht3">au même endroit.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Leçons -->
+  <section class="scene" id="lec">
+    <div class="mh"><div class="mhp" id="mh1"><span class="n">01</span><svg viewBox="0 0 64 64" data-ic="book"></svg><b>Leçons méd.</b></div></div>
+    <div class="mod"><div class="lecwrap">
+      <div class="panel" id="specs"><h4>Choisis une spécialité</h4><div class="chips" id="chips"></div></div>
+      <div class="panel" id="lesson">
+        <div class="crumb">Cardiologie › Leçons</div>
+        <div class="ltitle">Insuffisance cardiaque <span class="ltag">Leçon structurée</span></div>
+        <div id="lrows"></div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 7. Quiz du jour -->
+  <section class="scene" id="quiz">
+    <div class="mh"><div class="mhp" id="mh2"><span class="n">02</span><svg viewBox="0 0 64 64" data-ic="bolt"></svg><b>Quiz du jour</b></div></div>
+    <div class="mod" id="qA"><div class="panel" id="cycle" style="padding:46px 50px">
+      <h4 style="text-align:center;font-size:30px;color:var(--ink);font-weight:800;letter-spacing:-.02em">Un cycle de 10 jours</h4>
+      <div class="cyc" id="cyc"></div>
+      <div class="qcms" id="qcms"><span style="margin-right:10px">5 QCM par jour</span></div>
+    </div></div>
+    <div class="mod" id="qB"><div class="card" id="qcard">
+      <div class="points" id="pts">+10 pts</div>
+      <div class="qhead"><svg viewBox="0 0 120 120" data-ic="logo"></svg>Quiz du jour · Jour 4/10<span class="badge">QCM 3/5</span></div>
+      <div class="prog"><div id="qprog" style="width:40%"></div></div>
+      <div class="question">Choc anaphylactique : quel est le traitement de première intention ?</div>
+      <div class="opts">
+        <div class="opt"><b>A</b>Corticoïdes IV</div>
+        <div class="opt" id="good"><b>B</b>Adrénaline IM<svg class="ck" viewBox="0 0 64 64" data-ic="check"></svg></div>
+        <div class="opt"><b>C</b>Antihistaminiques H1</div>
+        <div class="opt"><b>D</b>Remplissage seul</div>
+      </div>
+    </div></div>
+    <div class="mod" id="qC"><div class="panel" id="board">
+      <h4 style="display:flex;align-items:center;gap:12px;font-size:30px;color:var(--ink);font-weight:800;letter-spacing:-.02em"><svg viewBox="0 0 64 64" data-ic="trophy" style="width:40px;height:40px"></svg>Classement du jour<span class="up" id="upb" style="margin-left:auto">▲ +2 places</span></h4>
+      <div class="brows" id="brows"></div>
+    </div></div>
+  </section>
+
+  <!-- 8. Cas cliniques -->
+  <section class="scene" id="casS">
+    <div class="mh"><div class="mhp" id="mh3"><span class="n">03</span><svg viewBox="0 0 64 64" data-ic="steth"></svg><b>Cas cliniques</b></div></div>
+    <div class="mod"><div class="panel" id="cas">
+      <div class="steps"><div class="bar"><i id="sbar"></i></div></div>
+      <div class="cbody" id="cbody">
+        <div class="cstep"><small>Motif de consultation</small><p>Homme, 58 ans. Douleur thoracique constrictive depuis 40 minutes, irradiant dans le bras gauche.</p></div>
+        <div class="cstep"><small>Examen clinique</small><p>PA 145/90 mmHg · FC 96/min · sueurs. Auscultation cardio-pulmonaire normale.</p></div>
+        <div class="cstep"><small>Examens complémentaires</small><svg class="ecg" viewBox="0 0 1200 150" preserveAspectRatio="none"><path id="ecgp" fill="none" stroke="#2563EB" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" d=""/></svg><p style="font-size:34px">ECG : sus-décalage du segment ST.</p></div>
+        <div class="cstep"><small>Diagnostic</small><p>Syndrome coronarien aigu avec sus-décalage du segment ST (SCA ST+).</p></div>
+        <div class="cstep"><small>Prise en charge</small><p>Urgence de reperfusion coronaire : appel du SAMU et coronarographie en urgence.</p></div>
+      </div>
+      <div class="cfoot"><div class="btn" id="nextb">Étape suivante<svg viewBox="0 0 64 64" data-ic="arrow"></svg></div></div>
+    </div></div>
+  </section>
+
+  <!-- 9. Syndromes -->
+  <section class="scene" id="synd">
+    <div class="mh"><div class="mhp" id="mh4"><span class="n">04</span><svg viewBox="0 0 64 64" data-ic="pulse"></svg><b>Syndromes</b></div></div>
+    <div class="mod"><div class="fan">
+      <div class="scard" id="sc1"><div class="flip"><div class="face"><div class="ico" style="background:#FCE7F3"><svg viewBox="0 0 64 64" data-ic="brain"></svg></div><h5>Syndrome méningé</h5><div class="more">Voir le tableau →</div></div></div></div>
+      <div class="scard" id="sc3"><div class="flip"><div class="face"><div class="ico" style="background:#FEF3C7"><svg viewBox="0 0 64 64" data-ic="flask"></svg></div><h5>Syndrome de Cushing</h5><div class="more">Voir le tableau →</div></div></div></div>
+      <div class="scard" id="sc2"><div class="flip" id="flip2">
+        <div class="face"><div class="ico" style="background:#DBEAFE"><svg viewBox="0 0 64 64" data-ic="drop"></svg></div><h5>Syndrome néphrotique</h5><div class="more">Voir le tableau →</div></div>
+        <div class="face back"><small style="font-size:18px;font-weight:700;letter-spacing:.08em;color:var(--blue2)">TABLEAU CLINIQUE</small><h5 style="margin-top:10px;font-size:34px">Syndrome néphrotique</h5>
+          <div class="crit"><svg viewBox="0 0 64 64" data-ic="check"></svg>Protéinurie ≥ 3 g/24 h</div>
+          <div class="crit"><svg viewBox="0 0 64 64" data-ic="check"></svg>Albuminémie &lt; 30 g/L</div>
+          <div class="crit"><svg viewBox="0 0 64 64" data-ic="check"></svg>Œdèmes fréquents</div>
+        </div>
+      </div></div>
+    </div></div>
+  </section>
+
+  <!-- 10. Anglais médical -->
+  <section class="scene" id="eng">
+    <div class="mh"><div class="mhp" id="mh5"><span class="n">05</span><svg viewBox="0 0 64 64" data-ic="globe"></svg><b>Anglais médical</b></div></div>
+    <div class="mod"><div class="engwrap">
+      <div class="fcard" id="fc"><div class="flip" id="fcflip">
+        <div class="face"><small>Français</small><b>Essoufflement</b></div>
+        <div class="face back"><small>English</small><b>Shortness of breath</b></div>
+      </div></div>
+      <div class="pair glass" id="p1">Douleur thoracique<svg viewBox="0 0 64 64" data-ic="chev"></svg><em>Chest pain</em></div>
+      <div class="pair glass" id="p2">Fièvre<svg viewBox="0 0 64 64" data-ic="chev"></svg><em>Fever</em></div>
+      <div class="pair glass" id="p3">Vertiges<svg viewBox="0 0 64 64" data-ic="chev"></svg><em>Dizziness</em></div>
+      <div class="done" id="edone"><svg viewBox="0 0 64 64" data-ic="check"></svg>Leçon et quiz du jour terminés</div>
+    </div></div>
+  </section>
+
+  <!-- 11. Campus -->
+  <section class="scene" id="camp">
+    <div class="mh"><div class="mhp" id="mh6"><span class="n">06</span><svg viewBox="0 0 64 64" data-ic="cap"></svg><b>Campus</b></div></div>
+    <div class="mod"><div class="campwrap">
+      <div class="ctiles">
+        <div class="ctile" id="ct1"><i style="background:#DBEAFE"><svg viewBox="0 0 64 64" data-ic="folder"></svg></i><div><b>Ressources</b><small>Tout ce qu'il faut pour réviser</small></div></div>
+        <div class="ctile" id="ct2"><i style="background:#EDE9FE"><svg viewBox="0 0 64 64" data-ic="books"></svg></i><div><b>Bibliothèque</b><small>Organisée par année</small></div></div>
+        <div class="ctile" id="ct3"><i style="background:#DCFCE7"><svg viewBox="0 0 64 64" data-ic="cap"></svg></i><div><b>Formations</b><small>Cours et formations organisés</small></div></div>
+      </div>
+      <div class="panel shelf" id="shelf">
+        <div class="tabs" id="tabs"></div>
+        <div class="books" id="books"></div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 12. Brain Wheel -->
+  <section class="scene" id="whl">
+    <div class="mh"><div class="mhp" id="mh7"><span class="n">07</span><svg viewBox="0 0 64 64" data-ic="wheel"></svg><b>Brain Wheel</b></div></div>
+    <div class="mod"><div class="wheelwrap">
+      <div class="wheel" id="wheel">
+        <svg class="pointer" viewBox="0 0 60 74"><path d="M30 72 4 18a26 26 0 1 1 52 0z" fill="#0F172A"/><circle cx="30" cy="24" r="10" fill="#fff"/></svg>
+        <svg class="w8" viewBox="-320 -320 640 640"><g id="wrot"></g></svg>
+        <div class="hub" id="hub"><svg viewBox="0 0 120 120" data-ic="logo"></svg>Lancer</div>
+      </div>
+      <div class="panel" id="wres"><small>Ta session de révision</small><h3>Neurologie</h3><div class="btn">Commencer<svg viewBox="0 0 64 64" data-ic="arrow"></svg></div></div>
+    </div></div>
+  </section>
+
+  <!-- 13. Blog -->
+  <section class="scene" id="blog">
+    <div class="mh"><div class="mhp" id="mh8"><span class="n">08</span><svg viewBox="0 0 64 64" data-ic="pen"></svg><b>Blog</b></div></div>
+    <div class="mod"><div class="bwrap">
+      <div class="bcard" id="b1"><div class="bimg" style="background:linear-gradient(135deg,#BFDBFE,#C7D2FE)"><span style="width:180px;height:180px;left:40px;top:40px;background:#60A5FA"></span><span style="width:120px;height:120px;left:230px;top:110px;background:#A78BFA"></span></div><div class="btxt"><small>Méthode</small><b>Organiser ses révisions sur l'année</b><em>Lire l'article →</em></div></div>
+      <div class="bcard" id="b2"><div class="bimg" style="background:linear-gradient(135deg,#CFFAFE,#BFDBFE)"><span style="width:200px;height:200px;left:150px;top:20px;background:#22D3EE"></span><span style="width:100px;height:100px;left:60px;top:130px;background:#2563EB"></span></div><div class="btxt"><small>Mémoire</small><b>Mémoriser durablement ses cours</b><em>Lire l'article →</em></div></div>
+      <div class="bcard" id="b3"><div class="bimg" style="background:linear-gradient(135deg,#FCE7F3,#EDE9FE)"><span style="width:160px;height:160px;left:200px;top:60px;background:#EC4899"></span><span style="width:130px;height:130px;left:60px;top:30px;background:#8B5CF6"></span></div><div class="btxt"><small>Progresser</small><b>Garder le rythme jusqu'aux examens</b><em>Lire l'article →</em></div></div>
+    </div></div>
+  </section>
+
+  <div class="layer" id="veil" style="background:#8E96A3;opacity:0"></div>
+
+  <!-- 14. Outro -->
+  <section class="scene" id="outro" style="background:#000">
+    <div class="layer" id="sparks"></div>
+    <div class="layer center" style="flex-direction:column;gap:46px">
+      <div class="logo" id="lgO"><svg class="mark" viewBox="0 0 120 120" data-ic="logo" id="markO"></svg><div class="word" id="wordO" style="color:#fff">Doctor <span style="color:#60A5FA">Brain</span></div></div>
+      <div class="hl" id="tagO" style="font-size:48px;font-weight:500;color:#CBD5E1;letter-spacing:-.02em">Réviser la médecine avec *méthode*</div>
+      <div id="ctaO" style="display:flex;flex-direction:column;align-items:center;gap:24px"><div class="cta">Commence à réviser dès aujourd'hui<svg viewBox="0 0 64 64" data-ic="arrow" style="width:36px;height:36px"></svg></div><div class="url">doctorbrain.fr</div></div>
+    </div>
+  </section>
+
+  <div id="wm"><svg viewBox="0 0 120 120" data-ic="logo"></svg>doctorbrain.fr</div>
+  <div id="clickfx"></div>
+  <div id="cursor"><svg viewBox="0 0 64 64" data-ic="cursor"></svg></div>
+</div>
+
+<div id="ui"><button id="play">Pause</button><input id="scrub" type="range" min="0" max="88" step="0.01" value="0"><span id="tc">0.00 s</span><a id="fmt" href="?fmt=short">9:16</a></div>
+
+<script>
+/* ===================== Icônes ===================== */
+const S='fill="none" stroke-linecap="round" stroke-linejoin="round"';
+const IC={
+  logo:`<defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>
+    <rect x="4" y="4" width="112" height="112" rx="34" fill="url(#lg)"/>
+    <path ${S} stroke="#fff" stroke-width="6" d="M58 26c-10-6-24 0-24 12-10 2-14 14-8 22-6 8-2 20 8 22 2 10 14 14 24 8M62 26c10-6 24 0 24 12 10 2 14 14 8 22 6 8 2 20-8 22-2 10-14 14-24 8M60 24v72"/>
+    <path ${S} stroke="#fff" stroke-width="5" d="M18 62h22l6-12 9 26 7-20 4 6h36"/>`,
+  brain:`<path ${S} stroke="#2563EB" stroke-width="4" d="M30 12c-7-4-16 0-16 8-7 1-9 10-5 15-4 5-1 13 5 14 1 7 10 9 16 5M34 12c7-4 16 0 16 8 7 1 9 10 5 15 4 5 1 13-5 14-1 7-10 9-16 5M32 10v46"/><path ${S} stroke="#22D3EE" stroke-width="4" d="M20 30h8M36 38h8M22 44c3-2 6-2 8 0"/>`,
+  steth:`<path ${S} stroke="#0891B2" stroke-width="4.5" d="M16 10v16a12 12 0 0 0 24 0V10M28 38v6a12 12 0 0 0 24 0v-6"/><circle cx="52" cy="32" r="6" ${S} stroke="#7C3AED" stroke-width="4.5"/><path stroke="#0891B2" stroke-width="5" stroke-linecap="round" d="M12 10h8M36 10h8"/>`,
+  pill:`<g transform="rotate(-40 32 32)"><rect x="10" y="22" width="44" height="20" rx="10" fill="#fff" stroke="#EC4899" stroke-width="4"/><path d="M32 22h12a10 10 0 0 1 0 20H32z" fill="#EC4899"/></g>`,
+  book:`<path ${S} stroke="#2563EB" stroke-width="4.5" d="M10 14c8-3 15-2 22 3 7-5 14-6 22-3v36c-8-3-15-2-22 3-7-5-14-6-22-3zM32 17v36"/>`,
+  bolt:`<path ${S} stroke="#7C3AED" stroke-width="4.5" d="M36 8 16 36h16l-4 20 20-28H32z"/>`,
+  globe:`<circle cx="32" cy="32" r="22" ${S} stroke="#DB2777" stroke-width="4.5"/><path ${S} stroke="#DB2777" stroke-width="4" d="M10 32h44M32 10c-8 8-8 36 0 44M32 10c8 8 8 36 0 44"/>`,
+  cap:`<path ${S} stroke="#16A34A" stroke-width="4.5" d="M6 26 32 14l26 12-26 12zM16 31v12c8 6 24 6 32 0V31M58 26v14"/>`,
+  pen:`<path ${S} stroke="#D97706" stroke-width="4.5" d="M42 10l12 12-28 28H14V38zM36 16l12 12"/>`,
+  arrow:`<path ${S} stroke="#fff" stroke-width="6" d="M14 32h34M34 18l14 14-14 14"/>`,
+  check:`<circle cx="32" cy="32" r="28" fill="#16A34A"/><path ${S} stroke="#fff" stroke-width="6" d="M19 33l9 9 17-19"/>`,
+  cursor:`<path d="M14 6v44l11-11 8 19 8-3-8-19h16z" fill="#0F172A" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/>`,
+  chev:`<path ${S} stroke="#94A3B8" stroke-width="5" d="M14 32h34M36 20l12 12-12 12"/>`,
+  pulse:`<path ${S} stroke="#DB2777" stroke-width="5" d="M6 34h12l6-14 10 28 7-20 4 6h13"/>`,
+  flask:`<path ${S} stroke="#D97706" stroke-width="4.5" d="M24 8h16M27 8v16L12 50a4 4 0 0 0 4 6h32a4 4 0 0 0 4-6L37 24V8M18 42h28"/>`,
+  drop:`<path ${S} stroke="#2563EB" stroke-width="4.5" d="M32 8C24 20 16 28 16 38a16 16 0 0 0 32 0C48 28 40 20 32 8z"/><path ${S} stroke="#22D3EE" stroke-width="4" d="M25 40a7 7 0 0 0 7 7"/>`,
+  folder:`<path ${S} stroke="#2563EB" stroke-width="4.5" d="M8 18a4 4 0 0 1 4-4h12l6 6h22a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/>`,
+  books:`<path ${S} stroke="#7C3AED" stroke-width="4.5" d="M10 10h10v44H10zM24 10h10v44H24zM38 14l9-3 10 40-9 3z"/>`,
+  wheel:`<circle cx="32" cy="32" r="24" ${S} stroke="#2563EB" stroke-width="4.5"/><path ${S} stroke="#7C3AED" stroke-width="4" d="M32 8v48M8 32h48M15 15l34 34M49 15 15 49"/><circle cx="32" cy="32" r="6" fill="#2563EB"/>`,
+  trophy:`<path ${S} stroke="#F59E0B" stroke-width="4.5" d="M20 8h24v14a12 12 0 0 1-24 0zM20 14H10c0 10 6 14 12 14M44 14h10c0 10-6 14-12 14M32 34v10M22 54h20M26 44h12v10H26z"/>`
+};
+let icn=0;
+function paintIcons(root=document){root.querySelectorAll('[data-ic]').forEach(el=>{
+  let s=IC[el.dataset.ic];if(el.dataset.ic==='logo'){icn++;s=s.replaceAll('id="lg"',`id="lg${icn}"`).replaceAll('url(#lg)',`url(#lg${icn})`);}
+  el.innerHTML=s;el.removeAttribute('data-ic');});}
+
+/* ===================== Format ===================== */
+const SHORT=location.search.includes('fmt=short');
+const RENDER=location.search.includes('render');
+const W=SHORT?1080:1920,H=SHORT?1920:1080,DUR=88;
+const stage=document.getElementById('stage');
+if(SHORT){stage.classList.add('short');document.getElementById('fmt').href='?';document.getElementById('fmt').textContent='16:9';}
+
+/* ===================== Outils ===================== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const P=(t,a,b)=>clamp((t-a)/(b-a));
+const E={out:p=>1-Math.pow(1-p,3),expo:p=>p>=1?1:1-Math.pow(2,-10*p),in:p=>p*p*p,
+  io:p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2,
+  back:p=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)}};
+const bell=(t,a,b)=>Math.sin(Math.PI*P(t,a,b));
+function set(el,{x=0,y=0,s=1,sx,sy,r=0,rx=0,ry=0,o=1,b=0}={}){
+  el.style.transform=`translate(${x}px,${y}px) perspective(1800px) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${r}deg) scale(${sx??s},${sy??s})`;
+  el.style.opacity=clamp(o);el.style.filter=b>.3?`blur(${b.toFixed(1)}px)`:'none';
+}
+function words(el){
+  const ws=el.innerHTML.trim().split(/\s+/);
+  el.innerHTML=ws.map(w=>{const a=/^\*.*\*$/.test(w);return `<span class="w${a?' acc':''}">${a?w.slice(1,-1):w}</span>`}).join(' ');
+  return [...el.querySelectorAll('.w')];
+}
+function animWords(ws,lt,{at=0,st=.08,d=.6,out=999,od=.35,dx=-320,rise=50,ats}={}){
+  ws.forEach((w,i)=>{const a=ats?ats[Math.min(i,ats.length-1)]:at+i*st;
+    const p=E.expo(P(lt,a,a+d)),q=E.in(P(lt,out+i*.03,out+i*.03+od));
+    set(w,{y:(1-p)*rise,x:q*dx,s:lerp(1.25,1,p),sx:lerp(1.25,1,p)*(1+q*.35),o:p*(1-q),b:(1-p)*22+q*20});});
+}
+/* entrée / sortie standard */
+function io(el,lt,ai,ao=999,o={}){
+  const p=E.expo(P(lt,ai,ai+(o.d??.8))),q=E.in(P(lt,ao,ao+(o.od??.45)));
+  set(el,{x:(o.x??0)*(1-p)+(o.qx??0)*q,y:(o.y??60)*(1-p)+(o.qy??-40)*q,s:lerp(o.s??.92,1,p)*(1+(o.qs??.06)*q),
+    o:p*(1-q),b:(1-p)*(o.b??14)+q*(o.qb??18),r:(o.r??0)*(1-p),rx:(o.rx??0)*(1-p)});return p*(1-q);
+}
+function pop(el,lt,at,ao=999,extra={}){
+  const p=E.back(P(lt,at,at+.5)),q=E.in(P(lt,ao,ao+.35));
+  set(el,{...extra,s:Math.max(0,p)*(1-q*.2)*(extra.s??1),o:P(lt,at,at+.12)*(1-q),b:q*12});return p;
+}
+function sceneOut(el,lt,at,d=.55,zoom=1.6){
+  const q=E.in(P(lt,at,at+d));
+  el.style.filter=q>0?`blur(${(q*26).toFixed(1)}px)`:'none';el.style.opacity=1-q;el.style.transform=q>0?`scale(${1+q*(zoom-1)})`:'none';
+}
+let seed=11;const rnd=()=>((seed=(seed*16807)%2147483647)/2147483647);
+
+/* ----- curseur ----- */
+let CUR,FX;
+function ptOf(sel,fx=.5,fy=.5){const el=typeof sel==='string'?$(sel):sel;const r=el.getBoundingClientRect(),sr=stage.getBoundingClientRect(),k=sr.width/W;
+  return [(r.left-sr.left+r.width*fx)/k,(r.top-sr.top+r.height*fy)/k];}
+function cursorRun(lt,keys,clicks=[],vis){
+  const pts=keys.map(k=>[k[0],typeof k[1]==='number'?[k[1],k[2]]:ptOf(k[1],k[2]??.5,k[3]??.5)]);
+  vis=vis||[pts[0][0],pts.at(-1)[0]+.8];
+  if(lt<vis[0]||lt>vis[1])return;
+  let x,y;
+  if(lt<=pts[0][0])[x,y]=pts[0][1];
+  else{let hit=false;for(let i=1;i<pts.length;i++)if(lt<=pts[i][0]){const p=E.io(P(lt,pts[i-1][0],pts[i][0]));x=lerp(pts[i-1][1][0],pts[i][1][0],p);y=lerp(pts[i-1][1][1],pts[i][1][1],p);hit=true;break;}if(!hit)[x,y]=pts.at(-1)[1];}
+  let press=0;for(const c of clicks){press=Math.max(press,bell(lt,c,c+.2));const pc=P(lt,c,c+.5);if(pc>0&&pc<1)FX=[x,y,pc];}
+  CUR={x,y,o:P(lt,vis[0],vis[0]+.25)*(1-P(lt,vis[1]-.3,vis[1])),press};
+}
+
+/* ===================== Construction ===================== */
+paintIcons();
+// Hook : documents
+const DOCS=[['Cardiologie','COURS','#2563EB'],['Néphrologie','COURS 3','#7C3AED'],['Fiche ECG','FICHE','#0891B2'],['Pharmacologie','TD','#DB2777'],['Sémiologie','COURS','#16A34A'],['Immunologie','FICHE','#D97706'],['Pneumologie','TD','#2563EB'],['Neuroanatomie','COURS','#7C3AED'],['Bactériologie','FICHE','#0891B2'],['Hématologie','COURS','#DB2777'],['Gastro-entéro','FICHE','#16A34A'],['Endocrinologie','COURS 2','#D97706']];
+$('#docs').innerHTML=DOCS.map(d=>`<div class="doc"><div class="dh" style="background:${d[2]}">${d[1]}</div><b>${d[0]}</b><i></i><i></i><i style="width:60%"></i><i></i><i style="width:75%"></i><i style="width:45%"></i></div>`).join('');
+const DOCEL=$$('.doc');
+const DOCP=DOCEL.map((e,i)=>{const a=i/DOCEL.length*6.283+.3,rr=.82+rnd()*.25;
+  return {sx:W/2+Math.cos(a)*W*1.1,sy:H/2+Math.sin(a)*H*1.1,
+    tx:W/2+Math.cos(a)*W*(SHORT?.32:.36)*rr-125,ty:H/2+Math.sin(a)*H*(SHORT?.3:.33)*rr-160,
+    r0:(rnd()-.5)*90,r1:(rnd()-.5)*36,rs:(rnd()-.5)*8,dx:(rnd()-.5)*14};});
+// Accueil : tuiles
+const MODS=[['book','Leçons méd.','#DBEAFE'],['bolt','Quiz du jour','#EDE9FE'],['steth','Cas cliniques','#CFFAFE'],['pulse','Syndromes','#FCE7F3'],['globe','Anglais médical','#FCE7F3'],['cap','Campus','#DCFCE7'],['wheel','Brain Wheel','#DBEAFE'],['pen','Blog','#FEF3C7']];
+$('#tilesA').innerHTML=MODS.map(m=>`<div class="tile"><i style="background:${m[2]}"><svg viewBox="0 0 64 64">${IC[m[0]]}</svg></i>${m[1]}</div>`).join('');
+$('#tilesA').style.gap='10px';$$('#tilesA .tile').forEach(t=>{t.style.padding='11px 14px';t.querySelector('i').style.marginBottom='6px';});
+const TILES=$$('#tilesA .tile');
+// Leçons
+const SPECS=[['Cardiologie','#2563EB'],['Pneumologie','#22D3EE'],['Neurologie','#7C3AED'],['Néphrologie','#0891B2'],['Gastro-entérologie','#16A34A'],['Endocrinologie','#D97706'],['Pédiatrie','#EC4899'],['Infectiologie','#64748B']];
+$('#chips').innerHTML=SPECS.map(s=>`<div class="schip"><span style="background:${s[1]}"></span>${s[0]}</div>`).join('');
+const CHIPS=$$('.schip');
+$('#lrows').innerHTML=['Définition','Physiopathologie','Diagnostic','Traitement'].map((s,i)=>`<div class="lrow"><span class="ln">${i+1}</span>${s}<svg class="ck" viewBox="0 0 64 64">${IC.check}</svg></div>`).join('');
+const LROWS=$$('.lrow');
+// Quiz
+$('#cyc').innerHTML=Array.from({length:10},(_,i)=>`<div class="day ${i<3?'done':i===3?'today':''}"><div class="c">${i<3?'✓':i+1}</div>J${i+1}</div>`).join('');
+const DAYS=$$('.day');
+$('#qcms').innerHTML+=[1,2,3,4,5].map(i=>`<i>Q${i}</i>`).join('');
+const QCM=$$('#qcms i');
+const BOARD=[['Hugo',1410,'#F59E0B'],['Inès',1325,'#94A3B8'],['Sami',1290,'#B45309'],['Léo',1250,'#94A3B8'],['Toi',1180,'#2563EB']];
+$('#brows').innerHTML=BOARD.map((b,i)=>`<div class="brow${b[0]==='Toi'?' me':''}"><span class="r">${i+1}</span>${b[0]}<em>${b[1].toLocaleString('fr-FR')} pts</em></div>`).join('');
+const BROWS=$$('.brow');
+// Cas cliniques
+const STEPN=['Motif','Examen','Examens compl.','Diagnostic','Prise en charge'];
+$('.steps').innerHTML+=STEPN.map((s,i)=>`<div class="st"><div class="c">${i+1}</div>${s}</div>`).join('');
+const STEPS=$$('.st'),CSTEPS=$$('.cstep');
+(function(){let d='M0 90';const beat=(x0,st)=>`L${x0+40} 90 L${x0+55} 80 L${x0+70} 90 L${x0+85} 90 L${x0+92} 100 L${x0+104} 20 L${x0+116} 108 L${x0+124} ${90-st} L${x0+160} ${86-st} Q${x0+185} ${58-st} ${x0+210} 90 L${x0+240} 90`;
+  for(let x=0;x<1200;x+=240)d+=' '+beat(x,22);$('#ecgp').setAttribute('d',d);})();
+const ECGL=$('#ecgp').getTotalLength();$('#ecgp').style.strokeDasharray=ECGL;
+// Campus
+const YEARS=['1re année','2e année','3e année','4e année','5e année','6e année'];
+$('#tabs').innerHTML=YEARS.map(y=>`<div class="tab">${y}</div>`).join('');
+const TABS=$$('.tab');
+const BOOKC=['#2563EB','#7C3AED','#0891B2','#DB2777','#16A34A','#D97706','#1E40AF','#9333EA'];
+const BOOKN=['Cardio','Pneumo','Neuro','Néphro','Gastro','Pédiatrie','Hémato','Infectio'];
+$('#books').innerHTML=BOOKN.slice(0,SHORT?6:8).map((n,i)=>`<div class="book" style="background:${BOOKC[i]};height:${170+((i*37)%60)}px">${n}</div>`).join('');
+const BOOKS=$$('.book');
+// Wheel
+const WSEG=['Cardio','Pneumo','Neuro','Néphro','Gastro','Endoc.','Pédiatrie','Infectio'];
+const WCOL=['#2563EB','#22D3EE','#7C3AED','#0891B2','#16A34A','#F59E0B','#EC4899','#6366F1'];
+$('#wrot').innerHTML=WSEG.map((n,i)=>{const a0=(i*45-90-22.5)*Math.PI/180,a1=((i+1)*45-90-22.5)*Math.PI/180,R=300;
+  const mid=(i*45-90)*Math.PI/180;
+  return `<path d="M0 0L${R*Math.cos(a0)} ${R*Math.sin(a0)}A${R} ${R} 0 0 1 ${R*Math.cos(a1)} ${R*Math.sin(a1)}Z" fill="${WCOL[i]}" stroke="#fff" stroke-width="6"/>
+  <text x="${205*Math.cos(mid)}" y="${205*Math.sin(mid)}" fill="#fff" font-size="27" font-weight="800" text-anchor="middle" dominant-baseline="middle" transform="rotate(${i*45} ${205*Math.cos(mid)} ${205*Math.sin(mid)})">${n}</text>`}).join('')+`<circle r="306" fill="none" stroke="#fff" stroke-width="12"/>`;
+// spin : atterrit sur Neuro (index 2) sous le pointeur (haut)
+const SPIN0=70.9,SPIN1=72.95,SPINT=360*4+2*45;
+const spinAngle=t=>SPINT*E.out(P(t,SPIN0,SPIN1));
+// Outro sparks
+const SPARKS=[];const SC=['#22D3EE','#EC4899','#FACC15','#22C55E','#8B5CF6','#3B82F6'];
+for(let i=0;i<54;i++){const e=document.createElement('div');e.className='spark';const c=SC[i%SC.length],sz=8+rnd()*16;
+  Object.assign(e.style,{width:sz+'px',height:sz*(.6+rnd()*.8)+'px',background:c,boxShadow:`0 0 18px ${c},0 0 40px ${c}`});
+  $('#sparks').appendChild(e);SPARKS.push({e,a:rnd()*6.283,r0:500+rnd()*700,r1:330+rnd()*420,sp:.15+rnd()*.35,ph:rnd()*6.283});}
+// Mots
+const Wh1=words($('#h1')),Wh2=words($('#h2')),Wm1=words($('#m1')),Wm2=words($('#m2')),Wt4=words($('#tag4')),
+  Wht1=words($('#ht1')),Wht2=words($('#ht2')),Wht3=words($('#ht3')),WtO=words($('#tagO'));
+// Rings
+const RS=SHORT?[[1040,700],[820,480],[660,330]]:[[1500,900],[1100,600],[820,400]];
+['r1','r2','r3'].forEach((id,i)=>{const e=$('#'+id);e.style.width=RS[i][0]+'px';e.style.height=RS[i][1]+'px';e.style.margin=`${-RS[i][1]/2}px 0 0 ${-RS[i][0]/2}px`;});
+const blobs=$$('.blob');
+
+/* ===================== Bande-son : voix + effets ===================== */
+const VO=[[1.0,1],[6.2,2],[12.3,3],[16.4,4],[20.5,5],[26.4,6],[33.4,7],[43.5,8],[50.8,9],[56.4,10],[62.5,11],[68.8,12],[75.4,13],[80.7,14]];
+const CUES=[];const cue=(t,type,g=1)=>CUES.push([+t.toFixed(3),type,g]);
+// Accroche
+cue(.85,'whoosh',.5);cue(2.6,'swish',.6);cue(2.9,'whoosh',.5);cue(5.6,'swish',.6);
+DOCEL.forEach((_,i)=>cue(6.35+i*.07,'pop',.35));cue(6.3,'whoosh',.8);cue(6.45,'pop',.6);
+DOCEL.forEach((_,i)=>cue(7.95+i*.08,'paper',.55));cue(7.95,'pop',.5);
+for(let t=9.65;t<11.3;t+=.25)cue(t,'clock',.6);cue(9.65,'pop',.5);
+cue(11.35,'riserS',.6);cue(11.6,'whoosh',.9);
+// Méthode
+cue(12.25,'shimmer',.5);cue(13.85,'pop',.4);cue(14.45,'swish',.6);cue(14.7,'impact',.5);cue(14.75,'shimmer',.6);cue(15.2,'riser',.7);cue(15.85,'whoosh',.9);
+// Bienvenue + logo
+cue(16.0,'swell',.8);cue(16.55,'pop',.8);cue(18.15,'whoosh',.8);
+cue(18.55,'impact',.9);cue(18.6,'shimmer',.8);cue(19.0,'swish',.5);cue(19.4,'shimmer',.4);cue(20.15,'whoosh',.7);
+// Accueil
+cue(20.45,'whoosh',.6);[20.9,21.05,21.2,21.35].forEach(t=>cue(t,'pop',.45));cue(21.6,'pop',.5);
+TILES.forEach((_,i)=>cue(23.4+i*.12,'tick',.55));cue(24.35,'shimmer',.4);cue(25.6,'riserS',.5);cue(25.8,'whoosh',.9);
+// Leçons
+cue(26.25,'pop',.7);cue(26.5,'whoosh',.5);CHIPS.forEach((_,i)=>cue(26.7+i*.06,'tick',.35));cue(29.0,'click',1);cue(29.15,'whoosh',.5);
+[29.9,30.35,30.8,31.25].forEach(t=>{cue(t,'tick',.6);cue(t+.02,'pop',.35);});cue(32.65,'whoosh',.8);
+// Quiz
+cue(33.45,'pop',.7);cue(33.8,'whoosh',.5);DAYS.forEach((_,i)=>cue(34.1+i*.08,'tick',.4));cue(34.9,'pop',.5);
+QCM.forEach((_,i)=>cue(35.9+i*.12,'pop',.4));cue(37.4,'shimmer',.5);cue(38.6,'whoosh',.7);
+cue(39.95,'click',1);cue(40.05,'ding',.9);cue(40.25,'pop',.6);cue(40.8,'whoosh',.7);
+cue(41.45,'swish',.6);cue(41.6,'rise',.8);cue(42.95,'whoosh',.8);
+// Cas cliniques
+cue(43.5,'pop',.7);cue(43.75,'whoosh',.5);
+const CASCL=[44.85,45.75,47.05,48.25];CASCL.forEach(t=>{cue(t,'click',1);cue(t+.12,'swish',.45);});
+[46.2,46.75,47.3].forEach(t=>cue(t,'beep',.5));cue(48.45,'ding',.5);cue(50.15,'whoosh',.8);
+// Syndromes
+cue(50.8,'pop',.7);[51.0,51.15,51.3].forEach(t=>cue(t,'whoosh',.45));cue(52.4,'flip',.9);[52.95,53.35,53.75].forEach(t=>cue(t,'tick',.6));cue(55.75,'whoosh',.8);
+// Anglais
+cue(56.4,'pop',.7);cue(56.65,'whoosh',.5);cue(57.6,'flip',.9);cue(57.9,'shimmer',.4);[58.85,59.35,59.85].forEach(t=>cue(t,'pop',.5));cue(60.55,'ding',.7);cue(61.85,'whoosh',.8);
+// Campus
+cue(62.5,'pop',.7);[62.8,62.95,63.1].forEach(t=>cue(t,'pop',.45));cue(63.9,'tick',.5);cue(65.25,'click',1);cue(65.4,'whoosh',.5);
+TABS.forEach((_,i)=>cue(65.5+i*.05,'tick',.3));cue(66.15,'click',1);BOOKS.forEach((_,i)=>cue(66.35+i*.07,'paper',.45));cue(67.4,'shimmer',.5);cue(68.25,'whoosh',.8);
+// Brain Wheel
+cue(68.8,'pop',.7);cue(69.0,'whoosh',.6);cue(70.85,'click',1);cue(70.9,'swish',.7);
+(function(){let last=Math.floor((spinAngle(SPIN0)+22.5)/45);for(let t=SPIN0;t<=SPIN1+.01;t+=1/240){const k=Math.floor((spinAngle(t)+22.5)/45);if(k!==last){cue(t,'tick',.55);last=k;}}})();
+cue(73.05,'ding',.9);cue(73.1,'pop',.6);cue(74.85,'whoosh',.8);
+// Blog
+cue(75.4,'pop',.7);[75.8,76.05,76.3].forEach(t=>cue(t,'whoosh',.4));cue(77.9,'tick',.4);cue(78.7,'shimmer',.4);
+cue(79.4,'riser',.6);cue(79.8,'whoosh',.9);
+// Outro
+cue(80.4,'swell',.7);cue(80.75,'impact',1);cue(80.8,'shimmer',.8);cue(81.05,'swish',.5);cue(82.2,'shimmer',.4);cue(83.65,'shimmer',.5);cue(84.9,'pop',.7);cue(85.0,'ding',.5);
+CUES.sort((a,b)=>a[0]-b[0]);
+window.CUES=CUES;window.VO=VO;window.DUR=DUR;window.FMT={W,H};
+
+/* ===================== Scènes ===================== */
+const SCN=[
+ ['hook',0,12.25],['meth',12.0,16.25],['welc',16.0,18.75],['logo',18.45,20.65],['home',20.4,26.4],
+ ['lec',26.1,33.25],['quiz',33.2,43.4],['casS',43.3,50.75],['synd',50.6,56.3],['eng',56.2,62.35],
+ ['camp',62.3,68.75],['whl',68.6,75.35],['blog',75.2,80.6],['outro',80.25,DUR+1]];
+
+function render(t){
+  CUR={o:0,x:0,y:0,press:0};FX=null;
+  for(const [id,a,b] of SCN){const el=$('#'+id);const on=t>=a&&t<b;el.style.display=on?'block':'none';if(on){el.style.filter='none';el.style.opacity=1;el.style.transform='none';}}
+  // fond
+  $('#white').style.opacity=1-E.io(P(t,5.6,7.0));
+  blobs.forEach((bl,i)=>{const k=i*1.7;bl.style.transform=`translate(${W/2+Math.sin(t*.3+k)*W*.33-350}px,${H/2+Math.cos(t*.24+k*1.3)*H*.34-230}px) scale(${1+.15*Math.sin(t*.45+k)})`;});
+  $('#veil').style.opacity=Math.max(0,bell(t,25.75,26.55)*.8,bell(t,79.85,80.75)*.9);
+  const wmo=P(t,21,21.6)*(1-P(t,79.5,79.9));$('#wm').style.opacity=wmo*.85;
+
+  /* --- 1. Accroche (0–12.25) --- */
+  if(t<12.25){
+    animWords(Wh1,t,{at:.9,st:.12,out:2.55,od:.32});
+    animWords(Wh2,t,{at:2.95,st:.12,out:5.55,od:.35,dx:0});
+    // les mots « se perdre » dérivent
+    Wh2.slice(2).forEach((w,i)=>{if(t>3.6&&t<5.55){const d=P(t,3.6,5.5);w.style.transform+=` translate(${Math.sin(t*3+i*2)*8*d}px,${(i?1:-1)*d*14}px) rotate(${(i?4:-4)*d}deg)`;}});
+    // documents
+    DOCEL.forEach((e,i)=>{const p=DOCP[i];const a=E.expo(P(t,6.3+i*.07,7.2+i*.07));
+      const s2=E.io(P(t,7.95+i*.08,8.55+i*.08));
+      const cx=W/2-125+p.dx*i*.2+(SHORT?0:-260*E.io(P(t,9.5,10.1))), cy=H/2-160-i*5-(SHORT?260*E.io(P(t,9.5,10.1)):0);
+      let x=lerp(p.sx,p.tx,a),y=lerp(p.sy,p.ty,a),r=lerp(p.r0,p.r1,a);
+      x=lerp(x,cx,s2);y=lerp(y,cy,s2);r=lerp(r,p.rs,s2);
+      x+=Math.sin(t*.8+i)*6*(1-s2);y+=Math.cos(t*.7+i)*6*(1-s2);
+      set(e,{x,y,r,o:P(t,6.3+i*.07,6.45+i*.07)});});
+    $('#docs').style.display=t>=6.2?'block':'none';
+    // horloge
+    const ck=E.back(P(t,9.6,10.1));set($('#clock'),{x:SHORT?0:280,y:SHORT?300:0,s:Math.max(0,ck),o:P(t,9.6,9.75)});
+    $('#hh').setAttribute('transform',`rotate(${(t-9.6)*120} 160 160)`);$('#mmh').setAttribute('transform',`rotate(${(t-9.6)*1440} 160 160)`);
+    // légendes
+    io($('#c1'),t,6.45,7.75,{y:40});io($('#c2'),t,7.95,9.4,{y:40});io($('#c3'),t,9.65,11.3,{y:40});
+    sceneOut($('#hook'),t,11.55,.6,1.5);
+  }
+  /* --- 2. Méthode --- */
+  if(t>=12&&t<16.25){const lt=t;
+    animWords(Wm1,lt,{ats:[12.3,12.5,12.7,12.9,13.86],out:14.45,od:.3,dx:-380});
+    animWords(Wm2,lt,{ats:[14.7,14.82,15.1],d:.7,rise:90,dx:0});
+    sceneOut($('#meth'),t,15.85,.4,2.2);
+  }
+  /* --- 3. Bienvenue --- */
+  if(t>=16&&t<18.75){const lt=t-16;
+    [['r1',.15],['r2',.05],['r3',0]].forEach(([id,d])=>{const p=E.expo(P(lt,d,d+.9));set($('#'+id),{s:lerp(.1,1,p)*(1+.02*Math.sin(lt*3)),o:p});});
+    pop($('#pill'),lt,.55);
+    sceneOut($('#welc'),t,18.15,.55,5);
+  }
+  /* --- 4. Logo --- */
+  if(t>=18.45&&t<20.65){const lt=t-18.45;
+    const m=E.back(P(lt,.1,.7));set($('#mark4'),{s:Math.max(0,m),r:(1-m)*-90,o:P(lt,.1,.3)});
+    $$('#mark4 path').forEach(pa=>{pa.style.strokeDasharray=400;pa.style.strokeDashoffset=400*(1-E.out(P(lt,.35,1.1)));});
+    const w=E.expo(P(lt,.55,1.2));set($('#word4'),{x:SHORT?0:(1-w)*-140,y:SHORT?(1-w)*-60:0,o:w,b:(1-w)*16});
+    animWords(Wt4,lt,{at:.95,st:.06});
+    sceneOut($('#logo'),t,20.15,.5,1.3);
+  }
+  /* --- 5. Accueil --- */
+  if(t>=20.4&&t<26.4){const lt=t-20.4,p=E.expo(P(lt,0,1.1));
+    set($('#phoneA'),{y:(1-p)*800,rx:lerp(35,8,p)+Math.sin(lt*1.2)*2,ry:lerp(-25,-10,p)+lt*2.4,r:lerp(-8,2,p),s:lerp(.8,1,p)});
+    ['f1','f2','f3','f4'].forEach((f,i)=>{const q=E.back(P(lt,.5+i*.15,1.1+i*.15));
+      set($('#'+f),{x:Math.sin(lt*1.4+i)*14,y:Math.cos(lt*1.1+i*2)*16+(1-q)*120,s:Math.max(0,q),r:Math.sin(lt+i)*8,o:P(lt,.5+i*.15,.65+i*.15)});});
+    const c=E.back(P(lt,1.2,1.8));set($('#chipA'),{s:Math.max(0,c),o:P(lt,1.2,1.35),x:(1-c)*-80});
+    TILES.forEach((e,i)=>{const h=bell(t,23.4+i*.12,23.4+i*.12+.5);e.style.transform=`scale(${1+h*.12})`;e.style.boxShadow=h>.01?`0 0 0 ${3*h}px #2563EB,0 10px 24px rgba(37,99,235,${.3*h})`:'';});
+    animWords(Wht1,t,{at:20.8,st:.1});animWords(Wht2,t,{ats:[23.42,23.62,23.8]});animWords(Wht3,t,{at:24.36,st:.1});
+    sceneOut($('#home'),t,25.8,.5,2.6);
+  }
+  /* --- 6. Leçons --- */
+  if(t>=26.1&&t<33.25){
+    pop($('#mh1'),t,26.25,32.65);
+    io($('#specs'),t,26.45,32.65,{y:80});
+    CHIPS.forEach((c,i)=>{const p=E.out(P(t,26.7+i*.06,27.2+i*.06));const sel=P(t,29.05,29.2);
+      c.style.opacity=p;c.style.transform=`translateY(${(1-p)*20}px) scale(${i===0?1+bell(t,29.0,29.3)*-.05:1})`;
+      if(i===0){c.style.borderColor=sel?'#2563EB':'';c.style.background=sel?'#EFF6FF':'';}});
+    io($('#lesson'),t,29.15,32.65,{x:SHORT?0:120,y:SHORT?80:0});
+    LROWS.forEach((r,i)=>{const at=29.9+i*.45,k=E.back(P(t,at,at+.35));const ck=r.querySelector('.ck');ck.style.opacity=P(t,at,at+.08);ck.style.transform=`scale(${Math.max(0,k)})`;
+      r.querySelector('.ln').style.background=t>=at?'#2563EB':'';r.querySelector('.ln').style.color=t>=at?'#fff':'';});
+    cursorRun(t,[[27.6,W+60,H*.9],[28.8,CHIPS[0],.4,.6]],[29.0],[27.6,29.9]);
+  }
+  /* --- 7. Quiz du jour --- */
+  if(t>=33.2&&t<43.4){
+    pop($('#mh2'),t,33.45,42.95);
+    // A : cycle
+    io($('#cycle'),t,33.8,38.55,{y:80,qy:-80});
+    DAYS.forEach((d,i)=>{const p=E.back(P(t,34.1+i*.08,34.5+i*.08));d.style.transform=`scale(${Math.max(0,p)})`;d.style.opacity=P(t,34.1+i*.08,34.2+i*.08);
+      if(i===3){const pu=.5+.5*Math.sin(t*6);d.querySelector('.c').style.boxShadow=`0 0 0 ${6+pu*8}px rgba(37,99,235,.15)`;}
+      if(t>37.4){const h=bell(t,37.4+i*.06,37.4+i*.06+.4);d.querySelector('.c').style.transform=`translateY(${-h*16}px)`;}});
+    $('#qcms').style.opacity=P(t,35.6,35.9);
+    QCM.forEach((q,i)=>{const p=E.back(P(t,35.9+i*.12,36.3+i*.12));q.style.transform=`scale(${Math.max(0,p)})`;});
+    // B : question
+    io($('#qcard'),t,38.75,40.85,{y:120,rx:-20,qy:-120});
+    $$('#qcard .opt').forEach((o,i)=>{const p=E.out(P(t,39.05+i*.08,39.45+i*.08));o.style.opacity=p;o.style.transform=`translateY(${(1-p)*24}px)`;});
+    const ok=t>=40.0,g=$('#good');
+    g.style.borderColor=ok?'#16A34A':'';g.style.background=ok?'#F0FDF4':'';g.querySelector('b').style.background=ok?'#16A34A':'';g.querySelector('b').style.color=ok?'#fff':'';
+    const ckk=E.back(P(t,40.05,40.45));g.querySelector('.ck').style.opacity=P(t,40.05,40.12);g.querySelector('.ck').style.transform=`scale(${Math.max(0,ckk)})`;
+    g.style.transform+=` scale(${1+bell(t,39.95,40.35)*.04})`;
+    $('#qprog').style.width=lerp(40,60,E.io(P(t,40.2,40.7)))+'%';
+    const pt=E.out(P(t,40.25,40.95));set($('#pts'),{y:-pt*40,o:bell(t,40.25,41.0)*1.4,s:.8+pt*.3});
+    cursorRun(t,[[39.0,W*.85,H+40],[39.8,'#good',.35,.6]],[39.95],[39.0,40.6]);
+    // C : classement
+    io($('#board'),t,40.95,42.95,{y:120});
+    const sw=E.io(P(t,41.5,42.2)),pts=Math.round(lerp(1180,1300,E.out(P(t,41.3,42.0))));
+    BROWS.forEach((r,i)=>{let idx=i;if(i===4)idx=lerp(4,2,sw);else if(i>=2)idx=i+sw;
+      r.style.top=(idx*96)+'px';r.style.zIndex=i===4?2:1;
+      r.querySelector('.r').textContent=Math.round(i===4?lerp(5,3,sw):i>=2?i+1+sw:i+1);
+      if(i===4){r.querySelector('em').textContent=pts.toLocaleString('fr-FR')+' pts';r.style.transform=`scale(${1+bell(t,41.5,42.2)*.04})`;}
+      const p=E.out(P(t,41.1+i*.06,41.5+i*.06));r.style.opacity=p;});
+    pop($('#upb'),t,42.2);
+  }
+  /* --- 8. Cas cliniques --- */
+  if(t>=43.3&&t<50.75){
+    pop($('#mh3'),t,43.5,50.15);
+    io($('#cas'),t,43.75,50.15,{y:100});
+    const ST=[44.0,...CASCL.map(c=>c+.1)];
+    let cur=0;ST.forEach((s,i)=>{if(t>=s)cur=i;});
+    STEPS.forEach((s,i)=>{s.classList.toggle('on',i<=cur);s.querySelector('.c').style.transform=`scale(${1+bell(t,ST[i],ST[i]+.4)*.25})`;});
+    $('#sbar').style.width=(lerp(0,100,clamp((cur+E.io(P(t,ST[cur],ST[cur]+.4))-1)/4)))+'%';
+    CSTEPS.forEach((c,i)=>{const a=E.expo(P(t,ST[i],ST[i]+.6)),q=i<4?E.in(P(t,ST[i+1]-.12,ST[i+1]+.1)):0;
+      set(c,{x:(1-a)*60-q*60,o:a*(1-q),b:(1-a)*10+q*10});});
+    $('#ecgp').style.strokeDashoffset=ECGL*(1-P(t,ST[2]+.1,ST[2]+1.1));
+    $('#nextb').style.transform=`scale(${1-Math.max(...CASCL.map(c=>bell(t,c,c+.2)))*.08})`;
+    cursorRun(t,[[44.2,W+60,H*.95],[44.75,'#nextb',.45,.55],[48.3,'#nextb',.45,.55]],CASCL,[44.2,49.0]);
+  }
+  /* --- 9. Syndromes --- */
+  if(t>=50.6&&t<56.3){
+    pop($('#mh4'),t,50.8,55.75);
+    const off=SHORT?235:420;
+    [['sc1',-1,51.0],['sc2',0,51.15],['sc3',1,51.3]].forEach(([id,k,at])=>{const p=E.expo(P(t,at,at+.9));
+      const lift=id==='sc2'?E.io(P(t,52.1,52.5)):0;const push=id!=='sc2'?E.io(P(t,52.1,52.5)):0;
+      set($('#'+id),{x:k*off*p+k*push*40,y:(1-p)*300-lift*20+Math.abs(k)*30,r:k*8*p+k*push*4,s:(id==='sc2'?1+lift*.08:(SHORT?.84:.94)-push*.04),o:P(t,at,at+.2)*(id==='sc2'?1:1-push*.35),b:(1-p)*12});
+    });
+    const fl=E.io(P(t,52.35,52.95));$('#flip2').style.transform=`rotateY(${fl*180}deg)`;
+    $$('#sc2 .crit').forEach((c,i)=>{const at=52.95+i*.4,k=E.out(P(t,at,at+.35));c.style.opacity=k;c.style.transform=`translateX(${(1-k)*30}px)`;});
+    sceneOut($('#synd'),t,55.75,.5,1.4);
+  }
+  /* --- 10. Anglais médical --- */
+  if(t>=56.2&&t<62.35){
+    pop($('#mh5'),t,56.4,61.85);
+    io($('#fc'),t,56.65,61.85,{y:80,rx:-20});
+    const fl=E.io(P(t,57.6,58.2));$('#fcflip').style.transform=`rotateY(${fl*180}deg)`;
+    ['p1','p2','p3'].forEach((id,i)=>io($('#'+id),t,58.85+i*.5,61.85,{x:SHORT?0:-80,y:SHORT?60:0,d:.7}));
+    pop($('#edone'),t,60.55,61.85);
+  }
+  /* --- 11. Campus --- */
+  if(t>=62.3&&t<68.75){
+    pop($('#mh6'),t,62.5,68.25);
+    ['ct1','ct2','ct3'].forEach((id,i)=>{io($('#'+id),t,62.8+i*.15,68.25,{y:80});
+      const hl=id==='ct1'?bell(t,63.85,65.0):id==='ct2'?P(t,65.25,65.4)*(1-P(t,67.2,67.5)):P(t,67.4,67.6);
+      $('#'+id).style.borderColor=hl>.05?`rgba(37,99,235,${hl})`:'transparent';});
+    io($('#shelf'),t,65.4,68.25,{y:80});
+    TABS.forEach((tb,i)=>{const p=E.out(P(t,65.5+i*.05,65.9+i*.05));tb.style.opacity=p;tb.style.transform=`translateY(${(1-p)*16}px) scale(${i===3?1+bell(t,66.15,66.35)*-.06:1})`;tb.classList.toggle('on',i===3&&t>=66.2);});
+    BOOKS.forEach((b,i)=>{const p=E.back(P(t,66.35+i*.07,66.75+i*.07));b.style.transform=`translateY(${(1-Math.max(0,p))*240}px)`;b.style.opacity=P(t,66.35+i*.07,66.45+i*.07);});
+    cursorRun(t,[[64.4,W+60,H*.6],[65.1,'#ct2',.5,.6],[66.0,TABS[3],.5,.6]],[65.25,66.15],[64.4,66.9]);
+  }
+  /* --- 12. Brain Wheel --- */
+  if(t>=68.6&&t<75.35){
+    pop($('#mh7'),t,68.8,74.85);
+    io($('#wheel'),t,69.0,74.85,{y:120,s:.7});
+    const ang=spinAngle(t)+(t<SPIN0?Math.sin(t*1.5)*4:0);
+    $('#wrot').setAttribute('transform',`rotate(${-ang})`);
+    $('#hub').style.transform=`scale(${1-bell(t,70.85,71.05)*.1})`;
+    $('.pointer').style.transform=`rotate(${t>SPIN0&&t<SPIN1+.2?Math.sin(spinAngle(t)/45*Math.PI*2)*-10*(1-P(t,SPIN0,SPIN1)):0}deg)`;
+    pop($('#wres'),t,73.05,74.85);
+    cursorRun(t,[[69.9,W*.9,H+40],[70.7,'#hub',.55,.6]],[70.85],[69.9,71.5]);
+  }
+  /* --- 13. Blog --- */
+  if(t>=75.2&&t<80.6){
+    pop($('#mh8'),t,75.4,79.8);
+    ['b1','b2','b3'].forEach((id,i)=>{const p=io($('#'+id),t,75.8+i*.25,79.8,{x:SHORT?0:160,y:SHORT?120:40});
+      if(id==='b2'){const h=E.io(P(t,77.9,78.2));$('#b2').style.transform+=` translateY(${-h*18}px)`;$('#b2').style.boxShadow=`0 ${30+h*20}px ${80+h*20}px rgba(30,64,175,${.14+h*.1})`;}});
+    cursorRun(t,[[77.2,W+60,H*.85],[77.95,'#b2',.6,.55]],[],[77.2,79.6]);
+    sceneOut($('#blog'),t,79.85,.5,1.6);
+  }
+  /* --- 14. Outro --- */
+  if(t>=80.25){const lt=t-80.25;
+    const conv=E.io(P(lt,0,1.4));
+    SPARKS.forEach((s,i)=>{const r=lerp(s.r0,s.r1,conv)+Math.sin(lt*2+s.ph)*20,an=s.a+lt*s.sp;const fl=.55+.45*Math.sin(lt*6+s.ph);
+      set(s.e,{x:W/2+Math.cos(an)*r*(SHORT?.75:1.5),y:H/2+Math.sin(an)*r*(SHORT?1.4:.85),r:an*57,o:P(lt,.1+i*.01,.5+i*.01)*fl*lerp(1,.5,P(lt,1.5,2.5))});});
+    const m=E.back(P(t,80.7,81.3));set($('#markO'),{s:Math.max(0,m),o:P(t,80.7,80.85)});
+    $('#markO').style.filter=`drop-shadow(0 0 ${22+10*Math.sin(lt*3)}px rgba(59,130,246,.85))`;
+    $$('#markO path').forEach(pa=>{pa.style.strokeDasharray=400;pa.style.strokeDashoffset=400*(1-E.out(P(t,80.9,81.7)));});
+    const w=E.expo(P(t,81.05,81.7));set($('#wordO'),{x:SHORT?0:(1-w)*-140,y:SHORT?(1-w)*-50:0,o:w,b:(1-w)*16});
+    animWords(WtO,t,{ats:[82.2,82.4,82.6,83.66,83.85]});
+    const c=E.expo(P(t,84.85,85.5));set($('#ctaO'),{y:(1-c)*50,o:c,b:(1-c)*14});
+    $('#outro').style.opacity=1-P(t,87.3,88);
+  }
+  // curseur
+  set($('#cursor'),{x:CUR.x-8,y:CUR.y-4,o:CUR.o,s:1-CUR.press*.18});
+  if(FX){set($('#clickfx'),{x:FX[0],y:FX[1],s:.3+E.out(FX[2])*1.2,o:1-FX[2]});}else $('#clickfx').style.opacity=0;
+}
+
+/* ===================== Lecture ===================== */
+function fit(){const s=Math.min(innerWidth/W,(innerHeight-44)/H);stage.style.transform=`translate(${(innerWidth-W*s)/2}px,${(innerHeight-44-H*s)/2}px) scale(${s})`;}
+if(RENDER){document.body.classList.add('render');stage.style.transform='none';}
+else{addEventListener('resize',fit);fit();}
+window.renderFrame=t=>render(t);
+render(0);
+if(!RENDER){
+  let playing=true,t0=performance.now(),tt=0;const sc=$('#scrub'),tc=$('#tc'),pb=$('#play');
+  pb.onclick=()=>{playing=!playing;pb.textContent=playing?'Pause':'Lecture';t0=performance.now()-tt*1000;};
+  sc.oninput=()=>{tt=+sc.value;t0=performance.now()-tt*1000;render(tt);tc.textContent=tt.toFixed(2)+' s';};
+  (function loop(){if(playing){tt=((performance.now()-t0)/1000)%DUR;sc.value=tt;tc.textContent=tt.toFixed(2)+' s';render(tt);}requestAnimationFrame(loop);})();
+}
+</script>
+</body>
+</html>
