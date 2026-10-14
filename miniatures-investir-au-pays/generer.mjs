@@ -56,7 +56,7 @@ function construireHTML(c, base) {
   const lignes = [c.ligne1, c.ligne2].map((t, i) =>
     i + 1 === jaune
       ? `<div class="ligne"><span class="bandeau">${esc(maj(t)).replace(/[{}]/g, '')}</span></div>`
-      : `<div class="ligne"><span class="blanc">${balisage(t)}</span></div>`);
+      : `<div class="ligne"><span class="blanc" data-t="${esc(maj(t)).replace(/[{}]/g, '')}"><span class="chrome">${balisage(t)}</span></span></div>`);
 
   // Fond : une photo, ou deux moities (avant / apres).
   // Fond reconnaissable : legerement floute et assombri ; le degrade noir assure la lisibilite du texte.
@@ -146,10 +146,36 @@ function construireHTML(c, base) {
   if (c.fleche) accents += fleche(c.fleche);
   // Petits elements detoures aux bords (billets, pieces, cles...) : plus petits que la personne,
   // jamais sur le visage ni sur le texte. Ombre de contact douce + lumiere raccordee a l'ambiance.
-  for (const e of c.elements ?? []) {
-    accents += `<img class="element" src="${url(e.img, base)}" style="left:${e.x}px; top:${e.y}px; width:${e.largeur ?? 220}px;
-      transform:rotate(${e.rotation ?? 0}deg)${e.miroir ? ' scaleX(-1)' : ''};
-      filter:${e.flou ? `blur(${e.flou}px) ` : ''}saturate(1.1) contrast(1.05) drop-shadow(0 10px 12px rgba(0,0,0,.55)) drop-shadow(0 2px 3px rgba(0,0,0,.5))">`;
+  // Elements en 3 plans (references studio) :
+  //  - arriere : derriere la personne, petit, flou de profondeur ;
+  //  - milieu  : net, avec ombre portee et lumiere de la scene ;
+  //  - avant   : premier plan, grand, flou, coupe par le bord du cadre.
+  // Perspective 3D (rx, ry), rotation, flou de mouvement directionnel (mouvement: force en px,
+  // dans l'axe de l'objet). Un element moche est pire que pas d'element.
+  const plans = { arriere: '', milieu: '', avant: '' };
+  let defs = '';
+  (c.elements ?? []).forEach((e, k) => {
+    const plan = e.plan ?? 'milieu';
+    const flou = e.flou ?? { arriere: 3, milieu: 0, avant: 7 }[plan];
+    const [rx, ry] = e.perspective ?? [0, 0];
+    let mb = '';
+    if (e.mouvement) { defs += `<filter id="mb${k}" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${e.mouvement} 0"/></filter>`; mb = `url(#mb${k}) `; }
+    const lum = { arriere: 'brightness(.8)', milieu: 'brightness(1.02)', avant: 'brightness(.88)' }[plan];
+    const ombre = plan === 'milieu' ? ' drop-shadow(0 16px 16px rgba(0,0,0,.55)) drop-shadow(0 3px 4px rgba(0,0,0,.45))' : plan === 'arriere' ? ' drop-shadow(0 8px 10px rgba(0,0,0,.45))' : '';
+    plans[plan] += `<img class="element ${plan}" src="${url(e.img, base)}" style="left:${e.x}px; top:${e.y}px; width:${e.largeur ?? 220}px;
+      transform:perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${e.rotation ?? 0}deg)${e.miroir ? ' scaleX(-1)' : ''};
+      filter:${mb}${flou ? `blur(${flou}px) ` : ''}${lum} saturate(1.12) contrast(1.06)${ombre}">`;
+  });
+  accents += plans.avant;
+
+  // Bokeh / particules lumineuses discretes (couleur de la lumiere), en arriere-plan.
+  let bokeh = '';
+  if (c.bokeh) {
+    let g = 7; const rnd = () => ((g = (g * 16807) % 2147483647) / 2147483647);
+    for (let k = 0; k < (c.bokeh === true ? 18 : c.bokeh); k++) {
+      const r = 6 + rnd() * 22, x = 420 + rnd() * 860, y = rnd() * 640;
+      bokeh += `<div class="bokeh" style="left:${x}px; top:${y}px; width:${2 * r}px; height:${2 * r}px; opacity:${0.12 + rnd() * 0.3}; filter:blur(${1 + rnd() * 4}px)"></div>`;
+    }
   }
 
   const textePos = duo
@@ -175,7 +201,7 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .rayons { mix-blend-mode:screen; filter:blur(5px); opacity:.8; }
 .flare { mix-blend-mode:screen; }
 .vignette { z-index:4; }
-.element { position:absolute; z-index:4; }
+.element { position:absolute; }
 .rim { position:absolute; pointer-events:none; background:var(--lumiere); mix-blend-mode:screen; filter:blur(1.6px);
   -webkit-mask-size:contain, contain; mask-size:contain, contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
 .visage { position:absolute; pointer-events:none; mix-blend-mode:soft-light;
@@ -185,24 +211,32 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .couture { position:absolute; top:0; bottom:0; left:calc(50% - 3px); width:6px; background:#000; }
 .degrade { position:absolute; inset:0; background:${degrade}; }
 .personne { position:absolute; object-fit:contain; object-position:bottom center; }
-.halo { position:absolute; width:760px; height:760px; mix-blend-mode:screen; opacity:.75; pointer-events:none; }
+.halo { position:absolute; width:760px; height:760px; mix-blend-mode:screen; opacity:.85; pointer-events:none; transform:scale(1.35); }
+.bokeh { position:absolute; border-radius:50%; background:radial-gradient(circle, var(--lumiere) 0%, rgba(255,255,255,0) 70%); mix-blend-mode:screen; pointer-events:none; }
+.element.avant { z-index:6; }
+.element.milieu { z-index:3; }
 .harmonie { position:absolute; mix-blend-mode:soft-light; pointer-events:none;
   -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   -webkit-mask-position:bottom center; mask-position:bottom center; }
 #texte { position:absolute; display:flex; flex-direction:column; gap:14px; z-index:5; }
 .ligne { white-space:nowrap; line-height:1; font-family:${c.police === 'bebas' ? "'BebasLocal','Bebas Neue'" : "'AntonLocal','Anton'"}; }
 .blanc, .bandeau { width:max-content; }
-.blanc { color:#fff; display:inline-block;
-  -webkit-text-stroke:.035em #000; paint-order:stroke fill;
-  text-shadow: 4px 6px 0 rgba(0,0,0,.95), 0 10px 28px rgba(0,0,0,.8), 0 0 46px rgba(0,0,0,.55), 0 0 2px rgba(255,255,255,.25); }
-.blanc .sym { background:${DEGRADE_JAUNE}; -webkit-background-clip:text; background-clip:text; color:transparent;
-  text-shadow:none; filter:drop-shadow(4px 6px 0 rgba(0,0,0,.95)) drop-shadow(0 8px 20px rgba(0,0,0,.7)); }
+.blanc { display:inline-block; position:relative; isolation:isolate; }
+/* Ligne blanche premium : chrome metallique (blanc -> argent -> blanc) au-dessus d'une extrusion 3D. */
+.chrome { position:relative; background:linear-gradient(180deg, #ffffff 0%, #f7f7f7 42%, #cfd2d7 54%, #ffffff 78%, #ececec 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-stroke:.03em #0b0b0b; paint-order:stroke fill; }
+.blanc::before { content:attr(data-t); position:absolute; left:0; top:0; z-index:-1; color:#1d1d1d; -webkit-text-stroke:.03em #000;
+  text-shadow: .008em .008em 0 #2b2b2b, .016em .016em 0 #262626, .024em .024em 0 #202020, .032em .032em 0 #1a1a1a,
+    .04em .042em 0 #000, 0 .07em .16em rgba(0,0,0,.85), 0 0 .3em rgba(0,0,0,.5); }
+.blanc .sym { background:${DEGRADE_JAUNE}; -webkit-background-clip:text; background-clip:text; color:transparent; }
 .diff { position:relative; display:inline-block; }
 .diff::after { content:''; position:absolute; left:50%; top:22%; width:.09em; height:62%; background:#F7A600;
   transform:translateX(-50%) rotate(28deg); box-shadow:3px 4px 0 #000; }
 .bandeau { display:inline-block; background:${DEGRADE_JAUNE}; color:#000; padding:.06em .14em .02em; position:relative;
-  box-shadow: inset 0 3px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(150,70,0,.22),
-    0 6px 10px rgba(0,0,0,.45), 0 16px 34px rgba(0,0,0,.55), 0 0 26px rgba(255,200,30,.18); }
+  text-shadow: 0 .02em 0 rgba(255,255,255,.35);
+  box-shadow: inset 0 3px 0 rgba(255,255,255,.55), inset 0 -3px 0 rgba(150,70,0,.25), inset 3px 0 0 rgba(255,255,255,.18),
+    0 .045em 0 #B86A00, 0 .07em .03em rgba(0,0,0,.45), 0 16px 34px rgba(0,0,0,.55), 0 0 26px rgba(255,200,30,.18); }
 .bandeau::before { content:''; position:absolute; left:0; right:0; top:0; height:38%;
   background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0)); pointer-events:none; }
 .etiquette { position:absolute; z-index:6; background:${ROUGE}; color:#fff; font-family:'AntonLocal','Anton';
@@ -213,8 +247,12 @@ svg.fleche { position:absolute; inset:0; z-index:7; filter:drop-shadow(2px 3px 3
 </style></head><body><div id="m">
 ${fond}
 ${effetsFond}
+${bokeh}
 <div class="degrade"></div>
+${plans.arriere}
 ${personnes}
+${plans.milieu}
+<svg width="0" height="0" style="position:absolute">${defs}</svg>
 <div class="vignette" style="background:radial-gradient(ellipse 75% 85% at 62% 45%, transparent 55%, rgba(0,0,0,${amb.vignette}) 100%)"></div>
 <div id="texte" style="${textePos}">${lignes.join('')}</div>
 ${accents}

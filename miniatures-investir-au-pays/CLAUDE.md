@@ -34,6 +34,11 @@ La charte reste la base ; tu vas au-dela comme un designer de miniatures haut de
 - **Fleches** : fines (epaisseur 10 par defaut), une seule maximum, uniquement si elle sert le message ; jamais pointee sur une personne ou dans le vide.
 - **Jaune en degrade (regle premium 8)** : automatique sur le bandeau et les symboles `{…}`. Degrade #FFE01B (haut gauche) vers #F49A00 (bas droite), reflet clair en haut, ombre douce dessous. Ne reviens jamais a un jaune plat.
 - **Petits elements aux bords (regle premium 9)** : 1 a 3 objets detoures lies au titre, avec `elements`. Prends-les dans `elements/` (voir `elements/CATALOGUE.md`) ; sinon trouve une vraie photo gratuite (Pexels, Unsplash, Pixabay) sur fond contraste, detoure-la avec `detourer.py`, ajoute-la au catalogue et a `fonds/CREDITS.md`. Place-les en bas a gauche sous le texte ou en bordure, plus petits que la personne, jamais sur un visage ni sur le texte, sans surcharger. Un objet mal detoure doit etre ecarte.
+- **Niveau studio (regles 11 a 16 de la charte)** : relis `references/inspiration/ANALYSE.md`. Chaque miniature a 3 plans :
+  - `elements` avec `plan: "avant"` : flou, grand, coupe par le bord ;
+  - la personne, nette ;
+  - `plan: "arriere"` et le fond, flous, avec un grand halo.
+  Reglages des elements : `perspective: [rx, ry]`, `rotation`, `flou` de profondeur, `mouvement` (flou directionnel). Ajoute `bokeh` pour les particules. La ligne blanche est en chrome avec extrusion 3D et le bandeau jaune a une tranche biseautee (automatique). Un element moche (detourage rate, objet meconnaissable une fois floute, contour « fantome ») : ne mets RIEN.
 - **Controle** : ouvre `_planche.png` (grand) ET `_mobile.png` (chaque miniature a 320x180). Tout doit rester lisible et propre en petit. Un effet qui fait IA, kitsch ou « autocollant » doit etre corrige avant livraison.
 
 ## Procedure a chaque demande

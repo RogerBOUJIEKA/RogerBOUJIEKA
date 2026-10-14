@@ -26,6 +26,22 @@
           "photo": "simo:poing-sourire-chemise-bleue",
           "role": "philippe"
         }
+      ],
+      "bokeh": 14,
+      "elements": [
+        {
+          "img": "../../elements/billets-euros-eventail.png",
+          "plan": "avant",
+          "flou": 3,
+          "x": -40,
+          "y": 585,
+          "largeur": 520,
+          "rotation": -8,
+          "perspective": [
+            18,
+            -12
+          ]
+        }
       ]
     },
     {
@@ -47,11 +63,17 @@
       "elements": [
         {
           "img": "../../elements/pieces-or-piles-croissantes.png",
-          "x": 40,
-          "y": 600,
-          "largeur": 400
+          "plan": "milieu",
+          "x": 30,
+          "y": 585,
+          "largeur": 420,
+          "perspective": [
+            38,
+            0
+          ]
         }
-      ]
+      ],
+      "bokeh": 16
     },
     {
       "nom": "3-ils-achetent-afrique",
@@ -71,11 +93,18 @@
       ],
       "elements": [
         {
-          "img": "../../elements/billets-eventail.png",
-          "x": 20,
-          "y": 545,
-          "largeur": 250,
-          "rotation": -8
+          "img": "../../elements/billets-euros-eventail.png",
+          "plan": "avant",
+          "flou": 1.5,
+          "mouvement": 6,
+          "x": -60,
+          "y": 590,
+          "largeur": 470,
+          "rotation": -14,
+          "perspective": [
+            14,
+            20
+          ]
         }
       ]
     },
@@ -100,12 +129,19 @@
       ],
       "elements": [
         {
-          "img": "../../elements/pieces-or-pile.png",
-          "x": 50,
-          "y": 575,
-          "largeur": 140
+          "img": "../../elements/cle-maison.png",
+          "plan": "milieu",
+          "x": 30,
+          "y": 545,
+          "largeur": 330,
+          "rotation": -12,
+          "perspective": [
+            12,
+            -18
+          ]
         }
-      ]
+      ],
+      "bokeh": 12
     },
     {
       "nom": "5-un-terrain-chaque-annee",
@@ -123,18 +159,30 @@
       "elements": [
         {
           "img": "../../elements/billets-rouleau.png",
-          "x": 30,
-          "y": 565,
-          "largeur": 190,
-          "rotation": -10
+          "plan": "avant",
+          "flou": 2.5,
+          "x": -40,
+          "y": 560,
+          "largeur": 260,
+          "rotation": -24,
+          "perspective": [
+            10,
+            18
+          ]
         },
         {
           "img": "../../elements/pieces-or-pile.png",
-          "x": 215,
-          "y": 600,
-          "largeur": 105
+          "plan": "milieu",
+          "x": 235,
+          "y": 605,
+          "largeur": 110,
+          "perspective": [
+            25,
+            0
+          ]
         }
-      ]
+      ],
+      "bokeh": 12
     }
   ]
 }

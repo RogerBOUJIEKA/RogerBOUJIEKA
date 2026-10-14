@@ -25,3 +25,5 @@ Chaque fond utilise dans une miniature est note ici.
 | `elements/billets-eventail.png` | Pexels | a confirmer | https://www.pexels.com/photo/100-u-s-dollar-banknotes-534229/ | Licence Pexels (gratuite) | 2026-10-14 |
 | `elements/billets-rouleau.png` | Pexels | a confirmer | https://www.pexels.com/photo/banknotes-on-white-surface-45110/ | Licence Pexels (gratuite) | 2026-10-14 |
 | `elements/pieces-or-*.png` | Pexels | William Warby (d'apres les resultats de recherche) | https://www.pexels.com/photo/golden-coins-on-white-background-19693228/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `elements/billets-euros-eventail.png` | Pexels | a confirmer | https://www.pexels.com/photo/bundle-of-assorted-denomination-euro-banknotes-259234/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `elements/cle-maison.png` | Pexels | a confirmer | https://www.pexels.com/photo/people-holding-a-house-shaped-key-8292770/ | Licence Pexels (gratuite) | 2026-10-14 |
