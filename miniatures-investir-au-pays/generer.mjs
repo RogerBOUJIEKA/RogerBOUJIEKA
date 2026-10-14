@@ -13,6 +13,8 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 const ICI = path.dirname(fileURLToPath(import.meta.url));
 const W = 1280, H = 720;
 const JAUNE = '#FFE01B', ROUGE = '#E10600';
+// Jaune premium : degrade du jaune charte (clair, haut gauche) vers un jaune-orange profond (bas droite).
+const DEGRADE_JAUNE = 'linear-gradient(155deg, #FFE01B 0%, #FFD514 38%, #FBBC08 72%, #F49A00 100%)';
 
 // --- utilitaires --------------------------------------------------------------
 
@@ -142,6 +144,13 @@ function construireHTML(c, base) {
     accents += `<div class="signature" style="${pos}; bottom:${s.y ?? 22}px">${esc(nom)}</div>`;
   }
   if (c.fleche) accents += fleche(c.fleche);
+  // Petits elements detoures aux bords (billets, pieces, cles...) : plus petits que la personne,
+  // jamais sur le visage ni sur le texte. Ombre de contact douce + lumiere raccordee a l'ambiance.
+  for (const e of c.elements ?? []) {
+    accents += `<img class="element" src="${url(e.img, base)}" style="left:${e.x}px; top:${e.y}px; width:${e.largeur ?? 220}px;
+      transform:rotate(${e.rotation ?? 0}deg)${e.miroir ? ' scaleX(-1)' : ''};
+      filter:${e.flou ? `blur(${e.flou}px) ` : ''}saturate(1.1) contrast(1.05) drop-shadow(0 10px 12px rgba(0,0,0,.55)) drop-shadow(0 2px 3px rgba(0,0,0,.5))">`;
+  }
 
   const textePos = duo
     ? 'left:40px; right:40px; top:22px; align-items:center; text-align:center;'
@@ -166,6 +175,7 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .rayons { mix-blend-mode:screen; filter:blur(5px); opacity:.8; }
 .flare { mix-blend-mode:screen; }
 .vignette { z-index:4; }
+.element { position:absolute; z-index:4; }
 .rim { position:absolute; pointer-events:none; background:var(--lumiere); mix-blend-mode:screen; filter:blur(1.6px);
   -webkit-mask-size:contain, contain; mask-size:contain, contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
 .visage { position:absolute; pointer-events:none; mix-blend-mode:soft-light;
@@ -185,12 +195,16 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
 .blanc { color:#fff; display:inline-block;
   -webkit-text-stroke:.035em #000; paint-order:stroke fill;
   text-shadow: 4px 6px 0 rgba(0,0,0,.95), 0 10px 28px rgba(0,0,0,.8), 0 0 46px rgba(0,0,0,.55), 0 0 2px rgba(255,255,255,.25); }
-.blanc .sym { color:${JAUNE}; }
+.blanc .sym { background:${DEGRADE_JAUNE}; -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:none; filter:drop-shadow(4px 6px 0 rgba(0,0,0,.95)) drop-shadow(0 8px 20px rgba(0,0,0,.7)); }
 .diff { position:relative; display:inline-block; }
-.diff::after { content:''; position:absolute; left:50%; top:22%; width:.09em; height:62%; background:currentColor;
+.diff::after { content:''; position:absolute; left:50%; top:22%; width:.09em; height:62%; background:#F7A600;
   transform:translateX(-50%) rotate(28deg); box-shadow:3px 4px 0 #000; }
-.bandeau { display:inline-block; background:${JAUNE}; color:#000; padding:.06em .14em .02em;
-  box-shadow: 5px 7px 0 rgba(0,0,0,.5), 0 14px 34px rgba(0,0,0,.6), 0 0 26px rgba(255,224,27,.22); }
+.bandeau { display:inline-block; background:${DEGRADE_JAUNE}; color:#000; padding:.06em .14em .02em; position:relative;
+  box-shadow: inset 0 3px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(150,70,0,.22),
+    0 6px 10px rgba(0,0,0,.45), 0 16px 34px rgba(0,0,0,.55), 0 0 26px rgba(255,200,30,.18); }
+.bandeau::before { content:''; position:absolute; left:0; right:0; top:0; height:38%;
+  background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0)); pointer-events:none; }
 .etiquette { position:absolute; z-index:6; background:${ROUGE}; color:#fff; font-family:'AntonLocal','Anton';
   font-size:40px; line-height:1; padding:8px 16px 6px; box-shadow:4px 5px 0 rgba(0,0,0,.6); }
 .signature { position:absolute; z-index:6; color:#fff; font-family:'SignatureLocal','Mrs Saint Delafield';

@@ -43,6 +43,14 @@
           "role": "philippe",
           "recadrage": 0.8
         }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/pieces-or-piles-croissantes.png",
+          "x": 40,
+          "y": 600,
+          "largeur": 400
+        }
       ]
     },
     {
@@ -59,6 +67,15 @@
           "photo": "simo:mains-jointes-menton-chemise-blanche",
           "role": "philippe",
           "recadrage": 0.8
+        }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/billets-eventail.png",
+          "x": 20,
+          "y": 545,
+          "largeur": 250,
+          "rotation": -8
         }
       ]
     },
@@ -80,6 +97,14 @@
           "role": "philippe",
           "recadrage": 0.55
         }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/pieces-or-pile.png",
+          "x": 50,
+          "y": 575,
+          "largeur": 140
+        }
       ]
     },
     {
@@ -93,6 +118,21 @@
         {
           "photo": "simo:poing-sourire-chemise-bleue",
           "role": "philippe"
+        }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/billets-rouleau.png",
+          "x": 30,
+          "y": 565,
+          "largeur": 190,
+          "rotation": -10
+        },
+        {
+          "img": "../../elements/pieces-or-pile.png",
+          "x": 215,
+          "y": 600,
+          "largeur": 105
         }
       ]
     }

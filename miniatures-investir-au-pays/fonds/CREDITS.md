@@ -22,3 +22,6 @@ Chaque fond utilise dans une miniature est note ici.
 | `pexels-29773805-plage-rochers-palmiers.jpg` | Pexels | a confirmer (plage tropicale, pas Kribi) | https://www.pexels.com/photo/tropical-beach-with-palm-trees-and-clear-ocean-29773805/ | Licence Pexels (gratuite) | 2026-10-13 |
 | `pexels-35174931-quartier-ghana-drone.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/aerial-view-of-sowutoum-neighborhood-in-ghana-35174931/ | Licence Pexels (gratuite) | 2026-10-13 |
 | `pexels-35482397-skyline-grues-crepuscule.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/city-skyline-at-dusk-with-construction-cranes-35482397/ | Licence Pexels (gratuite) | 2026-10-13 |
+| `elements/billets-eventail.png` | Pexels | a confirmer | https://www.pexels.com/photo/100-u-s-dollar-banknotes-534229/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `elements/billets-rouleau.png` | Pexels | a confirmer | https://www.pexels.com/photo/banknotes-on-white-surface-45110/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `elements/pieces-or-*.png` | Pexels | William Warby (d'apres les resultats de recherche) | https://www.pexels.com/photo/golden-coins-on-white-background-19693228/ | Licence Pexels (gratuite) | 2026-10-14 |
