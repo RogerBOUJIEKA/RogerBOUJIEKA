@@ -388,19 +388,47 @@
     Object.assign(fLogoBar.style, { left: FL.x + 'px', top: L.logos + 'px' });
   }
 
-  // 14 AGENCY
+  // 14 AGENCY – animated signature: the dove (Holy Spirit) flies in, lands in the B, then takes off again
   const LW_ = P ? 860 : 1000, LH_ = LW_ * 680 / 2366;
+  const LGX = (W - LW_) / 2, LGY = (H - LH_) / 2 + (P ? 0 : 10);
+  const WING = 'M262,120 C252,84 230,52 196,30 C186,24 174,20 160,18 C170,30 176,40 178,46 C164,34 146,28 126,28 C138,40 148,52 152,60 C136,52 116,50 98,54 C114,64 128,74 136,82 C120,80 104,84 90,90 C110,100 132,106 152,110 C140,112 128,116 118,122 C160,128 210,130 250,130 Z';
+  const FEATH = 'M254,116 C230,80 206,54 182,40 M248,120 C214,90 184,66 156,56 M244,124 C204,104 170,92 140,86 M240,126 C200,118 168,114 140,114';
+  const BODY = 'M360,104 C356,92 344,80 326,78 C308,76 294,86 286,100 C278,114 262,124 238,132 C206,142 168,146 132,150 L70,156 C96,170 130,178 168,180 C214,182 262,174 296,152 C312,142 324,128 334,118 C344,112 354,110 360,104 Z';
+  const TAIL = 'M140,152 L44,136 L58,150 L30,157 L58,166 L36,181 L80,176 L150,170 Z';
+  const doveSVG = id => `<svg id="${id}" class="abs" viewBox="0 0 400 300" width="300" height="225" style="overflow:visible;left:0;top:0;transform-origin:187px 96px">
+      <g class="wb"><path d="${WING}" fill="#cfd8e3"/></g>
+      <path d="${TAIL}" fill="#eef3f8"/><path d="${BODY}" fill="#ffffff"/>
+      <path d="M357,99 L376,105 L357,110 Z" fill="#c9a49a"/><circle cx="331" cy="94" r="5.2" fill="#E00000"/><circle cx="332.6" cy="92.6" r="1.6" fill="#fff"/>
+      <g class="wf"><path d="${WING}" fill="#ffffff"/><path d="${FEATH}" stroke="#d9e2ec" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
   scene('agency', `
-    <div class="ctr mont" id="ag0" style="font-weight:600;font-size:${P ? 26 : 26}px;letter-spacing:.6em;padding-left:.6em;color:#c9c9d2">${spl('UNE RÉALISATION')}</div>
-    <div class="abs" id="aglogo" style="left:${(W - LW_) / 2}px;top:${(H - LH_) / 2 + 30}px;width:${LW_}px;height:${LH_}px">
-      <img src="${A}bj_white_mark.png" id="agm" class="abs" style="left:0;top:0;width:100%;height:100%">
+    <div class="ctr mont" id="ag0" style="font-weight:600;font-size:26px;letter-spacing:.6em;padding-left:.6em;color:#c9c9d2">${spl('UNE RÉALISATION')}</div>
+    <div class="abs" id="agring" style="width:400px;height:400px;border-radius:50%;border:6px solid rgba(255,255,255,.9);box-shadow:0 0 40px 10px rgba(255,40,40,.55),inset 0 0 30px rgba(255,255,255,.6)"></div>
+    <div class="abs" id="aglogo" style="left:${LGX}px;top:${LGY}px;width:${LW_}px;height:${LH_}px">
+      <img src="${A}bj_white_mark.png" id="agm" class="abs" style="left:0;top:0;width:100%;height:100%;transform-origin:9% 50%">
       <img src="${A}bj_white_word.png" id="agw" class="abs" style="left:0;top:0;width:100%;height:100%">
       <img src="${A}bj_white_agency.png" id="aga" class="abs" style="left:0;top:0;width:100%;height:100%">
       <div id="agshine" class="abs" style="left:0;top:0;width:100%;height:100%;-webkit-mask:url(${A}boujieka_white.png) 0 0/100% 100% no-repeat;mask:url(${A}boujieka_white.png) 0 0/100% 100% no-repeat"><div id="agband" style="position:absolute;top:-20%;height:140%;width:22%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.95),rgba(255,255,255,0));transform:skewX(-20deg)"></div></div>
     </div>
-    <div class="abs" id="agflare" style="left:0;width:${W}px;height:6px;background:linear-gradient(90deg,rgba(255,0,0,0),rgba(255,60,60,.9) 40%,#fff 50%,rgba(255,60,60,.9) 60%,rgba(255,0,0,0));box-shadow:0 0 30px 10px rgba(255,30,30,.6)"></div>`);
-  q('agency', '#ag0').style.top = ((H - LH_) / 2 - 60) + 'px';
-  q('agency', '#agflare').style.top = (H / 2 + 30) + 'px';
+    <div class="ctr mont" id="ag1" style="font-weight:500;font-size:${P ? 30 : 32}px;letter-spacing:.32em;padding-left:.32em;color:#e8e8ee">Réalisé par <b style="font-weight:800;color:#fff">Roger BOUJIEKA</b></div>
+    <div class="abs" id="agline" style="height:3px;width:${P ? 520 : 600}px;left:${(W - (P ? 520 : 600)) / 2}px;background:linear-gradient(90deg,rgba(255,30,30,0),#ff2a2a 30%,#fff 50%,#ff2a2a 70%,rgba(255,30,30,0))"></div>
+    ${doveSVG('dove1')}${doveSVG('dove2')}`);
+  q('agency', '#ag0').style.top = (LGY - (P ? 90 : 95)) + 'px';
+  q('agency', '#ag1').style.top = (LGY + LH_ + (P ? 70 : 62)) + 'px';
+  q('agency', '#agline').style.top = (LGY + LH_ + (P ? 44 : 38)) + 'px';
+  const DOVE_T = { x: LGX + LW_ * .085, y: LGY + LH_ * .5 };   // the B / dove of the logo
+  const doves = [q('agency', '#dove1'), q('agency', '#dove2')];
+  doves.forEach(d => d.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,.95)) drop-shadow(0 0 26px rgba(255,255,255,.55)) drop-shadow(0 0 40px rgba(255,40,40,.45))');
+  function flap(svg, t, f, amp = 1) {
+    const ph = t * f * Math.PI * 2, k = .5 - .5 * Math.cos(ph);
+    const th = lerp(18, -72, k) * amp, sy = lerp(1, .55, Math.sin(k * Math.PI));
+    const tf = (a, s2) => `translate(262 120) rotate(${a.toFixed(2)}) scale(1 ${s2.toFixed(3)}) translate(-262 -120)`;
+    svg.querySelector('.wf').setAttribute('transform', tf(th, sy));
+    svg.querySelector('.wb').setAttribute('transform', tf(th * .85 + 10, sy * .9));
+  }
+  const bez = (p0, p1, p2, u) => [(1 - u) * (1 - u) * p0[0] + 2 * (1 - u) * u * p1[0] + u * u * p2[0], (1 - u) * (1 - u) * p0[1] + 2 * (1 - u) * u * p1[1] + u * u * p2[1]];
+  const ARR = { a: [-260, H + 180], c: P ? [W * .05, H * .62] : [W * .12, H * .30], b: [DOVE_T.x, DOVE_T.y], t0: 88.2, d: 1.3 };
+  const TOF = { a: [DOVE_T.x, DOVE_T.y], c: P ? [W * .75, H * .48] : [W * .55, H * .30], b: [W + 320, -300], t0: 91.6, d: 1.45 };
+  let TRAIL = [];
 
   // gradient text: move the gradient onto each animated letter, shadow via filter
   document.querySelectorAll('.gradOr,.gradBl,.gradGold,.gradWhite').forEach(e => {
@@ -483,7 +511,7 @@
     mkSpark(43.7, W / 2, H / 2, 26, P ? 420 : 640, 23),
     mkSpark(45.9, P ? W / 2 : W / 2 + 520, P ? H / 2 : H / 2 + 60, 16, 200, 24),
     mkSpark(73.75, P ? W / 2 : 1360, P ? 1550 : 700, 24, P ? 460 : 520, 25),
-    mkSpark(81.3, W / 2, H / 2 + 30, 26, P ? 420 : 520, 26),
+    mkSpark(89.5, P ? 195 : 560, P ? 970 : 550, 22, 160, 26), mkSpark(90.6, W / 2, H / 2, 24, P ? 420 : 520, 27),
   ];
   function drawFx(t, dust) {
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
@@ -518,11 +546,21 @@
         ctx.globalAlpha = k * .5; ctx.beginPath(); ctx.arc(0, 0, sz * .35, 0, 6.283); ctx.fill(); ctx.restore();
       }
     }
+    if (TRAIL.length > 1) {
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (const [col, wm, am] of [['255,40,40', 2.4, .3], ['255,170,170', 1.2, .5], ['255,255,255', .5, .95]]) {
+        for (let i = 0; i < TRAIL.length - 1; i += 5) {
+          const seg = TRAIL.slice(i, i + 6); if (seg.length < 2) break;
+          ctx.globalAlpha = seg[0][2] * am; ctx.strokeStyle = `rgb(${col})`; ctx.lineWidth = seg[0][3] * wm;
+          ctx.beginPath(); ctx.moveTo(seg[0][0], seg[0][1]); for (const [x, y] of seg.slice(1)) ctx.lineTo(x, y); ctx.stroke();
+        }
+      }
+    }
     ctx.globalAlpha = 1;
   }
 
   // ---------------------------------------------------------------- camera
-  const SHAKES = [[10.63, .35, 9], [20.3, .5, 16], [31.25, .2, 5], [39.72, .2, 6], [41.84, .2, 6], [45.85, .3, 10], [63.8, .35, 10], [67.55, .3, 7], [81.25, .3, 6]];
+  const SHAKES = [[10.63, .35, 9], [20.3, .5, 16], [31.25, .2, 5], [39.72, .2, 6], [41.84, .2, 6], [45.85, .3, 10], [63.8, .35, 10], [67.55, .3, 7], [89.5, .25, 5]];
   const BEATS = TL.beats;
   function camera(t, sceneName) {
     let x = 0, y = 0, r = 0;
@@ -539,7 +577,7 @@
   }
 
   // ---------------------------------------------------------------- transitions (wipes)
-  const CUTS = [4.75, 9.0, 12.75, 15.0, 25.35, 29.85, 36.55, 47.35, 57.85, 62.65, 67.55, 80.9];
+  const CUTS = [4.75, 9.0, 12.75, 15.0, 25.35, 29.85, 36.55, 47.35, 57.85, 62.65, 67.55];
   function wipes(t) {
     const bw = W * 1.45; wipeA.style.width = bw + 'px'; wipeB.style.width = bw + 'px';
     let shown = false;
@@ -825,26 +863,68 @@
     cells.forEach((c, i) => { const p = pr(t, ct[i], .4, E.back); S(c, { y: (1 - p) * 20, o: p }); });
     pills.forEach((p, i) => { const k = pr(t, wt('soyez', 72.4) - .2 + i * .12, .5, E.back2); S(p, { y: (1 - k) * 50, s: lerp(.6, 1, k), o: clamp(k * 2) }); });
     const php = pr(t, 73.05, .5, E.back); S(q('final', '#f_ph'), { x: (1 - php) * 60, o: php });
-    const lg = pr(t, wt('nombreux', 73.4) - .1, .5, E.back); S(fLogoBar, { y: (1 - lg) * 40, o: lg });
+    const lg = pr(t, wt('nombreux', 73.4) - .1, .5, E.back);
+    const pulse = (t0, d = .5, a = .045) => a * Math.sin(Math.PI * clamp((t - t0) / d));
+    S(fLogoBar, { y: (1 - lg) * 40, o: lg, s: 1 + pulse(84.0) });
+    if (t > 75) {
+      S(fBar, { y: 0, s: 1 + pulse(76.6), o: 1 });
+      pills.forEach((p, i) => S(p, { y: 0, s: 1 + pulse(78.6 + i * .28, .5, .08), o: 1 }));
+      S(q('final', '#f_ph'), { x: 0, o: 1, s: 1 + pulse(81.2, .6, .05) });
+      S(fR, { s: 1 + pulse(85.4, .5, .08), r: -3 + 6 * pulse(85.4, .5, 1), o: 1 }); S(fP, { s: 1 + pulse(85.7, .5, .08), r: 3 - 6 * pulse(85.7, .5, 1), o: 1 });
+    }
+    fadeEl.style.opacity = pr(t, 87.45, .55, E.io);
     return { dust: .5, corner: 0 };
   };
+  function doveAt(path, t, e) {
+    const u = e(clamp((t - path.t0) / path.d));
+    const p = bez(path.a, path.c, path.b, u), p2 = bez(path.a, path.c, path.b, Math.min(1, u + .02));
+    const ang = Math.atan2(p2[1] - p[1], p2[0] - p[0]) * 180 / Math.PI;
+    return { p, u, ang };
+  }
   U.agency = (t) => {
-    const lt = t - 80.9;
     setGrad('radial-gradient(ellipse at 50% 52%,#3A0A0E 0%,#14070A 45%,#050507 100%)', 1);
+    setRays(.28 + .2 * pr(t, 89.5, .6), t * .6, 0);
     vign.style.opacity = 1;
-    const m = pr(t, 81.2, .8, E.back2);
-    S(q('agency', '#agm'), { s: lerp(.4, 1, m), r: lerp(-25, 0, m), o: clamp(m * 2.5) });
-    const w = pr(t, 81.55, .7, E.outQuint);
-    q('agency', '#agw').style.clipPath = `inset(0 ${100 - lerp(18.5, 100, w)}% 0 0)`;
+    fadeEl.style.opacity = Math.max(1 - pr(t, 88.0, .4, E.lin), pr(t, 93.2, .8, E.io));
+    TRAIL = [];
+    const [d1, d2] = doves;
+    // 1) arrival
+    if (t < ARR.t0 + ARR.d + .2) {
+      const st = doveAt(ARR, t, E.out);
+      const sc = lerp(P ? .8 : .9, P ? .9 : 1.0, st.u) * (1 - .45 * pr(t, ARR.t0 + ARR.d - .12, .25));
+      const o = clamp((t - ARR.t0) * 6) * (1 - pr(t, ARR.t0 + ARR.d - .05, .18, E.lin));
+      d1.style.left = (st.p[0] - 187) + 'px'; d1.style.top = (st.p[1] - 96) + 'px';
+      S(d1, { r: st.ang * .6, s: sc, o });
+      flap(d1, t, lerp(5.2, 2.2, st.u), 1 - .35 * st.u);
+      for (let k = 9; k < 70; k++) { const tt = t - k * .011; if (tt < ARR.t0) break; const q2 = doveAt(ARR, tt, E.out); TRAIL.push([q2.p[0], q2.p[1], (1 - k / 70) * o, 11 * (1 - k / 70) + 1]); }
+    } else d1.style.opacity = 0;
+    // 2) landing: the B appears with a flash ring
+    const land = ARR.t0 + ARR.d;
+    const m = pr(t, land - .08, .55, E.back2);
+    S(q('agency', '#agm'), { s: lerp(1.35, 1, m) * (1 + .06 * pr(t, TOF.t0 - .1, .2) * (1 - pr(t, TOF.t0 + .15, .5))), o: clamp(m * 3) });
+    const rg = pr(t, land - .05, .7, E.out); const ring = q('agency', '#agring');
+    ring.style.left = (DOVE_T.x - 200) + 'px'; ring.style.top = (DOVE_T.y - 200) + 'px';
+    S(ring, { s: lerp(.1, 2.6, rg), o: (1 - rg) * clamp((t - land + .05) * 20) });
+    const w = pr(t, land + .15, .7, E.outQuint);
+    q('agency', '#agw').style.clipPath = `inset(0 ${(100 - lerp(18.5, 100, w)).toFixed(2)}% 0 0)`;
     S(q('agency', '#agw'), { x: (1 - w) * -40, o: clamp(w * 3) });
-    const a = pr(t, 82.15, .6, E.out); S(q('agency', '#aga'), { y: (1 - a) * 24, o: a });
-    q('agency', '#agband').style.left = lerp(-30, 130, pr(t, 82.7, 1.0, E.io)) + '%';
-    S(q('agency', '#aglogo'), { s: 1 + .035 * pr(t, 81.2, 6.5, E.lin) });
-    letters(q('agency', '#ag0'), t, 81.5, .03, .4, fadeUp(14));
-    const f = pr(t, 81.2, .5, E.out) * (1 - pr(t, 81.7, .9, E.in));
-    S(q('agency', '#agflare'), { sx: lerp(.1, 1.4, pr(t, 81.2, .8)), o: f });
-    fadeEl.style.opacity = pr(t, 87.15, .85, E.io);
-    return { dust: 0, corner: 0 };
+    const a = pr(t, land + .7, .6, E.out); S(q('agency', '#aga'), { y: (1 - a) * 24, o: a });
+    letters(q('agency', '#ag0'), t, land + .35, .03, .4, fadeUp(14));
+    S(q('agency', '#agline'), { sx: pr(t, land + .9, .7, E.outQuint), o: 1 });
+    const n = pr(t, land + 1.05, .6, E.out); S(q('agency', '#ag1'), { y: (1 - n) * 18, o: n });
+    q('agency', '#agband').style.left = lerp(-30, 130, pr(t, land + 1.35, 1.0, E.io)) + '%';
+    S(q('agency', '#aglogo'), { s: 1 + .03 * pr(t, land, 4.5, E.lin) });
+    // 3) take-off on the diagonal (spirit dove leaves the B)
+    if (t >= TOF.t0 - .05) {
+      const st = doveAt(TOF, t, E.in);
+      const sc = lerp(P ? .7 : .75, P ? 1.7 : 2.0, st.u);
+      const o = clamp((t - TOF.t0 + .05) * 8);
+      d2.style.left = (st.p[0] - 187) + 'px'; d2.style.top = (st.p[1] - 96) + 'px';
+      S(d2, { r: st.ang * .55, s: sc, o });
+      flap(d2, t, 4.6, 1);
+      for (let k = 8; k < 80; k++) { const tt = t - k * .011; if (tt < TOF.t0) break; const q2 = doveAt(TOF, tt, E.in); TRAIL.push([q2.p[0], q2.p[1], (1 - k / 80) * o, 14 * (1 - k / 80) + 1]); }
+    } else d2.style.opacity = 0;
+    return { dust: .35, corner: 0 };
   };
 
   // ---------------------------------------------------------------- main render
@@ -857,6 +937,7 @@
     tint.style.opacity = 0; bgGrad.style.opacity = 0; rays.style.opacity = 0; swoosh.style.opacity = 0;
     cabWrap.style.opacity = 0; cabGlow.style.opacity = 0; cutLine.style.opacity = 0;
     flash.style.opacity = 0; fadeEl.style.opacity = 0; vign.style.opacity = 1; capBox.style.opacity = 0;
+    TRAIL = [];
     let name = ORDER[ORDER.length - 1];
     for (const n of ORDER) { const [a, b] = TL.scenes[n]; if (t >= a && t < b) { name = n; break; } }
     if (current !== name) { if (current) SC[current].el.style.display = 'none'; SC[name].el.style.display = 'block'; current = name; }

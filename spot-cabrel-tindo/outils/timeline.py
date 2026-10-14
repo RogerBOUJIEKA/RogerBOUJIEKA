@@ -1,9 +1,9 @@
 # Shared timeline: VO clip cut points (take 1, John Mala) and placements on the spot (seconds).
 import json
 
-DUR = 88.0
+DUR = 94.0
 FPS = 30
-MUSIC_OFFSET = 3.85      # music t=0 plays at T=3.85 -> drop (16.509) lands on "CABREL"
+MUSIC_OFFSET = 3.81      # music drop (16.567 s) lands on "CABREL" (20.38)
 CHOIR_SWITCH_T = 74.10   # crossfade music -> gospel choir
 
 # (id, src_start, src_end, place_T, text)
@@ -42,8 +42,8 @@ SCENES = {
     "phone":    (47.35, 57.85),
     "partners": (57.85, 62.65),
     "together": (62.65, 67.55),
-    "final":    (67.55, 80.9),
-    "agency":   (80.9, 88.0),
+    "final":    (67.55, 88.0),
+    "agency":   (88.0, 94.0),
 }
 
 def vo_map(src_t):

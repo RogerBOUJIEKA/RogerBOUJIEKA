@@ -80,7 +80,7 @@ def smooth(mask, att, rel):
 duck = smooth(vo_env_mask, 0.06, 0.35)
 
 # ---------- MUSIC ----------
-music = load('h6dUuYLGhrm9QSANCxZy')
+music = load('qcDwt7OxwBSok5ZhdhhC')   # evangelical praise instrumental
 mus_bus = np.zeros((2, N), np.float32)
 place(mus_bus, music, MUSIC_OFFSET, 0)
 # fade music out over 1 beat around the choir switch
@@ -89,11 +89,11 @@ mus_bus[:, i1:] = 0
 mus_bus[:, i0:i1] *= np.linspace(1, 0, i1 - i0)
 
 # ---------- CHOIR (gospel "Alléluia") ----------
-choir = load('Lhz5BDT9zLa5s6gF6rrT')
-yb, _ = librosa.load(G + 'Lhz5BDT9zLa5s6gF6rrT.mp3', sr=22050)
+choir = load('seRrgywnZNdRqyl7KrPr')   # evangelical praise vocals ("Alléluia ! Jésus est là !")
+yb, _ = librosa.load(G + 'seRrgywnZNdRqyl7KrPr.mp3', sr=22050)
 _, cb = librosa.beat.beat_track(y=yb, sr=22050, units='time', start_bpm=112)
 cb = np.array(cb)
-CHOIR_IN = cb[np.argmin(np.abs(cb - 6.0))]    # choir beat ~6s in lands on the switch
+CHOIR_IN = cb[np.argmin(np.abs(cb - 10.3))]   # so the praise ending (~25.8 s) lands on the dove landing (~89.6)
 ch = choir[:, int(CHOIR_IN * SR):]
 ch_bus = np.zeros((2, N), np.float32)
 place(ch_bus, fade(ch, 0.08, 0.05), CHOIR_SWITCH_T, 0)
@@ -104,7 +104,7 @@ bed = (mus_bus + ch_bus)
 # base levels
 base = np.full(N, db(-7), np.float32)
 t = np.arange(N) / SR
-base[t < MUSIC_OFFSET + 16.45] = db(+7)           # cinematic intro of the track is very quiet: lift it
+base[t < MUSIC_OFFSET + 16.5] = db(-3)            # intro section of the track
 duck_amt = db(-7.5)
 g = base * (1 - duck * (1 - duck_amt))
 # let the drop + title breathe
@@ -112,7 +112,7 @@ g[(t > 20.1) & (t < 20.3)] = np.maximum(g[(t > 20.1) & (t < 20.3)], db(-3))
 # final choir up after last VO line, then fade to end
 fin = (t > 74.2)
 g[fin] = np.minimum(1.0, g[fin] * 1.0)
-g[t > 86.6] *= np.clip((88.0 - t[t > 86.6]) / 1.4, 0, 1)
+g[t > 92.6] *= np.clip((94.0 - t[t > 92.6]) / 1.4, 0, 1)
 bed *= g[None, :]
 
 # ---------- SFX ----------
@@ -127,6 +127,7 @@ SFX = {
     'murmur': 'qgtObZROy89NYo6rMCdQ', 'drum': 'rlo6WZVug5aVQaW1MVYo',
     'drum2': '4XGmLfkA3tdIlzmO0049', 'slam': 'OINjou0X0IA2EzdfYgs3',
     'shimmer': 'b6IG31b7mXgwAdFUVssJ', 'shimmer2': 'ZCxPI3LgNUs0RqbSZEF0',
+    'wings': 'pI9ukr5SzxUuUppDagEm', 'wings2': 'RH72LroT53BjOe78nVVa', 'heaven': '0Is8M2iFRpr3lWdzUXRO',
 }
 cache = {}
 def sfx(name, t0, gain=-6, dur=None, fout=0.3):
@@ -168,9 +169,12 @@ sfx('whoosh2', 62.55, -11)
 sfx('laugh', 65.95, -11, dur=3.0, fout=1.0)
 sfx('cheer2', 66.30, -14, dur=3.0, fout=1.0)
 sfx('boom', 67.50, -15, dur=2.5, fout=1.0)
-sfx('whoosh', 80.80, -10)
-sfx('shimmer2', 81.20, -9)
-sfx('boom2', 81.25, -15)
+sfx('heaven', 88.05, -10, fout=1.2)        # signature: heavenly swell
+sfx('wings', 88.20, -7)                   # dove arrives
+sfx('shimmer2', 89.45, -10); sfx('boom2', 89.50, -16, dur=2.5, fout=1.0)   # landing in the B
+sfx('shimmer', 90.90, -17)                # shine on the logo
+sfx('wings2', 91.55, -6)                  # take-off on the diagonal
+sfx('whoosh2', 92.10, -14)
 
 # ---------- MASTER ----------
 mix = vo_bus * db(0) + bed + sfx_bus
@@ -186,3 +190,10 @@ sf.write(OUT + f'stem_voice_{TAG}.wav', vo_bus.T, SR, subtype='PCM_24')
 sf.write(OUT + f'stem_music_{TAG}.wav', bed.T, SR, subtype='PCM_24')
 sf.write(OUT + f'stem_sfx_{TAG}.wav', sfx_bus.T, SR, subtype='PCM_24')
 print('master ->', master, 'choir_in', CHOIR_IN)
+
+# version without music (voice + sound design) so a licensed song can be laid in by the editor
+nm = vo_bus + sfx_bus
+pre2 = OUT + f'mix_pre_nomusic_{TAG}.wav'
+sf.write(pre2, nm.T, SR, subtype='FLOAT')
+subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', pre2, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.89:level=false',
+                '-ar', str(SR), '-c:a', 'pcm_s24le', OUT + f'master_nomusic_{TAG}.wav'], check=True)
