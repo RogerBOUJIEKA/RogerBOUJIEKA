@@ -27,3 +27,7 @@ Chaque fond utilise dans une miniature est note ici.
 | `elements/pieces-or-*.png` | Pexels | William Warby (d'apres les resultats de recherche) | https://www.pexels.com/photo/golden-coins-on-white-background-19693228/ | Licence Pexels (gratuite) | 2026-10-14 |
 | `elements/billets-euros-eventail.png` | Pexels | a confirmer | https://www.pexels.com/photo/bundle-of-assorted-denomination-euro-banknotes-259234/ | Licence Pexels (gratuite) | 2026-10-14 |
 | `elements/cle-maison.png` | Pexels | a confirmer | https://www.pexels.com/photo/people-holding-a-house-shaped-key-8292770/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `pexels-34862454-euros-comptes-penombre.jpg` | Pexels | Jakub Zerdzicki (d'apres les resultats de recherche) | https://www.pexels.com/photo/counting-euro-banknotes-in-dim-lighting-34862454/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `pexels-12651886-porte-coffre-fort.jpg` | Pexels | Özge Taşkıran (d'apres les resultats de recherche) | https://www.pexels.com/photo/door-to-the-vault-in-the-centro-cultural-banco-do-brasil-sao-paulo-12651886/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `pexels-28215960-paris-coucher-soleil.jpg` | Pexels | a confirmer | https://www.pexels.com/photo/the-eiffel-tower-is-seen-at-sunset-in-paris-28215960/ | Licence Pexels (gratuite) | 2026-10-14 |
+| `pexels-7447655-facade-banque-colonnes.jpg` | Pexels | Brett Sayles (d'apres les resultats de recherche) | https://www.pexels.com/photo/facade-of-old-bank-with-columns-7447655/ | Licence Pexels (gratuite) | 2026-10-14 |

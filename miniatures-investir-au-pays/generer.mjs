@@ -319,7 +319,13 @@ window.placer = async () => {
     await img.decode();
     const haut = hautTete(img);
     if (haut >= minimum && haut <= maximum) { marges.push(Math.round(haut)); continue; }
-    const d = marge - haut;
+    let d = marge - haut;
+    // On ne remonte jamais au point de decoller le bas du sujet du bord bas (buste « flottant ») :
+    // pour un detourage large, agrandir plutot avec "recadrage".
+    if (d < 0) {
+      const bas = img.getBoundingClientRect().bottom - document.getElementById('m').getBoundingClientRect().top;
+      d = Math.max(d, Math.min(0, ${H} - bas));
+    }
     for (const el of document.querySelectorAll('[data-p="' + img.dataset.p + '"]')) {
       if (el.classList.contains('halo')) el.style.top = (parseFloat(el.style.top) + d) + 'px';
       else el.style.bottom = (parseFloat(el.style.bottom) - d) + 'px';

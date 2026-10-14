@@ -1,0 +1,118 @@
+{
+  "sortie": "sorties",
+  "base": {
+    "vif": true
+  },
+  "variantes": [
+    {
+      "nom": "1-arrete-de-payer-cash",
+      "ligne1": "Arrête de payer",
+      "ligne2": "cash !",
+      "jaune": 2,
+      "ambiance": "argent",
+      "fond": "../../fonds/pexels-34862454-euros-comptes-penombre.jpg",
+      "fond_position": "50% 45%",
+      "personnes": [
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "lumiere_contour": "#ffd9a0"
+        }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/billets-euros-eventail.png",
+          "plan": "avant",
+          "flou": 2,
+          "mouvement": 5,
+          "x": -50,
+          "y": 585,
+          "largeur": 480,
+          "rotation": -10,
+          "perspective": [
+            16,
+            18
+          ]
+        }
+      ],
+      "bokeh": 12
+    },
+    {
+      "nom": "2-la-banque-ma-dit-non",
+      "ligne1": "La banque",
+      "ligne2": "m'a dit non…",
+      "jaune": 2,
+      "ambiance": "alerte",
+      "fond": "../../fonds/pexels-12651886-porte-coffre-fort.jpg",
+      "fond_position": "50% 55%",
+      "personnes": [
+        {
+          "photo": "invitee_traite_detoure.png",
+          "role": "invite"
+        },
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ]
+    },
+    {
+      "nom": "3-le-piege-de-la-diaspora",
+      "ligne1": "Le piège",
+      "ligne2": "de la diaspora",
+      "jaune": 1,
+      "ambiance": "nuit",
+      "fond": "../../fonds/pexels-28215960-paris-coucher-soleil.jpg",
+      "fond_position": "70% 50%",
+      "personnes": [
+        {
+          "photo": "invitee_traite_detoure.png",
+          "role": "invite"
+        },
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "lumiere_contour": "#a9cfff"
+        }
+      ]
+    },
+    {
+      "nom": "4-elle-dit-tout-sur-les-banques",
+      "ligne1": "Elle dit tout",
+      "ligne2": "sur les banques",
+      "jaune": 2,
+      "ambiance": "neutre",
+      "fond": "../../fonds/pexels-7447655-facade-banque-colonnes.jpg",
+      "fond_position": "70% 50%",
+      "personnes": [
+        {
+          "photo": "invitee_traite_detoure.png",
+          "role": "invite",
+          "recadrage": 0.78
+        }
+      ],
+      "bokeh": 10
+    },
+    {
+      "nom": "5-tu-perds-de-largent",
+      "ligne1": "Tu perds de l'argent",
+      "ligne2": "sans le savoir",
+      "jaune": 2,
+      "ambiance": "neutre",
+      "fond": "../../fonds/pexels-7230878-liasse-en-feu.jpg",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ],
+      "luminosite": 1.0,
+      "bokeh": 10,
+      "fond_position": "50% 40%"
+    }
+  ]
+}
