@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Doctor Brain Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ---------- Palette de marque (à ajuster selon la charte officielle) ---------- */
+:root{
+  --blue:#1E40AF; --blue2:#2563EB; --sky:#60A5FA; --cyan:#22D3EE; --violet:#7C3AED; --pink:#EC4899;
+  --ink:#0F172A; --muted:#64748B; --line:#E2E8F0; --bg:#EEF2F8; --ok:#16A34A; --okbg:#DCFCE7;
+  --page:#0B0F19;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --page:#05070C; } }
+:root[data-theme="dark"]{ --page:#05070C; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--page);overflow:hidden;font-family:Inter,"Inter Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;background:#fff;transform-origin:0 0}
+.layer,.scene{position:absolute;inset:0}
+.scene{display:none}
+.center{display:flex;align-items:center;justify-content:center}
+.w{display:inline-block;white-space:pre;will-change:transform,filter,opacity}
+.blob{position:absolute;border-radius:50%;filter:blur(90px)}
+
+/* Typo */
+.hl{font-weight:700;letter-spacing:-.045em;color:var(--ink);line-height:1;text-align:center}
+.grad .w,.w.acc{background:linear-gradient(100deg,var(--cyan),var(--blue2) 55%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .04em}
+.cyanText .w{background:linear-gradient(100deg,#2DE1F5,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:28px}
+.mark{width:150px;height:150px;flex:none}
+.word{font-weight:800;letter-spacing:-.04em;font-size:96px;color:var(--ink);line-height:.95}
+.word span{color:var(--blue2)}
+
+/* Glass */
+.glass{background:rgba(255,255,255,.72);border:1.5px solid rgba(255,255,255,.95);box-shadow:0 30px 80px rgba(30,64,175,.14),inset 0 1px 0 #fff;backdrop-filter:blur(20px)}
+
+/* Phone */
+.phone{position:absolute;width:400px;height:820px;border-radius:64px;background:#0B1220;padding:14px;box-shadow:0 60px 120px rgba(15,23,42,.28),0 0 0 2px #334155 inset}
+.screen{width:100%;height:100%;border-radius:52px;background:#F8FAFC;overflow:hidden;position:relative;font-size:15px;color:var(--ink)}
+.notch{position:absolute;top:12px;left:50%;width:120px;height:34px;margin-left:-60px;border-radius:20px;background:#0B1220;z-index:3}
+.sbar{display:flex;justify-content:space-between;padding:18px 34px 0;font-weight:600;font-size:15px}
+.app{padding:30px 22px 0}
+.apphead{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.apphead svg{width:34px;height:34px}
+.streak{margin-top:16px;border-radius:22px;padding:18px;color:#fff;background:linear-gradient(120deg,var(--blue2),var(--violet));box-shadow:0 12px 30px rgba(37,99,235,.3)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tile{background:#fff;border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(15,23,42,.06);font-weight:600;font-size:14px}
+.tile i{display:flex;width:36px;height:36px;border-radius:11px;align-items:center;justify-content:center;margin-bottom:10px}
+.tile i svg,.row i svg{width:22px;height:22px}
+
+/* Chip */
+.chip{position:absolute;display:flex;align-items:center;gap:14px;padding:14px 24px 14px 14px;border-radius:22px;background:#fff;box-shadow:0 20px 50px rgba(15,23,42,.16)}
+.chip svg{width:52px;height:52px}
+.chip b{font-size:26px;letter-spacing:-.02em;display:block}
+.chip small{font-size:16px;color:var(--muted)}
+
+/* Floating icons */
+.float{position:absolute;width:120px;height:120px;border-radius:36px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#fff,#E0E7FF);box-shadow:0 25px 50px rgba(30,64,175,.18),inset 0 2px 0 #fff}
+.float svg{width:64px;height:64px}
+
+/* Rings / pill */
+.ring{position:absolute;left:50%;top:50%;border-radius:999px}
+.pill{position:absolute;left:50%;top:50%;display:flex;align-items:center;gap:16px;padding:22px 30px 22px 40px;border-radius:999px;background:#fff;font-size:40px;font-weight:600;letter-spacing:-.03em;color:var(--ink);white-space:nowrap;box-shadow:0 20px 50px rgba(37,99,235,.25)}
+.pill .tag{background:var(--blue2);color:#fff;padding:10px 26px;border-radius:999px;font-weight:700}
+
+/* Search */
+.search{position:absolute;display:flex;align-items:center;gap:22px;width:1180px;height:150px;padding:0 26px 0 34px;border-radius:999px}
+.search .mk{width:84px;height:84px;flex:none}
+.search .field{flex:1;height:86px;border-radius:999px;background:#fff;display:flex;align-items:center;padding:0 34px;font-size:32px;color:#334155;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;box-shadow:inset 0 2px 6px rgba(15,23,42,.06)}
+.caret{display:inline-block;width:3px;height:40px;background:var(--blue2);margin-left:3px}
+.search .go{width:84px;height:84px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--sky),var(--blue2));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(37,99,235,.35)}
+.search .go svg{width:38px;height:38px}
+
+/* Rows */
+.row{position:absolute;left:50%;width:620px;margin-left:-310px;height:92px;border-radius:999px;display:flex;align-items:center;gap:20px;padding:0 34px 0 14px;font-size:30px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.row i{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.row i svg{width:32px;height:32px}
+.row em{margin-left:auto;font-style:normal;color:var(--muted);font-size:30px}
+
+/* Quiz */
+.card{position:absolute;left:50%;top:50%;width:1180px;margin-left:-590px;border-radius:44px;padding:48px 56px;background:#fff;box-shadow:0 40px 100px rgba(30,64,175,.16)}
+.qhead{display:flex;align-items:center;gap:16px;font-size:24px;font-weight:600;color:var(--muted)}
+.qhead svg{width:48px;height:48px}
+.badge{margin-left:auto;background:#EFF6FF;color:var(--blue2);padding:10px 20px;border-radius:999px;font-weight:700}
+.prog{height:10px;border-radius:9px;background:#E2E8F0;margin:26px 0 30px;overflow:hidden}
+.prog div{height:100%;border-radius:9px;background:linear-gradient(90deg,var(--cyan),var(--blue2))}
+.question{font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1.15;color:var(--ink)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
+.opt{display:flex;align-items:center;gap:18px;padding:24px 26px;border-radius:24px;border:2.5px solid var(--line);font-size:30px;font-weight:600;color:#1E293B;background:#fff}
+.opt b{width:52px;height:52px;border-radius:15px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--muted);flex:none}
+.opt .ck{margin-left:auto;width:44px;height:44px;opacity:0}
+.points{position:absolute;right:70px;top:-40px;font-size:44px;font-weight:800;color:var(--ok);letter-spacing:-.03em}
+
+/* Notifications */
+.panel{position:absolute;left:50%;top:50%;width:760px;height:1300px;margin:-650px 0 0 -380px;border-radius:90px;background:linear-gradient(160deg,#BFE9F7,#9FD3EC 50%,#B9C9F5);box-shadow:0 60px 120px rgba(15,23,42,.18)}
+.notif{position:absolute;left:50%;width:660px;margin-left:-330px;display:flex;gap:20px;align-items:center;padding:22px 26px;border-radius:36px;background:rgba(255,255,255,.78);box-shadow:0 20px 40px rgba(15,23,42,.12);backdrop-filter:blur(20px)}
+.notif svg{width:72px;height:72px;flex:none}
+.notif b{font-size:26px;letter-spacing:-.02em;display:block;color:var(--ink)}
+.notif p{font-size:23px;color:#334155;margin-top:4px}
+.notif time{position:absolute;right:28px;top:22px;font-size:20px;color:var(--muted)}
+
+/* Dashboard phone */
+.ringwrap{display:flex;align-items:center;gap:16px;background:#fff;border-radius:22px;padding:16px;margin-top:16px;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.bar{margin-top:12px}
+.bar label{display:flex;justify-content:space-between;font-size:14px;font-weight:600}
+.bar div{height:10px;background:#E2E8F0;border-radius:9px;margin-top:6px;overflow:hidden}
+.bar div i{display:block;height:100%;border-radius:9px}
+.rank{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:12px 14px;margin-top:10px;font-weight:600;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.rank .n{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.rank em{margin-left:auto;font-style:normal;color:var(--muted)}
+
+/* Outro */
+.spark{position:absolute;border-radius:4px}
+.cta{display:inline-flex;align-items:center;gap:14px;padding:22px 40px;border-radius:999px;background:linear-gradient(120deg,var(--cyan),var(--blue2) 50%,var(--violet));color:#fff;font-weight:700;font-size:34px;letter-spacing:-.02em;box-shadow:0 0 60px rgba(59,130,246,.55)}
+.url{font-size:30px;color:#94A3B8;font-weight:500;letter-spacing:.02em}
+
+/* Cursor */
+#cursor{position:absolute;left:0;top:0;width:56px;height:56px;z-index:50;pointer-events:none}
+#cursor svg{width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+#clickfx{position:absolute;left:0;top:0;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid var(--blue2);z-index:49}
+
+/* Preview controls */
+#ui{position:fixed;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;padding:10px 16px;background:rgba(0,0,0,.55);color:#fff;font:13px Inter,system-ui;z-index:10}
+#ui button{background:#2563EB;color:#fff;border:0;border-radius:8px;padding:6px 14px;font:600 13px Inter,system-ui;cursor:pointer}
+#ui input{flex:1}
+body.render #ui{display:none}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+
+  <!-- Background -->
+  <div class="layer" id="bg" style="background:var(--bg)">
+    <div class="blob" style="width:760px;height:520px;background:#BFDBFE"></div>
+    <div class="blob" style="width:620px;height:460px;background:#C7D2FE"></div>
+    <div class="blob" style="width:700px;height:420px;background:#A5F3FC;opacity:.7"></div>
+    <div class="blob" style="width:520px;height:420px;background:#93C5FD;opacity:.8"></div>
+    <div class="blob" style="width:640px;height:380px;background:#DDD6FE;opacity:.8"></div>
+  </div>
+  <div class="layer" id="white" style="background:#fff"></div>
+
+  <!-- S1 : accroche -->
+  <section class="scene center" id="s1">
+    <div class="hl cyanText" id="s1a" style="position:absolute;font-size:150px">Tu cherches</div>
+    <div class="hl" id="s1b" style="position:absolute;font-size:132px;color:#475569">une vraie méthode pour</div>
+    <div class="hl" id="s1c" style="position:absolute;font-size:150px">Réviser la *médecine*</div>
+  </section>
+
+  <!-- S2 : téléphone -->
+  <section class="scene" id="s2">
+    <div id="s2group" class="layer">
+      <div class="float" id="f1" style="left:560px;top:150px"><svg viewBox="0 0 64 64" data-ic="brain"></svg></div>
+      <div class="float" id="f2" style="left:1260px;top:200px"><svg viewBox="0 0 64 64" data-ic="steth"></svg></div>
+      <div class="float" id="f3" style="left:1300px;top:700px"><svg viewBox="0 0 64 64" data-ic="pill"></svg></div>
+      <div class="float" id="f4" style="left:520px;top:720px"><svg viewBox="0 0 64 64" data-ic="book"></svg></div>
+      <div class="phone" id="phoneA" style="left:760px;top:130px">
+        <div class="screen"><div class="notch"></div>
+          <div class="sbar"><span>9:41</span><span>●●● 100%</span></div>
+          <div class="app">
+            <div class="apphead"><svg viewBox="0 0 120 120" data-ic="logo"></svg>Doctor Brain</div>
+            <div style="margin-top:20px;font-size:24px;font-weight:800;letter-spacing:-.03em">Salut Léa,</div>
+            <div style="color:var(--muted);font-weight:500">Prête pour ta révision ?</div>
+            <div class="streak"><div style="font-size:13px;opacity:.85;font-weight:600">QUIZ DU JOUR · JOUR 4/10</div><div style="font-size:22px;font-weight:800;margin-top:6px">5 questions t'attendent</div><div style="margin-top:12px;height:8px;border-radius:8px;background:rgba(255,255,255,.3)"><div style="width:40%;height:100%;border-radius:8px;background:#fff"></div></div></div>
+            <div class="tiles">
+              <div class="tile"><i style="background:#DBEAFE"><svg viewBox="0 0 64 64" data-ic="book"></svg></i>Leçons méd.</div>
+              <div class="tile"><i style="background:#EDE9FE"><svg viewBox="0 0 64 64" data-ic="bolt"></svg></i>Quiz du jour</div>
+              <div class="tile"><i style="background:#CFFAFE"><svg viewBox="0 0 64 64" data-ic="steth"></svg></i>Cas cliniques</div>
+              <div class="tile"><i style="background:#FCE7F3"><svg viewBox="0 0 64 64" data-ic="globe"></svg></i>Anglais médical</div>
+              <div class="tile"><i style="background:#DCFCE7"><svg viewBox="0 0 64 64" data-ic="cap"></svg></i>Campus</div>
+              <div class="tile"><i style="background:#FEF3C7"><svg viewBox="0 0 64 64" data-ic="pen"></svg></i>Blog</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chip" id="chipA" style="left:600px;top:560px"><svg viewBox="0 0 120 120" data-ic="logo"></svg><div><b>Doctor Brain</b><small>Réviser la médecine avec méthode</small></div></div>
+    </div>
+  </section>
+
+  <!-- S4 : bienvenue -->
+  <section class="scene" id="s4">
+    <div id="s4group" class="layer">
+      <div class="ring" id="r1" style="width:1500px;height:900px;margin:-450px 0 0 -750px;background:#fff;box-shadow:0 0 120px rgba(255,255,255,.9)"></div>
+      <div class="ring" id="r2" style="width:1100px;height:600px;margin:-300px 0 0 -550px;background:#DBEAFE"></div>
+      <div class="ring" id="r3" style="width:820px;height:400px;margin:-200px 0 0 -410px;background:#BFDBFE"></div>
+      <div class="pill" id="pill">Bienvenue sur <span class="tag">Doctor Brain</span><svg viewBox="0 0 64 64" data-ic="brain" style="width:64px;height:64px"></svg></div>
+    </div>
+  </section>
+
+  <!-- S5 : logo -->
+  <section class="scene center" id="s5">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:40px">
+      <div class="logo" id="logo5"><svg class="mark" viewBox="0 0 120 120" data-ic="logo" id="mark5"></svg><div class="word" id="word5">Doctor <span>Brain</span></div></div>
+      <div class="hl" id="tag5" style="font-size:44px;font-weight:500;letter-spacing:-.02em;color:#475569">Réviser la médecine avec *méthode*</div>
+    </div>
+  </section>
+
+  <!-- S6/S7 : recherche + modules -->
+  <section class="scene" id="s6">
+    <div class="layer" id="s6dark" style="background:radial-gradient(ellipse at center,#475569,#0B1220 70%)"></div>
+    <div class="search glass" id="search"><svg class="mk" viewBox="0 0 120 120" data-ic="logo"></svg><div class="field"><span id="typed"></span><span class="caret" id="caret"></span></div><div class="go"><svg viewBox="0 0 64 64" data-ic="arrow"></svg></div></div>
+    <div class="hl" id="s7title" style="position:absolute;left:0;right:0;top:300px;font-size:68px">Que veux-tu réviser ?</div>
+    <div id="rows"></div>
+  </section>
+
+  <!-- S8 : promesse -->
+  <section class="scene center" id="s8">
+    <div class="hl" id="s8a" style="position:absolute;font-size:132px">Révise à ton *rythme*</div>
+    <div class="hl" id="s8b" style="position:absolute;font-size:132px">Progresse *chaque* *jour*</div>
+  </section>
+
+  <!-- S9 : quiz -->
+  <section class="scene" id="s9">
+    <div class="card" id="quiz" style="top:50%;margin-top:-330px">
+      <div class="points" id="pts">+10 pts</div>
+      <div class="qhead"><svg viewBox="0 0 120 120" data-ic="logo"></svg>Quiz du jour · Jour 4/10<span class="badge">Question 3/5</span></div>
+      <div class="prog"><div id="qprog" style="width:40%"></div></div>
+      <div class="question">Choc anaphylactique : quel est le traitement de première intention ?</div>
+      <div class="opts">
+        <div class="opt"><b>A</b>Corticoïdes IV</div>
+        <div class="opt" id="good"><b>B</b>Adrénaline IM<svg class="ck" viewBox="0 0 64 64" data-ic="check"></svg></div>
+        <div class="opt"><b>C</b>Antihistaminiques H1</div>
+        <div class="opt"><b>D</b>Remplissage seul</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 : notifications -->
+  <section class="scene" id="s10">
+    <div class="panel" id="panel"></div>
+    <div class="notif" id="n1" style="top:330px"><svg viewBox="0 0 120 120" data-ic="logo"></svg><div><b>Doctor Brain</b><p>Bonne réponse ! Série de 7 jours, continue comme ça.</p></div><time>maintenant</time></div>
+    <div class="notif" id="n2" style="top:500px"><svg viewBox="0 0 120 120" data-ic="logo"></svg><div><b>Classement</b><p>Tu passes à la 3ᵉ place du quiz du jour.</p></div><time>maintenant</time></div>
+    <div class="notif" id="n3" style="top:670px"><svg viewBox="0 0 120 120" data-ic="logo"></svg><div><b>Cas clinique</b><p>Nouveau cas : douleur thoracique aux urgences.</p></div><time>il y a 2 min</time></div>
+  </section>
+
+  <!-- S11 : progression -->
+  <section class="scene" id="s11">
+    <div class="phone" id="phoneB" style="left:760px;top:130px">
+      <div class="screen"><div class="notch"></div>
+        <div class="sbar"><span>9:41</span><span>●●● 100%</span></div>
+        <div class="app">
+          <div class="apphead"><svg viewBox="0 0 120 120" data-ic="logo"></svg>Ta progression</div>
+          <div class="ringwrap">
+            <svg viewBox="0 0 80 80" style="width:84px;height:84px;flex:none"><circle cx="40" cy="40" r="32" fill="none" stroke="#E2E8F0" stroke-width="9"/><circle id="ringp" cx="40" cy="40" r="32" fill="none" stroke="url(#gr)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 40 40)" stroke-dasharray="201" stroke-dashoffset="201"/><defs><linearGradient id="gr"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs><text id="ringt" x="40" y="46" text-anchor="middle" font-size="18" font-weight="800" fill="#0F172A">0%</text></svg>
+            <div><div style="font-weight:800;font-size:18px">Objectif de la semaine</div><div style="color:var(--muted);font-size:14px;font-weight:500">Bravo, tu es sur la bonne voie</div></div>
+          </div>
+          <div style="font-weight:800;margin-top:18px">Par spécialité</div>
+          <div class="bar"><label>Cardiologie<span data-v="82">0%</span></label><div><i style="background:#2563EB"></i></div></div>
+          <div class="bar"><label>Neurologie<span data-v="71">0%</span></label><div><i style="background:#7C3AED"></i></div></div>
+          <div class="bar"><label>Pneumologie<span data-v="64">0%</span></label><div><i style="background:#22D3EE"></i></div></div>
+          <div class="bar"><label>Pédiatrie<span data-v="58">0%</span></label><div><i style="background:#EC4899"></i></div></div>
+          <div style="font-weight:800;margin-top:18px">Classement</div>
+          <div class="rank"><span class="n" style="background:#F59E0B">1</span>Hugo<em>1 410 pts</em></div>
+          <div class="rank"><span class="n" style="background:#94A3B8">2</span>Inès<em>1 325 pts</em></div>
+          <div class="rank" style="outline:2.5px solid var(--blue2)"><span class="n" style="background:#B45309">3</span>Toi<em>1 240 pts</em></div>
+        </div>
+      </div>
+    </div>
+    <div class="hl" id="s11t" style="position:absolute;left:1240px;top:430px;font-size:76px;text-align:left">Suis tes<br>*progrès*</div>
+    <div class="hl" id="s11u" style="position:absolute;left:180px;top:430px;font-size:76px;text-align:right;width:520px">Grimpe au<br>*classement*</div>
+  </section>
+
+  <!-- Voile de transition -->
+  <div class="layer" id="veil" style="background:#8E96A3;opacity:0"></div>
+
+  <!-- S12 : outro -->
+  <section class="scene" id="s12" style="background:#000">
+    <div class="layer" id="sparks"></div>
+    <div class="layer center" style="flex-direction:column;gap:46px">
+      <div class="logo" id="logo12"><svg class="mark" viewBox="0 0 120 120" data-ic="logo" id="mark12"></svg><div class="word" id="word12" style="color:#fff">Doctor <span style="color:#60A5FA">Brain</span></div></div>
+      <div class="hl" id="t12" style="font-size:46px;font-weight:500;color:#CBD5E1;letter-spacing:-.02em">Réviser la médecine avec *méthode*</div>
+      <div id="cta12" style="display:flex;flex-direction:column;align-items:center;gap:22px"><div class="cta">Commence à réviser dès aujourd'hui<svg viewBox="0 0 64 64" data-ic="arrow" style="width:34px;height:34px"></svg></div><div class="url">doctorbrain.fr</div></div>
+    </div>
+  </section>
+
+  <div id="clickfx"></div>
+  <div id="cursor"><svg viewBox="0 0 64 64" data-ic="cursor"></svg></div>
+</div></div>
+
+<div id="ui"><button id="play">Pause</button><input id="scrub" type="range" min="0" max="32" step="0.01" value="0"><span id="tc">0.00 s</span></div>
+
+<script>
+/* ---------- Icônes ---------- */
+const S='fill="none" stroke-linecap="round" stroke-linejoin="round"';
+const IC={
+  logo:`<defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>
+    <rect class="lbg" x="4" y="4" width="112" height="112" rx="34" fill="url(#lg)"/>
+    <path class="lstroke" ${S} stroke="#fff" stroke-width="6" d="M58 26c-10-6-24 0-24 12-10 2-14 14-8 22-6 8-2 20 8 22 2 10 14 14 24 8M62 26c10-6 24 0 24 12 10 2 14 14 8 22 6 8 2 20-8 22-2 10-14 14-24 8M60 24v72"/>
+    <path class="lecg" ${S} stroke="#fff" stroke-width="5" d="M18 62h22l6-12 9 26 7-20 4 6h36"/>`,
+  brain:`<path ${S} stroke="#2563EB" stroke-width="4" d="M30 12c-7-4-16 0-16 8-7 1-9 10-5 15-4 5-1 13 5 14 1 7 10 9 16 5M34 12c7-4 16 0 16 8 7 1 9 10 5 15 4 5 1 13-5 14-1 7-10 9-16 5M32 10v46"/><path ${S} stroke="#22D3EE" stroke-width="4" d="M20 30h8M36 38h8M22 44c3-2 6-2 8 0"/>`,
+  steth:`<path ${S} stroke="#0891B2" stroke-width="4.5" d="M16 10v16a12 12 0 0 0 24 0V10M28 38v6a12 12 0 0 0 24 0v-6"/><circle cx="52" cy="32" r="6" ${S} stroke="#7C3AED" stroke-width="4.5"/><path stroke="#0891B2" stroke-width="5" stroke-linecap="round" d="M12 10h8M36 10h8"/>`,
+  pill:`<g transform="rotate(-40 32 32)"><rect x="10" y="22" width="44" height="20" rx="10" fill="#fff" stroke="#EC4899" stroke-width="4"/><path d="M32 22h12a10 10 0 0 1 0 20H32z" fill="#EC4899"/></g>`,
+  book:`<path ${S} stroke="#2563EB" stroke-width="4.5" d="M10 14c8-3 15-2 22 3 7-5 14-6 22-3v36c-8-3-15-2-22 3-7-5-14-6-22-3zM32 17v36"/>`,
+  bolt:`<path ${S} stroke="#7C3AED" stroke-width="4.5" d="M36 8 16 36h16l-4 20 20-28H32z"/>`,
+  globe:`<circle cx="32" cy="32" r="22" ${S} stroke="#DB2777" stroke-width="4.5"/><path ${S} stroke="#DB2777" stroke-width="4" d="M10 32h44M32 10c-8 8-8 36 0 44M32 10c8 8 8 36 0 44"/>`,
+  cap:`<path ${S} stroke="#16A34A" stroke-width="4.5" d="M6 26 32 14l26 12-26 12zM16 31v12c8 6 24 6 32 0V31M58 26v14"/>`,
+  pen:`<path ${S} stroke="#D97706" stroke-width="4.5" d="M42 10l12 12-28 28H14V38zM36 16l12 12"/>`,
+  arrow:`<path ${S} stroke="#fff" stroke-width="6" d="M14 32h34M34 18l14 14-14 14"/>`,
+  check:`<circle cx="32" cy="32" r="28" fill="#16A34A"/><path ${S} stroke="#fff" stroke-width="6" d="M19 33l9 9 17-19"/>`,
+  cursor:`<path d="M14 6v44l11-11 8 19 8-3-8-19h16z" fill="#0F172A" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/>`,
+  chev:`<path ${S} stroke="#64748B" stroke-width="5" d="M14 32h34M36 20l12 12-12 12"/>`
+};
+document.querySelectorAll('[data-ic]').forEach((el,i)=>{
+  let s=IC[el.dataset.ic];
+  if(el.dataset.ic==='logo') s=s.replaceAll('id="lg"',`id="lg${i}"`).replaceAll('url(#lg)',`url(#lg${i})`);
+  el.innerHTML=s;
+});
+
+/* ---------- Outils ---------- */
+const DUR=32;
+const $=s=>document.querySelector(s);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const P=(t,a,b)=>clamp((t-a)/(b-a));
+const E={
+  out:p=>1-Math.pow(1-p,3), expo:p=>p>=1?1:1-Math.pow(2,-10*p), in:p=>p*p*p,
+  io:p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2,
+  back:p=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)}
+};
+function set(el,{x=0,y=0,s=1,sx,sy,r=0,rx=0,ry=0,o=1,b=0}={}){
+  el.style.transform=`translate(${x}px,${y}px) perspective(1800px) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${r}deg) scale(${sx??s},${sy??s})`;
+  el.style.opacity=clamp(o);
+  el.style.filter=b>.3?`blur(${b.toFixed(1)}px)`:'none';
+}
+function words(el){
+  const ws=el.innerHTML.replace(/<br>/g,' <br> ').trim().split(/\s+/);
+  el.innerHTML=ws.map(w=>{if(w==='<br>')return w;const a=/^\*.*\*$/.test(w);return `<span class="w${a?' acc':''}">${a?w.slice(1,-1):w}</span>`}).join(' ').replace(/ <br> /g,'<br>');
+  return [...el.querySelectorAll('.w')];
+}
+/* Apparition mot par mot floutée + sortie en « whoosh » horizontal */
+function animWords(ws,lt,{at=0,st=.08,d=.55,out=99,od=.35,dx=-320,rise=50}={}){
+  ws.forEach((w,i)=>{
+    const p=E.expo(P(lt,at+i*st,at+i*st+d));
+    const q=E.in(P(lt,out+i*.03,out+i*.03+od));
+    set(w,{y:(1-p)*rise,x:q*dx,s:lerp(1.25,1,p),sx:lerp(1.25,1,p)*(1+q*.35),o:p*(1-q),b:(1-p)*22+q*20});
+  });
+}
+let seed=7;const rnd=()=>((seed=(seed*16807)%2147483647)/2147483647);
+
+/* ---------- Pré-construction ---------- */
+const W1a=words($('#s1a')),W1b=words($('#s1b')),W1c=words($('#s1c'));
+const W5=words($('#tag5')),W8a=words($('#s8a')),W8b=words($('#s8b'));
+const W11t=words($('#s11t')),W11u=words($('#s11u')),W12=words($('#t12'));
+const MODS=[['book','Leçons méd.','#DBEAFE'],['bolt','Quiz du jour','#EDE9FE'],['steth','Cas cliniques','#CFFAFE'],['globe','Anglais médical','#FCE7F3'],['cap','Campus','#DCFCE7'],['pen','Blog','#FEF3C7']];
+$('#rows').innerHTML=MODS.map(m=>`<div class="row glass"><i style="background:${m[2]}"><svg viewBox="0 0 64 64">${IC[m[0]]}</svg></i>${m[1]}<em>→</em></div>`).join('');
+const ROWS=[...document.querySelectorAll('.row')];
+const SPARKS=[];const SC=['#22D3EE','#EC4899','#FACC15','#22C55E','#8B5CF6','#3B82F6'];
+for(let i=0;i<46;i++){const e=document.createElement('div');e.className='spark';const c=SC[i%SC.length],sz=8+rnd()*16;
+  Object.assign(e.style,{width:sz+'px',height:sz*(.6+rnd()*.8)+'px',background:c,boxShadow:`0 0 18px ${c},0 0 40px ${c}`});
+  $('#sparks').appendChild(e);SPARKS.push({e,a:rnd()*6.283,r0:500+rnd()*700,r1:330+rnd()*420,sp:.15+rnd()*.35,ph:rnd()*6.283});}
+const blobs=[...document.querySelectorAll('.blob')];
+const SCENES=[['s1',0,4.1],['s2',3.9,7.3],['s4',7.0,9.5],['s5',9.3,11.2],['s6',11.0,17.2],['s8',17.0,19.5],['s9',19.3,23.1],['s10',22.9,25.2],['s11',25.0,27.6],['s12',27.2,DUR]];
+const typedText="Tout pour réviser la médecine, au même endroit";
+
+function cursor(x,y,o,press=0,hand=false){
+  set($('#cursor'),{x:x-8,y:y-4,o,s:1-press*.18});
+}
+function clickFx(x,y,lt,at){
+  const p=P(lt,at,at+.5);
+  set($('#clickfx'),{x,y,s:.3+E.out(p)*1.2,o:(p>0&&p<1)?(1-p):0});
+}
+function path(lt,keys){ // keys: [t,x,y]
+  if(lt<=keys[0][0]) return keys[0].slice(1);
+  for(let i=1;i<keys.length;i++) if(lt<=keys[i][0]){const a=keys[i-1],b=keys[i],p=E.io(P(lt,a[0],b[0]));return [lerp(a[1],b[1],p),lerp(a[2],b[2],p)];}
+  return keys[keys.length-1].slice(1);
+}
+
+/* ---------- Rendu d'une frame ---------- */
+function render(t){
+  // scènes visibles
+  for(const [id,a,b] of SCENES) $('#'+id).style.display=(t>=a&&t<b)?(id==='s1'||id==='s5'||id==='s8'?'flex':'block'):'none';
+  // fond
+  $('#white').style.opacity=1-E.io(P(t,1.2,3.0));
+  blobs.forEach((bl,i)=>{const k=i*1.7;bl.style.transform=`translate(${960+Math.sin(t*.35+k)*620-350}px,${540+Math.cos(t*.28+k*1.3)*360-230}px) scale(${1+.15*Math.sin(t*.5+k)})`;});
+  let cur={o:0,x:0,y:0,press:0};set($('#clickfx'),{o:0});
+  // voile gris de transition (comme la référence)
+  $('#veil').style.opacity=Math.max(.0, Math.sin(Math.PI*P(t,6.5,7.4))*.85, Math.sin(Math.PI*P(t,26.8,27.6))*.9);
+
+  /* S1 — accroche */
+  if(t<4.1){
+    animWords(W1a,t,{at:.1,st:.12,out:1.15,od:.3});
+    animWords(W1b,t,{at:1.25,st:.07,out:2.35,od:.3,dx:-420});
+    animWords(W1c,t,{at:2.45,st:.1,d:.6,out:3.65,od:.35,dx:0,rise:80});
+    const z=E.in(P(t,3.65,4.05));set($('#s1c'),{s:1+z*1.6,b:z*20,o:1-z*.4});
+  }
+  /* S2 — téléphone + icônes flottantes */
+  if(t>=3.9&&t<7.3){
+    const lt=t-3.9,p=E.expo(P(lt,0,1.1));
+    set($('#phoneA'),{y:(1-p)*700,rx:lerp(35,8,p)+Math.sin(lt*1.2)*2,ry:lerp(-25,-12,p)+lt*3,r:lerp(-8,2,p),s:lerp(.8,1,p)});
+    ['f1','f2','f3','f4'].forEach((f,i)=>{const q=E.back(P(lt,.35+i*.12,1.05+i*.12));
+      set($('#'+f),{x:Math.sin(lt*1.4+i)*14,y:Math.cos(lt*1.1+i*2)*16+(1-q)*120,s:q,r:Math.sin(lt+i)*8,o:q});});
+    const c=E.back(P(lt,1.1,1.7));set($('#chipA'),{s:c,o:P(lt,1.1,1.3),x:(1-c)*-80});
+    const z=E.in(P(lt,2.6,3.4));set($('#s2group'),{s:1+z*3,b:z*30,o:1-P(lt,3.1,3.4)});
+  }
+  /* S4 — bienvenue */
+  if(t>=7.0&&t<9.5){
+    const lt=t-7.0;
+    [['r1',.15],['r2',.05],['r3',0]].forEach(([id,d])=>{const p=E.expo(P(lt,d,d+.9));set($('#'+id),{s:lerp(.1,1,p)*(1+.02*Math.sin(lt*3)),o:p});});
+    const p=E.back(P(lt,.25,.85));set($('#pill'),{x:-430,y:-58,s:p,o:P(lt,.25,.4)});
+    const pl=$('#pill');pl.style.transform=`translate(-50%,-50%) scale(${p})`;
+    const z=E.in(P(lt,1.9,2.5));set($('#s4group'),{s:1+z*5,b:z*24,o:1-P(lt,2.2,2.5)});
+  }
+  /* S5 — logo */
+  if(t>=9.3&&t<11.2){
+    const lt=t-9.3,m=E.back(P(lt,0,.6));
+    set($('#mark5'),{s:m,r:(1-m)*-90,o:P(lt,0,.2)});
+    const st=$('#mark5').querySelectorAll('path');st.forEach(pa=>{pa.style.strokeDasharray=400;pa.style.strokeDashoffset=400*(1-E.out(P(lt,.25,1.0)));});
+    const w=E.expo(P(lt,.45,1.1));set($('#word5'),{x:(1-w)*-140,o:w,b:(1-w)*16});
+    animWords(W5,lt,{at:.85,st:.06,out:1.6,od:.3,dx:-200});
+    const q=E.in(P(lt,1.55,1.9));set($('#logo5'),{o:1-q,b:q*20,s:1-q*.2});
+  }
+  /* S6/S7 — barre de recherche puis modules */
+  if(t>=11.0&&t<17.2){
+    const lt=t-11.0;
+    $('#s6dark').style.opacity=1-E.io(P(lt,.2,.9));
+    const a=E.expo(P(lt,0,1));
+    const up=E.io(P(lt,2.4,3.0));
+    const sx=370,sy=lerp(465,110,up);
+    set($('#search'),{x:sx,y:sy+(1-a)*60,s:lerp(1.5,1,a)*lerp(1,.62,up),o:a,b:(1-a)*25,rx:(1-a)*20});
+    const n=Math.floor(clamp((lt-.7)/1.1)*typedText.length);$('#typed').textContent=typedText.slice(0,n);
+    $('#caret').style.opacity=(n<typedText.length||Math.floor(lt*2.5)%2)?1:0;
+    // curseur -> bouton
+    if(lt<2.5){const [x,y]=path(lt,[[1.4,1560,860],[2.0,1455,545]]);cur={o:P(lt,1.3,1.5),x,y,press:Math.sin(Math.PI*P(lt,2.0,2.2))};clickFx(1455,540,lt,2.05);}
+    // titre + liste
+    const tt=E.expo(P(lt,2.7,3.4));set($('#s7title'),{y:(1-tt)*40,o:tt,b:(1-tt)*14});
+    const scroll=E.io(P(lt,4.2,5.0))*-112;
+    ROWS.forEach((r,i)=>{const p=E.expo(P(lt,2.9+i*.12,3.6+i*.12));const y=430+i*112+scroll;
+      const fade=clamp((y-360)/70)*clamp((1000-y)/120);
+      const hover=(i===2)?E.out(P(lt,5.2,5.45)):0;
+      r.style.top=y+'px';r.style.background=hover?`rgba(${lerp(255,219,hover)},${lerp(255,234,hover)},255,.9)`:'';
+      set(r,{x:(1-p)*-60,o:p*fade,b:(1-p)*12+(1-fade)*6,s:1+hover*.05});});
+    if(lt>=3.6&&lt<6.0){const [x,y]=path(lt,[[3.6,1360,1000],[4.4,1100,800],[5.2,1150,592]]);cur={o:P(lt,3.6,3.8),x,y,press:Math.sin(Math.PI*P(lt,5.45,5.65))};clickFx(1150,588,lt,5.5);}
+    const q=E.in(P(lt,5.8,6.2));$('#s6').style.filter=q>0?`blur(${q*24}px)`:'none';$('#s6').style.opacity=1-q;
+  }
+  /* S8 — promesse */
+  if(t>=17.0&&t<19.5){
+    const lt=t-17.0;
+    animWords(W8a,lt,{at:.15,st:.1,out:1.15,od:.3,dx:-380});
+    animWords(W8b,lt,{at:1.3,st:.1,out:2.15,od:.3,dx:0,rise:70});
+    set($('#s8b'),{s:1+E.in(P(lt,2.1,2.5))*.6});
+  }
+  /* S9 — quiz */
+  if(t>=19.3&&t<23.1){
+    const lt=t-19.3,a=E.expo(P(lt,0,.9));
+    set($('#quiz'),{y:(1-a)*200,rx:(1-a)*-25,s:lerp(.85,1,a),o:a,b:(1-a)*18});
+    const opts=[...document.querySelectorAll('.opt')];
+    opts.forEach((o,i)=>{const p=E.out(P(lt,.5+i*.1,1+i*.1));o.style.opacity=p;o.style.transform=`translateY(${(1-p)*30}px)`;});
+    const ok=E.out(P(lt,2.15,2.4)),g=$('#good');
+    g.style.borderColor=ok?'#16A34A':'';g.style.background=ok?'#F0FDF4':'';g.querySelector('b').style.background=ok?'#16A34A':'';g.querySelector('b').style.color=ok?'#fff':'';
+    const ck=E.back(P(lt,2.2,2.6));g.querySelector('.ck').style.opacity=ck;g.querySelector('.ck').style.transform=`scale(${ck})`;
+    g.style.transform+=` scale(${1+Math.sin(Math.PI*P(lt,2.1,2.5))*.04})`;
+    $('#qprog').style.width=lerp(40,60,E.io(P(lt,2.4,3.0)))+'%';
+    const pt=E.out(P(lt,2.4,3.2));set($('#pts'),{y:-pt*50,o:Math.sin(Math.PI*pt)*1.4,s:.8+pt*.3});
+    if(lt>=.9&&lt<3.2){const [x,y]=path(lt,[[.9,1500,1000],[1.9,1185,570]]);cur={o:P(lt,.9,1.1)*(1-P(lt,2.9,3.2)),x,y,press:Math.sin(Math.PI*P(lt,2.0,2.2))};clickFx(1185,566,lt,2.05);}
+    const q=E.in(P(lt,3.3,3.8));if(q>0)set($('#quiz'),{y:-q*500,o:1-q,b:q*20,s:1-q*.1});
+  }
+  /* S10 — notifications */
+  if(t>=22.9&&t<25.2){
+    const lt=t-22.9,a=E.expo(P(lt,0,.8));
+    set($('#panel'),{y:(1-a)*900+Math.sin(lt)*6,r:lerp(-6,0,a),o:1});
+    ['n1','n2','n3'].forEach((id,i)=>{const p=E.back(P(lt,.5+i*.35,1.05+i*.35));set($('#'+id),{y:(1-p)*-160,s:lerp(.8,1,p),o:P(lt,.5+i*.35,.7+i*.35),b:(1-clamp(p))*10});});
+    const q=E.in(P(lt,1.9,2.3));if(q>0){['panel','n1','n2','n3'].forEach(id=>{const e=$('#'+id);e.style.filter=`blur(${q*26}px)`;e.style.opacity=1-q;});}
+  }
+  /* S11 — progression */
+  if(t>=25.0&&t<27.6){
+    const lt=t-25.0,a=E.expo(P(lt,0,1));
+    set($('#phoneB'),{y:(1-a)*600,ry:lerp(30,0,a)+Math.sin(lt)*3,rx:lerp(20,4,a),s:lerp(.8,1,a)});
+    const rp=E.out(P(lt,.6,1.6));$('#ringp').setAttribute('stroke-dashoffset',201*(1-.72*rp));$('#ringt').textContent=Math.round(72*rp)+'%';
+    document.querySelectorAll('#phoneB .bar').forEach((b,i)=>{const v=+b.querySelector('span').dataset.v,p=E.out(P(lt,.7+i*.1,1.5+i*.1));b.querySelector('i').style.width=v*p+'%';b.querySelector('span').textContent=Math.round(v*p)+'%';});
+    animWords(W11t,lt,{at:.6,st:.1,out:9});animWords(W11u,lt,{at:.9,st:.1,out:9});
+    const z=E.in(P(lt,1.9,2.6));$('#s11').style.filter=z>0?`blur(${z*30}px)`:'none';$('#s11').style.transform=`scale(${1+z*.6})`;
+  }
+  /* S12 — outro néon */
+  if(t>=27.2){
+    const lt=t-27.2;
+    const conv=E.io(P(lt,0,1.4));
+    SPARKS.forEach((s,i)=>{const r=lerp(s.r0,s.r1,conv)+Math.sin(lt*2+s.ph)*20,an=s.a+lt*s.sp;
+      const fl=.55+.45*Math.sin(lt*6+s.ph);
+      set(s.e,{x:960+Math.cos(an)*r*1.5,y:540+Math.sin(an)*r*.85,r:an*57,o:P(lt,.1+i*.01,.5+i*.01)*fl*lerp(1,.55,P(lt,1.5,2.5))});});
+    const m=E.back(P(lt,.8,1.4));set($('#mark12'),{s:m,o:P(lt,.8,1)});
+    $('#mark12').style.filter=`drop-shadow(0 0 ${20+10*Math.sin(lt*3)}px rgba(59,130,246,.8))`;
+    const st=$('#mark12').querySelectorAll('path');st.forEach(pa=>{pa.style.strokeDasharray=400;pa.style.strokeDashoffset=400*(1-E.out(P(lt,1.0,1.8)));});
+    const w=E.expo(P(lt,1.2,1.9));set($('#word12'),{x:(1-w)*-140,o:w,b:(1-w)*16});
+    animWords(W12,lt,{at:1.8,st:.07});
+    const c=E.expo(P(lt,2.6,3.3));set($('#cta12'),{y:(1-c)*50,o:c,b:(1-c)*14});
+    $('#s12').style.opacity=1-P(lt,4.4,4.8);
+  }
+  cursor(cur.x,cur.y,cur.o,cur.press);
+}
+
+/* ---------- Mise à l'échelle + lecture ---------- */
+const stage=$('#stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`;}
+const RENDER=location.search.includes('render');
+if(RENDER){document.body.classList.add('render');stage.style.transform='none';}
+else{addEventListener('resize',fit);fit();}
+window.renderFrame=t=>render(t);
+render(0);
+if(!RENDER){
+  let playing=true,t0=performance.now(),tt=0;const sc=$('#scrub'),tc=$('#tc'),pb=$('#play');
+  pb.onclick=()=>{playing=!playing;pb.textContent=playing?'Pause':'Lecture';t0=performance.now()-tt*1000;};
+  sc.oninput=()=>{tt=+sc.value;t0=performance.now()-tt*1000;render(tt);tc.textContent=tt.toFixed(2)+' s';};
+  (function loop(){if(playing){tt=((performance.now()-t0)/1000)%DUR;sc.value=tt;tc.textContent=tt.toFixed(2)+' s';render(tt);}requestAnimationFrame(loop);})();
+}
+</script>
+</body>
+</html>
