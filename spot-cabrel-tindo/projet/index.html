@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Cabrel Tindo – Spot</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+<script src="timeline.js"></script>
+</head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div id="bgs">
+      <img class="bg" id="bgStage" alt="">
+      <img class="bg" id="bgStageB" alt="">
+      <img class="bg" id="bgCity" alt="">
+      <img class="bg" id="bgSlum" alt="">
+      <img class="bg" id="bgCityB" alt="">
+      <img class="bg" id="bgSlumB" alt="">
+      <div id="splitL" class="bgclip"><img class="bg" alt=""></div>
+      <div id="splitR" class="bgclip"><img class="bg" alt=""></div>
+      <div id="bgGrad" class="full"></div>
+      <div id="tint" class="full"></div>
+    </div>
+    <div id="rays" class="full">
+      <div class="beam" id="beam1"></div><div class="beam" id="beam2"></div>
+      <div class="beam" id="beam3"></div><div class="beam" id="beam4"></div>
+    </div>
+    <svg id="swoosh" class="full" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <defs><filter id="glw" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <path id="sw1" d="M-80,760 C 300,560 760,980 1160,700 S 1700,420 2010,640" />
+      <path id="sw2" d="M-60,300 C 420,120 820,520 1240,330 S 1760,160 1990,260" />
+      <path id="sw3" d="M-50,980 C 520,860 900,1110 1400,930 S 1820,820 1990,900" />
+    </svg>
+    <div id="cabGlow"></div>
+    <div id="cabWrap"><img id="cab" alt=""><div id="cutLine"></div></div>
+    <div id="scenes"></div>
+  </div>
+  <canvas id="fx"></canvas>
+  <div id="corner"><img alt=""></div>
+  <div id="caption"><span></span></div>
+  <div id="wipeA" class="wipe"></div><div id="wipeB" class="wipe"></div>
+  <div id="flash" class="full"></div>
+  <div id="vign" class="full"></div>
+  <div id="grain" class="full"></div>
+  <div id="fade" class="full"></div>
+</div>
+<script src="spot.js"></script>
+</body>
+</html>

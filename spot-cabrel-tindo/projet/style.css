@@ -1,0 +1,127 @@
+:root{
+  --or:#FF6A13; --or2:#FF8F1F; --bl:#1593D6; --bl2:#0B6FB0; --navy:#061A33; --navy2:#0A2C52;
+  --gold:#F5B325; --gold2:#FFD873; --red:#E3261D; --red2:#A8140E; --cream:#FFF6EA;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+#stage{position:relative;overflow:hidden;background:#000;width:1920px;height:1080px}
+#world,.full,#bgs,#scenes{position:absolute;left:0;top:0;width:100%;height:100%}
+#world{transform-origin:50% 50%}
+.bg{position:absolute;display:block;opacity:0;will-change:transform,opacity}
+.bgclip{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;overflow:hidden}
+#tint,#bgGrad{opacity:0}
+#rays{mix-blend-mode:screen;opacity:0;overflow:hidden}
+.beam{position:absolute;top:-10%;width:34%;height:130%;left:33%;transform-origin:50% 0%;
+  background:linear-gradient(180deg,rgba(255,214,150,.85) 0%,rgba(255,170,80,.35) 35%,rgba(255,150,60,0) 85%);
+  clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);opacity:.0}
+#swoosh{opacity:0;overflow:visible}
+#swoosh path{fill:none;stroke:#fff;stroke-width:10;stroke-linecap:round;filter:url(#glw);opacity:.9}
+#cabGlow{position:absolute;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(255,190,110,.75),rgba(255,120,40,.35) 45%,rgba(255,100,20,0) 100%)}
+#cabWrap{position:absolute;opacity:0;transform-origin:50% 100%}
+#cab{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+#cutLine{position:absolute;width:6px;margin-left:-3px;opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0),#fff 15%,var(--gold2) 50%,#fff 85%,rgba(255,255,255,0));
+  box-shadow:0 0 18px 6px rgba(255,210,120,.8)}
+canvas#fx{position:absolute;left:0;top:0;pointer-events:none}
+#corner{position:absolute;opacity:0;background:#fff;border-radius:14px;padding:10px 16px;
+  box-shadow:0 8px 30px rgba(0,0,0,.35)}
+#corner img{display:block;height:100%;width:auto}
+#caption{position:absolute;left:0;width:100%;text-align:center;opacity:0}
+#caption>span{display:inline-block;background:rgba(6,26,51,.72);border:2px solid rgba(255,255,255,.18);
+  color:#fff;font:600 italic 38px/1.25 Montserrat;padding:16px 34px;border-radius:999px;letter-spacing:.01em}
+#caption .w{opacity:.38;display:inline}
+#caption .w.on{opacity:1;color:#fff}
+#caption .w.hot{color:var(--gold2)}
+.wipe{position:absolute;top:-30%;height:160%;left:0;transform:translateX(-300%) skewX(-18deg);will-change:transform}
+#wipeA{background:linear-gradient(90deg,var(--or),var(--or2))}
+#wipeB{background:linear-gradient(90deg,var(--bl2),var(--bl))}
+#flash{background:#fff;opacity:0}
+#vign{background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#grain{opacity:.07;mix-blend-mode:overlay}
+#fade{background:#000;opacity:0}
+
+/* ---------- generic text ---------- */
+.sc{position:absolute;left:0;top:0;width:100%;height:100%;display:none}
+.abs{position:absolute}
+.ctr{position:absolute;left:0;width:100%;text-align:center}
+.l{display:inline-block;white-space:pre;will-change:transform,opacity}
+.anton{font-family:Anton;font-weight:400;line-height:.92;text-transform:uppercase}
+.archivo{font-family:'Archivo Black';line-height:.95;text-transform:uppercase}
+.kaushan{font-family:'Kaushan Script';line-height:1}
+.bebas{font-family:'Bebas Neue';line-height:1}
+.mont{font-family:Montserrat}
+.white{color:#fff}
+.sh{text-shadow:0 6px 0 rgba(0,0,0,.18),0 18px 40px rgba(0,0,0,.45)}
+.gradOr{background:linear-gradient(180deg,#FFB24A 0%,var(--or) 55%,#E04E06 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gradBl{background:linear-gradient(180deg,#5CC8FF 0%,var(--bl) 55%,#0A5E9C 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gradGold{background:linear-gradient(180deg,#FFF1B8 0%,var(--gold2) 30%,var(--gold) 60%,#C9820E 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gradWhite{background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 55%,#FFE3C8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* sticker title (père RICHE / père PAUVRE) */
+.sticker{position:absolute;padding:.12em .28em .1em .28em;background:#fff;border-radius:.16em;
+  box-shadow:0 .08em .25em rgba(0,0,0,.35);transform-origin:50% 60%}
+.sticker .pere{position:absolute;font-family:'Kaushan Script';font-size:.46em;top:-.42em;left:.55em;transform:rotate(-8deg)}
+.sticker .big{font-family:Anton;font-size:1em;line-height:.95;display:block;letter-spacing:.01em}
+.sticker.rich .pere{color:var(--bl)} .sticker.rich .big{color:var(--or)}
+.sticker.poor .pere{color:var(--or)} .sticker.poor .big{color:var(--bl)}
+
+/* info cards */
+.card{position:absolute;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.card.orange{background:linear-gradient(160deg,#FF9A2E,var(--or) 45%,#D9480F)}
+.card.white{background:linear-gradient(160deg,#FFFFFF,#EAF4FB)}
+.card.blue{background:linear-gradient(160deg,#36B3F0,var(--bl) 45%,#0A4F86)}
+.card .lab{font:800 44px Montserrat;letter-spacing:.22em;text-transform:uppercase}
+.card .huge{font-family:Anton;line-height:.9}
+.card .sub{font-family:'Bebas Neue';letter-spacing:.08em}
+
+/* tickets */
+.ticket{position:absolute;left:0;top:0;width:1500px;height:520px;transform-origin:50% 50%;
+  filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.ticket .body{position:absolute;inset:0;display:flex;border-radius:26px;overflow:hidden;
+  -webkit-mask:radial-gradient(circle 30px at 1278px 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 30px at 1278px 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+  mask:radial-gradient(circle 30px at 1278px 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 30px at 1278px 100%,#0000 98%,#000) bottom/100% 51% no-repeat}
+.t-art{position:relative;width:760px;height:100%;overflow:hidden;background:#123}
+.t-art .ta{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.t-art .ta.r{clip-path:polygon(56% 0,100% 0,100% 100%,44% 100%)}
+.t-art .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.65) 100%)}
+.t-art .tcab{position:absolute;height:112%;bottom:-12%;left:50%;transform:translateX(-50%)}
+.t-art .tname{position:absolute;bottom:34px;left:0;width:100%;text-align:center}
+.t-art .tname b{display:block;font:400 92px/0.9 'Archivo Black';color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6);letter-spacing:.01em}
+.t-art .tname i{display:block;font:600 24px Montserrat;font-style:normal;letter-spacing:.6em;color:#fff;margin-top:8px}
+.t-art .tst{font-size:64px}
+.t-info{position:relative;width:518px;height:100%;background:#fff;display:flex;flex-direction:column;align-items:center;padding:26px 26px 18px}
+.t-info .tafc{height:70px;margin-bottom:14px}
+.t-info .row{display:flex;gap:18px;width:100%;flex:1}
+.t-date{width:170px;border-radius:18px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0}
+.t-date .d1{font:400 46px/1 Anton}.t-date .d2{font:400 112px/0.9 Anton}.t-date .d3{font:400 40px/1 Anton}.t-date .d4{font:600 20px Montserrat;letter-spacing:.3em}
+.t-date .d5{margin-top:10px;font:400 38px/1 Anton;background:#fff;color:#123;border-radius:8px;padding:4px 10px}
+.t-pass{flex:1;border:5px solid var(--red);border-radius:18px;display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:6px 14px;gap:6px}
+.t-pass .ph{font:400 34px/1 'Bebas Neue';letter-spacing:.5em;text-align:center;color:var(--red);padding-left:.5em}
+.t-pass .pr{display:flex;flex-direction:column;align-items:center;border-radius:10px;padding:2px 0}
+.t-pass .pr small{font:700 13px Montserrat;letter-spacing:.3em}
+.t-pass .pr b{font:400 44px/1 Anton}
+.t-pass .pr.on{background:var(--tc);color:#fff}
+.t-pass .pr.on small{color:#fff}
+.t-info .tlogos{display:flex;gap:16px;align-items:center;justify-content:center;height:46px;margin-top:12px}
+.t-info .tlogos img{height:100%}
+.t-perf{position:absolute;left:1276px;top:34px;bottom:34px;border-left:5px dashed rgba(255,255,255,.8)}
+.t-stub{position:relative;width:222px;height:100%;display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden}
+.t-stub .vt{transform:rotate(-90deg);white-space:nowrap;text-align:center}
+.t-stub .vt .a{font:400 44px/1 'Bebas Neue';letter-spacing:.25em}
+.t-stub .vt .b{font:400 128px/0.95 Anton;letter-spacing:.01em}
+.t-stub .vt .c{font:400 40px/1 'Bebas Neue';letter-spacing:.4em}
+.t-stub .shine{position:absolute;top:-20%;left:-150%;width:60%;height:140%;transform:skewX(-20deg);
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.75),rgba(255,255,255,0))}
+
+/* pills / bars in final */
+.bar{position:absolute;background:#fff;border-radius:22px;display:flex;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,.35);overflow:hidden}
+.bar .cell{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
+.bar .div{width:3px;height:64%;background:#d7e3ee}
+.pill{position:absolute;border-radius:22px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.pill small{font:700 18px Montserrat;letter-spacing:.32em}
+.pill b{font:400 64px/1 Anton}
+.logobar{position:absolute;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:space-evenly;box-shadow:0 14px 34px rgba(0,0,0,.3)}
+.logobar img{display:block}
+.l.gradOr,.l.gradBl,.l.gradGold,.l.gradWhite{padding:.14em .03em;margin:-.14em -.03em}
