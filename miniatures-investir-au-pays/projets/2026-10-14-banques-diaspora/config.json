@@ -14,10 +14,8 @@
       "fond_position": "50% 45%",
       "personnes": [
         {
-          "photo": "simo:bras-croises-col-roule-noir",
-          "role": "philippe",
-          "recadrage": 0.8,
-          "lumiere_contour": "#ffd9a0"
+          "photo": "invitee-1-tweed_traite_detoure.png",
+          "role": "invite"
         }
       ],
       "elements": [
@@ -48,13 +46,8 @@
       "fond_position": "50% 55%",
       "personnes": [
         {
-          "photo": "invitee_traite_detoure.png",
+          "photo": "invitee-2-veste-grise_traite_detoure.png",
           "role": "invite"
-        },
-        {
-          "photo": "simo:mains-jointes-menton-chemise-blanche",
-          "role": "philippe",
-          "recadrage": 0.8
         }
       ]
     },
@@ -68,14 +61,8 @@
       "fond_position": "70% 50%",
       "personnes": [
         {
-          "photo": "invitee_traite_detoure.png",
+          "photo": "invitee-2-veste-grise_traite_detoure.png",
           "role": "invite"
-        },
-        {
-          "photo": "simo:bras-croises-col-roule-noir",
-          "role": "philippe",
-          "recadrage": 0.8,
-          "lumiere_contour": "#a9cfff"
         }
       ]
     },
@@ -89,9 +76,8 @@
       "fond_position": "70% 50%",
       "personnes": [
         {
-          "photo": "invitee_traite_detoure.png",
-          "role": "invite",
-          "recadrage": 0.78
+          "photo": "invitee-1-tweed_traite_detoure.png",
+          "role": "invite"
         }
       ],
       "bokeh": 10
@@ -105,9 +91,8 @@
       "fond": "../../fonds/pexels-7230878-liasse-en-feu.jpg",
       "personnes": [
         {
-          "photo": "simo:mains-jointes-menton-chemise-blanche",
-          "role": "philippe",
-          "recadrage": 0.8
+          "photo": "invitee-2-veste-grise_traite_detoure.png",
+          "role": "invite"
         }
       ],
       "luminosite": 1.0,
