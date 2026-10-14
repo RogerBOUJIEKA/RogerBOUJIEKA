@@ -79,40 +79,27 @@ def smooth(mask, att, rel):
     return out
 duck = smooth(vo_env_mask, 0.06, 0.35)
 
-# ---------- MUSIC ----------
-music = load('qcDwt7OxwBSok5ZhdhhC')   # evangelical praise instrumental
-mus_bus = np.zeros((2, N), np.float32)
-place(mus_bus, music, MUSIC_OFFSET, 0)
-# fade music out over 1 beat around the choir switch
-i0 = int((CHOIR_SWITCH_T - 0.25) * SR); i1 = int((CHOIR_SWITCH_T + 0.35) * SR)
-mus_bus[:, i1:] = 0
-mus_bus[:, i0:i1] *= np.linspace(1, 0, i1 - i0)
-
-# ---------- CHOIR (gospel "Alléluia") ----------
-choir = load('seRrgywnZNdRqyl7KrPr')   # evangelical praise vocals ("Alléluia ! Jésus est là !")
-yb, _ = librosa.load(G + 'seRrgywnZNdRqyl7KrPr.mp3', sr=22050)
-_, cb = librosa.beat.beat_track(y=yb, sr=22050, units='time', start_bpm=112)
-cb = np.array(cb)
-CHOIR_IN = cb[np.argmin(np.abs(cb - 10.3))]   # so the praise ending (~25.8 s) lands on the dove landing (~89.6)
-ch = choir[:, int(CHOIR_IN * SR):]
+# ---------- MUSIC: original gospel score, composed on the spot timeline ----------
+music, _ = librosa.load(S + '/music/gospel_score.wav', sr=SR, mono=False)
+mus_bus = np.zeros((2, N), np.float32); mus_bus[:, :min(N, music.shape[1])] = music[:, :N]
 ch_bus = np.zeros((2, N), np.float32)
-place(ch_bus, fade(ch, 0.08, 0.05), CHOIR_SWITCH_T, 0)
 
 # music-bed gain automation: lower in intro under VO, ducked under VO, full in gaps
 bed_gain = np.ones(N, np.float32)
 bed = (mus_bus + ch_bus)
 # base levels
-base = np.full(N, db(-7), np.float32)
+base = np.full(N, db(-5), np.float32)
 t = np.arange(N) / SR
-base[t < MUSIC_OFFSET + 16.5] = db(-3)            # intro section of the track
-duck_amt = db(-7.5)
+base[t < DROP_T] = db(-2)                         # worship intro
+duck_amt = db(-6)
 g = base * (1 - duck * (1 - duck_amt))
 # let the drop + title breathe
 g[(t > 20.1) & (t < 20.3)] = np.maximum(g[(t > 20.1) & (t < 20.3)], db(-3))
 # final choir up after last VO line, then fade to end
 fin = (t > 74.2)
 g[fin] = np.minimum(1.0, g[fin] * 1.0)
-g[t > 92.6] *= np.clip((94.0 - t[t > 92.6]) / 1.4, 0, 1)
+g[t > SIG['in'] - .2] = db(-2)                      # signature: score in the foreground
+g[t > SIG['out0']] *= np.clip((DUR - t[t > SIG['out0']]) / (DUR - SIG['out0']), 0, 1)
 bed *= g[None, :]
 
 # ---------- SFX ----------
@@ -169,12 +156,14 @@ sfx('whoosh2', 62.55, -11)
 sfx('laugh', 65.95, -11, dur=3.0, fout=1.0)
 sfx('cheer2', 66.30, -14, dur=3.0, fout=1.0)
 sfx('boom', 67.50, -15, dur=2.5, fout=1.0)
-sfx('heaven', 88.05, -10, fout=1.2)        # signature: heavenly swell
-sfx('wings', 88.20, -7)                   # dove arrives
-sfx('shimmer2', 89.45, -10); sfx('boom2', 89.50, -16, dur=2.5, fout=1.0)   # landing in the B
-sfx('shimmer', 90.90, -17)                # shine on the logo
-sfx('wings2', 91.55, -6)                  # take-off on the diagonal
-sfx('whoosh2', 92.10, -14)
+sfx('heaven', SIG['in'] + .05, -12, fout=1.2)                       # signature: heavenly swell
+sfx('wings', SIG['arrive0'], -7)                                       # the dove flies in
+sfx('shimmer2', SIG['land1'] - .05, -11); sfx('boom2', SIG['land1'], -17, dur=2.5, fout=1.0)   # lands on the B
+sfx('shimmer', SIG['shine'], -18)                                      # shine on the logo
+sfx('wings2', SIG['take'] - .05, -6)                                   # takes off again
+sfx('whoosh2', SIG['flyover0'] - .1, -15)                              # flies over the letters
+sfx('wings', SIG['land2'] - .9, -9)                                    # comes back
+sfx('shimmer2', SIG['land2'] - .05, -10); sfx('boom', SIG['land2'], -18, dur=2.5, fout=1.0)
 
 # ---------- MASTER ----------
 mix = vo_bus * db(0) + bed + sfx_bus
@@ -189,7 +178,7 @@ subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', pre, '-af',
 sf.write(OUT + f'stem_voice_{TAG}.wav', vo_bus.T, SR, subtype='PCM_24')
 sf.write(OUT + f'stem_music_{TAG}.wav', bed.T, SR, subtype='PCM_24')
 sf.write(OUT + f'stem_sfx_{TAG}.wav', sfx_bus.T, SR, subtype='PCM_24')
-print('master ->', master, 'choir_in', CHOIR_IN)
+print('master ->', master)
 
 # version without music (voice + sound design) so a licensed song can be laid in by the editor
 nm = vo_bus + sfx_bus

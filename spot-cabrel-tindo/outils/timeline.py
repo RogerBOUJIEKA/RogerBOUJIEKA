@@ -1,10 +1,16 @@
 # Shared timeline: VO clip cut points (take 1, John Mala) and placements on the spot (seconds).
 import json
 
-DUR = 94.0
+DUR = 96.5
 FPS = 30
 MUSIC_OFFSET = 3.81      # music drop (16.567 s) lands on "CABREL" (20.38)
-CHOIR_SWITCH_T = 74.10   # crossfade music -> gospel choir
+CHOIR_SWITCH_T = 74.10   # (legacy)
+DROP_T = 20.33           # downbeat of the praise drop, on "CABREL"
+PRICE_T = [39.71, 41.83, 45.84]   # "mille", "trois", "cinq" -> brass stabs
+# animated signature (Boujieka Agency): dove arrives, letters dance, dove leaves and comes back
+SIG = {'in': 88.0, 'arrive0': 88.3, 'land1': 89.8, 'letters0': 89.95, 'lstep': .09,
+       'agency0': 90.6, 'astep': .06, 'shine': 91.2, 'take': 91.9, 'flyover0': 93.42, 'flystep': .083,
+       'land2': 94.4, 'out0': 95.6}
 
 # (id, src_start, src_end, place_T, text)
 VO = [
@@ -43,7 +49,7 @@ SCENES = {
     "partners": (57.85, 62.65),
     "together": (62.65, 67.55),
     "final":    (67.55, 88.0),
-    "agency":   (88.0, 94.0),
+    "agency":   (88.0, 96.5),
 }
 
 def vo_map(src_t):

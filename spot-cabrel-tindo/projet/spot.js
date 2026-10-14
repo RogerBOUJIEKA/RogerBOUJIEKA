@@ -400,21 +400,20 @@
       <path d="${TAIL}" fill="#eef3f8"/><path d="${BODY}" fill="#ffffff"/>
       <path d="M357,99 L376,105 L357,110 Z" fill="#c9a49a"/><circle cx="331" cy="94" r="5.2" fill="#E00000"/><circle cx="332.6" cy="92.6" r="1.6" fill="#fff"/>
       <g class="wf"><path d="${WING}" fill="#ffffff"/><path d="${FEATH}" stroke="#d9e2ec" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
+  const LETTERS = window.LOGO_LETTERS || [];
+  const SIG = TL.sig;
   scene('agency', `
-    <div class="ctr mont" id="ag0" style="font-weight:600;font-size:26px;letter-spacing:.6em;padding-left:.6em;color:#c9c9d2">${spl('UNE RÉALISATION')}</div>
+    <div class="ctr mont" id="ag0" style="font-weight:600;font-size:${P ? 28 : 28}px;letter-spacing:.6em;padding-left:.6em;color:#d4d4dc">${spl('UNE RÉALISATION DE')}</div>
     <div class="abs" id="agring" style="width:400px;height:400px;border-radius:50%;border:6px solid rgba(255,255,255,.9);box-shadow:0 0 40px 10px rgba(255,40,40,.55),inset 0 0 30px rgba(255,255,255,.6)"></div>
+    <div class="abs" id="agring2" style="width:400px;height:400px;border-radius:50%;border:5px solid rgba(255,255,255,.85);box-shadow:0 0 40px 10px rgba(255,40,40,.5)"></div>
     <div class="abs" id="aglogo" style="left:${LGX}px;top:${LGY}px;width:${LW_}px;height:${LH_}px">
       <img src="${A}bj_white_mark.png" id="agm" class="abs" style="left:0;top:0;width:100%;height:100%;transform-origin:9% 50%">
-      <img src="${A}bj_white_word.png" id="agw" class="abs" style="left:0;top:0;width:100%;height:100%">
-      <img src="${A}bj_white_agency.png" id="aga" class="abs" style="left:0;top:0;width:100%;height:100%">
+      <img src="${A}bj_birdglow.png" id="agglow" class="abs" style="left:0;top:0;width:100%;height:100%;opacity:0;filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 26px rgba(255,255,255,.8))">
+      ${LETTERS.map(L => `<img src="${A}bjl_${L.n}.png" class="abs bjl" data-n="${L.n}" style="left:${(L.x * 100).toFixed(3)}%;top:${(L.y * 100).toFixed(3)}%;width:${(L.w * 100).toFixed(3)}%;height:${(L.h * 100).toFixed(3)}%;transform-origin:50% 100%">`).join('')}
       <div id="agshine" class="abs" style="left:0;top:0;width:100%;height:100%;-webkit-mask:url(${A}boujieka_white.png) 0 0/100% 100% no-repeat;mask:url(${A}boujieka_white.png) 0 0/100% 100% no-repeat"><div id="agband" style="position:absolute;top:-20%;height:140%;width:22%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.95),rgba(255,255,255,0));transform:skewX(-20deg)"></div></div>
     </div>
-    <div class="ctr mont" id="ag1" style="font-weight:500;font-size:${P ? 30 : 32}px;letter-spacing:.32em;padding-left:.32em;color:#e8e8ee">Réalisé par <b style="font-weight:800;color:#fff">Roger BOUJIEKA</b></div>
-    <div class="abs" id="agline" style="height:3px;width:${P ? 520 : 600}px;left:${(W - (P ? 520 : 600)) / 2}px;background:linear-gradient(90deg,rgba(255,30,30,0),#ff2a2a 30%,#fff 50%,#ff2a2a 70%,rgba(255,30,30,0))"></div>
     ${doveSVG('dove1')}${doveSVG('dove2')}`);
-  q('agency', '#ag0').style.top = (LGY - (P ? 90 : 95)) + 'px';
-  q('agency', '#ag1').style.top = (LGY + LH_ + (P ? 70 : 62)) + 'px';
-  q('agency', '#agline').style.top = (LGY + LH_ + (P ? 44 : 38)) + 'px';
+  q('agency', '#ag0').style.top = (LGY - (P ? 100 : 105)) + 'px';
   const DOVE_T = { x: LGX + LW_ * .085, y: LGY + LH_ * .5 };   // the B / dove of the logo
   const doves = [q('agency', '#dove1'), q('agency', '#dove2')];
   doves.forEach(d => d.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,.95)) drop-shadow(0 0 26px rgba(255,255,255,.55)) drop-shadow(0 0 40px rgba(255,40,40,.45))');
@@ -426,8 +425,18 @@
     svg.querySelector('.wb').setAttribute('transform', tf(th * .85 + 10, sy * .9));
   }
   const bez = (p0, p1, p2, u) => [(1 - u) * (1 - u) * p0[0] + 2 * (1 - u) * u * p1[0] + u * u * p2[0], (1 - u) * (1 - u) * p0[1] + 2 * (1 - u) * u * p1[1] + u * u * p2[1]];
-  const ARR = { a: [-260, H + 180], c: P ? [W * .05, H * .62] : [W * .12, H * .30], b: [DOVE_T.x, DOVE_T.y], t0: 88.2, d: 1.3 };
-  const TOF = { a: [DOVE_T.x, DOVE_T.y], c: P ? [W * .75, H * .48] : [W * .55, H * .30], b: [W + 320, -300], t0: 91.6, d: 1.45 };
+  const ARR = { a: [-260, H + 180], c: P ? [W * .05, H * .62] : [W * .12, H * .30], b: [DOVE_T.x, DOVE_T.y], t0: SIG.arrive0, d: SIG.land1 - SIG.arrive0 };
+  // loop: take off from the B, fly over the word, swing round the end and pass back over the letters, land on the B
+  const LOOP = P ? [[SIG.take, 183, 960], [92.3, 300, 700], [92.75, 600, 560], [93.05, 900, 640], [93.3, 990, 900], [93.9, 300, 925], [94.15, 175, 780], [SIG.land2, 183, 960]]
+    : [[SIG.take, DOVE_T.x, DOVE_T.y], [92.3, 700, 300], [92.75, 1150, 230], [93.05, 1560, 330], [93.3, 1600, 520], [93.9, 760, 505], [94.15, 560, 380], [SIG.land2, DOVE_T.x, DOVE_T.y]];
+  function crPoint(t) {
+    const L = LOOP; if (t <= L[0][0]) return [L[0][1], L[0][2]]; if (t >= L[L.length - 1][0]) return [L[L.length - 1][1], L[L.length - 1][2]];
+    let i = 0; while (t > L[i + 1][0]) i++;
+    const p0 = L[Math.max(0, i - 1)], p1 = L[i], p2 = L[i + 1], p3 = L[Math.min(L.length - 1, i + 2)];
+    const u = (t - p1[0]) / (p2[0] - p1[0]), u2 = u * u, u3 = u2 * u;
+    const f = (a, b, c, d) => .5 * ((2 * b) + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 + (-a + 3 * b - 3 * c + d) * u3);
+    return [f(p0[1], p1[1], p2[1], p3[1]), f(p0[2], p1[2], p2[2], p3[2])];
+  }
   let TRAIL = [];
 
   // gradient text: move the gradient onto each animated letter, shadow via filter
@@ -511,7 +520,7 @@
     mkSpark(43.7, W / 2, H / 2, 26, P ? 420 : 640, 23),
     mkSpark(45.9, P ? W / 2 : W / 2 + 520, P ? H / 2 : H / 2 + 60, 16, 200, 24),
     mkSpark(73.75, P ? W / 2 : 1360, P ? 1550 : 700, 24, P ? 460 : 520, 25),
-    mkSpark(89.5, P ? 195 : 560, P ? 970 : 550, 22, 160, 26), mkSpark(90.6, W / 2, H / 2, 24, P ? 420 : 520, 27),
+    mkSpark(TL.sig.land1, P ? 183 : 545, P ? 960 : 550, 22, 160, 26), mkSpark(TL.sig.agency0, W / 2, H / 2, 24, P ? 420 : 520, 27), mkSpark(TL.sig.land2, P ? 183 : 545, P ? 960 : 550, 26, 180, 28),
   ];
   function drawFx(t, dust) {
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
@@ -560,7 +569,7 @@
   }
 
   // ---------------------------------------------------------------- camera
-  const SHAKES = [[10.63, .35, 9], [20.3, .5, 16], [31.25, .2, 5], [39.72, .2, 6], [41.84, .2, 6], [45.85, .3, 10], [63.8, .35, 10], [67.55, .3, 7], [89.5, .25, 5]];
+  const SHAKES = [[10.63, .35, 9], [20.3, .5, 16], [31.25, .2, 5], [39.72, .2, 6], [41.84, .2, 6], [45.85, .3, 10], [63.8, .35, 10], [67.55, .3, 7], [TL.sig.land1, .25, 5], [TL.sig.land2, .25, 4]];
   const BEATS = TL.beats;
   function camera(t, sceneName) {
     let x = 0, y = 0, r = 0;
@@ -878,56 +887,90 @@
   function doveAt(path, t, e) {
     const u = e(clamp((t - path.t0) / path.d));
     const p = bez(path.a, path.c, path.b, u), p2 = bez(path.a, path.c, path.b, Math.min(1, u + .02));
-    const ang = Math.atan2(p2[1] - p[1], p2[0] - p[0]) * 180 / Math.PI;
-    return { p, u, ang };
+    return { p, u, ang: Math.atan2(p2[1] - p[1], p2[0] - p[0]) * 180 / Math.PI };
   }
+  function placeDove(d, x, y, dx, dy, sc, o) {
+    const left = dx < 0; let ang = Math.atan2(dy, Math.abs(dx) + 1e-6) * 180 / Math.PI;
+    d.style.left = (x - 187) + 'px'; d.style.top = (y - 96) + 'px';
+    S(d, { r: ang * .55 * (left ? -1 : 1), sx: left ? -sc : sc, sy: sc, o });
+  }
+  const bjl = [...SC.agency.el.querySelectorAll('.bjl')];
+  const ORDER_L = ['o', 'u', 'j', 'i', 'e', 'k', 'a'];
   U.agency = (t) => {
     setGrad('radial-gradient(ellipse at 50% 52%,#3A0A0E 0%,#14070A 45%,#050507 100%)', 1);
-    setRays(.28 + .2 * pr(t, 89.5, .6), t * .6, 0);
+    setRays(.26 + .18 * pr(t, SIG.land1, .6), t * .6, 0);
     vign.style.opacity = 1;
-    fadeEl.style.opacity = Math.max(1 - pr(t, 88.0, .4, E.lin), pr(t, 93.2, .8, E.io));
+    fadeEl.style.opacity = Math.max(1 - pr(t, SIG.in, .4, E.lin), pr(t, SIG.out0, DUR() - SIG.out0 - .05, E.io));
     TRAIL = [];
     const [d1, d2] = doves;
-    // 1) arrival
-    if (t < ARR.t0 + ARR.d + .2) {
+    // 1) the dove (Holy Spirit) flies in and lands on the B
+    if (t < SIG.land1 + .2) {
       const st = doveAt(ARR, t, E.out);
-      const sc = lerp(P ? .8 : .9, P ? .9 : 1.0, st.u) * (1 - .45 * pr(t, ARR.t0 + ARR.d - .12, .25));
-      const o = clamp((t - ARR.t0) * 6) * (1 - pr(t, ARR.t0 + ARR.d - .05, .18, E.lin));
-      d1.style.left = (st.p[0] - 187) + 'px'; d1.style.top = (st.p[1] - 96) + 'px';
-      S(d1, { r: st.ang * .6, s: sc, o });
+      const p2 = doveAt(ARR, t + .02, E.out);
+      const sc = lerp(P ? .8 : .9, P ? .9 : 1.0, st.u) * (1 - .45 * pr(t, SIG.land1 - .12, .25));
+      const o = clamp((t - ARR.t0) * 6) * (1 - pr(t, SIG.land1 - .05, .18, E.lin));
+      placeDove(d1, st.p[0], st.p[1], p2.p[0] - st.p[0], p2.p[1] - st.p[1], sc, o);
       flap(d1, t, lerp(5.2, 2.2, st.u), 1 - .35 * st.u);
       for (let k = 9; k < 70; k++) { const tt = t - k * .011; if (tt < ARR.t0) break; const q2 = doveAt(ARR, tt, E.out); TRAIL.push([q2.p[0], q2.p[1], (1 - k / 70) * o, 11 * (1 - k / 70) + 1]); }
     } else d1.style.opacity = 0;
-    // 2) landing: the B appears with a flash ring
-    const land = ARR.t0 + ARR.d;
-    const m = pr(t, land - .08, .55, E.back2);
-    S(q('agency', '#agm'), { s: lerp(1.35, 1, m) * (1 + .06 * pr(t, TOF.t0 - .1, .2) * (1 - pr(t, TOF.t0 + .15, .5))), o: clamp(m * 3) });
-    const rg = pr(t, land - .05, .7, E.out); const ring = q('agency', '#agring');
-    ring.style.left = (DOVE_T.x - 200) + 'px'; ring.style.top = (DOVE_T.y - 200) + 'px';
-    S(ring, { s: lerp(.1, 2.6, rg), o: (1 - rg) * clamp((t - land + .05) * 20) });
-    const w = pr(t, land + .15, .7, E.outQuint);
-    q('agency', '#agw').style.clipPath = `inset(0 ${(100 - lerp(18.5, 100, w)).toFixed(2)}% 0 0)`;
-    S(q('agency', '#agw'), { x: (1 - w) * -40, o: clamp(w * 3) });
-    const a = pr(t, land + .7, .6, E.out); S(q('agency', '#aga'), { y: (1 - a) * 24, o: a });
-    letters(q('agency', '#ag0'), t, land + .35, .03, .4, fadeUp(14));
-    S(q('agency', '#agline'), { sx: pr(t, land + .9, .7, E.outQuint), o: 1 });
-    const n = pr(t, land + 1.05, .6, E.out); S(q('agency', '#ag1'), { y: (1 - n) * 18, o: n });
-    q('agency', '#agband').style.left = lerp(-30, 130, pr(t, land + 1.35, 1.0, E.io)) + '%';
-    S(q('agency', '#aglogo'), { s: 1 + .03 * pr(t, land, 4.5, E.lin) });
-    // 3) take-off on the diagonal (spirit dove leaves the B)
-    if (t >= TOF.t0 - .05) {
-      const st = doveAt(TOF, t, E.in);
-      const sc = lerp(P ? .7 : .75, P ? 1.7 : 2.0, st.u);
-      const o = clamp((t - TOF.t0 + .05) * 8);
-      d2.style.left = (st.p[0] - 187) + 'px'; d2.style.top = (st.p[1] - 96) + 'px';
-      S(d2, { r: st.ang * .55, s: sc, o });
-      flap(d2, t, 4.6, 1);
-      for (let k = 8; k < 80; k++) { const tt = t - k * .011; if (tt < TOF.t0) break; const q2 = doveAt(TOF, tt, E.in); TRAIL.push([q2.p[0], q2.p[1], (1 - k / 80) * o, 14 * (1 - k / 80) + 1]); }
-    } else d2.style.opacity = 0;
+    // 2) landing: the B appears, flash ring, the dove inside the B glows
+    const m = pr(t, SIG.land1 - .08, .55, E.back2);
+    const pulse2 = pr(t, SIG.land2 - .05, .2) * (1 - pr(t, SIG.land2 + .15, .5));
+    S(q('agency', '#agm'), { s: lerp(1.35, 1, m) * (1 + .07 * pulse2), o: clamp(m * 3) });
+    const ring = (el, t0) => { const rg = pr(t, t0 - .05, .7, E.out); el.style.left = (DOVE_T.x - 200) + 'px'; el.style.top = (DOVE_T.y - 200) + 'px'; S(el, { s: lerp(.1, 2.6, rg), o: (1 - rg) * clamp((t - t0 + .05) * 20) }); };
+    ring(q('agency', '#agring'), SIG.land1); ring(q('agency', '#agring2'), SIG.land2);
+    const glowA = pr(t, SIG.land1 - .05, .15) * (1 - pr(t, SIG.land1 + .15, .6));
+    const glowB = pr(t, SIG.take - .35, .3) * (1 - pr(t, SIG.take + .05, .5));        // the dove lights up and leaves the B
+    const glowC = pr(t, SIG.land2 - .05, .15) * (1 - pr(t, SIG.land2 + .2, .7));
+    q('agency', '#agglow').style.opacity = Math.max(glowA, glowB, glowC).toFixed(3);
+    // 3) letters dance in one by one
+    const dx2 = doves[1]; let dovePos = null;
+    if (t >= SIG.take - .05 && t <= SIG.land2 + .1) dovePos = crPoint(t);
+    bjl.forEach(img => {
+      const n = img.dataset.n;
+      const L = LETTERS.find(z => z.n === n); const lx = LGX + (L.x + L.w / 2) * LW_;
+      let tin, kind;
+      if (n.startsWith('ag_')) { tin = SIG.agency0 + ['ag_a', 'ag_g', 'ag_e', 'ag_n', 'ag_c', 'ag_y'].indexOf(n) * SIG.astep; kind = 'ag'; }
+      else if (n.endsWith('dot')) { tin = SIG.letters0 + ORDER_L.indexOf(n[0]) * SIG.lstep + .22; kind = 'dot'; }
+      else { tin = SIG.letters0 + ORDER_L.indexOf(n) * SIG.lstep; kind = 'l'; }
+      const k = ORDER_L.indexOf(n.replace('dot', '').replace('ag_', '')) ;
+      const idle = Math.sin((t - tin) * 3.2 + (k >= 0 ? k : 3) * .8) * 2.5 * pr(t, tin + .7, .5);
+      // fly-over: the letters hop as the dove passes over them
+      let hop = 0;
+      if (dovePos && t > 93.2 && t < 94.0) hop = Math.exp(-Math.pow((dovePos[0] - lx) / (P ? 55 : 70), 2));
+      // landing: joyful wave
+      const wave = Math.sin(Math.PI * clamp((t - SIG.land2 - .05 - (k >= 0 ? k : 3) * .045) / .35));
+      if (kind === 'l') {
+        const p = clamp((t - tin) / .7);
+        const yv = (1 - E.elastic(p)) * -170, rv = (1 - E.out(clamp(p * 1.4))) * (k % 2 ? 28 : -28);
+        const sq = Math.exp(-Math.pow((p - .22) / .07, 2));     // squash on impact
+        S(img, { y: yv + idle - hop * 28 - wave * 18, r: rv + hop * (k % 2 ? 6 : -6), sx: 1 + sq * .14, sy: 1 - sq * .16, o: clamp(p * 6) });
+      } else if (kind === 'dot') {
+        const p = E.back2(clamp((t - tin) / .4));
+        S(img, { y: (1 - p) * -60 + idle * 1.5 - hop * 40 - wave * 26, s: lerp(0, 1, p), r: (1 - p) * 180, o: clamp(p * 4) });
+      } else {
+        const p = E.back(clamp((t - tin) / .45));
+        S(img, { y: (1 - p) * 50 - wave * 10, s: lerp(.6, 1, p), o: clamp(p * 3) });
+      }
+    });
+    letters(q('agency', '#ag0'), t, SIG.letters0 + .35, .03, .4, fadeUp(14));
+    q('agency', '#agband').style.left = lerp(-30, 130, pr(t, SIG.shine, 1.0, E.io)) + '%';
+    S(q('agency', '#aglogo'), { s: 1 + .025 * pr(t, SIG.land1, 6, E.lin) });
+    // 4) the dove leaves the B, loops over the word and comes back to land on the B
+    if (dovePos) {
+      const pB = crPoint(t + .02);
+      const takeP = pr(t, SIG.take - .05, .25), landP = pr(t, SIG.land2 - .15, .2);
+      const sc = (P ? .78 : .9) * lerp(.55, 1, takeP) * (1 - .45 * landP);
+      const o = takeP * (1 - pr(t, SIG.land2 - .05, .15, E.lin));
+      placeDove(dx2, dovePos[0], dovePos[1], pB[0] - dovePos[0], pB[1] - dovePos[1], sc, o);
+      flap(dx2, t, 4.8, 1);
+      for (let k = 8; k < 70; k++) { const tt = t - k * .011; if (tt < SIG.take) break; const q2 = crPoint(tt); TRAIL.push([q2[0], q2[1], (1 - k / 70) * o, 11 * (1 - k / 70) + 1]); }
+    } else dx2.style.opacity = 0;
     return { dust: .35, corner: 0 };
   };
 
   // ---------------------------------------------------------------- main render
+  function DUR() { return TL.dur; }
   const ORDER = Object.keys(TL.scenes);
   let current = null;
   window.renderFrame = function (t) {

@@ -1,8 +1,8 @@
 # Spot publicitaire : CABREL TINDO en spectacle, « Père riche / Père pauvre »
 
 Spot 100 % animé (motion design), en **4K**, livré en deux formats.
-Le spot dure **1:28**. La signature animée **Boujieka Agency** s'enchaîne juste après (1:28 → 1:34).
-Durée totale : **1:34**.
+Le spot dure **1:28**. La signature animée **Boujieka Agency** s'enchaîne juste après (1:28 → 1:36).
+Durée totale : **1:36**.
 
 | Format | Résolution | Usage |
 |---|---|---|
@@ -31,12 +31,11 @@ images/
   logos_partenaires_HD/                          logos refaits en haute définition (fond transparent)
   miniature_youtube.jpg                          miniature 1280×720
 audio/
-  mix_final.flac / .mp3                          mix final (−14,7 LUFS, niveau YouTube / réseaux)
+  mix_final.flac / .mp3                          mix final (−14,5 LUFS, niveau YouTube / réseaux)
   mix_SANS_MUSIQUE_voix_bruitages.flac           voix + bruitages seuls
   stem_voice / stem_music / stem_sfx             pistes séparées
   voix_off_brute_*.mp3                           prise retenue (John Mala) + prise alternative (Frédéric Nyobè)
-  musique_louange_evangelique_90s.mp3            fond musical de louange évangélique (original)
-  louange_chantee_alleluia_jesus_est_la_28s.mp3  louange chantée du final (« Alléluia ! Jésus est là ! »)
+  musique_gospel_originale_composee.mp3          musique gospel originale composée pour le spot
 projet/                                          projet d'animation (HTML/CSS/JS), modifiable
 outils/                                          scripts : mixage audio, rendu image par image, encodage
 ```
@@ -57,15 +56,23 @@ outils/                                          scripts : mixage audio, rendu i
 | 0:47 | Réservations | numéro annoncé deux fois (« Je répète ») |
 | 0:58 | Partenaires | « Avec le soutien de… » |
 | 1:03 | « Ne viens pas seul(e) ! » | « Viens en famille, viens avec tes amis ! » |
-| 1:08 | Affiche finale animée + louange chantée | « Cabrel Tindo, en spectacle… Soyez-y… nombreux ! » |
-| 1:28 | **Signature Boujieka Agency** | La colombe (le Saint-Esprit) arrive, se pose dans le B et le logo se forme. Puis « Réalisé par Roger BOUJIEKA », et la colombe redécolle en diagonale dans une traînée de lumière. |
+| 1:08 | Affiche finale animée + final gospel (chœur, cuivres) | « Cabrel Tindo, en spectacle… Soyez-y… nombreux ! » |
+| 1:28 | **Signature « UNE RÉALISATION DE Boujieka Agency »** | La colombe (le Saint-Esprit) arrive en volant et se pose sur le B, qui s'illumine. Les lettres « oujieka » tombent et dansent une à une, et « agency » monte. Puis la colombe ressort du B, survole le mot, fait le tour, repasse devant les lettres (qui sautent à son passage) et revient se poser sur le B. |
 
 Les sous-titres, les chiffres et les prix apparaissent au mot près, calés sur la voix off. Les animations suivent aussi le tempo de la musique (112 BPM).
 
 ## Musique
 
-Le fond sonore est une **louange évangélique** originale (style louange congolaise et d'Afrique centrale : guitares rumba et sebene, basse, batterie, congas, claps, pads). Il n'y a ni orgue ni chœur de messe.
-Le final est une louange chantée : « Alléluia ! Jésus est là ! Alléluia ! Jésus est Roi ! ».
+Le fond sonore est une **musique gospel de louange et d'adoration originale**, composée note par note pour ce spot.
+Elle est jouée avec des instruments échantillonnés : piano, chœur « ooh », cordes, basse, batterie gospel, cuivres, carillons et harpe.
+Elle est en Mi majeur, à 112 BPM, sans rythme profane ni orgue d'église.
+Comme elle est écrite sur la timeline, tout est calé à l'image :
+- intro louange au piano,
+- « drop » sur « CABREL TINDO »,
+- coups de cuivres sur chaque prix,
+- pont calme pendant les partenaires,
+- final avec chœur,
+- passage céleste pour la signature : une note de carillon par lettre qui danse, une harpe quand la colombe décolle.
 
 **David Okit, Dena Mwana** : leurs chansons sont protégées par le droit d'auteur. Les intégrer sans licence fait bloquer ou démonétiser le spot sur YouTube et Facebook (Content ID).
 Elles ne sont donc pas incluses. Si vous obtenez l'autorisation (éditeur ou label de l'artiste) :
@@ -88,7 +95,7 @@ Pour une fidélité parfaite, demandez les fichiers officiels (PNG/SVG) aux orga
 1. Lancer un serveur local dans `projet/` : `python3 -m http.server 8765`
 2. Prévisualiser : `http://127.0.0.1:8765/index.html?fmt=landscape` ou `?fmt=portrait`, puis `renderFrame(t)` dans la console.
 3. Rendu image par image en 4K : `outils/render_all.sh` (Playwright + Chromium).
-4. Audio : `python3 outils/mix.py` ; encodage : `outils/encode.sh landscape Spot_CabrelTindo_YouTube`.
+4. Musique : `python3 outils/compose.py` ; audio : `python3 outils/mix.py` ; timeline : `python3 outils/make_tl.py` ; encodage : `outils/encode.sh landscape Spot_CabrelTindo_YouTube`.
 
 ---
 Réalisation : **Roger BOUJIEKA, Boujieka Agency**
