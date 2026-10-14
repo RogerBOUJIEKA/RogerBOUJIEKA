@@ -1,7 +1,9 @@
 {
   "sortie": "sorties",
   "base": {
-    "vif": true
+    "vif": true,
+    "invite": "Marguerite Fonkwen Atanga",
+    "signature": true
   },
   "variantes": [
     {
