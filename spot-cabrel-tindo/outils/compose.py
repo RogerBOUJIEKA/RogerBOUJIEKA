@@ -148,6 +148,32 @@ for tp in PRICE_T:
 for b in (4, 8, 12, 16):
     for n in voicing(PROG[b], 58, 77, 4): note('brass', tb(b, 3.5), n, 92, BEAT * .3)
 
+# ---- catchy hook (piano octaves + rhodes, brass answers): the melody people remember
+HOOK = [  # (beat offset within a 2-bar phrase, MIDI note, length in beats)
+    (0, 71, .5), (.5, 76, .5), (1.5, 78, .5), (2, 80, .75), (3, 78, .5), (3.5, 76, .5),
+    (4.5, 73, .5), (5, 76, .5), (6, 71, 1.25), (7.5, 68, .5)]
+ANSWER = [(6.5, 83, .25), (6.75, 80, .25), (7, 83, .5)]
+def hook(b0, nb, vel, brass=0):
+    for ph in range(0, nb, 2):
+        t = tb(b0 + ph)
+        for off, n, ln in HOOK:
+            note('piano', t + off * BEAT, n, vel, ln * BEAT * .9); note('piano', t + off * BEAT, n + 12, vel - 14, ln * BEAT * .9)
+            note('rhodes', t + off * BEAT, n, vel - 6, ln * BEAT)
+        if brass:
+            for off, n, ln in ANSWER:
+                for d in (0, -4, -7): note('brass', t + off * BEAT, n + d - 12, brass, ln * BEAT * .9)
+hook(0, 8, 74, 84)        # drop -> title / joy / date
+hook(8, 4, 60, 70)        # tickets (voice busy -> softer)
+hook(12, 4, 58, 0)        # phone
+hook(21, 4, 52, 0)        # finale under the last lines (soft, the voice leads)
+hook(25, 6, 86, 100)      # finale after the voice: full hook
+# intro heartbeat + rising arpeggio to pull the viewer in
+for b in range(-4, 0):
+    for i in range(4): dr(tb(b, i), K, 52 + (b + 4) * 9 + (8 if i == 0 else 0), .2)
+    up = voicing(PROG[b], 64, 88, 5)
+    for i in range(8): note('fx', tb(b, i * .5), up[i % len(up)] + (12 if i >= 4 else 0), 46 + (b + 4) * 7, BEAT * .45, ch=4)
+note('fx', tb(0), 28, 120, 1.5, ch=1)     # extra low hit on the drop
+
 # ---- breakdown (partners): piano, rhodes, pads, soft hats
 for b in (17, 18):
     c = PROG[b]; t = tb(b)
@@ -242,7 +268,7 @@ FX = {
     'brass': Pedalboard([HighpassFilter(110), Compressor(-16, 2.5, 5, 100), Reverb(room_size=.6, wet_level=.22, dry_level=.85)]),
     'fx': Pedalboard([HighpassFilter(60), Reverb(room_size=.9, wet_level=.42, dry_level=.7, width=1)]),
 }
-GAIN = {'piano': -5.5, 'rhodes': 2, 'pad': 5, 'oohs': 0, 'bass': 2, 'drums': 1.5, 'brass': -3, 'fx': -2}
+GAIN = {'piano': -5.5, 'rhodes': 1, 'pad': 5, 'oohs': 0, 'bass': 2.5, 'drums': 2, 'brass': -3, 'fx': -3}
 os.makedirs(S + '/music/stems', exist_ok=True)
 mix = None
 for stem in EV:

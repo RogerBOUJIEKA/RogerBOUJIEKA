@@ -18,9 +18,4 @@ ffmpeg -y -v error -framerate 30 -i $F/f%05d.jpg -i $A -map 0:v -map 1:a \
   -vf scale=$SC:flags=lanczos -c:v libx264 -preset slow -crf 20 -maxrate 9000k -bufsize 14000k -pix_fmt yuv420p -profile:v high \
   -color_primaries bt709 -color_trc bt709 -colorspace bt709 \
   -c:a aac -b:a 192k -movflags +faststart -shortest $O/${name}_1080p.mp4
-# 4) 1080p without music (voice + sound design) for laying in a licensed song
-ffmpeg -y -v error -framerate 30 -i $F/f%05d.jpg -i $S/out/master_nomusic_main.wav -map 0:v -map 1:a \
-  -vf scale=$SC:flags=lanczos -c:v libx264 -preset slow -crf 20 -maxrate 9000k -bufsize 14000k -pix_fmt yuv420p -profile:v high \
-  -color_primaries bt709 -color_trc bt709 -colorspace bt709 \
-  -c:a aac -b:a 192k -movflags +faststart -shortest $O/${name}_SANS_MUSIQUE_1080p.mp4
 ls -la $O

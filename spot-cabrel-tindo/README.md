@@ -23,7 +23,6 @@ videos/
   Spot_CabrelTindo_YouTube_1080p.mp4             16:9 1080p (Facebook / WhatsApp)
   Spot_CabrelTindo_Short_4K.mp4                  9:16 4K
   Spot_CabrelTindo_Short_1080p.mp4               9:16 1080p
-  *_SANS_MUSIQUE_1080p.mp4                       voix off + bruitages, sans musique (pour poser un titre sous licence)
 images/
   cabrel_tindo_retouche_4K.jpg                   photo retouchée et étalonnée (texte de l'affiche retiré)
   cabrel_tindo_detoure_4K.png                    même photo détourée (fond transparent)
@@ -31,8 +30,7 @@ images/
   logos_partenaires_HD/                          logos refaits en haute définition (fond transparent)
   miniature_youtube.jpg                          miniature 1280×720
 audio/
-  mix_final.flac / .mp3                          mix final (−14,5 LUFS, niveau YouTube / réseaux)
-  mix_SANS_MUSIQUE_voix_bruitages.flac           voix + bruitages seuls
+  mix_final.flac / .mp3                          mix final (−14,4 LUFS, niveau YouTube / réseaux)
   stem_voice / stem_music / stem_sfx             pistes séparées
   voix_off_brute_*.mp3                           prise retenue (John Mala) + prise alternative (Frédéric Nyobè)
   musique_gospel_originale_composee.mp3          musique gospel originale composée pour le spot
@@ -74,11 +72,7 @@ Comme elle est écrite sur la timeline, tout est calé à l'image :
 - final avec chœur,
 - passage céleste pour la signature : une note de carillon par lettre qui danse, une harpe quand la colombe décolle.
 
-**David Okit, Dena Mwana** : leurs chansons sont protégées par le droit d'auteur. Les intégrer sans licence fait bloquer ou démonétiser le spot sur YouTube et Facebook (Content ID).
-Elles ne sont donc pas incluses. Si vous obtenez l'autorisation (éditeur ou label de l'artiste) :
-- prenez `videos/*_SANS_MUSIQUE_1080p.mp4` ou `audio/mix_SANS_MUSIQUE_voix_bruitages.flac`,
-- posez le titre dans votre logiciel de montage (CapCut, Premiere…) aux moments souhaités,
-- baissez la musique d'environ −10 dB sous la voix off.
+Instrumental uniquement (pas de chant), avec une mélodie-hook au piano et aux cuivres pour capter l'attention, toujours en dessous de la voix off.
 
 ## Logos
 

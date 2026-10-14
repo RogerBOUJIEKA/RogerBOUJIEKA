@@ -62,6 +62,10 @@ for cid, s, e, p, txt in VO:
         tail = np.zeros((2, int(1.2 * SR)), np.float32)
         clip = np.concatenate([clip, tail], axis=1)
         clip = ffproc(clip, "aecho=0.85:0.5:180|360:0.22|0.12")
+    if cid in ('c06', 'c18'):   # echo lowers the level: bring the dry line back to the common loudness
+        n0 = int((e - s) * SR); act = np.abs(clip[0, :n0]) > 0.01
+        r = np.sqrt(np.mean(clip[0, :n0][act] ** 2)) if act.any() else 0.1
+        clip = clip * min(db(9), db(-17.5) / max(r, 1e-4))
     place(vo_bus, clip, p, 0)
     a = int(p * SR); b = min(N, int((p + (e - s)) * SR))
     vo_env_mask[a:b] = 1
@@ -90,7 +94,9 @@ bed = (mus_bus + ch_bus)
 # base levels
 base = np.full(N, db(-5), np.float32)
 t = np.arange(N) / SR
-base[t < DROP_T] = db(-2)                         # worship intro
+base[t < DROP_T] = db(+2)                         # worship intro
+base[(t > 67.4) & (t < 74.3)] = db(-8)
+base[(t > 15.0) & (t < 20.15)] = db(-1.5)          # build-up under 'L'Alliance... vous présente'            # last VO line over the finale: keep the voice on top
 duck_amt = db(-6)
 g = base * (1 - duck * (1 - duck_amt))
 # let the drop + title breathe
