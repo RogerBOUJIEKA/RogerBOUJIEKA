@@ -1,16 +1,24 @@
 # Shared timeline: VO clip cut points (take 1, John Mala) and placements on the spot (seconds).
 import json
 
-DUR = 96.5
-FPS = 30
+# v2: the whole spot runs 7 % faster (VO, animation and music together) and lasts 1:29 in total, signature included.
+# All times below stay on the original "story" timeline T; the delivered video time is t = T / SPEED.
+SPEED = 1.07
+OUT_DUR = 89.0
+DUR = round(OUT_DUR * SPEED, 4)   # 95.23 on the story timeline
+FPS = 60
 MUSIC_OFFSET = 3.81      # music drop (16.567 s) lands on "CABREL" (20.38)
 CHOIR_SWITCH_T = 74.10   # (legacy)
 DROP_T = 20.33           # downbeat of the praise drop, on "CABREL"
 PRICE_T = [39.71, 41.83, 45.84]   # "mille", "trois", "cinq" -> brass stabs
 # animated signature (Boujieka Agency): dove arrives, letters dance, dove leaves and comes back
-SIG = {'in': 88.0, 'arrive0': 88.3, 'land1': 89.8, 'letters0': 89.95, 'lstep': .09,
-       'agency0': 90.6, 'astep': .06, 'shine': 91.2, 'take': 91.9, 'flyover0': 93.42, 'flystep': .083,
-       'land2': 94.4, 'out0': 95.6}
+FINAL_END = 86.73        # end of the final poster = start of the signature
+SIG0 = {'in': 88.0, 'arrive0': 88.3, 'land1': 89.8, 'letters0': 89.95, 'lstep': .09,
+        'agency0': 90.6, 'astep': .06, 'shine': 91.2, 'take': 91.9, 'flyover0': 93.42, 'flystep': .083,
+        'land2': 94.4, 'out0': 95.6}
+SIG_SHIFT = FINAL_END - SIG0['in']
+SIG = {k: (round(v + SIG_SHIFT, 4) if k not in ('lstep', 'astep', 'flystep') else v) for k, v in SIG0.items()}
+CTA_T = 75.70            # end tag over the final poster: "Réservations au 652 43 67 99" (same take as c14)
 
 # (id, src_start, src_end, place_T, text)
 VO = [
@@ -32,6 +40,7 @@ VO = [
     ("c16", 49.96, 54.25, 57.95, "Avec le soutien de l'Ambassade de France au Cameroun et de l'Institut Français du Cameroun."),
     ("c17", 54.25, 57.78, 62.75, "Alors, ne viens pas seul ! Viens en famille, viens avec tes amis !"),
     ("c18", 57.78, 64.29, 67.65, "Cabrel Tindo, en spectacle. Dimanche 25 octobre, salle Manu Dibango. Soyez-y... nombreux !"),
+    ("c19", 40.62, 45.49, CTA_T, "Réservations au : 652 43 67 99."),
 ]
 
 # Scene boundaries (T)
@@ -48,8 +57,8 @@ SCENES = {
     "phone":    (47.35, 57.85),
     "partners": (57.85, 62.65),
     "together": (62.65, 67.55),
-    "final":    (67.55, 88.0),
-    "agency":   (88.0, 96.5),
+    "final":    (67.55, FINAL_END),
+    "agency":   (FINAL_END, DUR),
 }
 
 def vo_map(src_t):

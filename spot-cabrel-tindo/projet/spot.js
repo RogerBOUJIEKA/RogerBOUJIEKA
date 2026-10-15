@@ -402,6 +402,8 @@
       <g class="wf"><path d="${WING}" fill="#ffffff"/><path d="${FEATH}" stroke="#d9e2ec" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
   const LETTERS = window.LOGO_LETTERS || [];
   const SIG = TL.sig;
+  const SD = SIG.in - 88.0;            // the signature was designed starting at 88.0
+  const CTA = (TL.vo.find(v => v[0] === 'c19') || [0, 75.7])[1];
   scene('agency', `
     <div class="ctr mont" id="ag0" style="font-weight:600;font-size:${P ? 28 : 28}px;letter-spacing:.6em;padding-left:.6em;color:#d4d4dc">${spl('UNE RÉALISATION DE')}</div>
     <div class="abs" id="agring" style="width:400px;height:400px;border-radius:50%;border:6px solid rgba(255,255,255,.9);box-shadow:0 0 40px 10px rgba(255,40,40,.55),inset 0 0 30px rgba(255,255,255,.6)"></div>
@@ -427,8 +429,8 @@
   const bez = (p0, p1, p2, u) => [(1 - u) * (1 - u) * p0[0] + 2 * (1 - u) * u * p1[0] + u * u * p2[0], (1 - u) * (1 - u) * p0[1] + 2 * (1 - u) * u * p1[1] + u * u * p2[1]];
   const ARR = { a: [-260, H + 180], c: P ? [W * .05, H * .62] : [W * .12, H * .30], b: [DOVE_T.x, DOVE_T.y], t0: SIG.arrive0, d: SIG.land1 - SIG.arrive0 };
   // loop: take off from the B, fly over the word, swing round the end and pass back over the letters, land on the B
-  const LOOP = P ? [[SIG.take, 183, 960], [92.3, 300, 700], [92.75, 600, 560], [93.05, 900, 640], [93.3, 990, 900], [93.9, 300, 925], [94.15, 175, 780], [SIG.land2, 183, 960]]
-    : [[SIG.take, DOVE_T.x, DOVE_T.y], [92.3, 700, 300], [92.75, 1150, 230], [93.05, 1560, 330], [93.3, 1600, 520], [93.9, 760, 505], [94.15, 560, 380], [SIG.land2, DOVE_T.x, DOVE_T.y]];
+  const LOOP = (P ? [[SIG.take - SD, 183, 960], [92.3, 300, 700], [92.75, 600, 560], [93.05, 900, 640], [93.3, 990, 900], [93.9, 300, 925], [94.15, 175, 780], [SIG.land2 - SD, 183, 960]]
+    : [[SIG.take - SD, DOVE_T.x, DOVE_T.y], [92.3, 700, 300], [92.75, 1150, 230], [93.05, 1560, 330], [93.3, 1600, 520], [93.9, 760, 505], [94.15, 560, 380], [SIG.land2 - SD, DOVE_T.x, DOVE_T.y]]).map(([a, x, y]) => [a + SD, x, y]);
   function crPoint(t) {
     const L = LOOP; if (t <= L[0][0]) return [L[0][1], L[0][2]]; if (t >= L[L.length - 1][0]) return [L[L.length - 1][1], L[L.length - 1][2]];
     let i = 0; while (t > L[i + 1][0]) i++;
@@ -512,14 +514,14 @@
     const r = rng(seed);
     return { t0, list: [...Array(n)].map(() => { const a = -Math.PI / 2 + (r() - .5) * Math.PI * 1.25; const v = (500 + r() * 1300) * spd; return { x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, w: 10 + r() * 14, h: 6 + r() * 8, c: CONF_COL[(r() * CONF_COL.length) | 0], sp: 4 + r() * 10, ph: r() * 6, rot: r() * 360, k: 1.6 + r() * 1.2 }; }) };
   }
-  const CONF = [mkBurst(20.32, W / 2, P ? H * .45 : H * .55, 260, 11), mkBurst(66.05, W / 2, P ? H * .55 : H * .7, 160, 12, .9), mkBurst(74.15, P ? W / 2 : 1360, P ? H * .4 : H * .5, 200, 13, .95)];
+  const CONF = [mkBurst(20.32, W / 2, P ? H * .45 : H * .55, 260, 11), mkBurst(66.05, W / 2, P ? H * .55 : H * .7, 160, 12, .9), mkBurst(74.15, P ? W / 2 : 1360, P ? H * .4 : H * .5, 200, 13, .95), mkBurst(84.6, P ? W / 2 : 1360, P ? H * .42 : H * .55, 150, 14, .85)];
   function mkSpark(t0, x, y, n, rad, seed) { const r = rng(seed); return { t0, list: [...Array(n)].map(() => ({ x: x + (r() - .5) * rad * 2, y: y + (r() - .5) * rad * 1.4, s: 10 + r() * 26, d: r() * .9, l: .5 + r() * .6 })) }; }
   const SPARK = [
     mkSpark(7.35, P ? 885 : 1070, P ? 240 : 270, 18, P ? 110 : 140, 21),
     mkSpark(22.4, W / 2, P ? 600 : 420, 22, P ? 380 : 700, 22),
     mkSpark(43.7, W / 2, H / 2, 26, P ? 420 : 640, 23),
     mkSpark(45.9, P ? W / 2 : W / 2 + 520, P ? H / 2 : H / 2 + 60, 16, 200, 24),
-    mkSpark(73.75, P ? W / 2 : 1360, P ? 1550 : 700, 24, P ? 460 : 520, 25),
+    mkSpark(73.75, P ? W / 2 : 1360, P ? 1550 : 700, 24, P ? 460 : 520, 25), mkSpark(84.58, P ? W / 2 : 1250, P ? 300 : 310, 22, P ? 420 : 460, 29),
     mkSpark(TL.sig.land1, P ? 183 : 545, P ? 960 : 550, 22, 160, 26), mkSpark(TL.sig.agency0, W / 2, H / 2, 24, P ? 420 : 520, 27), mkSpark(TL.sig.land2, P ? 183 : 545, P ? 960 : 550, 26, 180, 28),
   ];
   function drawFx(t, dust) {
@@ -569,7 +571,7 @@
   }
 
   // ---------------------------------------------------------------- camera
-  const SHAKES = [[10.63, .35, 9], [20.3, .5, 16], [31.25, .2, 5], [39.72, .2, 6], [41.84, .2, 6], [45.85, .3, 10], [63.8, .35, 10], [67.55, .3, 7], [TL.sig.land1, .25, 5], [TL.sig.land2, .25, 4]];
+  const SHAKES = [[10.63, .35, 9], [20.3, .5, 16], [31.25, .2, 5], [39.72, .2, 6], [41.84, .2, 6], [45.85, .3, 10], [63.8, .35, 10], [67.55, .3, 7], [84.6, .3, 6], [TL.sig.land1, .25, 5], [TL.sig.land2, .25, 4]];
   const BEATS = TL.beats;
   function camera(t, sceneName) {
     let x = 0, y = 0, r = 0;
@@ -874,14 +876,27 @@
     const php = pr(t, 73.05, .5, E.back); S(q('final', '#f_ph'), { x: (1 - php) * 60, o: php });
     const lg = pr(t, wt('nombreux', 73.4) - .1, .5, E.back);
     const pulse = (t0, d = .5, a = .045) => a * Math.sin(Math.PI * clamp((t - t0) / d));
-    S(fLogoBar, { y: (1 - lg) * 40, o: lg, s: 1 + pulse(84.0) });
+    const HIT = 84.6, hit = a => pulse(HIT - .03, .45, a);          // final chord of the music
+    S(fLogoBar, { y: (1 - lg) * 40, o: lg, s: 1 + pulse(82.1) + hit(.03) });
+    const fph = q('final', '#f_ph'), dimEls = [fBar, ...pills, fLogoBar, q('final', '#f_name'), q('final', '#f_es'), fst];
+    fph.style.filter = ''; dimEls.forEach(e => e.style.filter = '');
     if (t > 75) {
-      S(fBar, { y: 0, s: 1 + pulse(76.6), o: 1 });
-      pills.forEach((p, i) => S(p, { y: 0, s: 1 + pulse(78.6 + i * .28, .5, .08), o: 1 }));
-      S(q('final', '#f_ph'), { x: 0, o: 1, s: 1 + pulse(81.2, .6, .05) });
-      S(fR, { s: 1 + pulse(85.4, .5, .08), r: -3 + 6 * pulse(85.4, .5, 1), o: 1 }); S(fP, { s: 1 + pulse(85.7, .5, .08), r: 3 - 6 * pulse(85.7, .5, 1), o: 1 });
+      // end tag "Réservations au 652 43 67 99": the phone line takes the focus, the rest dims a little
+      const tR = wt('réservations', CTA - .1);
+      const hl = pr(t, tR - .25, .4, E.out) * (1 - pr(t, CTA + 4.95, .5, E.io));
+      const NUMS = [wt('six', tR), wt('quarante-trois', tR), wt('soixante-sept', tR), wt('quatre-vingt', tR)];
+      const np = NUMS.reduce((a, n) => a + pulse(n - .04, .32, .035), 0);
+      S(fBar, { y: 0, s: 1 + pulse(83.3) + hit(.035), o: 1 });
+      pills.forEach((p, i) => S(p, { y: 0, s: 1 + pulse(81.1 + i * .28, .5, .08) + hit(.05), o: 1 }));
+      S(fph, { x: 0, o: 1, s: 1 + .07 * hl + np + hit(.04) });
+      S(fph.firstElementChild, { r: Math.sin(t * 38) * 9 * hl * (Math.sin(t * 3.1) > 0 ? 1 : .15) });
+      if (hl > .01) {
+        fph.style.filter = `drop-shadow(0 0 ${(28 * hl).toFixed(1)}px rgba(255,150,50,${(.95 * hl).toFixed(2)}))`;
+        dimEls.forEach(e => e.style.filter = `brightness(${lerp(1, .55, hl).toFixed(3)})`);
+      }
+      S(fR, { s: 1 + pulse(82.6, .5, .08) + hit(.06), r: -3 + 6 * pulse(82.6, .5, 1), o: 1 }); S(fP, { s: 1 + pulse(82.9, .5, .08) + hit(.06), r: 3 - 6 * pulse(82.9, .5, 1), o: 1 });
     }
-    fadeEl.style.opacity = pr(t, 87.45, .55, E.io);
+    fadeEl.style.opacity = pr(t, TL.scenes.final[1] - .55, .55, E.io);
     return { dust: .5, corner: 0 };
   };
   function doveAt(path, t, e) {
@@ -937,7 +952,7 @@
       const idle = Math.sin((t - tin) * 3.2 + (k >= 0 ? k : 3) * .8) * 2.5 * pr(t, tin + .7, .5);
       // fly-over: the letters hop as the dove passes over them
       let hop = 0;
-      if (dovePos && t > 93.2 && t < 94.0) hop = Math.exp(-Math.pow((dovePos[0] - lx) / (P ? 55 : 70), 2));
+      if (dovePos && t > 93.2 + SD && t < 94.0 + SD) hop = Math.exp(-Math.pow((dovePos[0] - lx) / (P ? 55 : 70), 2));
       // landing: joyful wave
       const wave = Math.sin(Math.PI * clamp((t - SIG.land2 - .05 - (k >= 0 ? k : 3) * .045) / .35));
       if (kind === 'l') {
@@ -973,7 +988,8 @@
   function DUR() { return TL.dur; }
   const ORDER = Object.keys(TL.scenes);
   let current = null;
-  window.renderFrame = function (t) {
+  window.renderFrame = function (tv) {
+    const t = tv * (TL.speed || 1);   // video time -> story time (the whole spot plays 7 % faster)
     // reset globals
     for (const k in bg) bg[k].style.opacity = 0;
     splitL.style.opacity = 0; splitR.style.opacity = 0;

@@ -4,7 +4,7 @@ const fs = require('fs');
 (async () => {
   const [fmt, out, s0, s1, stepArg, qArg] = process.argv.slice(2);
   const P = fmt === 'portrait';
-  const fps = 30, start = +s0 || 0, end = +s1, step = +(stepArg || 1), quality = +(qArg || 93);
+  const fps = +(process.env.FPS || 30), start = +s0 || 0, end = +s1, step = +(stepArg || 1), quality = +(qArg || 93);
   fs.mkdirSync(out, { recursive: true });
   const browser = await chromium.launch({ args: ['--force-color-profile=srgb', '--disable-lcd-text', '--font-render-hinting=none'] });
   const page = await browser.newPage({ viewport: { width: P ? 2160 : 3840, height: P ? 3840 : 2160 }, deviceScaleFactor: 1 });

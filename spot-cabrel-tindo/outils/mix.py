@@ -8,7 +8,7 @@ G = S + '/gen/'
 OUT = S + '/out/'
 os.makedirs(OUT, exist_ok=True)
 SR = 48000
-N = int(DUR * SR)
+N = int(OUT_DUR * SR)            # delivered length (1:29); story times T are placed at T / SPEED
 VO_TAKE = sys.argv[1] if len(sys.argv) > 1 else '5TuzJOLGE1veebKYvRAE'
 TAG = sys.argv[2] if len(sys.argv) > 2 else 'main'
 
@@ -28,7 +28,7 @@ def fade(y, fin=0.005, fout=0.01):
     return y
 
 def place(bus, y, t, gain_db=0.0):
-    i = int(round(t * SR))
+    i = int(round(t / SPEED * SR))
     if i >= bus.shape[1]: return
     j = min(bus.shape[1], i + y.shape[1])
     bus[:, max(i, 0):j] += y[:, max(0, -i):j - i] * db(gain_db)
@@ -42,18 +42,22 @@ def ffproc(y, af):
 
 # ---------- VOICE ----------
 vo_raw = load(VO_TAKE)
-# broadcast announcer chain: rumble cut, warmth, presence, de-ess-ish, compression
-VO_CHAIN = ("highpass=f=75,equalizer=f=140:t=q:w=1.0:g=2.5,equalizer=f=350:t=q:w=1.2:g=-2,"
-            "equalizer=f=3200:t=q:w=1.0:g=3,equalizer=f=7500:t=q:w=2:g=-2,"
-            "acompressor=threshold=-20dB:ratio=3.5:attack=8:release=120:makeup=4dB")
+# slightly faster delivery (x1.07), same pitch, then a denser broadcast announcer chain:
+# rumble cut, chest warmth, mud cut, strong presence for phone speakers, de-ess, two-stage compression
+VO_CHAIN = ("rubberband=tempo=%.4f:channels=together,"
+            "highpass=f=80,equalizer=f=150:t=q:w=1.0:g=3,equalizer=f=380:t=q:w=1.2:g=-3,"
+            "equalizer=f=2800:t=q:w=1.0:g=4.5,equalizer=f=5200:t=q:w=1.5:g=1.5,equalizer=f=7800:t=q:w=2:g=-3,"
+            "acompressor=threshold=-24dB:ratio=4:attack=6:release=110:makeup=6dB,"
+            "acompressor=threshold=-12dB:ratio=8:attack=2:release=60:makeup=2dB" % SPEED)
 vo_proc = ffproc(vo_raw, VO_CHAIN)
+VO_RMS = -15.0                    # active loudness of every line (was -17.5: the voice is now clearly on top)
 vo_bus = np.zeros((2, N), np.float32)
 vo_env_mask = np.zeros(N, np.float32)
 for cid, s, e, p, txt in VO:
-    clip = fade(vo_proc[:, int(s * SR):int(e * SR)], 0.004, 0.02)
+    clip = fade(vo_proc[:, int(s / SPEED * SR):int(e / SPEED * SR)], 0.004, 0.02)
     act = np.abs(clip[0]) > 0.01
     r = np.sqrt(np.mean(clip[0][act] ** 2)) if act.any() else 0.1
-    clip = clip * min(db(6), db(-17.5) / max(r, 1e-4))   # clip-gain: every line at the same loudness
+    clip = clip * min(db(8), db(VO_RMS) / max(r, 1e-4))   # clip-gain: every line at the same loudness
     if cid in ('c06',):          # "CABREL TINDO !" -> stadium echo
         tail = np.zeros((2, int(1.8 * SR)), np.float32)
         clip = np.concatenate([clip, tail], axis=1)
@@ -63,11 +67,11 @@ for cid, s, e, p, txt in VO:
         clip = np.concatenate([clip, tail], axis=1)
         clip = ffproc(clip, "aecho=0.85:0.5:180|360:0.22|0.12")
     if cid in ('c06', 'c18'):   # echo lowers the level: bring the dry line back to the common loudness
-        n0 = int((e - s) * SR); act = np.abs(clip[0, :n0]) > 0.01
+        n0 = int((e - s) / SPEED * SR); act = np.abs(clip[0, :n0]) > 0.01
         r = np.sqrt(np.mean(clip[0, :n0][act] ** 2)) if act.any() else 0.1
-        clip = clip * min(db(9), db(-17.5) / max(r, 1e-4))
+        clip = clip * min(db(9), db(VO_RMS) / max(r, 1e-4))
     place(vo_bus, clip, p, 0)
-    a = int(p * SR); b = min(N, int((p + (e - s)) * SR))
+    a = int(p / SPEED * SR); b = min(N, int((p + (e - s)) / SPEED * SR))
     vo_env_mask[a:b] = 1
 
 # ducking envelope (attack 60ms, release 350ms)
@@ -93,11 +97,12 @@ bed_gain = np.ones(N, np.float32)
 bed = (mus_bus + ch_bus)
 # base levels
 base = np.full(N, db(-5), np.float32)
-t = np.arange(N) / SR
-base[t < DROP_T] = db(+2)                         # worship intro
-base[(t > 67.4) & (t < 74.3)] = db(-8)
-base[(t > 15.0) & (t < 20.15)] = db(-1.5)          # build-up under 'L'Alliance... vous présente'            # last VO line over the finale: keep the voice on top
-duck_amt = db(-6)
+t = np.arange(N) / SR * SPEED                     # story time of every sample
+base[t < DROP_T] = db(+1)                         # worship intro
+base[(t > 67.4) & (t < 74.3)] = db(-9)            # last VO line over the finale: keep the voice on top
+base[(t > CTA_T - .3) & (t < CTA_T + 5.1)] = db(-9)   # end tag "Réservations au ..."
+base[(t > 15.0) & (t < 20.15)] = db(-2.5)          # build-up under 'L'Alliance... vous présente'
+duck_amt = db(-11)                                 # music bed well under the voice, full in the gaps
 g = base * (1 - duck * (1 - duck_amt))
 # let the drop + title breathe
 g[(t > 20.1) & (t < 20.3)] = np.maximum(g[(t > 20.1) & (t < 20.3)], db(-3))
@@ -106,6 +111,7 @@ fin = (t > 74.2)
 g[fin] = np.minimum(1.0, g[fin] * 1.0)
 g[t > SIG['in'] - .2] = db(-2)                      # signature: score in the foreground
 g[t > SIG['out0']] *= np.clip((DUR - t[t > SIG['out0']]) / (DUR - SIG['out0']), 0, 1)
+g = smooth(g, 0.05, 0.05)                           # no step in the gain changes
 bed *= g[None, :]
 
 # ---------- SFX ----------
@@ -171,24 +177,31 @@ sfx('whoosh2', SIG['flyover0'] - .1, -15)                              # flies o
 sfx('wings', SIG['land2'] - .9, -9)                                    # comes back
 sfx('shimmer2', SIG['land2'] - .05, -10); sfx('boom', SIG['land2'], -18, dur=2.5, fout=1.0)
 
+sfx_bus *= (1 - duck * (1 - db(-4)))[None, :]       # sound design also steps back a little under the voice
+
 # ---------- MASTER ----------
 mix = vo_bus * db(0) + bed + sfx_bus
 mix[:, -int(0.05 * SR):] *= np.linspace(1, 0, int(0.05 * SR))
 pre = OUT + f'mix_pre_{TAG}.wav'
 sf.write(pre, mix.T, SR, subtype='FLOAT')
 master = OUT + f'master_{TAG}.wav'
-subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', pre, '-af',
-                'loudnorm=I=-14:TP=-1.2:LRA=9:print_format=summary,alimiter=limit=0.89:level=false',
-                '-ar', str(SR), '-c:a', 'pcm_s24le', master], check=True)
+# loud, punchy master for phones / social networks: -11 LUFS integrated, peaks held under -1 dBTP
+TARGET = -11.0
+def lufs(f):
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-i', f, '-af', 'ebur128=peak=true', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    I = float(r.split('Integrated loudness:')[1].split('I:')[1].split('LUFS')[0]); P = float(r.split('True peak:')[1].split('Peak:')[1].split('dBFS')[0])
+    return I, P
+gain = 0.0
+for it in range(8):
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', pre, '-af',
+                    f'volume={gain:.2f}dB,acompressor=threshold=-14dB:ratio=2:attack=20:release=200:makeup=1,'
+                    'alimiter=limit=0.81:attack=3:release=80:level=false:asc=1', '-ar', str(SR), '-c:a', 'pcm_s24le', master], check=True)
+    I, P = lufs(master); print(f'master pass {it}: gain {gain:+.2f} dB -> {I:.1f} LUFS, true peak {P:.1f} dBTP')
+    if abs(I - TARGET) < .25: break
+    gain += (TARGET - I) * 1.4
 # stems for the client
 sf.write(OUT + f'stem_voice_{TAG}.wav', vo_bus.T, SR, subtype='PCM_24')
 sf.write(OUT + f'stem_music_{TAG}.wav', bed.T, SR, subtype='PCM_24')
 sf.write(OUT + f'stem_sfx_{TAG}.wav', sfx_bus.T, SR, subtype='PCM_24')
 print('master ->', master)
 
-# version without music (voice + sound design) so a licensed song can be laid in by the editor
-nm = vo_bus + sfx_bus
-pre2 = OUT + f'mix_pre_nomusic_{TAG}.wav'
-sf.write(pre2, nm.T, SR, subtype='FLOAT')
-subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', pre2, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.89:level=false',
-                '-ar', str(SR), '-c:a', 'pcm_s24le', OUT + f'master_nomusic_{TAG}.wav'], check=True)

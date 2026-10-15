@@ -1,6 +1,7 @@
 # Original gospel praise & worship score for the spot, composed note by note on the spot timeline.
 # Rendered with the GeneralUser GS soundfont (free for commercial music production).
-# E major, 112 BPM. Worship intro -> praise drop on "CABREL TINDO" -> groove -> breakdown -> big
+# E major, 112 BPM on the story timeline (x1.07 in the delivered video: ~120 BPM).
+# Events are written on the story timeline T and rendered at t = T / SPEED, so the music stays locked to the picture. Worship intro -> praise drop on "CABREL TINDO" -> groove -> breakdown -> big
 # praise finale -> heavenly signature (one celesta note per dancing letter of the logo).
 import numpy as np, tinysoundfont, soundfile as sf, json, os
 from pedalboard import Pedalboard, Reverb, Compressor, HighpassFilter, LowpassFilter, Gain, Limiter, LowShelfFilter, HighShelfFilter
@@ -64,14 +65,14 @@ ALT = ['C#:m7', 'A:maj7', 'F#:m7', 'B:7']
 GROOVE = MAIN + MAIN + ALT + MAIN + ['B:sus4']        # bars 0..16
 BREAK = ['A:add9', 'B:sus4']                          # bars 17..18
 BUILD = ['C#:m7', 'B:maj/D#']                         # bars 19..20
-FINALE = ['A:add9', 'B:sus4', 'G#:m7', 'C#:m7', 'F#:m7', 'B:7', 'E:add9', 'E:maj/G#', 'A:add9', 'B:7sus']   # bars 21..30
+FINALE = ['A:add9', 'B:sus4', 'G#:m7', 'C#:m7', 'F#:m7', 'B:7', 'E:add9', 'A:add9', 'B:7sus']   # bars 21..29
 PROG = {}
 for i, c in enumerate(INTRO): PROG[i - 8] = c
 for i, c in enumerate(GROOVE): PROG[i] = c
 for i, c in enumerate(BREAK): PROG[17 + i] = c
 for i, c in enumerate(BUILD): PROG[19 + i] = c
 for i, c in enumerate(FINALE): PROG[21 + i] = c
-PROG[31] = 'E:add9'
+PROG[30] = 'E:add9'
 
 # ---- pre-intro ambience (under "Mesdames et messieurs")
 for n in voicing('E:add9', 52, 71): note('pad', .25, n, 52, tb(-8) - .25 + .3)
@@ -166,7 +167,8 @@ hook(0, 8, 74, 84)        # drop -> title / joy / date
 hook(8, 4, 60, 70)        # tickets (voice busy -> softer)
 hook(12, 4, 58, 0)        # phone
 hook(21, 4, 52, 0)        # finale under the last lines (soft, the voice leads)
-hook(25, 6, 86, 100)      # finale after the voice: full hook
+hook(25, 2, 86, 100)      # finale after "nombreux !": full hook
+hook(27, 2, 60, 0)        # under the end tag "Réservations au ..." (voice on top)
 # intro heartbeat + rising arpeggio to pull the viewer in
 for b in range(-4, 0):
     for i in range(4): dr(tb(b, i), K, 52 + (b + 4) * 9 + (8 if i == 0 else 0), .2)
@@ -198,16 +200,16 @@ for j, b in enumerate((19, 20)):
     for n in voicing(c, 55, 72, 3): note('oohs', t, n, 66 + j * 10, BAR * 1.02)
 for k in range(8): dr(tb(20, 2) + k * BEAT / 4, CR if k == 0 else RD, 40 + k * 8, .3)
 
-# ---- finale (bars 21..30): full praise, choir, brass
-for b in range(21, 31):
-    groove_bar(b, energy=1.08, fill=(b in (24, 28)), crash=(b in (21, 25, 29)))
+# ---- finale (bars 21..29): full praise, choir, brass
+for b in range(21, 30):
+    groove_bar(b, energy=1.08, fill=(b in (24, 29)), crash=(b in (21, 25, 28)))
     c = PROG[b]; t = tb(b)
     for n in voicing(c, 55, 74, 4): note('oohs', t, n, 68, BAR * 1.02)
     for n in voicing(c, 64, 84, 4): note('pad', t, n, 70, BAR * 1.02)
-    if b % 2 == 1:
+    if b % 2 == 1 and b != 27:
         for n in voicing(c, 58, 79, 4): note('brass', t, n, 100, BEAT * .9); note('brass', t + 2.5 * BEAT, n, 92, BEAT * .4)
-# final chord (bar 31) ringing into the signature
-t = tb(31); c = 'E:add9'
+# final chord (bar 30) on the poster, ringing into the signature
+t = tb(30); c = 'E:add9'
 for n in voicing(c, 60, 84, 5): note('piano', t, n, 104, 3.0); note('brass', t, n, 108, 1.6)
 note('piano', t, 28, 100, 3.0); note('piano', t, 40, 96, 3.0); note('bass', t, 40, 104, 2.0)
 for n in voicing(c, 52, 76, 5): note('pad', t, n, 88, 2.8)
@@ -248,9 +250,9 @@ def render(stem):
     for ch, (bank, prog, d) in PROGRAMS[stem].items(): s.program_select(ch, sid, bank, prog, is_drums=d)
     if stem == 'piano': s.control_change(0, 64, 0)
     ev = sorted(EV[stem], key=lambda e: (e[0], e[1]))
-    total = int(END * SR); cur = 0; chunks = []
+    total = int(OUT_DUR * SR); cur = 0; chunks = []
     for t, kind, ch, a, b in ev:
-        n = int(t * SR) - cur
+        n = int(t / SPEED * SR) - cur
         if n > 0: chunks.append(np.frombuffer(s.generate(n), dtype=np.float32).copy()); cur += n
         if kind == 1: s.noteon(ch, a, b)
         elif kind == 0: s.noteoff(ch, a)
