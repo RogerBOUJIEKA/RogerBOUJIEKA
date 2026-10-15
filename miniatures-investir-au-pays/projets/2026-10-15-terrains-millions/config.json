@@ -1,0 +1,157 @@
+{
+  "sortie": "sorties",
+  "base": {
+    "vif": true
+  },
+  "variantes": [
+    {
+      "nom": "1-7-5m-64-millions",
+      "ligne1": "7,5 M {→}",
+      "ligne2": "64 millions",
+      "jaune": 2,
+      "ambiance": "reussite",
+      "source_lumiere": [
+        1000,
+        -60
+      ],
+      "fond_avant": "../../fonds/pexels-29973772-terrain-brousse.jpg",
+      "fond_apres": "../../fonds/pexels-31533419-immeuble-residentiel-aerien.jpg",
+      "etiquette": {
+        "texte": "AVANT",
+        "x": 44,
+        "y": 40
+      },
+      "personnes": [
+        {
+          "photo": "simo:sourire-mains-hanches-chemise-bleue",
+          "role": "philippe",
+          "recadrage": 0.55
+        }
+      ],
+      "bokeh": 12,
+      "elements": [
+        {
+          "img": "../../elements/billets-euros-eventail.png",
+          "plan": "avant",
+          "flou": 3,
+          "x": -40,
+          "y": 590,
+          "largeur": 480,
+          "rotation": -8,
+          "perspective": [
+            18,
+            -12
+          ]
+        }
+      ]
+    },
+    {
+      "nom": "2-mon-terrain-x8",
+      "ligne1": "Mon terrain",
+      "ligne2": "a fait {x8} !",
+      "jaune": 1,
+      "ambiance": "argent",
+      "flou": 2,
+      "fond": "../../fonds/pexels-35313822-lotissement-aerien.jpg",
+      "fond_position": "40% 60%",
+      "personnes": [
+        {
+          "photo": "simo:poing-sourire-chemise-bleue",
+          "role": "philippe"
+        }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/pieces-or-piles-croissantes.png",
+          "plan": "milieu",
+          "x": 30,
+          "y": 590,
+          "largeur": 400,
+          "perspective": [
+            38,
+            0
+          ]
+        }
+      ],
+      "bokeh": 14
+    },
+    {
+      "nom": "3-pendant-que-tu-dors",
+      "ligne1": "Pendant que tu dors,",
+      "ligne2": "ils achètent l'Afrique",
+      "jaune": 2,
+      "ambiance": "nuit",
+      "luminosite": 1.0,
+      "fond": "../../fonds/pexels-33721959-addis-abeba-nuit.jpg",
+      "fond_position": "50% 62%",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "lumiere_contour": "#9cc4ff"
+        }
+      ],
+      "bokeh": 16,
+      "police": "bebas"
+    },
+    {
+      "nom": "4-3000-15000-euros",
+      "ligne1": "3 000 € aujourd'hui",
+      "ligne2": "= 15 000 € demain",
+      "jaune": 2,
+      "ambiance": "reussite",
+      "fond": "../../fonds/pexels-31817156-villa-luxe-piscine.jpg",
+      "personnes": [
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "lumiere_contour": "#ffd9a0"
+        }
+      ],
+      "elements": [
+        {
+          "img": "../../elements/billets-euros-eventail.png",
+          "plan": "avant",
+          "flou": 1.5,
+          "mouvement": 6,
+          "x": -60,
+          "y": 595,
+          "largeur": 450,
+          "rotation": -14,
+          "perspective": [
+            14,
+            20
+          ]
+        }
+      ],
+      "bokeh": 12,
+      "source_lumiere": [
+        1000,
+        -60
+      ]
+    },
+    {
+      "nom": "5-secret-des-riches-la-terre",
+      "ligne1": "Le secret des riches africains :",
+      "ligne2": "la terre",
+      "jaune": 2,
+      "ambiance": "reussite",
+      "source_lumiere": [
+        900,
+        -80
+      ],
+      "fond": "../../fonds/pexels-31570538-terre-rouge-camion.jpg",
+      "fond_position": "70% 50%",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ],
+      "bokeh": 10
+    }
+  ]
+}
