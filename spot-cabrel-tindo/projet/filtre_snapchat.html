@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Filtre Snapchat Cabrel Tindo</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--or:#FF6A13;--or2:#FF8F1F;--bl:#1593D6;--navy:#061A33;--gold:#F5B325;--gold2:#FFD873}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;width:1080px;height:2340px;overflow:hidden}
+body.preview{background:#333 url(assets/stage_P.jpg) center/cover}
+#c{position:relative;width:1080px;height:2340px}
+.abs{position:absolute}
+.gTop{left:0;top:0;width:100%;height:640px;background:linear-gradient(180deg,rgba(6,26,51,.80) 0,rgba(6,26,51,.55) 300px,rgba(6,26,51,0) 640px)}
+.gBot{left:0;bottom:0;width:100%;height:760px;background:linear-gradient(0deg,rgba(6,26,51,.88) 0,rgba(6,26,51,.62) 300px,rgba(6,26,51,0) 760px)}
+.sticker{position:relative;display:inline-block;padding:.12em .28em .1em;background:#fff;border-radius:.16em;box-shadow:0 .08em .25em rgba(0,0,0,.4)}
+.sticker .pere{position:absolute;font-family:'Kaushan Script';font-size:.46em;top:-.42em;left:.55em;transform:rotate(-8deg)}
+.sticker .big{font-family:Anton;line-height:.95;display:block;letter-spacing:.01em}
+.rich .pere{color:var(--bl)} .rich .big{color:var(--or)} .poor .pere{color:var(--or)} .poor .big{color:var(--bl)}
+#stk{left:0;width:100%;top:262px;display:flex;justify-content:center;gap:34px;font-size:96px}
+#name{left:0;width:100%;top:400px;text-align:center;font-family:'Archivo Black';color:#fff;line-height:.95;white-space:nowrap;text-transform:uppercase;
+  text-shadow:0 4px 0 #FF8F1F,0 8px 0 #FF6A13,0 12px 0 #D9480F,0 22px 40px rgba(0,0,0,.6)}
+#es{left:0;width:100%;top:538px;text-align:center;font-family:Montserrat;font-weight:700;font-size:30px;letter-spacing:.62em;padding-left:.62em;color:#fff;text-shadow:0 3px 14px rgba(0,0,0,.8)}
+.tag{font-family:'Kaushan Script';line-height:1;background:linear-gradient(180deg,#FFF1B8 0%,var(--gold2) 30%,var(--gold) 60%,#C9820E 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.1em .25em;
+  filter:drop-shadow(0 4px 3px rgba(0,0,0,.35)) drop-shadow(0 10px 22px rgba(0,0,0,.55))}
+.bar{left:40px;width:1000px;height:150px;top:1972px;background:#fff;border-radius:24px;display:flex;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,.45);overflow:hidden}
+.cell{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
+.cell .t{font:800 21px Montserrat;letter-spacing:.3em;padding-left:.3em;color:var(--or)}
+.cell .m{font:400 60px/1.02 Anton;color:var(--navy);text-align:center;margin-top:4px}
+.cell .m.s{font-size:44px}
+.div{width:3px;height:64%;background:#d7e3ee}
+#cab{left:-36px;bottom:0;height:760px;-webkit-mask-image:linear-gradient(180deg,#000 84%,rgba(0,0,0,0) 100%);mask-image:linear-gradient(180deg,#000 84%,rgba(0,0,0,0) 100%)}
+#cabGlow{left:-170px;top:1460px;width:880px;height:880px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,200,120,.55),rgba(255,140,40,.22) 55%,rgba(255,120,30,0))}
+.conf{position:absolute;border-radius:2px}
+.spark{position:absolute;width:44px;height:44px}
+</style></head>
+<body><div id="c"></div>
+<script>
+const Q = new URLSearchParams(location.search), V = Q.get('v') || 'cabrel';
+if (Q.get('preview')) document.body.classList.add('preview');
+const c = document.getElementById('c');
+const add = (h) => { const d = document.createElement('div'); d.innerHTML = h.trim(); const e = d.firstElementChild; c.appendChild(e); return e; };
+add('<div class="abs gTop"></div>'); add('<div class="abs gBot"></div>');
+// confetti + sparkles (show colours), kept around the bands, away from the face
+let s = 7; const R = () => (s = (s * 16807) % 2147483647) / 2147483647;
+const COL = ['#FF6A13', '#FF8F1F', '#1593D6', '#5CC8FF', '#F5B325', '#FFFFFF', '#E3261D'];
+const zones = [[40, 140, 1000, 230], [30, 590, 170, 150], [880, 590, 170, 150], [40, 1640, 1000, 260]];
+zones.forEach(([x, y, w, h], zi) => {
+  for (let i = 0; i < (zi === 3 ? 26 : zi ? 7 : 22); i++) {
+    const cw = 12 + R() * 16, ch = 7 + R() * 9;
+    const px = x + R() * w, py = y + R() * h;
+    if (zi === 3 && V === 'cabrel' && px < 560) continue;
+    add(`<div class="conf" style="left:${px}px;top:${py}px;width:${cw}px;height:${ch}px;background:${COL[(R() * COL.length) | 0]};transform:rotate(${R() * 360}deg) scaleY(${.4 + R() * .6});opacity:${.75 + R() * .25};box-shadow:0 2px 4px rgba(0,0,0,.25)"></div>`);
+  }
+});
+const star = (x, y, sz) => add(`<svg class="spark" style="left:${x - sz / 2}px;top:${y - sz / 2}px;width:${sz}px;height:${sz}px" viewBox="-50 -50 100 100"><defs><radialGradient id="g${x}"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#FFE08C"/><stop offset="1" stop-color="#FFC850" stop-opacity="0"/></radialGradient></defs><path d="M0-50Q0 0 50 0Q0 0 0 50Q0 0-50 0Q0 0 0-50Z" fill="url(#g${x})"/><circle r="9" fill="#fff" opacity=".8"/></svg>`);
+[[120, 300, 60], [975, 250, 70], [980, 520, 44], [95, 560, 40]].forEach(a => star(...a));
+// top band
+add(`<div class="abs" id="stk"><span class="sticker rich" style="transform:rotate(-4deg)"><span class="pere">père</span><span class="big">RICHE</span></span><span class="sticker poor" style="transform:rotate(4deg)"><span class="pere">père</span><span class="big">PAUVRE</span></span></div>`);
+const nm = add('<div class="abs" id="name">CABREL TINDO</div>');
+add('<div class="abs" id="es">EN SPECTACLE</div>');
+// bottom band
+if (V === 'cabrel') {
+  add('<div class="abs" id="cabGlow"></div>');
+  add('<img class="abs" id="cab" src="assets/cab.png">');
+  add('<div class="abs tag" style="left:520px;top:1720px;width:540px;text-align:center;font-size:84px;transform:rotate(-5deg)">Rire aux<br>éclats !</div>');
+  [[600, 1680, 46], [1010, 1700, 56], [985, 1905, 38]].forEach(a => star(...a));
+} else {
+  add('<div class="abs tag" style="left:0;top:1792px;width:1080px;text-align:center;font-size:104px;transform:rotate(-3deg)">Rire aux éclats !</div>');
+  [[150, 1770, 56], [930, 1760, 60], [985, 1930, 38]].forEach(a => star(...a));
+}
+add(`<div class="abs bar"><div class="cell" style="width:360px"><div class="t">DIMANCHE</div><div class="m">25 OCT. 2026</div></div><div class="div"></div>
+  <div class="cell" style="width:240px"><div class="t">HEURE</div><div class="m" style="color:var(--bl)">17H00</div></div><div class="div"></div>
+  <div class="cell" style="width:394px"><div class="t">LIEU</div><div class="m s">SALLE MANU<br>DIBANGO</div></div></div>`);
+window.ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  // fit the name to 920px
+  let fs = 140; nm.style.fontSize = fs + 'px';
+  const span = document.createElement('span'); span.textContent = nm.textContent; nm.textContent = ''; nm.appendChild(span);
+  while (span.getBoundingClientRect().width > 920 && fs > 40) { fs -= 1; nm.style.fontSize = fs + 'px'; }
+  return fs;
+})();
+</script></body></html>

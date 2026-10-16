@@ -93,6 +93,26 @@ Les logos partenaires étaient flous sur l'affiche. Ils ont été refaits en hau
 
 Pour une fidélité parfaite, demandez les fichiers officiels (PNG/SVG) aux organisateurs et remplacez-les dans `projet/assets/`.
 
+## Filtre Snapchat
+
+Dossier `snapchat/` : cadre PNG transparent aux couleurs du spectacle. Le centre est transparent pour laisser le visage visible.
+
+Deux versions :
+- **Avec Cabrel** : Cabrel en bas à gauche, pour faire un selfie « avec » lui.
+- **Sans photo** : texte et décor seulement.
+
+| Fichier | Taille | Pour |
+|---|---|---|
+| `CabrelTindo_Filtre_*_4K_2160x4680.png` | 2160 × 4680 | master 4K (archives, impression, retouches) |
+| `CabrelTindo_Filtre_*_LensStudio_945x2048.png` | 945 × 2048 | Lens Studio (Snap conseille des textures de 2048 px maximum) |
+| `CabrelTindo_Filtre_*_Snapchat_1080x2340.png` | 1080 × 2340, moins de 300 Ko | outil « Créer un filtre » de Snapchat |
+
+Les textes restent hors des 210 px du haut et du bas, où s'affichent les boutons de Snapchat.
+Il n'y a ni numéro de téléphone, ni logos partenaires, ni hashtag : les règles des filtres Snapchat les refusent.
+Pour l'outil « Créer un filtre », prendre la version **Sans photo**, car ces règles refusent aussi les photos de personnes.
+
+Source modifiable : `projet/filtre_snapchat.html` (`?v=cabrel` ou `?v=sansphoto`, `&preview=1` pour l'aperçu), rendu avec `outils/render_snap.js`.
+
 ## Modifier et refaire le rendu
 
 1. Lancer un serveur local dans `projet/` : `python3 -m http.server 8765`
