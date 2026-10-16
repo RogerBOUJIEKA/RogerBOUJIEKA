@@ -113,6 +113,12 @@ Pour l'outil « Créer un filtre », prendre la version **Sans photo**, car ces 
 
 Source modifiable : `projet/filtre_snapchat.html` (`?v=cabrel` ou `?v=sansphoto`, `&preview=1` pour l'aperçu), rendu avec `outils/render_snap.js`.
 
+### Page « filtre photo » en ligne
+
+`snapchat/page_filtre_photo/` : page web où chacun prend un selfie (ou choisit une photo) et voit le cadre s'ajouter automatiquement.
+On choisit « Avec Cabrel » ou « Sans photo », puis on enregistre l'image et on la partage sur Snapchat, WhatsApp, Instagram ou Facebook.
+La photo est assemblée sur le téléphone et n'est envoyée nulle part.
+
 ## Modifier et refaire le rendu
 
 1. Lancer un serveur local dans `projet/` : `python3 -m http.server 8765`
