@@ -113,11 +113,14 @@ Pour l'outil « Créer un filtre », prendre la version **Sans photo**, car ces 
 
 Source modifiable : `projet/filtre_snapchat.html` (`?v=cabrel` ou `?v=sansphoto`, `&preview=1` pour l'aperçu), rendu avec `outils/render_snap.js`.
 
-### Page « filtre photo » en ligne
+### Page « filtre photo et vidéo » en ligne
 
-`snapchat/page_filtre_photo/` : page web où chacun prend un selfie (ou choisit une photo) et voit le cadre s'ajouter automatiquement.
-On choisit « Avec Cabrel » ou « Sans photo », puis on enregistre l'image et on la partage sur Snapchat, WhatsApp, Instagram ou Facebook.
-La photo est assemblée sur le téléphone et n'est envoyée nulle part.
+`snapchat/page_filtre_photo/` : page web où chacun ajoute le cadre du spectacle sur une photo ou une vidéo.
+- **Photo** : prendre un selfie ou choisir une photo.
+- **Vidéo** : filmer une vidéo ou en choisir une, 60 secondes maximum. Le son est conservé.
+
+On choisit « Avec Cabrel » ou « Sans photo », on place son visage, puis on enregistre et on partage sur Snapchat, WhatsApp, Instagram, TikTok ou Facebook.
+Tout est assemblé sur le téléphone, rien n'est envoyé.
 
 ## Modifier et refaire le rendu
 
