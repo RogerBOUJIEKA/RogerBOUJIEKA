@@ -1,0 +1,150 @@
+{
+  "sortie": "sorties",
+  "base": {
+    "vif": true
+  },
+  "variantes": [
+    {
+      "nom": "1-8-ans-de-retard",
+      "ligne1": "Ton enfant a",
+      "ligne2": "8 ans de retard",
+      "ambiance": "alerte",
+      "fond": "../../fonds/pexels-5905842-enfant-devoirs-pensif.jpg",
+      "fond_position": "40% 50%",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ],
+      "jaune": 2
+    },
+    {
+      "nom": "2-confiance-ecole",
+      "ligne1": "Arrêtez de faire",
+      "ligne2": "confiance à l'école",
+      "ambiance": "alerte",
+      "fond": "../../fonds/pexels-36650154-salle-de-classe-tableau.jpg",
+      "personnes": [
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "lumiere_contour": "#bcd8ff"
+        }
+      ],
+      "jaune": 2
+    },
+    {
+      "nom": "3-enfant-lambda",
+      "ligne1": "Votre enfant",
+      "ligne2": "sera lambda",
+      "ambiance": "neutre",
+      "fond": "../../fonds/pexels-30281236-rangees-pupitres-vides.jpg",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ],
+      "bokeh": 8,
+      "jaune": 2
+    },
+    {
+      "nom": "4-nounou-16e",
+      "ligne1": "Nounou dans le 16[e]…",
+      "ligne2": "pour ses enfants",
+      "ambiance": "neutre",
+      "fond": "../../fonds/pexels-18809458-immeuble-haussmannien-angle.jpg",
+      "fond_position": "50% 30%",
+      "personnes": [
+        {
+          "photo": "simo:sourire-mains-hanches-chemise-bleue",
+          "role": "philippe",
+          "recadrage": 0.55
+        }
+      ],
+      "bokeh": 10,
+      "jaune": 2,
+      "flou": 1.5,
+      "luminosite": 0.95
+    },
+    {
+      "nom": "5-polytechnique",
+      "ligne1": "Seulement {2} noirs",
+      "ligne2": "à Polytechnique",
+      "ambiance": "alerte",
+      "fond": "../../fonds/pexels-8197503-amphi-etudiants.jpg",
+      "fond_position": "50% 40%",
+      "personnes": [
+        {
+          "photo": "simo:mains-jointes-menton-chemise-blanche",
+          "role": "philippe",
+          "recadrage": 0.8
+        }
+      ],
+      "jaune": 2
+    },
+    {
+      "nom": "6-reussite-2-ans",
+      "ligne1": "La réussite",
+      "ligne2": "commence à 2 ans",
+      "ambiance": "reussite",
+      "source_lumiere": [
+        1000,
+        -60
+      ],
+      "fond": "../../fonds/pexels-1741231-lecture-tout-petit.jpg",
+      "fond_position": "30% 50%",
+      "personnes": [
+        {
+          "photo": "simo:poing-sourire-chemise-bleue",
+          "role": "philippe"
+        }
+      ],
+      "bokeh": 14,
+      "jaune": 2
+    },
+    {
+      "nom": "7-parents-africains",
+      "ligne1": "Parents africains,",
+      "ligne2": "réveillez-vous",
+      "ambiance": "reussite",
+      "source_lumiere": [
+        900,
+        -80
+      ],
+      "fond": "../../fonds/pexels-5200784-enfant-devoirs-reveil.jpg",
+      "fond_position": "60% 50%",
+      "personnes": [
+        {
+          "photo": "simo:poing-sourire-chemise-bleue",
+          "role": "philippe"
+        }
+      ],
+      "bokeh": 10,
+      "jaune": 2
+    },
+    {
+      "nom": "8-france-et-france",
+      "ligne1": "Il y a France…",
+      "ligne2": "et France",
+      "ambiance": "neutre",
+      "fond_avant": "../../fonds/pexels-575356-tour-beton-grise.jpg",
+      "fond_apres": "../../fonds/pexels-35415027-rue-paris-tour-eiffel.jpg",
+      "personnes": [
+        {
+          "photo": "simo:bras-croises-col-roule-noir",
+          "role": "philippe",
+          "recadrage": 0.8,
+          "lumiere_contour": "#d8e6ff"
+        }
+      ],
+      "jaune": 2,
+      "flou": 2,
+      "luminosite": 0.95
+    }
+  ]
+}
