@@ -60,19 +60,21 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .narrow .sheet { width: 148.5mm; height: 420mm; flex-direction: column; }
 .sheet.fold::after { content: ""; position: absolute; left: 50%; top: 9mm; bottom: 9mm; border-left: .3mm solid #b8bdc8; }
 .narrow .sheet.fold::after { left: 9mm; right: 9mm; top: 50%; bottom: auto; border-left: 0; border-top: .3mm dashed #b8bdc8; }
-.page { width: 148.5mm; height: 210mm; padding: 11mm 11mm 9mm; display: flex; flex-direction: column; }
-.flow { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 3.2mm; }
-.pno { flex: none; margin-top: 2.5mm; text-align: center; font: 8pt var(--ui); color: #8a90a0; font-variant-numeric: tabular-nums; }
+.page { flex: none; width: 148.5mm; height: 210mm; padding: 9mm 10mm 7mm; display: flex; flex-direction: column; }
+.flow { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 2.6mm; }
+.pno { flex: none; margin-top: 1.5mm; text-align: center; font: 8pt var(--ui); color: #8a90a0; font-variant-numeric: tabular-nums; }
 .head { text-align: center; padding-bottom: 1mm; }
 .head h2 { margin: 0; font: 600 21pt/1.05 var(--display); letter-spacing: .02em; color: var(--ink); }
 .head p { margin: 1mm 0 0; font: italic 500 11pt var(--display); color: var(--ink-soft); }
 
-.box { position: relative; padding: 2.8mm 3.4mm; font-size: var(--fs, 10pt); }
+.box { position: relative; padding: 2.4mm 3.2mm; font-size: var(--fs, 10pt); }
 .box .titre { font: italic 600 1.08em/1.25 var(--body); color: var(--ink); margin-bottom: 1mm; }
 .box .sig { font: italic 600 1em/1.25 var(--body); color: var(--ink-soft); text-align: right; margin-top: 1.2mm; }
 .box .sig::before { content: "— "; }
-.box .text { font: 400 1em/1.38 var(--body); color: var(--ink); white-space: pre-wrap; text-align: justify; hyphens: auto; }
+.box .text { font: 400 1em/1.32 var(--body); color: var(--ink); white-space: pre-wrap; text-align: justify; hyphens: auto; }
 /* Four simple frames, used in turn. */
+.box.cont .text::after { content: " …"; }
+.box.contd .text::before { content: "… "; }
 .box.s0 { border: .3mm solid var(--rule); }
 .box.s1 { background: var(--tint); }
 .box.s2 { border: .8mm double var(--rule); }
@@ -120,7 +122,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="application/json" id="state">{"defunt": "", "fold": true, "size": 10, "items": [{"titre": "Maman…", "auteur": "Tene Talla Jean", "texte": "Tous les mots du monde ne seront jamais assez pour décrire la personne exceptionnelle que tu as été, et l'impact que tu as eu à la fois dans ma vie et dans la vie de plusieurs. Merci à Dieu pour le modèle que tu as été pour moi et le privilège qu'il m'a fait de te connaître, car tu es pour moi une source intarissable de motivation. Merci pour l'héritage le plus précieux que tu me laisses : la foi en Dieu, et un amour inconditionnel les uns pour les autres. Tu as combattu le bon combat, tu as achevé la course, et jusqu'à la fin tu as gardé la foi.\nMerci pour tout.\nI miss you mom, rest in peace.", "id": "t1"}, {"titre": "", "auteur": "Théophile Fotsing", "texte": "Merci maman pour le don de la vie. Merci pour la formidable maman que tu as été pour nous et pour tes petits-enfants.\nMerci pour l'amour que papa et toi avez su inculquer au sein de notre famille.\nTu nous as inculqué des valeurs qui ont fait de moi ce que je suis aujourd'hui.\nJe rends grâce à Dieu de t'avoir eue comme maman, comme modèle et comme conseillère dans ma vie.\nMerci maman. Repose en paix.", "id": "t2"}, {"titre": "Maman, Mater, Grand-mère…", "auteur": "Ta belle-mère, Espérance", "texte": "Comme il m'est difficile de faire cet exercice, celui d'écrire un hommage à la belle âme que tu as été. Mon cœur est meurtri. Aujourd'hui, je me rends compte à quel point tout semble dépeuplé autour de moi.\nLorsque je suis passée dire au revoir à Maman le 7 septembre, elle a prié pour moi. Nous avons parlé, elle m'a donné des conseils. Je ne savais pas que ce serait la dernière fois que je la verrais.\nAprès le départ de papa, mes frères et moi avions décidé de faire de chaque jour de sa vie un moment de qualité, de profiter pleinement de sa présence et de lui donner tout l'amour qu'elle méritait. Voilà qu'elle nous quitte alors que nous avions encore tant de choses à partager avec elle.\nLa douleur de l'avoir perdue ne nous empêchera jamais de nous remémorer tous ces merveilleux moments passés ensemble.\nMaman était une femme vertueuse, douce, discrète et généreuse, avec un cœur immense. Sa maison était toujours ouverte à tous, un véritable centre d'accueil. Chez elle, il n'existait pas de distinction entre les beaux-fils, les belles-filles et les amis de ses enfants. Tous ceux qui franchissaient sa porte devenaient ses enfants. C'était toujours « mon fils », « ma fille ». Elle savait accueillir, aimer et donner sans compter.\nElle a servi le Seigneur de tout son cœur jusqu'à la dernière minute. Elle a été un modèle de foi et de résilience.\nPendant douze longues années de mariage sans enfant, elle a connu la persécution, les moqueries et les paroles blessantes. On l'a traitée de stérile. Pourtant, jamais elle n'a baissé les bras. Elle a continué à espérer et à croire en Celui en qui elle avait placé sa confiance.\nEt le Seigneur les a exaucés.\nElle a vu ! Ses yeux ont vu !\nQuel témoignage de foi et de persévérance ! Son histoire nous rappelle que, malgré les épreuves, Dieu demeure fidèle.\nAujourd'hui, la douleur de son absence est immense, mais elle ne saurait effacer la richesse de l'héritage qu'elle nous laisse. Nous garderons jalousement tout ce qu'elle nous a inculqué, cet amour inconditionnel, cette générosité, cette douceur et cette foi qui ont marqué sa vie.\nNous continuerons de faire vivre ses valeurs, de transmettre ses enseignements et de raconter son histoire. Car une femme comme elle ne disparaît jamais vraiment. Elle continue de vivre à travers les vies qu'elle a touchées, les cœurs qu'elle a aimés et les graines qu'elle a semées.\nElle vivra à jamais dans nos cœurs et dans nos souvenirs.\nRepose en paix, Maman chérie. ❤️", "id": "t3"}, {"titre": "", "auteur": "Ta mère, comme tu m'appelais affectueusement, Ruth Njong", "texte": "Aujourd'hui, nous ne pleurons pas comme ceux qui n'ont pas d'espérance. Nous célébrons la vie de ma maman, une véritable femme de foi. Maman n'était pas une chrétienne du dimanche. Sa foi était vivante. C'était une femme de prière, une femme de la Parole, une femme qui a servi Dieu dans le secret et dans la fidélité. Elle nous a enseigné à prier avant de nous plaindre, à pardonner et refuser de garder rancune, et à toujours mettre Dieu en premier.\nElle priait pour tout. Elle m'appelait au téléphone et me disait : « Prions avant que tu ne prennes tes médicaments. » Je l'ai vue jeûner en silence quand nous traversions des épreuves, je l'ai vue ouvrir sa Bible usée tous les jours comme si c'était son pain. Elle ne nous a pas laissé d'or ni d'argent, elle nous a laissé quelque chose de plus précieux : Jésus-Christ.\nElle a combattu le bon combat, elle a achevé la course, elle a gardé la foi (2 Timothée 4:7). Son corps nous quitte, mais son héritage demeure en nous. Son plus grand désir était de voir ses enfants marcher avec le Seigneur. Et c'est ce que nous ferons.\nMerci Maman. Repose en paix auprès de ton Seigneur et Sauveur.", "id": "t4"}]}</script>
+<script type="application/json" id="state">{"defunt": "", "fold": true, "size": 9, "items": [{"titre": "Maman…", "auteur": "Tene Talla Jean", "texte": "Tous les mots du monde ne seront jamais assez pour décrire la personne exceptionnelle que tu as été, et l'impact que tu as eu à la fois dans ma vie et dans la vie de plusieurs. Merci à Dieu pour le modèle que tu as été pour moi et le privilège qu'il m'a fait de te connaître, car tu es pour moi une source intarissable de motivation. Merci pour l'héritage le plus précieux que tu me laisses : la foi en Dieu, et un amour inconditionnel les uns pour les autres. Tu as combattu le bon combat, tu as achevé la course, et jusqu'à la fin tu as gardé la foi.\nMerci pour tout.\nI miss you mom, rest in peace.", "id": "t1"}, {"titre": "", "auteur": "Théophile Fotsing", "texte": "Merci maman pour le don de la vie. Merci pour la formidable maman que tu as été pour nous et pour tes petits-enfants.\nMerci pour l'amour que papa et toi avez su inculquer au sein de notre famille.\nTu nous as inculqué des valeurs qui ont fait de moi ce que je suis aujourd'hui.\nJe rends grâce à Dieu de t'avoir eue comme maman, comme modèle et comme conseillère dans ma vie.\nMerci maman. Repose en paix.", "id": "t2"}, {"titre": "Maman, Mater, Grand-mère…", "auteur": "Ta belle-mère, Espérance", "texte": "Comme il m'est difficile de faire cet exercice, celui d'écrire un hommage à la belle âme que tu as été. Mon cœur est meurtri. Aujourd'hui, je me rends compte à quel point tout semble dépeuplé autour de moi.\nLorsque je suis passée dire au revoir à Maman le 7 septembre, elle a prié pour moi. Nous avons parlé, elle m'a donné des conseils. Je ne savais pas que ce serait la dernière fois que je la verrais.\nAprès le départ de papa, mes frères et moi avions décidé de faire de chaque jour de sa vie un moment de qualité, de profiter pleinement de sa présence et de lui donner tout l'amour qu'elle méritait. Voilà qu'elle nous quitte alors que nous avions encore tant de choses à partager avec elle.\nLa douleur de l'avoir perdue ne nous empêchera jamais de nous remémorer tous ces merveilleux moments passés ensemble.\nMaman était une femme vertueuse, douce, discrète et généreuse, avec un cœur immense. Sa maison était toujours ouverte à tous, un véritable centre d'accueil. Chez elle, il n'existait pas de distinction entre les beaux-fils, les belles-filles et les amis de ses enfants. Tous ceux qui franchissaient sa porte devenaient ses enfants. C'était toujours « mon fils », « ma fille ». Elle savait accueillir, aimer et donner sans compter.\nElle a servi le Seigneur de tout son cœur jusqu'à la dernière minute. Elle a été un modèle de foi et de résilience.\nPendant douze longues années de mariage sans enfant, elle a connu la persécution, les moqueries et les paroles blessantes. On l'a traitée de stérile. Pourtant, jamais elle n'a baissé les bras. Elle a continué à espérer et à croire en Celui en qui elle avait placé sa confiance.\nEt le Seigneur les a exaucés.\nElle a vu ! Ses yeux ont vu !\nQuel témoignage de foi et de persévérance ! Son histoire nous rappelle que, malgré les épreuves, Dieu demeure fidèle.\nAujourd'hui, la douleur de son absence est immense, mais elle ne saurait effacer la richesse de l'héritage qu'elle nous laisse. Nous garderons jalousement tout ce qu'elle nous a inculqué, cet amour inconditionnel, cette générosité, cette douceur et cette foi qui ont marqué sa vie.\nNous continuerons de faire vivre ses valeurs, de transmettre ses enseignements et de raconter son histoire. Car une femme comme elle ne disparaît jamais vraiment. Elle continue de vivre à travers les vies qu'elle a touchées, les cœurs qu'elle a aimés et les graines qu'elle a semées.\nElle vivra à jamais dans nos cœurs et dans nos souvenirs.\nRepose en paix, Maman chérie. ❤️", "id": "t3"}, {"titre": "", "auteur": "Ta mère, comme tu m'appelais affectueusement, Ruth Njong", "texte": "Aujourd'hui, nous ne pleurons pas comme ceux qui n'ont pas d'espérance. Nous célébrons la vie de ma maman, une véritable femme de foi. Maman n'était pas une chrétienne du dimanche. Sa foi était vivante. C'était une femme de prière, une femme de la Parole, une femme qui a servi Dieu dans le secret et dans la fidélité. Elle nous a enseigné à prier avant de nous plaindre, à pardonner et refuser de garder rancune, et à toujours mettre Dieu en premier.\nElle priait pour tout. Elle m'appelait au téléphone et me disait : « Prions avant que tu ne prennes tes médicaments. » Je l'ai vue jeûner en silence quand nous traversions des épreuves, je l'ai vue ouvrir sa Bible usée tous les jours comme si c'était son pain. Elle ne nous a pas laissé d'or ni d'argent, elle nous a laissé quelque chose de plus précieux : Jésus-Christ.\nElle a combattu le bon combat, elle a achevé la course, elle a gardé la foi (2 Timothée 4:7). Son corps nous quitte, mais son héritage demeure en nous. Son plus grand désir était de voir ses enfants marcher avec le Seigneur. Et c'est ce que nous ferons.\nMerci Maman. Repose en paix auprès de ton Seigneur et Sauveur.", "id": "t4"}, {"titre": "Ma petite sœur, ma mère, ma fille,", "auteur": "Ta grande sœur, Mme TALLA Pauline", "texte": "Nous étions 7 chez nos parents, nous ne sommes restées que 2 depuis 2 ans.\nNotre cadet nous a quittés en octobre 2024.\nNous étions comme des jumelles. Toi, Mme TALLA. Moi, Mme TALLA.\nAujourd'hui, tu pars sans me dire au revoir… sur la pointe des pieds.\nJe suis désormais seule… Quelle tristesse ! Quelle douleur !\nNéanmoins, je rends grâce à Dieu pour les moments que nous avons passés ensemble.\nPuisse le Très-Haut t'accorder une place de choix dans son royaume.\nRepose en paix.", "id": "t5"}, {"titre": "", "auteur": "Flaubert FEZEU", "texte": "À peine avions-nous pris conscience de ta maladie que la mort s'en est mêlée. Tu es partie, laissant dans la tristesse tous ceux qui, disséminés à travers le monde, aimaient tes intrigues et ton attentionnisme de « mère poule ». Peut-être faut-il seulement comprendre que tu as voulu, dans ton amour, épargner aux uns et aux autres la souffrance de te voir rongée par la maladie. Nous aurions voulu être un tout petit peu préparés à un tel choc, mais qui sommes-nous ? Merci pour la maman que tu as été.", "id": "t6"}, {"titre": "", "auteur": "Ton Benjamin, Patrick Njong", "texte": "J'écris ces mots non pas comme un gendre, mais comme un fils. Car Maman Monique n'a jamais été une belle-mère pour moi, elle a été une maman. Dès le premier jour, elle m'a accueilli avec une générosité que je n'oublierai jamais. Et très vite, entre nous, s'est installée une belle complicité. On se taquinait beaucoup. Elle m'appelait son benjamin, je la taquinais… On riait, on se lançait des petites piques, et dans chaque taquinerie, il y avait de l'amour. C'était notre langage à nous. Derrière les rires, il y avait un profond respect.\nJe la voyais se lever tôt pour prier, je la voyais jeûner pour nous, pour ses enfants, pour notre couple, pour notre foyer. Maman Monique priait pour moi comme une mère prie pour son propre fils. Et je sais aujourd'hui que beaucoup de mes batailles ont été gagnées grâce à ses prières secrètes. Elle était généreuse, d'une générosité rare. Elle donnait sans jamais compter. Perdre Maman Monique, c'est perdre une mère, une conseillère, une intercesseuse.\nMaman, merci. Merci de m'avoir aimé comme ton fils. Merci pour tes prières, pour tes jeûnes, pour tes rires, pour nos taquineries qui vont tellement me manquer. Je promets de prendre soin de ta fille, comme tu me l'as toujours demandé dans la prière.\nVa en paix, Maman Monique. Ta couronne t'attend. Nous t'aimons.", "id": "t7"}, {"titre": "Maman Monique,", "auteur": "Nadège Tene", "texte": "Tu as été une maman douce, calme, hyper gentille, pleine de sagesse. À une époque où les relations entre belle-fille et belle-mère sont réputées pour leurs tensions, avec toi la vie était facile. Je ne peux pas oublier ces fois où tu faisais à manger et m'en expédiais. Ton départ laisse un grand vide, mais ton amour reste. J'aurais aimé profiter de ta sagesse plus longtemps.\nRepose en paix, Mater, et merci pour tout.", "id": "t8"}, {"titre": "", "auteur": "Sarah Emmanuelle, ta petite-fille, « ta grand-mère » comme tu m'appelais tendrement", "texte": "Au-delà d'être une grand-mère, tu as été ma mère, ma copine, ma conseillère, mon soutien.\nLa femme que je deviens aujourd'hui, c'est grâce à toi. Grâce à toi, je sais ce que c'est que de se sentir aimée et protégée. Tu as été là pour moi dans mes moments de peur, d'anxiété et de pleurs. Tu m'as boostée durant mes examens. Tu as été mon grand pilier. À tes côtés, je me sentais en paix.\nTu restes mon modèle. Je t'aime.", "id": "t9"}, {"titre": "Chère grand-mère,", "auteur": "Ton petit-fils, Marc Emmanuel", "texte": "Me voici en train d'écrire un mot après ta mort.\nMa grand-mère, tu étais la personne la plus forte et la plus brillante du monde. Et je voulais aussi te dire merci. Merci parce que tu m'as appris à préparer de bons plats, et merci parce que quand tu étais avec moi et mes sœurs, tout changeait. Je t'ai toujours soutenue, et quand tu avais besoin d'aide, j'étais là. Tu sais, grand-mère, toi et grand-père, vous êtes les meilleurs grands-parents qui soient, parce que même dans les difficultés, tu étais là. Ta mort me fait pleurer chaque jour et tu me manques trop. Je t'aime, grand-mère.", "id": "t10"}]}</script>
 <script id="app-script">
 (() => {
   // Pieces of this page's own source, captured before rendering, so "Enregistrer" can republish the page with new data.
@@ -146,16 +148,17 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const el = html => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 
-  function boxEl(it, i) {
-    return el(`<article class="box s${i % 4}" data-id="${it.id}" lang="fr">
+  // A box shows one part of a testimony: the title opens part 0, the signature closes the last part.
+  function boxEl(it, i, text = it.texte, part = 0, sep = "") {
+    return el(`<article class="box s${i % 4}${part ? " contd" : ""}" data-id="${it.id}" lang="fr">
       <div class="ctl">
         ${it.titre ? "" : `<button type="button" data-act="titre">+ Titre</button>`}
         <button type="button" data-act="up" aria-label="Déplacer avant">↑</button>
         <button type="button" data-act="down" aria-label="Déplacer après">↓</button>
         <button type="button" data-act="del" class="danger">Supprimer</button>
       </div>
-      ${it.titre ? `<div class="titre" contenteditable="plaintext-only" spellcheck="true" data-k="titre" data-ph="Titre">${esc(it.titre)}</div>` : ""}
-      <div class="text" contenteditable="plaintext-only" spellcheck="true" data-k="texte" data-ph="Collez ou écrivez le témoignage ici">${esc(it.texte)}</div>
+      ${it.titre && !part ? `<div class="titre" contenteditable="plaintext-only" spellcheck="true" data-k="titre" data-ph="Titre">${esc(it.titre)}</div>` : ""}
+      <div class="text" contenteditable="plaintext-only" spellcheck="true" data-k="texte" data-ph="Collez ou écrivez le témoignage ici" data-sep="${esc(sep)}">${esc(text)}</div>
       <div class="sig" contenteditable="plaintext-only" spellcheck="true" data-k="auteur" data-ph="Nom de la personne qui témoigne">${esc(it.auteur)}</div>
     </article>`);
   }
@@ -172,22 +175,53 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     const probe = el(`<div class="sheet" style="position:absolute;left:-100000px;top:0"></div>`);
     document.body.appendChild(probe);
     const pages = [];
-    let page = newPage(true); probe.appendChild(page); pages.push(page);
-    const fits = p => p.firstElementChild.scrollHeight <= p.firstElementChild.clientHeight + 1;
-    state.items.forEach((it, i) => {
-      const b = boxEl(it, i);
-      b.style.setProperty("--fs", state.size + "pt");
-      page.firstElementChild.appendChild(b);
-      if (!fits(page) && page.firstElementChild.children.length > (pages.length === 1 ? 2 : 1)) {
-        b.remove();
-        page = newPage(false); probe.appendChild(page); pages.push(page);
-        page.firstElementChild.appendChild(b);
+    let page;
+    const nextPage = () => { page = newPage(!pages.length); probe.appendChild(page); pages.push(page); };
+    const flow = () => page.firstElementChild;
+    const fits = () => flow().scrollHeight <= flow().clientHeight + 1;
+    const alone = () => flow().querySelectorAll(".box").length === 1;
+    nextPage();
+
+    // Only long testimonies are split, at the end of a sentence, leaving a real piece on each page.
+    const MIN = 250;
+    function splitAt(b, text) {
+      if (text.length < 2 * MIN) return null;
+      const t = b.querySelector(".text"), sig = b.querySelector(".sig");
+      sig.hidden = true; b.classList.add("cont");
+      const cuts = [...text.matchAll(/\s+/g)]
+        .filter(m => /[.!?…:»]$/.test(text.slice(0, m.index)) || m[0].includes("\n"))
+        .map(m => m.index).filter(x => x >= MIN && text.length - x >= MIN);
+      let lo = 0, hi = cuts.length - 1, best = -1;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        t.textContent = text.slice(0, cuts[mid]);
+        if (fits()) { best = mid; lo = mid + 1; } else hi = mid - 1;
       }
-      // A box too long even on its own page gets slightly smaller text, down to 8.5pt.
-      for (let fs = state.size; !fits(page) && fs > 8.5; ) { fs -= 0.25; b.style.setProperty("--fs", fs + "pt"); }
-      if (!fits(page)) b.insertAdjacentHTML("beforeend", `<div class="warn">Ce témoignage est trop long pour une page : raccourcissez-le ou choisissez un texte plus petit.</div>`);
+      if (best < 0) { t.textContent = text; sig.hidden = false; b.classList.remove("cont"); return null; }
+      t.textContent = text.slice(0, cuts[best]);
+      sig.remove();
+      return cuts[best];
+    }
+
+    state.items.forEach((it, i) => {
+      let rest = it.texte, part = 0, sep = "";
+      for (;;) {
+        const b = boxEl(it, i, rest, part, sep);
+        b.style.setProperty("--fs", state.size + "pt");
+        flow().appendChild(b);
+        if (fits()) break;
+        const cut = splitAt(b, rest);
+        if (cut != null) {
+          sep = rest.slice(cut).match(/^\s+/)[0];
+          rest = rest.slice(cut + sep.length); part++;
+          nextPage(); continue;
+        }
+        if (!alone()) { b.remove(); nextPage(); continue; }
+        b.insertAdjacentHTML("beforeend", `<div class="warn">Ce témoignage ne rentre pas sur la page : raccourcissez-le ou choisissez un texte plus petit.</div>`);
+        break;
+      }
     });
-    if (!state.items.length) page.firstElementChild.insertAdjacentHTML("beforeend", `<p class="empty-note">Aucun témoignage.<br>Cliquez sur « + Ajouter un témoignage ».</p>`);
+    if (!state.items.length) flow().insertAdjacentHTML("beforeend", `<p class="empty-note">Aucun témoignage.<br>Cliquez sur « + Ajouter un témoignage ».</p>`);
     probe.remove();
     return pages;
   }
@@ -233,7 +267,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   sheetsEl.addEventListener("input", e => {
     const f = e.target.closest("[data-k]"); if (!f) return;
     const i = indexOf(f); if (i < 0) return;
-    state.items[i][f.dataset.k] = f.dataset.k === "texte" ? f.innerText.replace(/\n$/, "") : f.textContent.trim();
+    if (f.dataset.k === "texte") {
+      // A testimony split over two pages is rebuilt from all its parts.
+      const parts = [...sheetsEl.querySelectorAll(`.box[data-id="${state.items[i].id}"] [data-k=texte]`)];
+      state.items[i].texte = parts.map((t, j) => (j ? t.dataset.sep || " " : "") + t.innerText.replace(/\n$/, "")).join("");
+    } else state.items[i][f.dataset.k] = f.textContent.trim();
     needsFlow = true; markDirty();
   });
   sheetsEl.addEventListener("focusout", e => {
@@ -340,5 +378,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
   render();
   document.fonts?.ready.then(render);
+  // Font faces load lazily the first time a style is used; lay out again once they arrive.
+  let fontTimer;
+  document.fonts?.addEventListener?.("loadingdone", () => { clearTimeout(fontTimer); fontTimer = setTimeout(render, 50); });
 })();
 </script>
