@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programme d'affiliation</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --text:#1c2230; --muted:#5b6475; --accent:#2f6fde; --border:#dde1e8; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#12151b; --card:#1b2029; --text:#e6e9ef; --muted:#9aa3b2; --accent:#6c9cf0; --border:#2c3340; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  main { max-width:640px; margin:0 auto; padding:32px 16px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px; margin-bottom:16px; }
+  label { display:block; margin:12px 0 4px; color:var(--muted); font-size:14px; }
+  input { width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text); font:inherit; }
+  button { margin-top:16px; padding:10px 18px; border:0; border-radius:6px; background:var(--accent); color:#fff; font:inherit; cursor:pointer; }
+  code { word-break:break-all; background:var(--bg); padding:2px 6px; border-radius:4px; }
+  .error { color:#d64545; } .muted { color:var(--muted); } a { color:var(--accent); }
+  li { margin:6px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Devenez affilié</h1>
+  <p class="muted">Partagez nos produits avec vos liens personnels et touchez une commission sur chaque vente.
+    Parrainez d'autres affiliés et gagnez aussi sur leurs ventes.</p>
+
+  <form class="card" id="signup">
+    <label for="name">Nom</label><input id="name" required>
+    <label for="email">Email</label><input id="email" type="email" required>
+    <label for="parent">Code parrain (facultatif)</label><input id="parent">
+    <button>S'inscrire</button>
+    <p class="error" id="err"></p>
+  </form>
+
+  <div class="card" id="result" hidden>
+    <h2>Bienvenue, <span id="r-name"></span> !</h2>
+    <p><strong>Votre clé API</strong> (notez-la, elle ne sera plus affichée) :<br><code id="r-key"></code></p>
+    <p><strong>Votre lien de parrainage :</strong><br><code id="r-ref"></code></p>
+    <p><strong>Vos liens produits :</strong></p>
+    <ul id="r-links"></ul>
+    <p><a href="/dashboard">Accéder à mon tableau de bord →</a></p>
+  </div>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const ref = new URLSearchParams(location.search).get("ref");
+  if (ref) $("parent").value = ref;
+
+  $("signup").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    $("err").textContent = "";
+    const res = await fetch("/api/affiliates", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: $("name").value, email: $("email").value,
+                             parent_code: $("parent").value || null }),
+    });
+    const data = await res.json();
+    if (!res.ok) { $("err").textContent = data.error; return; }
+    $("signup").hidden = true;
+    $("result").hidden = false;
+    $("r-name").textContent = data.affiliate.name;
+    $("r-key").textContent = data.api_key;
+    $("r-ref").textContent = data.referral_link;
+    for (const l of data.links) {
+      const li = document.createElement("li");
+      li.textContent = l.product + " : ";
+      const c = document.createElement("code"); c.textContent = l.url; li.append(c);
+      $("r-links").append(li);
+    }
+    try { localStorage.setItem("aff_api_key", data.api_key); } catch {}
+  });
+</script>
+</body>
+</html>

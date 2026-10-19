@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administration affiliation</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --text:#1c2230; --muted:#5b6475; --accent:#2f6fde; --border:#dde1e8; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#12151b; --card:#1b2029; --text:#e6e9ef; --muted:#9aa3b2; --accent:#6c9cf0; --border:#2c3340; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  main { max-width:1100px; margin:0 auto; padding:32px 16px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:16px; overflow-x:auto; }
+  input, select { padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text); font:inherit; }
+  button { padding:8px 14px; border:0; border-radius:6px; background:var(--accent); color:#fff; font:inherit; cursor:pointer; }
+  button.ghost { background:transparent; color:var(--accent); border:1px solid var(--accent); padding:4px 10px; font-size:13px; }
+  form.inline { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .error { color:#d64545; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Administration</h1>
+  <form class="card inline" id="login">
+    <input id="token" type="password" placeholder="Jeton administrateur" required> <button>Connexion</button>
+    <span class="error" id="err"></span>
+  </form>
+
+  <div id="admin" hidden>
+    <div class="card"><h2>Ajouter un produit</h2>
+      <form class="inline" id="product">
+        <input id="p-name" placeholder="Nom" required>
+        <input id="p-url" placeholder="https://boutique.exemple/produit" required>
+        <select id="p-type"><option value="percent">% de la vente</option><option value="fixed">Montant fixe (€)</option></select>
+        <input id="p-value" type="number" step="0.01" min="0" placeholder="Commission" required style="width:120px">
+        <button>Ajouter</button>
+      </form>
+    </div>
+    <div class="card"><h2>Produits</h2>
+      <table><thead><tr><th>#</th><th>Nom</th><th>URL</th><th class="num">Commission</th></tr></thead><tbody id="products"></tbody></table>
+    </div>
+    <div class="card"><h2>Affiliés</h2>
+      <table><thead><tr><th>Nom</th><th>Email</th><th>Code</th><th class="num">Clics</th><th class="num">Ventes</th>
+        <th class="num">Conv.</th><th class="num">CA</th><th class="num">À payer</th><th></th></tr></thead>
+        <tbody id="affiliates"></tbody></table>
+    </div>
+    <div class="card"><h2>Commissions</h2>
+      <p><select id="filter"><option value="">Toutes</option><option value="pending">En attente</option>
+        <option value="approved">Approuvées</option><option value="rejected">Refusées</option><option value="paid">Payées</option></select></p>
+      <table><thead><tr><th>#</th><th>Commande</th><th>Affilié</th><th>Niveau</th><th class="num">Montant</th><th>Statut</th><th></th></tr></thead>
+        <tbody id="comms"></tbody></table>
+    </div>
+  </div>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const eur = (n) => n.toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+  const STATUS = { pending: "En attente", approved: "Approuvée", rejected: "Refusée", paid: "Payée" };
+  let token = "";
+  async function api(path, body) {
+    const res = await fetch(path, { method: body ? "POST" : "GET",
+      headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined });
+    const data = await res.json();
+    if (!res.ok) { $("err").textContent = data.error; throw new Error(data.error); }
+    $("err").textContent = ""; return data;
+  }
+  function cell(tr, text, num) { const td = document.createElement("td"); td.textContent = text;
+    if (num) td.className = "num"; tr.append(td); return td; }
+  function action(td, label, fn) { const b = document.createElement("button"); b.className = "ghost";
+    b.textContent = label; b.onclick = async () => { await fn(); refresh(); }; td.append(b, " "); }
+
+  async function refresh() {
+    const d = await api("/api/admin/overview?status=" + $("filter").value);
+    $("admin").hidden = false;
+    const names = Object.fromEntries(d.affiliates.map((a) => [a.id, a.name]));
+    $("products").replaceChildren(...d.products.map((p) => { const tr = document.createElement("tr");
+      cell(tr, p.id); cell(tr, p.name); cell(tr, p.url);
+      cell(tr, p.commission_type === "percent" ? p.commission_value + " %" : eur(p.commission_value), true); return tr; }));
+    $("affiliates").replaceChildren(...d.affiliates.map((a) => { const tr = document.createElement("tr");
+      cell(tr, a.name); cell(tr, a.email); cell(tr, a.code); cell(tr, a.clicks, true); cell(tr, a.conversions, true);
+      cell(tr, a.conversion_rate + " %", true); cell(tr, eur(a.revenue), true); cell(tr, eur(a.balance_due), true);
+      const td = cell(tr, "");
+      if (a.balance_due > 0) action(td, "Payer", () => api(`/api/affiliates/${a.id}/pay`, {}));
+      return tr; }));
+    $("comms").replaceChildren(...d.commissions.map((c) => { const tr = document.createElement("tr");
+      cell(tr, c.id); cell(tr, c.order_id); cell(tr, names[c.affiliate_id] || c.affiliate_id);
+      cell(tr, c.level === 1 ? "Direct" : "Parrainage"); cell(tr, eur(c.amount), true); cell(tr, STATUS[c.status]);
+      const td = cell(tr, "");
+      const set = (s) => () => api(`/api/commissions/${c.id}/status`, { status: s });
+      if (c.status === "pending") { action(td, "Approuver", set("approved")); action(td, "Refuser", set("rejected")); }
+      if (c.status === "approved") action(td, "Marquer payée", set("paid"));
+      return tr; }));
+  }
+  $("login").addEventListener("submit", (e) => { e.preventDefault(); token = $("token").value; refresh(); });
+  $("filter").addEventListener("change", refresh);
+  $("product").addEventListener("submit", async (e) => { e.preventDefault();
+    await api("/api/products", { name: $("p-name").value, url: $("p-url").value,
+      commission_type: $("p-type").value, commission_value: parseFloat($("p-value").value) });
+    e.target.reset(); refresh(); });
+</script>
+</body>
+</html>
