@@ -1,13 +1,13 @@
 <title>Pages Témoignages</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600&display=swap">
 <style id="app-style">
-/* Layout: a sticky toolbar over a stack of A4-landscape sheets, each split into two A5 pages; paper stays white in both themes. */
+/* Layout: a sticky toolbar over A4-landscape sheets, each folded into two A5 pages; testimonies flow page to page as simple boxes. Paper stays white in both themes. */
 :root {
   --bg: #e9ebef; --fg: #1d2230; --muted: #5d6475; --line: #cfd3db;
   --bar: #ffffffee; --btn: #ffffff; --btn-fg: #1d2230;
   --accent: #33456b; --accent-fg: #ffffff; --warn: #a3401f;
-  --paper: #ffffff; --ink: #1f2430; --ink-soft: #5b6273; --rule: #b8bdc8; --gold: #8a7650;
+  --paper: #ffffff; --ink: #1f2430; --ink-soft: #5b6273; --rule: #9aa1ae; --tint: #f1f2f5;
   --display: "Cormorant Garamond", "Garamond", "Times New Roman", serif;
   --body: "EB Garamond", "Garamond", "Georgia", serif;
   --ui: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -21,6 +21,7 @@
   --bar: #1f232ced; --btn: #262b36; --btn-fg: #e6e8ee;
   --accent: #8ea4d6; --accent-fg: #121520; --warn: #f08a68; color-scheme: dark }
 
+*, *::before, *::after { box-sizing: border-box; }
 body { background: var(--bg); color: var(--fg); font-family: var(--ui); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bar); }
 
@@ -28,14 +29,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   border-bottom: 1px solid var(--line);
   padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .bar-in { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
-.bar h1 { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 0 8px 0 0; letter-spacing: .01em; }
+.bar h1 { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 0 8px 0 0; }
 .field { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); min-width: 0; }
-.field input[type=text] { font: inherit; color: var(--fg); background: var(--btn); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; width: 230px; max-width: 52vw; }
+.field input, .field select { font: inherit; color: var(--fg); background: var(--btn); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; }
+.field input { width: 220px; max-width: 52vw; }
 .btn { font: 500 13px var(--ui); color: var(--btn-fg); background: var(--btn); border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
 .btn:hover { border-color: var(--accent); }
 .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
 .btn:disabled { opacity: .5; cursor: default; }
-.btn:focus-visible, .field input:focus-visible, [contenteditable]:focus-visible, .ph:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:focus-visible, .field input:focus-visible, .field select:focus-visible, [contenteditable]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .check { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; }
 .spacer { flex: 1; }
 .status { font-size: 12px; color: var(--muted); min-height: 1em; }
@@ -44,52 +46,53 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .help { max-width: 1180px; margin: 14px auto 0; font-size: 13px; color: var(--muted); line-height: 1.5;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .help b { color: var(--fg); font-weight: 600; }
+.count { font-variant-numeric: tabular-nums; }
+.count.over { color: var(--warn); font-weight: 600; }
 
 .sheets { display: flex; flex-direction: column; align-items: center; gap: 26px;
   padding-block: 18px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.sheet-label { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; align-self: center; margin-bottom: -18px; }
+.sheet-label { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: -18px; }
 .sheet-wrap { position: relative; max-width: 100%; }
 .sheet-wrap > .sheet { transform-origin: top left; position: absolute; top: 0; left: 0; box-shadow: 0 2px 14px rgba(15,20,35,.18); }
 
 /* ---- Paper (fixed print colors) ---- */
 .sheet { width: 297mm; height: 210mm; background: var(--paper); color: var(--ink); display: flex; position: relative; }
 .narrow .sheet { width: 148.5mm; height: 420mm; flex-direction: column; }
-.sheet.fold::after { content: ""; position: absolute; left: 50%; top: 9mm; bottom: 9mm; border-left: .3mm solid var(--rule); }
-.narrow .sheet.fold::after { left: 9mm; right: 9mm; top: 50%; bottom: auto; border-left: 0; border-top: .3mm dashed var(--rule); }
-.page { width: 148.5mm; height: 210mm; padding: 13mm 13mm 11mm; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-.eyebrow { font: 500 7.5pt var(--ui); letter-spacing: .28em; text-transform: uppercase; color: var(--gold); text-align: center; }
-.who { font: 600 19pt/1.1 var(--display); text-align: center; margin-top: 2.2mm; color: var(--ink); text-wrap: balance; }
-.rel { font: italic 500 11.5pt/1.2 var(--display); text-align: center; color: var(--ink-soft); margin-top: 1mm; }
-.orn { display: flex; align-items: center; justify-content: center; gap: 2.5mm; margin: 3mm 0 3.5mm; color: var(--gold); }
-.orn i { display: block; width: 14mm; border-top: .25mm solid currentColor; }
-.orn b { width: 1.6mm; height: 1.6mm; transform: rotate(45deg); border: .25mm solid currentColor; }
-.photo { height: 72mm; flex: none; position: relative; border-radius: 1mm; overflow: hidden; background: #f3f4f7; }
-.photo img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: grab; touch-action: none; user-select: none; -webkit-user-drag: none; }
-.photo img:active { cursor: grabbing; }
-.ph { width: 100%; height: 100%; border: .4mm dashed #aab0bd; border-radius: 1mm; background: #f6f7f9; color: #6b7283;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2mm; cursor: pointer; font: 500 9.5pt/1.35 var(--ui); text-align: center; padding: 0 10mm; }
-.ph svg { width: 9mm; height: 9mm; }
-.ph small { font-size: 8pt; color: #8a90a0; font-weight: 400; }
-.ph.drag, .photo.drag .ph { border-color: var(--accent); background: #eef1f8; }
-.photo-ctl { position: absolute; right: 2mm; bottom: 2mm; display: flex; gap: 1.5mm; }
-.photo-ctl button, .page-ctl button { font: 500 11px var(--ui); background: rgba(255,255,255,.92); color: #1d2230; border: 1px solid #c9cdd6; border-radius: 4px; padding: 3px 7px; cursor: pointer; }
-.photo-ctl button:hover, .page-ctl button:hover { border-color: #33456b; }
-.hint { position: absolute; left: 2mm; bottom: 2mm; font: 10px var(--ui); color: #fff; background: rgba(20,25,40,.55); padding: 2px 6px; border-radius: 3px; pointer-events: none; }
-.text { flex: 1; min-height: 0; margin-top: 4.5mm; font: 11.5pt/1.45 var(--body); color: var(--ink); white-space: pre-wrap; text-align: justify; hyphens: auto; overflow: hidden; }
-.foot { flex: none; margin-top: 3mm; padding-top: 2mm; border-top: .25mm solid #dfe2e8; font: italic 9.5pt var(--display); color: var(--ink-soft); text-align: center; }
+.sheet.fold::after { content: ""; position: absolute; left: 50%; top: 9mm; bottom: 9mm; border-left: .3mm solid #b8bdc8; }
+.narrow .sheet.fold::after { left: 9mm; right: 9mm; top: 50%; bottom: auto; border-left: 0; border-top: .3mm dashed #b8bdc8; }
+.page { width: 148.5mm; height: 210mm; padding: 11mm 11mm 9mm; display: flex; flex-direction: column; }
+.flow { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 3.2mm; }
+.pno { flex: none; margin-top: 2.5mm; text-align: center; font: 8pt var(--ui); color: #8a90a0; font-variant-numeric: tabular-nums; }
+.head { text-align: center; padding-bottom: 1mm; }
+.head h2 { margin: 0; font: 600 21pt/1.05 var(--display); letter-spacing: .02em; color: var(--ink); }
+.head p { margin: 1mm 0 0; font: italic 500 11pt var(--display); color: var(--ink-soft); }
+
+.box { position: relative; padding: 2.8mm 3.4mm; font-size: var(--fs, 10pt); }
+.box .who { font: 600 1.02em/1.25 var(--body); color: var(--ink); }
+.box .rel { font: italic 400 .95em/1.25 var(--body); color: var(--ink-soft); }
+.box .meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.8mm; margin-bottom: 1.2mm; }
+.box .meta .sep { color: var(--rule); }
+.box .text { font: 400 1em/1.38 var(--body); color: var(--ink); white-space: pre-wrap; text-align: justify; hyphens: auto; }
+/* Four simple frames, used in turn. */
+.box.s0 { border: .3mm solid var(--rule); }
+.box.s1 { background: var(--tint); }
+.box.s2 { border: .8mm double var(--rule); }
+.box.s3 { border: .3mm solid var(--rule); border-radius: 2.5mm; }
+
 [contenteditable] { border-radius: 2px; }
-[contenteditable]:hover { background: #f4f6fb; }
+[contenteditable]:hover { background: rgba(51,69,107,.06); }
 [contenteditable]:empty::before { content: attr(data-ph); color: #a0a6b3; font-style: italic; }
-.page-ctl { position: absolute; top: 2.5mm; right: 2.5mm; display: flex; gap: 1.2mm; opacity: .25; transition: opacity .15s; }
-.page:hover .page-ctl, .page:focus-within .page-ctl { opacity: 1; }
-.page-ctl button.danger { color: #a3401f; }
-.warn { position: absolute; left: 13mm; right: 13mm; bottom: 15mm; font: 600 10px var(--ui); color: #fff; background: #a3401f; border-radius: 3px; padding: 3px 6px; text-align: center; }
-.blank { justify-content: center; align-items: center; color: #9aa0ad; font: 500 11px var(--ui); text-align: center; gap: 8px; }
-.exporting .page-ctl, .exporting .photo-ctl, .exporting .hint, .exporting .warn, .exporting .blank-note { display: none !important; }
-.exporting .ph { color: transparent; }
-.exporting .ph svg, .exporting .ph small { visibility: hidden; }
+.ctl { position: absolute; top: -2.6mm; right: 2mm; display: flex; gap: 1mm; opacity: 0; transition: opacity .15s; }
+.box:hover .ctl, .box:focus-within .ctl { opacity: 1; }
+.ctl button { font: 500 10px var(--ui); background: #fff; color: #1d2230; border: 1px solid #c9cdd6; border-radius: 4px; padding: 2px 6px; cursor: pointer; }
+.ctl button:hover { border-color: #33456b; }
+.ctl button.danger { color: #a3401f; }
+.warn { font: 600 10px var(--ui); color: #fff; background: #a3401f; border-radius: 3px; padding: 3px 6px; text-align: center; }
+.empty-note { margin: auto; color: #9aa0ad; font: 500 11px var(--ui); text-align: center; }
+.exporting .ctl, .exporting .warn, .exporting .empty-note { display: none !important; }
 #export-host { position: fixed; left: -100000px; top: 0; }
-@media (prefers-reduced-motion: reduce) { .page-ctl { transition: none; } }
+@media (hover: none) { .ctl { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ctl { transition: none; } }
 @media (max-width: 640px) { .bar h1 { width: 100%; } .spacer { display: none; } }
 </style>
 
@@ -97,6 +100,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   <header class="bar"><div class="bar-in">
     <h1>Témoignages</h1>
     <label class="field" for="defunt">En mémoire de <input id="defunt" type="text" placeholder="Nom de la personne décédée"></label>
+    <label class="field" for="size">Texte
+      <select id="size">
+        <option value="9">Petit</option>
+        <option value="10">Moyen</option>
+        <option value="11">Grand</option>
+      </select>
+    </label>
     <label class="check" for="fold"><input id="fold" type="checkbox"> Barre au milieu</label>
     <span class="spacer"></span>
     <button class="btn" id="add" type="button">+ Ajouter un témoignage</button>
@@ -104,15 +114,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <button class="btn primary" id="pdf" type="button">Télécharger le PDF</button>
     <span class="status" id="status" role="status"></span>
   </div></header>
-  <p class="help">Format <b>A4 paysage plié en deux</b> : chaque feuille donne deux pages A5 (14,8 × 21 cm). Cliquez sur un nom, un lien ou un texte pour le modifier. Cliquez sur un cadre photo pour y mettre la photo de la personne qui témoigne avec le défunt ou la défunte, puis faites glisser la photo pour la cadrer. Pensez à cliquer sur <b>Enregistrer</b> avant de fermer.</p>
+  <p class="help">Format <b>A4 paysage plié en deux</b> : chaque feuille donne deux pages A5. Chaque témoignage est dans un rectangle, et les rectangles passent d'eux-mêmes à la page suivante. Cliquez sur un nom ou un texte pour le modifier. <span class="count" id="count"></span></p>
   <main class="sheets" id="sheets"></main>
   <div id="export-host" aria-hidden="true"></div>
-  <input type="file" id="file" accept="image/*" hidden>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="application/json" id="state">{"defunt":"","fold":true,"items":[{"id":"ex1","auteur":"Prénom Nom (exemple)","lien":"Sa fille aînée","texte":"Exemple de témoignage : ce texte sera remplacé par le vrai témoignage.\n\nMaman, tu nous as appris la patience, le travail bien fait et la joie de recevoir. Ta maison était toujours ouverte, et personne ne repartait le ventre vide. Tes conseils nous accompagneront toute notre vie.\n\nRepose en paix, Maman. Nous t'aimons.","photo":null,"px":50,"py":35},{"id":"ex2","auteur":"Prénom Nom (exemple)","lien":"Son amie d'enfance","texte":"Exemple de témoignage : ce texte sera remplacé par le vrai témoignage.\n\nNous avons grandi ensemble, partagé les rires et les peines. Tu étais une sœur pour moi. Ton courage et ta foi resteront un exemple pour toutes celles qui t'ont connue.","photo":null,"px":50,"py":35}]}</script>
+<script type="application/json" id="state">{"defunt":"","fold":true,"size":10,"items":[{"id":"ex1","auteur":"Prénom Nom (exemple)","lien":"Sa fille aînée","texte":"Exemple : ce texte sera remplacé par le vrai témoignage. Maman, tu nous as appris la patience, le travail bien fait et la joie de recevoir. Ta maison était toujours ouverte. Repose en paix, nous t'aimons."},{"id":"ex2","auteur":"Prénom Nom (exemple)","lien":"Son amie d'enfance","texte":"Exemple : ce texte sera remplacé par le vrai témoignage. Nous avons grandi ensemble et partagé les rires comme les peines. Tu étais une sœur pour moi. Ton courage restera un exemple."},{"id":"ex3","auteur":"Prénom Nom (exemple)","lien":"Son voisin","texte":"Exemple : ce texte sera remplacé par le vrai témoignage. Toujours un sourire, toujours un mot gentil pour chacun. Le quartier ne sera plus le même sans toi."}]}</script>
 <script id="app-script">
 (() => {
   // Pieces of this page's own source, captured before rendering, so "Enregistrer" can republish the page with new data.
@@ -125,57 +134,85 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   };
 
   let state;
-  try { state = JSON.parse(document.getElementById("state").textContent); } catch { state = { defunt: "", fold: true, items: [] }; }
+  try { state = JSON.parse(document.getElementById("state").textContent); } catch { state = { defunt: "", fold: true, size: 10, items: [] }; }
+  state.size = state.size || 10;
 
   const $ = id => document.getElementById(id);
   const sheetsEl = $("sheets"), statusEl = $("status");
-  let dirty = false, pendingPhotoId = null;
+  let dirty = false;
 
   const setStatus = (msg, isDirty) => { statusEl.textContent = msg; statusEl.classList.toggle("dirty", !!isDirty); };
   const markDirty = () => { dirty = true; setStatus("Modifications non enregistrées", true); };
   const uid = () => "t" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const el = html => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 
-  const camIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
-
-  function pageHTML(it, i) {
-    const photo = it.photo
-      ? `<img src="${it.photo}" alt="Photo du témoignage" style="object-position:${it.px}% ${it.py}%" draggable="false">
-         <span class="hint">Glisser pour cadrer</span>
-         <div class="photo-ctl"><button type="button" data-act="photo">Changer</button><button type="button" data-act="unphoto">Retirer</button></div>`
-      : `<button type="button" class="ph" data-act="photo">${camIcon}<span>Ajouter la photo</span><small>La personne qui témoigne avec le défunt ou la défunte</small></button>`;
-    return `<section class="page" data-id="${it.id}" lang="fr">
-      <div class="page-ctl">
-        <button type="button" data-act="up" title="Déplacer avant" aria-label="Déplacer avant">↑</button>
-        <button type="button" data-act="down" title="Déplacer après" aria-label="Déplacer après">↓</button>
+  function boxEl(it, i) {
+    return el(`<article class="box s${i % 4}" data-id="${it.id}" lang="fr">
+      <div class="ctl">
+        <button type="button" data-act="up" aria-label="Déplacer avant">↑</button>
+        <button type="button" data-act="down" aria-label="Déplacer après">↓</button>
         <button type="button" data-act="del" class="danger">Supprimer</button>
       </div>
-      <div class="eyebrow">Témoignage</div>
-      <div class="who" contenteditable="plaintext-only" spellcheck="true" data-k="auteur" data-ph="Nom de la personne">${esc(it.auteur)}</div>
-      <div class="rel" contenteditable="plaintext-only" spellcheck="true" data-k="lien" data-ph="Lien avec le défunt (fils, épouse, ami…)">${esc(it.lien)}</div>
-      <div class="orn" aria-hidden="true"><i></i><b></b><i></i></div>
-      <div class="photo">${photo}</div>
+      <div class="meta">
+        <span class="who" contenteditable="plaintext-only" spellcheck="true" data-k="auteur" data-ph="Nom">${esc(it.auteur)}</span>
+        <span class="sep">·</span>
+        <span class="rel" contenteditable="plaintext-only" spellcheck="true" data-k="lien" data-ph="Lien (fils, amie…)">${esc(it.lien)}</span>
+      </div>
       <div class="text" contenteditable="plaintext-only" spellcheck="true" data-k="texte" data-ph="Collez ou écrivez le témoignage ici">${esc(it.texte)}</div>
-      <div class="foot">${state.defunt ? "En mémoire de " + esc(state.defunt) : "En mémoire de …"}</div>
-    </section>`;
+    </article>`);
+  }
+
+  function newPage(first) {
+    const p = el(`<section class="page"><div class="flow"></div><div class="pno"></div></section>`);
+    if (first) p.firstElementChild.appendChild(el(`<header class="head"><h2>Témoignages</h2><p>${state.defunt ? "En mémoire de " + esc(state.defunt) : "En mémoire de …"}</p></header>`));
+    return p;
+  }
+
+  // Lay the boxes out page by page: a box that does not fit moves to the next page.
+  // Pages are measured inside a temporary, unscaled sheet.
+  function paginate() {
+    const probe = el(`<div class="sheet" style="position:absolute;left:-100000px;top:0"></div>`);
+    document.body.appendChild(probe);
+    const pages = [];
+    let page = newPage(true); probe.appendChild(page); pages.push(page);
+    const fits = p => p.firstElementChild.scrollHeight <= p.firstElementChild.clientHeight + 1;
+    state.items.forEach((it, i) => {
+      const b = boxEl(it, i);
+      b.style.setProperty("--fs", state.size + "pt");
+      page.firstElementChild.appendChild(b);
+      if (!fits(page) && page.firstElementChild.children.length > (pages.length === 1 ? 2 : 1)) {
+        b.remove();
+        page = newPage(false); probe.appendChild(page); pages.push(page);
+        page.firstElementChild.appendChild(b);
+      }
+      if (!fits(page)) b.insertAdjacentHTML("beforeend", `<div class="warn">Ce témoignage est trop long pour une page : raccourcissez-le ou choisissez un texte plus petit.</div>`);
+    });
+    if (!state.items.length) page.firstElementChild.insertAdjacentHTML("beforeend", `<p class="empty-note">Aucun témoignage.<br>Cliquez sur « + Ajouter un témoignage ».</p>`);
+    probe.remove();
+    return pages;
   }
 
   function render() {
     $("defunt").value = state.defunt || "";
     $("fold").checked = !!state.fold;
-    const items = state.items, out = [];
-    for (let s = 0; s < Math.max(1, Math.ceil(items.length / 2)); s++) {
-      const a = items[2 * s], b = items[2 * s + 1];
-      const left = a ? pageHTML(a, 2 * s) : `<section class="page blank"><span class="blank-note">Aucun témoignage.<br>Cliquez sur « + Ajouter un témoignage ».</span></section>`;
-      const right = b ? pageHTML(b, 2 * s + 1) : `<section class="page blank"><span class="blank-note">Page libre</span></section>`;
-      out.push(`<div class="sheet-label">Feuille ${s + 1}</div><div class="sheet-wrap"><div class="sheet${state.fold ? " fold" : ""}">${left}${right}</div></div>`);
+    $("size").value = String(state.size);
+    const pages = paginate();
+    if (pages.length % 2) pages.push(newPage(false));
+    pages.forEach((p, i) => { p.querySelector(".pno").textContent = p.querySelector(".box, .head") ? String(i + 1) : ""; });
+    sheetsEl.innerHTML = "";
+    for (let s = 0; s < pages.length / 2; s++) {
+      sheetsEl.appendChild(el(`<div class="sheet-label">Feuille ${s + 1}</div>`));
+      const wrap = el(`<div class="sheet-wrap"><div class="sheet${state.fold ? " fold" : ""}"></div></div>`);
+      wrap.firstElementChild.append(pages[2 * s], pages[2 * s + 1]);
+      sheetsEl.appendChild(wrap);
     }
-    sheetsEl.innerHTML = out.join("");
-    sheetsEl.querySelectorAll("[contenteditable]").forEach(el => {
-      if (el.contentEditable !== "plaintext-only") el.contentEditable = "true";
-    });
+    sheetsEl.querySelectorAll("[contenteditable]").forEach(e => { if (e.contentEditable !== "plaintext-only") e.contentEditable = "true"; });
+    const used = pages.filter(p => p.querySelector(".box, .head")).length;
+    const c = $("count");
+    c.textContent = `${state.items.length} témoignage${state.items.length > 1 ? "s" : ""} sur ${used} page${used > 1 ? "s" : ""}.` + (used > 4 ? " C'est plus de 4 pages : choisissez un texte plus petit ou raccourcissez." : "");
+    c.classList.toggle("over", used > 4);
     layout();
-    sheetsEl.querySelectorAll(".page[data-id]").forEach(fitText);
   }
 
   // Scale each sheet to the available width; under 760px show the two pages stacked.
@@ -190,116 +227,62 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     });
   }
 
-  // Shrink the text until it fits the page, down to 9pt; flag it if it still overflows.
-  function fitText(page) {
-    const t = page.querySelector(".text");
-    if (!t) return;
-    let size = 11.5;
-    t.style.fontSize = size + "pt";
-    while (t.scrollHeight > t.clientHeight + 1 && size > 9) { size -= 0.25; t.style.fontSize = size + "pt"; }
-    page.querySelector(".warn")?.remove();
-    if (t.scrollHeight > t.clientHeight + 1) {
-      page.insertAdjacentHTML("beforeend", `<div class="warn">Texte trop long pour une page : raccourcissez-le ou agrandissez la page en retirant la photo.</div>`);
-    }
-  }
+  const indexOf = node => { const b = node.closest(".box"); return b ? state.items.findIndex(x => x.id === b.dataset.id) : -1; };
 
-  const findItem = el => {
-    const page = el.closest(".page[data-id]");
-    return page ? [page, state.items.findIndex(x => x.id === page.dataset.id)] : [null, -1];
-  };
-
-  // Typing: update state in place without re-rendering, so the caret stays put.
-  let fitTimer;
+  // Typing updates the data in place; the layout is redone when the cursor leaves the box.
+  let needsFlow = false;
   sheetsEl.addEventListener("input", e => {
-    const el = e.target.closest("[data-k]"); if (!el) return;
-    const [page, i] = findItem(el); if (i < 0) return;
-    state.items[i][el.dataset.k] = el.dataset.k === "texte" ? el.innerText.replace(/\n$/, "") : el.textContent.trim();
-    markDirty();
-    clearTimeout(fitTimer); fitTimer = setTimeout(() => fitText(page), 150);
+    const f = e.target.closest("[data-k]"); if (!f) return;
+    const i = indexOf(f); if (i < 0) return;
+    state.items[i][f.dataset.k] = f.dataset.k === "texte" ? f.innerText.replace(/\n$/, "") : f.textContent.trim();
+    needsFlow = true; markDirty();
+  });
+  sheetsEl.addEventListener("focusout", e => {
+    if (!needsFlow) return;
+    if (e.relatedTarget && e.relatedTarget.closest?.(".box") === e.target.closest(".box")) return;
+    needsFlow = false; setTimeout(render, 0);
   });
   sheetsEl.addEventListener("paste", e => {
-    const el = e.target.closest("[contenteditable]"); if (!el) return;
+    const f = e.target.closest("[contenteditable]"); if (!f) return;
     e.preventDefault();
     let txt = (e.clipboardData || window.clipboardData).getData("text/plain");
-    if (el.dataset.k !== "texte") txt = txt.replace(/\s*\n\s*/g, " ");
+    if (f.dataset.k !== "texte") txt = txt.replace(/\s*\n\s*/g, " ");
     document.execCommand("insertText", false, txt);
   });
   sheetsEl.addEventListener("keydown", e => {
     if (e.key === "Enter" && e.target.closest("[data-k=auteur],[data-k=lien]")) e.preventDefault();
   });
 
-  // Buttons on pages. Deleting asks for a second click instead of a dialog.
+  // Box buttons. Deleting asks for a second click instead of a dialog.
   sheetsEl.addEventListener("click", e => {
     const b = e.target.closest("[data-act]"); if (!b) return;
-    const [, i] = findItem(b); if (i < 0) return;
+    const i = indexOf(b); if (i < 0) return;
     const items = state.items, act = b.dataset.act;
-    if (act === "photo") { pendingPhotoId = items[i].id; $("file").value = ""; $("file").click(); return; }
-    if (act === "unphoto") { items[i].photo = null; }
-    else if (act === "up" && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; }
+    if (act === "up" && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; }
     else if (act === "down" && i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; }
     else if (act === "del") {
       if (b.dataset.armed !== "1") { b.dataset.armed = "1"; b.textContent = "Confirmer ?"; setTimeout(() => { if (b.isConnected) { b.dataset.armed = ""; b.textContent = "Supprimer"; } }, 3000); return; }
       items.splice(i, 1);
     } else return;
-    markDirty(); render();
-  });
-
-  // Photos: shrink to 1400px JPEG so the saved page stays light.
-  async function loadPhoto(file, id) {
-    if (!file || !file.type.startsWith("image/")) return;
-    const url = URL.createObjectURL(file);
-    try {
-      const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
-      const k = Math.min(1, 1400 / Math.max(img.naturalWidth, img.naturalHeight));
-      const c = document.createElement("canvas");
-      c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
-      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-      const it = state.items.find(x => x.id === id); if (!it) return;
-      it.photo = c.toDataURL("image/jpeg", 0.85); it.px = 50; it.py = 35;
-      markDirty(); render();
-    } catch { setStatus("Cette image n'a pas pu être lue. Essayez une photo JPG ou PNG.", true); }
-    finally { URL.revokeObjectURL(url); }
-  }
-  $("file").addEventListener("change", e => loadPhoto(e.target.files[0], pendingPhotoId));
-  sheetsEl.addEventListener("dragover", e => { const p = e.target.closest(".photo"); if (p) { e.preventDefault(); p.classList.add("drag"); } });
-  sheetsEl.addEventListener("dragleave", e => e.target.closest(".photo")?.classList.remove("drag"));
-  sheetsEl.addEventListener("drop", e => {
-    const p = e.target.closest(".photo"); if (!p) return;
-    e.preventDefault(); p.classList.remove("drag");
-    const [, i] = findItem(p); if (i >= 0) loadPhoto(e.dataTransfer.files[0], state.items[i].id);
-  });
-
-  // Drag a photo to choose which part shows in the frame.
-  sheetsEl.addEventListener("pointerdown", e => {
-    const img = e.target.closest(".photo img"); if (!img) return;
-    const [, i] = findItem(img); if (i < 0) return;
-    const it = state.items[i], box = img.getBoundingClientRect();
-    const sx = e.clientX, sy = e.clientY, px0 = it.px, py0 = it.py;
-    img.setPointerCapture(e.pointerId);
-    const move = ev => {
-      it.px = Math.max(0, Math.min(100, px0 - (ev.clientX - sx) / box.width * 100));
-      it.py = Math.max(0, Math.min(100, py0 - (ev.clientY - sy) / box.height * 100));
-      img.style.objectPosition = `${it.px}% ${it.py}%`;
-    };
-    const up = () => { img.removeEventListener("pointermove", move); img.removeEventListener("pointerup", up); img.removeEventListener("pointercancel", up); if (it.px !== px0 || it.py !== py0) markDirty(); };
-    img.addEventListener("pointermove", move); img.addEventListener("pointerup", up); img.addEventListener("pointercancel", up);
+    needsFlow = false; markDirty(); render();
   });
 
   $("defunt").addEventListener("input", e => {
     state.defunt = e.target.value.trim();
-    sheetsEl.querySelectorAll(".page[data-id] .foot").forEach(f => f.textContent = "En mémoire de " + (state.defunt || "…"));
+    const p = sheetsEl.querySelector(".head p"); if (p) p.textContent = "En mémoire de " + (state.defunt || "…");
     markDirty();
   });
+  $("size").addEventListener("change", e => { state.size = Number(e.target.value); markDirty(); render(); });
   $("fold").addEventListener("change", e => { state.fold = e.target.checked; markDirty(); render(); });
   $("add").addEventListener("click", () => {
-    state.items.push({ id: uid(), auteur: "", lien: "", texte: "", photo: null, px: 50, py: 35 });
+    const it = { id: uid(), auteur: "", lien: "", texte: "" };
+    state.items.push(it);
     markDirty(); render();
-    const pages = sheetsEl.querySelectorAll(".page[data-id]");
-    const last = pages[pages.length - 1];
-    last.scrollIntoView({ behavior: "smooth", block: "center" });
-    last.querySelector("[data-k=auteur]").focus();
+    const box = sheetsEl.querySelector(`.box[data-id="${it.id}"]`);
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    box.querySelector("[data-k=auteur]").focus();
   });
-  window.addEventListener("resize", () => { layout(); });
+  window.addEventListener("resize", layout);
 
   // Save: republish this page with the current data embedded.
   $("save").addEventListener("click", async () => {
@@ -338,7 +321,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         const clone = sheets[s].cloneNode(true);
         clone.style.transform = "none"; clone.style.position = "relative"; clone.style.boxShadow = "none";
         host.appendChild(clone);
-        clone.querySelectorAll(".page[data-id]").forEach(fitText);
         const canvas = await html2canvas(clone, { scale: 2.5, backgroundColor: "#ffffff", logging: false });
         if (s) pdf.addPage();
         pdf.addImage(canvas.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 297, 210);
@@ -357,6 +339,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   });
 
   render();
-  document.fonts?.ready.then(() => { layout(); sheetsEl.querySelectorAll(".page[data-id]").forEach(fitText); });
+  document.fonts?.ready.then(render);
 })();
 </script>
