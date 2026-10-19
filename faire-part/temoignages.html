@@ -68,10 +68,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .head p { margin: 1mm 0 0; font: italic 500 11pt var(--display); color: var(--ink-soft); }
 
 .box { position: relative; padding: 2.8mm 3.4mm; font-size: var(--fs, 10pt); }
-.box .who { font: 600 1.02em/1.25 var(--body); color: var(--ink); }
-.box .rel { font: italic 400 .95em/1.25 var(--body); color: var(--ink-soft); }
-.box .meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.8mm; margin-bottom: 1.2mm; }
-.box .meta .sep { color: var(--rule); }
+.box .titre { font: italic 600 1.08em/1.25 var(--body); color: var(--ink); margin-bottom: 1mm; }
+.box .sig { font: italic 600 1em/1.25 var(--body); color: var(--ink-soft); text-align: right; margin-top: 1.2mm; }
+.box .sig::before { content: "— "; }
 .box .text { font: 400 1em/1.38 var(--body); color: var(--ink); white-space: pre-wrap; text-align: justify; hyphens: auto; }
 /* Four simple frames, used in turn. */
 .box.s0 { border: .3mm solid var(--rule); }
@@ -114,14 +113,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <button class="btn primary" id="pdf" type="button">Télécharger le PDF</button>
     <span class="status" id="status" role="status"></span>
   </div></header>
-  <p class="help">Format <b>A4 paysage plié en deux</b> : chaque feuille donne deux pages A5. Chaque témoignage est dans un rectangle, et les rectangles passent d'eux-mêmes à la page suivante. Cliquez sur un nom ou un texte pour le modifier. <span class="count" id="count"></span></p>
+  <p class="help">Format <b>A4 paysage plié en deux</b> : chaque feuille donne deux pages A5. Chaque témoignage est dans un rectangle, et les rectangles passent d'eux-mêmes à la page suivante. Cliquez sur un texte ou une signature pour le modifier ; « + Titre » ajoute une ligne de titre en haut d'un rectangle. <span class="count" id="count"></span></p>
   <main class="sheets" id="sheets"></main>
   <div id="export-host" aria-hidden="true"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="application/json" id="state">{"defunt":"","fold":true,"size":10,"items":[{"id":"ex1","auteur":"Prénom Nom (exemple)","lien":"Sa fille aînée","texte":"Exemple : ce texte sera remplacé par le vrai témoignage. Maman, tu nous as appris la patience, le travail bien fait et la joie de recevoir. Ta maison était toujours ouverte. Repose en paix, nous t'aimons."},{"id":"ex2","auteur":"Prénom Nom (exemple)","lien":"Son amie d'enfance","texte":"Exemple : ce texte sera remplacé par le vrai témoignage. Nous avons grandi ensemble et partagé les rires comme les peines. Tu étais une sœur pour moi. Ton courage restera un exemple."},{"id":"ex3","auteur":"Prénom Nom (exemple)","lien":"Son voisin","texte":"Exemple : ce texte sera remplacé par le vrai témoignage. Toujours un sourire, toujours un mot gentil pour chacun. Le quartier ne sera plus le même sans toi."}]}</script>
+<script type="application/json" id="state">{"defunt": "", "fold": true, "size": 10, "items": [{"titre": "Maman…", "auteur": "Tene Talla Jean", "texte": "Tous les mots du monde ne seront jamais assez pour décrire la personne exceptionnelle que tu as été, et l'impact que tu as eu à la fois dans ma vie et dans la vie de plusieurs. Merci à Dieu pour le modèle que tu as été pour moi et le privilège qu'il m'a fait de te connaître, car tu es pour moi une source intarissable de motivation. Merci pour l'héritage le plus précieux que tu me laisses : la foi en Dieu, et un amour inconditionnel les uns pour les autres. Tu as combattu le bon combat, tu as achevé la course, et jusqu'à la fin tu as gardé la foi.\nMerci pour tout.\nI miss you mom, rest in peace.", "id": "t1"}, {"titre": "", "auteur": "Théophile Fotsing", "texte": "Merci maman pour le don de la vie. Merci pour la formidable maman que tu as été pour nous et pour tes petits-enfants.\nMerci pour l'amour que papa et toi avez su inculquer au sein de notre famille.\nTu nous as inculqué des valeurs qui ont fait de moi ce que je suis aujourd'hui.\nJe rends grâce à Dieu de t'avoir eue comme maman, comme modèle et comme conseillère dans ma vie.\nMerci maman. Repose en paix.", "id": "t2"}, {"titre": "Maman, Mater, Grand-mère…", "auteur": "Ta belle-mère, Espérance", "texte": "Comme il m'est difficile de faire cet exercice, celui d'écrire un hommage à la belle âme que tu as été. Mon cœur est meurtri. Aujourd'hui, je me rends compte à quel point tout semble dépeuplé autour de moi.\nLorsque je suis passée dire au revoir à Maman le 7 septembre, elle a prié pour moi. Nous avons parlé, elle m'a donné des conseils. Je ne savais pas que ce serait la dernière fois que je la verrais.\nAprès le départ de papa, mes frères et moi avions décidé de faire de chaque jour de sa vie un moment de qualité, de profiter pleinement de sa présence et de lui donner tout l'amour qu'elle méritait. Voilà qu'elle nous quitte alors que nous avions encore tant de choses à partager avec elle.\nLa douleur de l'avoir perdue ne nous empêchera jamais de nous remémorer tous ces merveilleux moments passés ensemble.\nMaman était une femme vertueuse, douce, discrète et généreuse, avec un cœur immense. Sa maison était toujours ouverte à tous, un véritable centre d'accueil. Chez elle, il n'existait pas de distinction entre les beaux-fils, les belles-filles et les amis de ses enfants. Tous ceux qui franchissaient sa porte devenaient ses enfants. C'était toujours « mon fils », « ma fille ». Elle savait accueillir, aimer et donner sans compter.\nElle a servi le Seigneur de tout son cœur jusqu'à la dernière minute. Elle a été un modèle de foi et de résilience.\nPendant douze longues années de mariage sans enfant, elle a connu la persécution, les moqueries et les paroles blessantes. On l'a traitée de stérile. Pourtant, jamais elle n'a baissé les bras. Elle a continué à espérer et à croire en Celui en qui elle avait placé sa confiance.\nEt le Seigneur les a exaucés.\nElle a vu ! Ses yeux ont vu !\nQuel témoignage de foi et de persévérance ! Son histoire nous rappelle que, malgré les épreuves, Dieu demeure fidèle.\nAujourd'hui, la douleur de son absence est immense, mais elle ne saurait effacer la richesse de l'héritage qu'elle nous laisse. Nous garderons jalousement tout ce qu'elle nous a inculqué, cet amour inconditionnel, cette générosité, cette douceur et cette foi qui ont marqué sa vie.\nNous continuerons de faire vivre ses valeurs, de transmettre ses enseignements et de raconter son histoire. Car une femme comme elle ne disparaît jamais vraiment. Elle continue de vivre à travers les vies qu'elle a touchées, les cœurs qu'elle a aimés et les graines qu'elle a semées.\nElle vivra à jamais dans nos cœurs et dans nos souvenirs.\nRepose en paix, Maman chérie. ❤️", "id": "t3"}, {"titre": "", "auteur": "Ta mère, comme tu m'appelais affectueusement, Ruth Njong", "texte": "Aujourd'hui, nous ne pleurons pas comme ceux qui n'ont pas d'espérance. Nous célébrons la vie de ma maman, une véritable femme de foi. Maman n'était pas une chrétienne du dimanche. Sa foi était vivante. C'était une femme de prière, une femme de la Parole, une femme qui a servi Dieu dans le secret et dans la fidélité. Elle nous a enseigné à prier avant de nous plaindre, à pardonner et refuser de garder rancune, et à toujours mettre Dieu en premier.\nElle priait pour tout. Elle m'appelait au téléphone et me disait : « Prions avant que tu ne prennes tes médicaments. » Je l'ai vue jeûner en silence quand nous traversions des épreuves, je l'ai vue ouvrir sa Bible usée tous les jours comme si c'était son pain. Elle ne nous a pas laissé d'or ni d'argent, elle nous a laissé quelque chose de plus précieux : Jésus-Christ.\nElle a combattu le bon combat, elle a achevé la course, elle a gardé la foi (2 Timothée 4:7). Son corps nous quitte, mais son héritage demeure en nous. Son plus grand désir était de voir ses enfants marcher avec le Seigneur. Et c'est ce que nous ferons.\nMerci Maman. Repose en paix auprès de ton Seigneur et Sauveur.", "id": "t4"}]}</script>
 <script id="app-script">
 (() => {
   // Pieces of this page's own source, captured before rendering, so "Enregistrer" can republish the page with new data.
@@ -150,16 +149,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   function boxEl(it, i) {
     return el(`<article class="box s${i % 4}" data-id="${it.id}" lang="fr">
       <div class="ctl">
+        ${it.titre ? "" : `<button type="button" data-act="titre">+ Titre</button>`}
         <button type="button" data-act="up" aria-label="Déplacer avant">↑</button>
         <button type="button" data-act="down" aria-label="Déplacer après">↓</button>
         <button type="button" data-act="del" class="danger">Supprimer</button>
       </div>
-      <div class="meta">
-        <span class="who" contenteditable="plaintext-only" spellcheck="true" data-k="auteur" data-ph="Nom">${esc(it.auteur)}</span>
-        <span class="sep">·</span>
-        <span class="rel" contenteditable="plaintext-only" spellcheck="true" data-k="lien" data-ph="Lien (fils, amie…)">${esc(it.lien)}</span>
-      </div>
+      ${it.titre ? `<div class="titre" contenteditable="plaintext-only" spellcheck="true" data-k="titre" data-ph="Titre">${esc(it.titre)}</div>` : ""}
       <div class="text" contenteditable="plaintext-only" spellcheck="true" data-k="texte" data-ph="Collez ou écrivez le témoignage ici">${esc(it.texte)}</div>
+      <div class="sig" contenteditable="plaintext-only" spellcheck="true" data-k="auteur" data-ph="Nom de la personne qui témoigne">${esc(it.auteur)}</div>
     </article>`);
   }
 
@@ -186,6 +183,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         page = newPage(false); probe.appendChild(page); pages.push(page);
         page.firstElementChild.appendChild(b);
       }
+      // A box too long even on its own page gets slightly smaller text, down to 8.5pt.
+      for (let fs = state.size; !fits(page) && fs > 8.5; ) { fs -= 0.25; b.style.setProperty("--fs", fs + "pt"); }
       if (!fits(page)) b.insertAdjacentHTML("beforeend", `<div class="warn">Ce témoignage est trop long pour une page : raccourcissez-le ou choisissez un texte plus petit.</div>`);
     });
     if (!state.items.length) page.firstElementChild.insertAdjacentHTML("beforeend", `<p class="empty-note">Aucun témoignage.<br>Cliquez sur « + Ajouter un témoignage ».</p>`);
@@ -250,7 +249,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     document.execCommand("insertText", false, txt);
   });
   sheetsEl.addEventListener("keydown", e => {
-    if (e.key === "Enter" && e.target.closest("[data-k=auteur],[data-k=lien]")) e.preventDefault();
+    if (e.key === "Enter" && e.target.closest("[data-k=auteur],[data-k=titre]")) e.preventDefault();
   });
 
   // Box buttons. Deleting asks for a second click instead of a dialog.
@@ -258,7 +257,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     const b = e.target.closest("[data-act]"); if (!b) return;
     const i = indexOf(b); if (i < 0) return;
     const items = state.items, act = b.dataset.act;
-    if (act === "up" && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; }
+    if (act === "titre") { items[i].titre = "Titre"; }
+    else if (act === "up" && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; }
     else if (act === "down" && i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; }
     else if (act === "del") {
       if (b.dataset.armed !== "1") { b.dataset.armed = "1"; b.textContent = "Confirmer ?"; setTimeout(() => { if (b.isConnected) { b.dataset.armed = ""; b.textContent = "Supprimer"; } }, 3000); return; }
@@ -275,7 +275,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   $("size").addEventListener("change", e => { state.size = Number(e.target.value); markDirty(); render(); });
   $("fold").addEventListener("change", e => { state.fold = e.target.checked; markDirty(); render(); });
   $("add").addEventListener("click", () => {
-    const it = { id: uid(), auteur: "", lien: "", texte: "" };
+    const it = { id: uid(), titre: "", auteur: "", texte: "" };
     state.items.push(it);
     markDirty(); render();
     const box = sheetsEl.querySelector(`.box[data-id="${it.id}"]`);
