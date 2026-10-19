@@ -16,6 +16,7 @@ os.environ["AFFILIATION_QUIET"] = "1"
 class CoreTest(unittest.TestCase):
     def setUp(self):
         self.a = Affiliation(tier2_rate=0.10)
+        self.addCleanup(self.a.db.close)
         self.course = self.a.add_product("Formation", "https://shop.test/formation", "percent", 30)
         self.ebook = self.a.add_product("Ebook", "https://shop.test/ebook", "fixed", 5)
         self.parent, _ = self.a.register_affiliate("Parrain", "parrain@test.fr")
