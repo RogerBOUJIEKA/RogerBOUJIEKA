@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Notre vision — Bafoussam pour Jésus</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#F2B33D}a:hover{color:#FFD27A}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 88px; background: #F7F1E3; color: #0B1B33; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; justify-content: space-between">
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: #8A5A00">Notre vision</div>
+    <div style="font-size: 26px; font-weight: 500; color: #4A5872">02 / 06</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 40px">
+    <h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 132px; line-height: 0.98; text-transform: uppercase">Que chaque quartier entende la <span style="background: {{accent}}; padding: 0 16px">Bonne Nouvelle</span></h2>
+    <p style="margin: 0; font-size: 38px; line-height: 1.4; max-width: 840px; color: #22375A">De Tamdja à Djeleng, de Banengo à Kamkop : nous portons l'amour de Jésus dans les rues, les marchés, les familles et les cœurs.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Tamdja</div>
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Djeleng</div>
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Banengo</div>
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Kamkop</div>
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Tougang</div>
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Famla</div>
+    <div style="border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">Houkaha</div>
+    <div style="background: #0B1B33; color: #F7F1E3; border: 2px solid #0B1B33; border-radius: 999px; padding: 18px 0; text-align: center; font-size: 26px; font-weight: 700">+ toute la ville</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F2B33D","options":["#F2B33D","#E8794A","#7FC8A9","#F7F1E3"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#F2B33D' };
+}
+}
+</script>
+</body>
+</html>

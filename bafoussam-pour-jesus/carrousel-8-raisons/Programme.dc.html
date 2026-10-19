@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Programme — Bafoussam pour Jésus</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#F2B33D}a:hover{color:#FFD27A}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 88px; background: #F7F1E3; color: #0B1B33; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; gap: 56px">
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: #8A5A00">Au programme</div>
+    <div style="font-size: 26px; font-weight: 500; color: #4A5872">04 / 06</div>
+  </div>
+
+  <h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 120px; line-height: 0.98; text-transform: uppercase">Quatre temps forts</h2>
+
+  <div style="display: flex; flex-direction: column; flex-grow: 1">
+    <div style="display: flex; gap: 40px; align-items: baseline; padding: 32px 0; border-top: 3px solid #0B1B33">
+      <div style="font-family: 'Anton', sans-serif; font-size: 64px; color: {{accent}}; width: 90px; -webkit-text-stroke: 2px #0B1B33">01</div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 44px; font-weight: 700">Évangélisation de rue</div>
+        <div style="font-size: 30px; color: #4A5872">Porte-à-porte, marchés et carrefours</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 40px; align-items: baseline; padding: 32px 0; border-top: 3px solid #0B1B33">
+      <div style="font-family: 'Anton', sans-serif; font-size: 64px; color: {{accent}}; width: 90px; -webkit-text-stroke: 2px #0B1B33">02</div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 44px; font-weight: 700">Nuit de prière</div>
+        <div style="font-size: 30px; color: #4A5872">Intercession pour la ville et la région de l'Ouest</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 40px; align-items: baseline; padding: 32px 0; border-top: 3px solid #0B1B33">
+      <div style="font-family: 'Anton', sans-serif; font-size: 64px; color: {{accent}}; width: 90px; -webkit-text-stroke: 2px #0B1B33">03</div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 44px; font-weight: 700">Grande croisade</div>
+        <div style="font-size: 30px; color: #4A5872">Louange, Parole et appel au salut</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 40px; align-items: baseline; padding: 32px 0; border-top: 3px solid #0B1B33; border-bottom: 3px solid #0B1B33">
+      <div style="font-family: 'Anton', sans-serif; font-size: 64px; color: {{accent}}; width: 90px; -webkit-text-stroke: 2px #0B1B33">04</div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 44px; font-weight: 700">Suivi des nouveaux convertis</div>
+        <div style="font-size: 30px; color: #4A5872">Accueil dans les églises locales</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+    <div style="background: #0B1B33; color: #F7F1E3; border-radius: 20px; padding: 28px 32px; display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 22px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: {{accent}}">Dates</div>
+      <div style="font-size: 34px; font-weight: 700">[DATES]</div>
+    </div>
+    <div style="background: #0B1B33; color: #F7F1E3; border-radius: 20px; padding: 28px 32px; display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 22px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: {{accent}}">Lieu</div>
+      <div style="font-size: 34px; font-weight: 700">[LIEU], Bafoussam</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F2B33D","options":["#F2B33D","#E8794A","#7FC8A9","#F7F1E3"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#F2B33D' };
+}
+}
+</script>
+</body>
+</html>

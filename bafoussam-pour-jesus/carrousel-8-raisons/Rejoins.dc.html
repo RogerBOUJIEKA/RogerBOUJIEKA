@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Rejoins le mouvement — Bafoussam pour Jésus</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#F2B33D}a:hover{color:#FFD27A}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 88px; background: #0B1B33; color: #F7F1E3; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; gap: 56px">
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: {{accent}}">À toi de jouer</div>
+    <div style="font-size: 26px; font-weight: 500; color: #B8C2D6">06 / 06</div>
+  </div>
+
+  <h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 150px; line-height: 0.95; text-transform: uppercase">Rejoins le <span style="color: {{accent}}">mouvement</span></h2>
+
+  <div style="display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; align-items: center; gap: 32px; background: #13284A; border-radius: 24px; padding: 28px 36px">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="font-size: 42px; font-weight: 700">Prie</div>
+        <div style="font-size: 28px; color: #B8C2D6">pour Bafoussam chaque jour</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 32px; background: #13284A; border-radius: 24px; padding: 28px 36px">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c1.8.7 3 2.4 3.5 5.2"/></svg>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="font-size: 42px; font-weight: 700">Viens</div>
+        <div style="font-size: 28px; color: #B8C2D6">avec ta famille et tes amis</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 32px; background: #13284A; border-radius: 24px; padding: 28px 36px">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="font-size: 42px; font-weight: 700">Partage</div>
+        <div style="font-size: 28px; color: #B8C2D6">ce carrousel autour de toi</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; border-top: 2px solid #22375A; padding-top: 40px">
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="font-size: 22px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: {{accent}}">Infos &amp; inscriptions</div>
+      <div style="font-size: 36px; font-weight: 700">[TÉLÉPHONE / WHATSAPP]</div>
+    </div>
+    <div style="font-size: 30px; font-weight: 700">#BafoussamPourJésus</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F2B33D","options":["#F2B33D","#E8794A","#7FC8A9","#F7F1E3"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#F2B33D' };
+}
+}
+</script>
+</body>
+</html>
