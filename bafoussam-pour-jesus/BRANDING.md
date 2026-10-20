@@ -77,3 +77,11 @@ Ce qu'on en retient pour Bafoussam pour Jésus :
 - Tenues **modernes / habillées d'église** (chemise, robe, pagne de cérémonie sobre). Éviter les images « ethniques » ou folkloriques (tenues traditionnelles très ornées, bijoux tribaux, villages) qui ne représentent pas le public visé.
 - Exemple refusé : l'image « Ta foi » (femme en tenue traditionnelle avec bijoux) du carrousel 7 choses → à remplacer par une personne en adoration dans un culte / une croisade.
 - Les carrousels réalisés à la main sur Photoshop par le client servent de **référence de forme** ; on garde leur structure en apportant une nouvelle vision.
+
+## Règles de mise en page (retours du client, carrousels)
+
+- **Toujours livrer en HD** (2160×2700) pour WhatsApp.
+- Contenu **centré et plus petit** : colonne centrale (~64 % de la largeur), titres ~54 px sur 1080, de l'air autour. Ne pas remplir tout le format.
+- **Barre du bas identique aux affiches Photoshop** sur toutes les pages : cadre verre discret, épingle rouge, « BAFOUSSAM / STADE OMNISPORT DE TOKET », encadré bleu « DU 27 AU 30 OCTOBRE 2026 ▸ 16H00 ».
+- Pas de grosses cartes de numéros : contacts en petit si nécessaire.
+- Versets : uniquement quand le sens correspond vraiment (pas de verset « eau vive » pour une bouteille d'eau) ; sinon une phrase de motivation.
