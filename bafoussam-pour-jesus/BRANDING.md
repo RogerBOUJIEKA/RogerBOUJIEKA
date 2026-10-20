@@ -70,3 +70,10 @@ Ce qu'on en retient pour Bafoussam pour Jésus :
 - **Éléments fixes sur chaque diapo** : logo en haut à gauche, pilule « Glisse → » (swipe) à droite, pied de page avec l'info clé (site/contact chez eux → date + lieu + téléphone chez nous).
 - **Narration continue** : la diapo 1 pose une question ou une accroche, les suivantes déroulent, la dernière donne l'appel à l'action (bouton « Get started » → « Viens au Stade de Toket »).
 - **Boutons/pilules d'action** arrondis, couleur d'accent pleine (« Let's Talk », « Get Ahead » → « Je viens », « Invite un ami »).
+
+## Photos — règles de choix (retours du client)
+
+- Illustrer avec des **chrétiens en contexte de foi** : fidèles en culte, en prière, en louange, évangélistes, assemblées d'église, croisades.
+- Tenues **modernes / habillées d'église** (chemise, robe, pagne de cérémonie sobre). Éviter les images « ethniques » ou folkloriques (tenues traditionnelles très ornées, bijoux tribaux, villages) qui ne représentent pas le public visé.
+- Exemple refusé : l'image « Ta foi » (femme en tenue traditionnelle avec bijoux) du carrousel 7 choses → à remplacer par une personne en adoration dans un culte / une croisade.
+- Les carrousels réalisés à la main sur Photoshop par le client servent de **référence de forme** ; on garde leur structure en apportant une nouvelle vision.
