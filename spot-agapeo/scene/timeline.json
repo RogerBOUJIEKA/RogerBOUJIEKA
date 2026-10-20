@@ -1,0 +1,177 @@
+{
+ "total": 89.0,
+ "bpm": 72,
+ "bar": 3.3333333333333335,
+ "grid0": 30.845,
+ "reveal": 30.845,
+ "segments": [
+  {
+   "id": "L01a",
+   "text": "Depuis longtemps…",
+   "start": 3.6,
+   "end": 5.053
+  },
+  {
+   "id": "L01b",
+   "text": "tu pries pour rencontrer la bonne personne.",
+   "start": 5.42,
+   "end": 8.2
+  },
+  {
+   "id": "L02a",
+   "text": "Quelqu'un qui partage ta foi…",
+   "start": 8.831,
+   "end": 10.89
+  },
+  {
+   "id": "L02b",
+   "text": "tes valeurs…",
+   "start": 11.205,
+   "end": 12.364
+  },
+  {
+   "id": "L02c",
+   "text": "et ton envie de construire quelque chose de vrai.",
+   "start": 12.679,
+   "end": 16.013
+  },
+  {
+   "id": "L03",
+   "text": "Mais entre les relations superficielles, les déceptions et les histoires sans lendemain…",
+   "start": 16.958,
+   "end": 22.931
+  },
+  {
+   "id": "L04",
+   "text": "il est facile de perdre espoir.",
+   "start": 23.298,
+   "end": 25.551
+  },
+  {
+   "id": "L05",
+   "text": "Alors, respire…",
+   "start": 26.811,
+   "end": 28.279
+  },
+  {
+   "id": "L06",
+   "text": "et découvre Agapéo.",
+   "start": 28.909,
+   "end": 30.545
+  },
+  {
+   "id": "L07a",
+   "text": "Agapè…",
+   "start": 32.96,
+   "end": 33.955
+  },
+  {
+   "id": "L07b",
+   "text": "c'est l'amour inconditionnel.",
+   "start": 34.375,
+   "end": 36.496
+  },
+  {
+   "id": "L08",
+   "text": "L'amour qui est patient, plein de bonté.",
+   "start": 37.021,
+   "end": 39.499
+  },
+  {
+   "id": "L09",
+   "text": "L'amour tel que Dieu nous l'enseigne.",
+   "start": 39.919,
+   "end": 42.019
+  },
+  {
+   "id": "L10",
+   "text": "Agapéo, c'est la plateforme chrétienne dédiée à l'amour et aux relations.",
+   "start": 44.178,
+   "end": 48.982
+  },
+  {
+   "id": "L11",
+   "text": "Un lieu pensé pour celles et ceux qui veulent aimer selon le cœur de Dieu.",
+   "start": 49.507,
+   "end": 54.113
+  },
+  {
+   "id": "L12",
+   "text": "Ici, la foi est au centre.",
+   "start": 55.058,
+   "end": 57.027
+  },
+  {
+   "id": "L13",
+   "text": "Les valeurs comptent.",
+   "start": 57.395,
+   "end": 58.943
+  },
+  {
+   "id": "L14a",
+   "text": "Et chaque relation se construit dans le respect,",
+   "start": 59.31,
+   "end": 62.511
+  },
+  {
+   "id": "L14b",
+   "text": "la sincérité…",
+   "start": 62.721,
+   "end": 64.203
+  },
+  {
+   "id": "L14c",
+   "text": "et la prière.",
+   "start": 64.518,
+   "end": 65.766
+  },
+  {
+   "id": "L15",
+   "text": "Parce que tu mérites un amour qui t'élève.",
+   "start": 67.512,
+   "end": 70.291
+  },
+  {
+   "id": "L16",
+   "text": "Un amour qui dure.",
+   "start": 70.711,
+   "end": 72.313
+  },
+  {
+   "id": "L17",
+   "text": "Un amour béni.",
+   "start": 72.733,
+   "end": 74.127
+  },
+  {
+   "id": "L18",
+   "text": "Ta plus belle histoire commence peut-être aujourd'hui.",
+   "start": 75.845,
+   "end": 79.14
+  },
+  {
+   "id": "L19",
+   "text": "Rejoins Agapéo dès aujourd'hui.",
+   "start": 79.875,
+   "end": 82.207
+  },
+  {
+   "id": "L20",
+   "text": "Agapéo.",
+   "start": 83.047,
+   "end": 84.071
+  },
+  {
+   "id": "L21",
+   "text": "L'amour… selon le cœur de Dieu.",
+   "start": 84.439,
+   "end": 86.644
+  }
+ ],
+ "cues": {
+  "climax": 67.512,
+  "switch": 75.845,
+  "cta": 79.875,
+  "endcard": 83.047
+ }
+}
