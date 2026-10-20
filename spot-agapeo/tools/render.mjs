@@ -34,8 +34,8 @@ const url = `http://127.0.0.1:${server.address().port}/index.html?w=${W}&h=${H}`
 
 const browser = await chromium.launch({ args: ['--disable-web-security', '--font-render-hinting=none', '--disable-lcd-text'] });
 
-async function openPage() {
-  const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+async function openPage(b = browser) {
+  const page = await b.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.error('PAGE ERROR', e.message));
   await page.goto(url);
   await page.waitForFunction(() => window.READY === true, null, { timeout: 60000 });
@@ -72,7 +72,9 @@ if (args.cues) {
   await Promise.all(Array.from({ length: workers }, async (_, k) => {
     const a = k * chunk, b = Math.min(nFrames, a + chunk);
     if (a >= b) return;
-    const page = await openPage();
+    // un navigateur par processus : le rendu logiciel d'un seul navigateur est mono-cœur
+    const own = await chromium.launch({ args: ['--disable-web-security', '--font-render-hinting=none', '--disable-lcd-text'] });
+    const page = await openPage(own);
     const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
       '-c:v', 'libx264', '-preset', 'medium', '-crf', '12', '-pix_fmt', 'yuv420p', path.join(tmp, `c${k}.mp4`)], { stdio: ['pipe', 'inherit', 'inherit'] });
     for (let i = a; i < b; i++) {
@@ -82,6 +84,7 @@ if (args.cues) {
     }
     ff.stdin.end();
     await new Promise(r => ff.on('close', r));
+    await own.close();
   }));
   const list = path.join(tmp, 'list.txt');
   fs.writeFileSync(list, Array.from({ length: workers }, (_, k) => `file 'c${k}.mp4'`).filter((_, k) => k * chunk < nFrames).join('\n'));

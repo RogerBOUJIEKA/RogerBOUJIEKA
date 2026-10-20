@@ -833,7 +833,10 @@ function buildScenes() {
     const beni = letters(beniWrap, 'béni', 'script', { position: 'relative', left: 0, top: 0, transform: 'none', fontSize: L(330, 300) + 'px', lineHeight: 1.2, padding: '0 40px' }, 'beni-text');
     beni.line.style.filter = 'drop-shadow(0 6px 10px rgba(120,60,0,0.35)) drop-shadow(0 0 30px rgba(255,190,90,0.7))';
     const O1 = A('L16') - 0.35, O2 = A('L17') - 0.3;
+    burst(FLASH9 + 0.02, 0, L(-40, -80), { n: 54, kind: 'mixed', speed: 1500, size: 28, life: 2.0, gravity: 70 });
+    riseEmitter(FLASH9, A('L15') + 0.7, { n: 55, life: 1.8 });
     riseEmitter(A('L15') + 1.1, A('L15') + 3.0, { n: 70, life: 2.0 });
+    cue(FLASH9 + 0.04, 'sparkle', 0.55);
     burst(A('L17') + 0.3, 0, L(20, 20), { n: 60, kind: 'star', speed: 1300, size: 26, life: 2.1, gravity: 60, colors: ['#ffe3a3', '#f2b544', '#ffffff', '#ffd27a'] });
     cue(A('L15') + 0.35, 'whoosh', 0.55);
     cue(A('L15') + 1.2, 'whooshUp', 0.6);
@@ -846,7 +849,7 @@ function buildScenes() {
     return t => {
       const p1 = P(t, O1, 0.45, E.inCubic);
       tf(l1.line, { y: L(-110, -150) - p1 * 140, o: 1 - p1, blur: p1 * 14 });
-      animSpans(l1, t, A('L15') + 0.3, 0.14, null, { dy: 50, s0: 1.25, blur: 20 });
+      animSpans(l1, t, A('L15') + 0.15, 0.14, null, { dy: 50, s0: 1.25, blur: 20 });
       tf(l2.line, { y: L(50, 0) - p1 * 140, o: 1 - p1, blur: p1 * 14 });
       animSpans(l2, t, A('L15') + 1.2, 0.035, null, { dy: 110, dur: 0.7, blur: 12, s0: 0.8 });
       const p2 = P(t, O2, 0.45, E.inCubic);
