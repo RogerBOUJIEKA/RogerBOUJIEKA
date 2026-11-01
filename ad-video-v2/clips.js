@@ -1,0 +1,1 @@
+window.CLIPS={"agapeo_a": 150, "agapeo_b": 150, "bovann": 180, "cabrel_a": 117, "cabrel_b": 138, "cabrel_c": 105, "camair_a": 150, "camair_b": 150, "camair_c": 120, "doctor_a": 150, "doctor_b": 135, "kwiva": 150, "mboa": 150, "snapia": 150, "volta": 150};

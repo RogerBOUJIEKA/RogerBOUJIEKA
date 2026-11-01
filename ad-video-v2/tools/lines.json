@@ -1,0 +1,23 @@
+[
+ ["c01","Une simple capture d'écran.",0.45,"capture",0],
+ ["c02","Une affiche.",0.22,"affiche",0],
+ ["c03","Ou juste le lien d'un site.",0.18,"lien",0],
+ ["c04","Quelques instructions à l'intelligence artificielle...",0.25,"prompt",0],
+ ["c05","Et ça devient une pub animée.",0.25,"pub",0],
+ ["c05b","Professionnelle.",0.12,null,0],
+ ["c06","Un spot pour un spectacle.",0.35,"spectacle",3.0],
+ ["c07","Pour une compagnie aérienne.",0.2,"aerien",3.0],
+ ["c08a","Une appli.",0.2,"apps",0],
+ ["c08b","Une boutique en ligne.",0.55,null,0],
+ ["c08c","Un lancement de produit.",0.55,null,0],
+ ["c09","Restaurant, immobilier, location... n'importe quel service.",0.6,"grid",0],
+ ["c10a","Tout ça, je l'ai réalisé moi-même.",0.4,"moi",0],
+ ["c10b","Sans caméra.",0.2,"sans",0],
+ ["c10c","Sans tournage.",0.08,null,0],
+ ["c10d","Sans équipe.",0.08,null,0],
+ ["c11","Et toi aussi, tu peux le faire.",0.4,"toi",0],
+ ["c12","Dans ma masterclass Vibe Motion, je te montre pas à pas, dans les moindres détails,",0.3,"masterclass",0],
+ ["c13a","comment transformer une capture, une affiche, ou un simple lien, en spot publicitaire.",0.15,"modules",0],
+ ["c13b","De A à Z.",0.2,null,0],
+ ["c14","Clique sur le lien, et profite de la promotion maintenant.",0.4,"cta",0]
+]

@@ -1,0 +1,202 @@
+{
+ "clips": {
+  "c01": {
+   "s": 0.45,
+   "e": 1.972,
+   "text": "Une simple capture d'écran."
+  },
+  "c02": {
+   "s": 2.192,
+   "e": 2.886,
+   "text": "Une affiche."
+  },
+  "c03": {
+   "s": 3.066,
+   "e": 4.454,
+   "text": "Ou juste le lien d'un site."
+  },
+  "c04": {
+   "s": 4.704,
+   "e": 7.374,
+   "text": "Quelques instructions à l'intelligence artificielle..."
+  },
+  "c05": {
+   "s": 7.624,
+   "e": 9.259,
+   "text": "Et ça devient une pub animée."
+  },
+  "c05b": {
+   "s": 9.379,
+   "e": 10.174,
+   "text": "Professionnelle."
+  },
+  "c06": {
+   "s": 10.524,
+   "e": 12.021,
+   "text": "Un spot pour un spectacle."
+  },
+  "c07": {
+   "s": 13.524,
+   "e": 15.103,
+   "text": "Pour une compagnie aérienne."
+  },
+  "c08a": {
+   "s": 16.524,
+   "e": 17.005,
+   "text": "Une appli."
+  },
+  "c08b": {
+   "s": 17.555,
+   "e": 18.746,
+   "text": "Une boutique en ligne."
+  },
+  "c08c": {
+   "s": 19.296,
+   "e": 20.426,
+   "text": "Un lancement de produit."
+  },
+  "c09": {
+   "s": 21.026,
+   "e": 24.63,
+   "text": "Restaurant, immobilier, location... n'importe quel service."
+  },
+  "c10a": {
+   "s": 25.03,
+   "e": 27.249,
+   "text": "Tout ça, je l'ai réalisé moi-même."
+  },
+  "c10b": {
+   "s": 27.449,
+   "e": 28.176,
+   "text": "Sans caméra."
+  },
+  "c10c": {
+   "s": 28.256,
+   "e": 29.084,
+   "text": "Sans tournage."
+  },
+  "c10d": {
+   "s": 29.164,
+   "e": 29.874,
+   "text": "Sans équipe."
+  },
+  "c11": {
+   "s": 30.274,
+   "e": 32.02,
+   "text": "Et toi aussi, tu peux le faire."
+  },
+  "c12": {
+   "s": 32.32,
+   "e": 36.865,
+   "text": "Dans ma masterclass Vibe Motion, je te montre pas à pas, dans les moindres détails,"
+  },
+  "c13a": {
+   "s": 37.015,
+   "e": 41.831,
+   "text": "comment transformer une capture, une affiche, ou un simple lien, en spot publicitaire."
+  },
+  "c13b": {
+   "s": 42.031,
+   "e": 42.824,
+   "text": "De A à Z."
+  },
+  "c14": {
+   "s": 43.224,
+   "e": 46.168,
+   "text": "Clique sur le lien, et profite de la promotion maintenant."
+  }
+ },
+ "scenes": [
+  {
+   "id": "capture",
+   "start": 0,
+   "min": 0,
+   "end": 1.992
+  },
+  {
+   "id": "affiche",
+   "start": 1.992,
+   "min": 0,
+   "end": 2.866
+  },
+  {
+   "id": "lien",
+   "start": 2.866,
+   "min": 0,
+   "end": 4.504
+  },
+  {
+   "id": "prompt",
+   "start": 4.504,
+   "min": 0,
+   "end": 7.424
+  },
+  {
+   "id": "pub",
+   "start": 7.424,
+   "min": 0,
+   "end": 10.324
+  },
+  {
+   "id": "spectacle",
+   "start": 10.324,
+   "min": 3.0,
+   "end": 13.324
+  },
+  {
+   "id": "aerien",
+   "start": 13.324,
+   "min": 3.0,
+   "end": 16.324
+  },
+  {
+   "id": "apps",
+   "start": 16.324,
+   "min": 0,
+   "end": 20.826
+  },
+  {
+   "id": "grid",
+   "start": 20.826,
+   "min": 0,
+   "end": 24.83
+  },
+  {
+   "id": "moi",
+   "start": 24.83,
+   "min": 0,
+   "end": 27.249
+  },
+  {
+   "id": "sans",
+   "start": 27.249,
+   "min": 0,
+   "end": 30.074
+  },
+  {
+   "id": "toi",
+   "start": 30.074,
+   "min": 0,
+   "end": 32.12
+  },
+  {
+   "id": "masterclass",
+   "start": 32.12,
+   "min": 0,
+   "end": 36.815
+  },
+  {
+   "id": "modules",
+   "start": 36.815,
+   "min": 0,
+   "end": 43.024
+  },
+  {
+   "id": "cta",
+   "start": 43.024,
+   "min": 0,
+   "end": 48.168
+  }
+ ],
+ "duration": 48.168
+}
