@@ -1,0 +1,207 @@
+window.TL={
+ "clips": {
+  "c01": {
+   "s": 0.45,
+   "e": 1.942,
+   "text": "Une simple capture d'écran."
+  },
+  "c02": {
+   "s": 2.162,
+   "e": 2.837,
+   "text": "Une affiche."
+  },
+  "c03": {
+   "s": 3.017,
+   "e": 4.508,
+   "text": "Ou juste le lien d'un site."
+  },
+  "c04": {
+   "s": 4.758,
+   "e": 7.35,
+   "text": "Quelques instructions à l'intelligence artificielle..."
+  },
+  "c05": {
+   "s": 7.65,
+   "e": 9.607,
+   "text": "Et ça devient une publicité animée."
+  },
+  "c05b": {
+   "s": 9.727,
+   "e": 10.539,
+   "text": "Professionnelle."
+  },
+  "c06": {
+   "s": 10.889,
+   "e": 12.11,
+   "text": "Un spot pour un restaurant."
+  },
+  "c07": {
+   "s": 14.089,
+   "e": 16.146,
+   "text": "Pour une agence de location de voitures."
+  },
+  "c08": {
+   "s": 17.489,
+   "e": 18.233,
+   "text": "Pour l'immobilier."
+  },
+  "c09a": {
+   "s": 20.589,
+   "e": 21.79,
+   "text": "Une salle de sport,"
+  },
+  "c09b": {
+   "s": 21.84,
+   "e": 22.541,
+   "text": "une boutique,"
+  },
+  "c09c": {
+   "s": 22.591,
+   "e": 23.358,
+   "text": "une application..."
+  },
+  "c09d": {
+   "s": 23.508,
+   "e": 24.946,
+   "text": "N'importe quel service."
+  },
+  "c10a": {
+   "s": 25.346,
+   "e": 27.386,
+   "text": "Tout ça, je l'ai créé moi-même."
+  },
+  "c10b": {
+   "s": 27.566,
+   "e": 28.304,
+   "text": "Sans caméra."
+  },
+  "c10c": {
+   "s": 28.384,
+   "e": 29.174,
+   "text": "Sans tournage."
+  },
+  "c10d": {
+   "s": 29.254,
+   "e": 29.953,
+   "text": "Sans équipe."
+  },
+  "c11": {
+   "s": 30.353,
+   "e": 32.055,
+   "text": "Et toi aussi, tu peux le faire."
+  },
+  "c12": {
+   "s": 32.355,
+   "e": 36.499,
+   "text": "J'ai préparé une formation complète, pas à pas, dans les moindres détails."
+  },
+  "c13a": {
+   "s": 36.749,
+   "e": 40.483,
+   "text": "Pour te montrer comment transformer une capture, une affiche, ou un simple lien,"
+  },
+  "c13b": {
+   "s": 40.533,
+   "e": 44.198,
+   "text": "en spot publicitaire et en motion design. De A à Z."
+  },
+  "c14": {
+   "s": 44.548,
+   "e": 47.233,
+   "text": "Clique sur le lien, et profite de la promotion maintenant."
+  }
+ },
+ "scenes": [
+  {
+   "id": "capture",
+   "start": 0,
+   "min": 0,
+   "end": 1.962
+  },
+  {
+   "id": "affiche",
+   "start": 1.962,
+   "min": 0,
+   "end": 2.817
+  },
+  {
+   "id": "lien",
+   "start": 2.817,
+   "min": 0,
+   "end": 4.558
+  },
+  {
+   "id": "prompt",
+   "start": 4.558,
+   "min": 0,
+   "end": 7.45
+  },
+  {
+   "id": "pub",
+   "start": 7.45,
+   "min": 0,
+   "end": 10.689
+  },
+  {
+   "id": "resto",
+   "start": 10.689,
+   "min": 3.2,
+   "end": 13.889
+  },
+  {
+   "id": "loc",
+   "start": 13.889,
+   "min": 3.4,
+   "end": 17.289
+  },
+  {
+   "id": "immo",
+   "start": 17.289,
+   "min": 3.1,
+   "end": 20.389
+  },
+  {
+   "id": "grid",
+   "start": 20.389,
+   "min": 0,
+   "end": 25.146
+  },
+  {
+   "id": "wall",
+   "start": 25.146,
+   "min": 0,
+   "end": 27.366
+  },
+  {
+   "id": "sans",
+   "start": 27.366,
+   "min": 0,
+   "end": 30.153
+  },
+  {
+   "id": "toi",
+   "start": 30.153,
+   "min": 0,
+   "end": 32.155
+  },
+  {
+   "id": "formation",
+   "start": 32.155,
+   "min": 0,
+   "end": 36.549
+  },
+  {
+   "id": "modules",
+   "start": 36.549,
+   "min": 0,
+   "end": 44.348
+  },
+  {
+   "id": "cta",
+   "start": 44.348,
+   "min": 0,
+   "end": 49.133
+  }
+ ],
+ "duration": 49.133
+};
