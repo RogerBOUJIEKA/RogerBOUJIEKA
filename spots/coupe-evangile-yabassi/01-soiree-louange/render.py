@@ -326,78 +326,86 @@ def T_date(L, lt, dur):
 
 
 def T_end(L, lt, dur):
-    k = text_img("LA COUPE DE L'ÉVANGILE PRÉSENTE", "mont7", 34, GOLD, tracking=10)
+    # apparitions calées sur la voix : « La Coupe de l'Évangile » (0 s), « Soirée… » (1,9 s),
+    # date et lieu (4,4 s), « Tout pour la gloire de Jésus » (10,9 s)
+    k = text_img("LA COUPE DE L'ÉVANGILE", "mont7", 40, GOLD, tracking=12, glow=6, glow_color=(0, 0, 0))
     reveal(L, k, W / 2, 150, (lt - 0.1) / 0.5)
     t1 = text_img("SOIRÉE DE LOUANGE", "anton", 140, WHITE, tracking=4, glow=12, glow_color=(0, 0, 0))
-    reveal(L, t1, W / 2, 210, (lt - 0.25) / 0.5)
+    reveal(L, t1, W / 2, 210, (lt - 1.9) / 0.5)
     t2 = text_img("& DE GUÉRISON", "anton", 110, GOLD, tracking=6, glow=12, glow_color=(0, 0, 0))
-    reveal(L, t2, W / 2, 400, (lt - 0.4) / 0.5)
+    reveal(L, t2, W / 2, 400, (lt - 2.3) / 0.5)
     th = text_img("« La Parole de Dieu : une source de vie et de guérison »", "playi", 50, CREAM)
-    fade_text(L, th, W / 2, 570, (lt - 0.8) / 0.6)
-    gold_line(L, W / 2, 665, 900, (lt - 1.0) / 0.8, thick=2)
+    fade_text(L, th, W / 2, 570, (lt - 2.9) / 0.6)
+    gold_line(L, W / 2, 665, 900, (lt - 3.4) / 0.8, thick=2)
     items = [("VEN. 18 DÉC. 2026", "Date"), ("DÈS 18H30", "Heure"), ("PRÉAU DU LYCÉE BILINGUE", "Yabassi")]
     xs = [W / 2 - 560, W / 2, W / 2 + 560]
     for i, ((v, lab), x) in enumerate(zip(items, xs)):
         a = text_img(lab.upper(), "mont7", 26, GOLD, tracking=8)
         b = text_img(v, "anton", 60, WHITE, tracking=2)
-        p = (lt - 1.2 - i * 0.2) / 0.5
+        p = (lt - 4.4 - i * 0.9) / 0.5
         fade_text(L, a, x, 700, p)
         fade_text(L, b, x, 740, p)
-    f = text_img("Tout pour la gloire de Jésus !", "playi", 58, GOLD, glow=8, glow_color=(0, 0, 0))
-    fade_text(L, f, W / 2, 900, (lt - 2.4) / 0.8)
+    f = text_img("Tout pour la gloire de Jésus !", "playi", 64, GOLD, glow=8, glow_color=(0, 0, 0))
+    fade_text(L, f, W / 2, 890, (lt - 10.9) / 0.8)
 
 
 def build_timeline():
-    # A. Accroche
-    shot(0.0, 2.8, "13", dict(z0=1.0, z1=1.18, fx=0.45, fy=0.5), dict(warm=0.6, bright=0.85),
+    """Plans calés sur la voix off « Annonceur Croisade » (1 min 24)."""
+    # A. Accroche — « Yabassi, Dieu a une parole pour toi. » (0,4 → 3,4)
+    shot(0.0, 1.9, "13", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.5), dict(warm=0.6, bright=0.85),
          T_big_word("YABASSI", size=230, y=360))
-    shot(2.8, 5.5, "11", dict(z0=1.05, z1=1.2, fx=0.5, fy=0.4), dict(warm=0.4),
-         T_serif(["Dieu a une parole", "pour toi."], y=640, size=96), flash_in=True, scrim=(720, 0.4))
-    # B. Titre
-    shot(5.5, 8.2, "05", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.45), dict(warm=0.3, bright=0.8),
+    shot(1.9, 3.6, "11", dict(z0=1.05, z1=1.2, fx=0.5, fy=0.4), dict(warm=0.4),
+         T_serif(["Dieu a une parole", "pour toi."], y=640, size=96, stagger=0.3), flash_in=True, scrim=(720, 0.4))
+    # B. Titre et thème (3,4 → 15,1)
+    shot(3.6, 7.0, "05", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.45), dict(warm=0.3, bright=0.8),
          T_kicker_title("DANS LE CADRE DE", "LA COUPE DE L'ÉVANGILE", 140))
-    shot(8.2, 11.6, "03", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.4), dict(bright=0.75),
+    shot(7.0, 10.2, "03", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.4), dict(bright=0.75),
          T_kicker_title("GRANDE SOIRÉE", "LOUANGE & GUÉRISON", 150), flash_in=True)
-    shot(11.6, 16.0, "09", dict(z0=1.1, z1=1.25, fx=0.45, fy=0.5, dx=0.05), dict(warm=0.4, bright=0.7),
+    shot(10.2, 15.2, "09", dict(z0=1.1, z1=1.25, fx=0.45, fy=0.5, dx=0.05), dict(warm=0.4, bright=0.7),
          T_serif(["« La Parole de Dieu :", "une source de vie et de guérison »"], y=400, size=84))
-    # C. Émotion
-    shot(16.0, 19.0, "07", dict(z0=1.05, z1=1.2, fx=0.55, fy=0.55), dict(bw=True, bright=0.85), T_question("La maladie ?"))
-    shot(19.0, 22.0, "08", dict(z0=1.1, z1=1.25, fx=0.55, fy=0.55), dict(sat=0.25, bright=0.8), T_question("Le découragement ?"))
-    shot(22.0, 24.6, "01", dict(z0=1.15, z1=1.3, fx=0.52, fy=0.4), dict(sat=0.4, bright=0.8), T_question("Un fardeau trop lourd ?"))
-    shot(24.6, 26.4, "10", dict(z0=1.05, z1=1.2, fx=0.4, fy=0.4), dict(warm=0.5),
+    # C. Émotion (15,1 → 30,0)
+    shot(15.2, 17.0, "07", dict(z0=1.05, z1=1.2, fx=0.55, fy=0.55), dict(bw=True, bright=0.85), T_question("La maladie ?"))
+    shot(17.0, 18.8, "08", dict(z0=1.1, z1=1.25, fx=0.55, fy=0.55), dict(sat=0.25, bright=0.8), T_question("Le découragement ?"))
+    shot(18.8, 20.8, "01", dict(z0=1.15, z1=1.3, fx=0.52, fy=0.4), dict(sat=0.4, bright=0.8), T_question("Un fardeau trop lourd ?"))
+    shot(20.8, 23.6, "10", dict(z0=1.05, z1=1.2, fx=0.4, fy=0.4), dict(warm=0.5),
          T_serif(["Cette soirée est pour toi."], y=760, size=90), flash_in=True)
-    shot(26.4, 28.2, "06", dict(z0=1.05, z1=1.18, fx=0.5, fy=0.45), dict(warm=0.6),
+    shot(23.6, 26.4, "02", dict(z0=1.2, z1=1.05, fx=0.45, fy=0.5), dict(warm=0.3, bright=0.85),
+         T_big_word("LES CHAÎNES TOMBENT", size=150, y=420))
+    shot(26.4, 30.0, "06", dict(z0=1.05, z1=1.18, fx=0.5, fy=0.45), dict(warm=0.6),
          T_big_word("LA VIE RENAÎT", size=170, y=720))
-    # D. Infos (drop)
-    shot(28.2, 32.6, "12", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.04), dict(warm=0.4, bright=0.55), T_date, flash_in=True, scrim=(450, 0.55))
-    shot(32.6, 34.6, "14", dict(z0=1.05, z1=1.2, fx=0.4, fy=0.6), dict(warm=0.4, bright=0.6),
+    # D. Infos (30,0 → 38,4)
+    shot(30.0, 34.0, "12", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.04), dict(warm=0.4, bright=0.55), T_date,
+         flash_in=True, scrim=(450, 0.55))
+    shot(34.0, 35.8, "14", dict(z0=1.05, z1=1.2, fx=0.4, fy=0.6), dict(warm=0.4, bright=0.6),
          T_kicker_title("À PARTIR DE", "18H30", 260, GOLD, y=330), scrim=(450, 0.55))
-    shot(34.6, 37.2, "12", dict(z0=1.25, z1=1.1, fx=0.6, fy=0.4), dict(warm=0.4, bright=0.55),
+    shot(35.8, 38.5, "12", dict(z0=1.25, z1=1.1, fx=0.6, fy=0.4), dict(warm=0.4, bright=0.55),
          T_kicker_title("YABASSI", "PRÉAU DU LYCÉE BILINGUE", 130, y=420), scrim=(450, 0.55))
-    # E. Programme
-    shot(37.2, 40.8, "04", dict(z0=1.0, z1=1.15, fx=0.5, fy=0.4), dict(warm=0.3, bright=0.85),
+    # E. Programme (38,4 → 53,1)
+    shot(38.5, 42.0, "04", dict(z0=1.0, z1=1.15, fx=0.5, fy=0.4), dict(warm=0.3, bright=0.85),
          T_programme("LOUANGE", "qui élève les cœurs", 1), flash_in=True, scrim=(720, 0.45))
-    shot(40.8, 44.4, "05", dict(z0=1.6, z1=1.8, fx=0.22, fy=0.38), dict(warm=0.3, bright=0.85),
+    shot(42.0, 45.8, "05", dict(z0=1.6, z1=1.8, fx=0.22, fy=0.38), dict(warm=0.3, bright=0.85),
          T_programme("ENSEIGNEMENT", "de la Parole qui transforme les vies", 2), scrim=(720, 0.45))
-    shot(44.4, 48.2, "02", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.5), dict(bright=0.85),
+    shot(45.8, 49.6, "02", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.5), dict(bright=0.85),
          T_programme("GUÉRISON", "pour le corps et l'âme", 3), scrim=(720, 0.45))
-    shot(48.2, 52.0, "06", dict(z0=1.3, z1=1.15, fx=0.5, fy=0.5), dict(warm=0.4, bright=0.85),
+    shot(49.6, 53.1, "06", dict(z0=1.3, z1=1.15, fx=0.5, fy=0.5), dict(warm=0.4, bright=0.85),
          T_programme("RESTAURATION", "pour les familles", 4), scrim=(720, 0.45))
-    # F. Communion
-    shot(52.0, 54.6, "09", dict(z0=1.0, z1=1.1, fx=0.5, fy=0.5), dict(warm=0.4, bright=0.8),
+    # F. Communion (53,1 → 58,6)
+    shot(53.1, 55.9, "09", dict(z0=1.0, z1=1.1, fx=0.5, fy=0.5), dict(warm=0.4, bright=0.8),
          T_big_word("CHANTER · PRIER", size=150, y=420))
-    shot(54.6, 57.2, "11", dict(z0=1.2, z1=1.05, fx=0.45, fy=0.4), dict(warm=0.4, bright=0.8),
+    shot(55.9, 58.6, "11", dict(z0=1.2, z1=1.05, fx=0.45, fy=0.4), dict(warm=0.4, bright=0.8),
          T_big_word("CÉLÉBRER", size=210, y=400))
-    # G. Moment intime
-    shot(57.2, 61.2, "01", dict(z0=1.5, z1=1.7, fx=0.52, fy=0.35), dict(warm=0.6, bright=0.75),
-         T_serif(["Ce soir-là,", "ton histoire peut changer."], y=640, size=90, stagger=0.7), scrim=(720, 0.45))
-    # H. Appel
-    shot(61.2, 64.2, "04", dict(z0=1.3, z1=1.15, fx=0.4, fy=0.5), dict(warm=0.4, bright=0.75),
-         T_kicker_title("AVEC TA FAMILLE · TES AMIS · TES VOISINS", "VIENS !", 230, y=360), flash_in=True)
-    shot(64.2, 69.0, "11", dict(z0=1.0, z1=1.15, fx=0.5, fy=0.35), dict(warm=0.5, bright=0.8),
-         T_big_word("JÉSUS T'ATTEND !", size=190, y=400))
-    # I. Carton final
-    shot(69.0, 80.0, "05", dict(z0=1.1, z1=1.2, fx=0.5, fy=0.5), dict(warm=0.5, bright=0.3, sat=0.7), T_end, flash_in=True)
+    # G. Moment intime (58,6 → 61,9)
+    shot(58.6, 61.9, "01", dict(z0=1.5, z1=1.7, fx=0.52, fy=0.35), dict(warm=0.6, bright=0.75),
+         T_serif(["Ce soir-là,", "ton histoire peut changer."], y=640, size=90, stagger=0.6), scrim=(720, 0.45))
+    # H. Appel (61,9 → 71,2)
+    shot(61.9, 65.6, "04", dict(z0=1.3, z1=1.15, fx=0.4, fy=0.5), dict(warm=0.4, bright=0.75),
+         T_kicker_title("ALORS NE RESTE PAS SEUL", "VIENS !", 230, y=360), flash_in=True)
+    shot(65.6, 69.5, "09", dict(z0=1.2, z1=1.35, fx=0.6, fy=0.45), dict(warm=0.5, bright=0.75),
+         T_serif(["Amène ta famille,", "tes amis, tes voisins."], y=420, size=92, stagger=0.9))
+    shot(69.5, 71.2, "11", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.35), dict(warm=0.5, bright=0.8),
+         T_big_word("JÉSUS T'ATTEND !", size=190, y=400), flash_in=True)
+    # I. Carton final (71,2 → 87,0)
+    shot(71.2, 87.0, "05", dict(z0=1.1, z1=1.22, fx=0.5, fy=0.5), dict(warm=0.5, bright=0.3, sat=0.7), T_end, flash_in=True)
 
 
 def render(out, audio=None, draft=False, start=0.0, end=None):
@@ -411,7 +419,7 @@ def render(out, audio=None, draft=False, start=0.0, end=None):
     if audio:
         cmd += ["-ss", str(start), "-i", audio]
     cmd += ["-vf", f"scale={ow}:{oh}:flags=lanczos", "-c:v", "libx264", "-preset", "veryfast" if draft else "medium",
-            "-crf", "26" if draft else "18", "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
+            "-crf", "26" if draft else "21", "-maxrate", "10M", "-bufsize", "20M", "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
     if audio:
         cmd += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
     cmd += [out]
@@ -449,7 +457,7 @@ def render(out, audio=None, draft=False, start=0.0, end=None):
         # grain
         a += GRAIN[n % len(GRAIN)]
         frame = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("RGBA")
-        particles(frame, T, 0.9 if T >= 69 else 0.55)
+        particles(frame, T, 0.9 if T >= 71.2 else 0.55)
         if s["text"]:
             # sortie du texte : fondu sur les 0,25 dernières secondes
             L = Image.new("RGBA", (W, H), (0, 0, 0, 0))
