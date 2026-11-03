@@ -9,7 +9,7 @@ VOICE="$1"; MUSIC="$2"; OUT="$3"; DUR="${4:-80}"; SFX="${5:-}"
 # STYLE=doux : voix douce (compression légère, pas de renfort d'aigus, niveau plus modéré)
 if [ "${STYLE:-fort}" = "doux" ]; then
   VCHAIN="highpass=f=70,acompressor=threshold=-24dB:ratio=2:attack=15:release=250:makeup=2,equalizer=f=200:t=q:w=1:g=1.5,equalizer=f=6000:t=q:w=1:g=-1.5,loudnorm=I=-13:TP=-1.5:LRA=7"
-  MUSIC_I=-27; GAIN=2dB; FXVOL=-7dB
+  MUSIC_I=-27; GAIN=2dB; FXVOL=-5dB
 else
   VCHAIN="highpass=f=70,acompressor=threshold=-20dB:ratio=3:attack=5:release=120:makeup=4,equalizer=f=3000:t=q:w=1.2:g=3,equalizer=f=150:t=q:w=1:g=2,loudnorm=I=-10:TP=-1:LRA=5"
   MUSIC_I=-27; GAIN=3.5dB; FXVOL=-3dB
