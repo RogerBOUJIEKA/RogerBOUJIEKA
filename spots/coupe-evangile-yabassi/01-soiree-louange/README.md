@@ -3,6 +3,8 @@
 - `script.md` : texte de la voix off et découpage plan par plan
 - `images/` : photos fournies (louange, préau du lycée, pont de Yabassi)
 - `render.py` : montage automatique (1920x1080, 30 i/s)
+- `audio/musique-fond.mp3` : musique de fond fournie
+- `mix.sh` : mixage voix + musique (musique à -30 LUFS, baissée sous la voix)
 
 ## Rendu
 
