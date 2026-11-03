@@ -22,7 +22,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "images")
 W, H, FPS = 1920, 1080, 30
-TOTAL = 88.0
+TOTAL = 81.5
 
 WHITE = (255, 255, 255)
 ORANGE = (246, 140, 40)
@@ -235,9 +235,9 @@ def T_end(L, lt, dur):
         d.line((W / 2 - 40 * p, 644, W / 2 + 40 * p, 644), fill=ORANGE + (255,), width=4)
     d1 = "VENDREDI 18 DÉCEMBRE 2026  ·  DÈS 18H30"
     tw = text_width(d1, "m800", 50, 2)
-    scramble(L, d1, W / 2 - tw / 2, 670, lt, None, 50, delay=4.4, ghost=False, exit_=False)
+    scramble(L, d1, W / 2 - tw / 2, 670, lt, None, 50, delay=4.8, ghost=False, exit_=False)
     small(L, "Préau du Lycée bilingue de Yabassi", W / 2, 745, lt, None, size=34, fname="m600", color=WHITE,
-          delay=5.6, align="center")
+          delay=6.0, align="center")
     t3 = "TOUT POUR LA GLOIRE DE JÉSUS"
     tw = text_width(t3, "m800", 46, 6)
     scramble(L, t3, W / 2 - tw / 2, 860, lt, None, 46, color=ORANGE, tracking=6, delay=11.2, exit_=False)
@@ -245,7 +245,7 @@ def T_end(L, lt, dur):
 
 def watermark(L, T):
     """Petit logo en haut à gauche."""
-    a = clamp((T - 3.6) / 0.5) * (1 - clamp((T - 71.6) / 0.5))
+    a = clamp((T - 3.0) / 0.5) * (1 - clamp((T - (R(71.2) - 0.5)) / 0.5))
     if a <= 0:
         return
     ImageDraw.Draw(L).ellipse((58, 58, 68, 68), fill=ORANGE + (int(255 * a),))
@@ -335,12 +335,10 @@ def shot(t0, t1, imgs, text=None, gr=None, flash=False, scrim=(540, 0.35), sfx="
         CUES.append(dict(t=t0 + seg * k - 0.05, type="swish", gain=-10))
 
 
-# Recalage sur la voix « Voix Louange Femme » : temps de l'ancienne voix -> temps de la nouvelle
-KNOTS = [(0, 0), (1.9, 1.9), (3.6, 3.6), (7.0, 7.0), (10.2, 9.8), (15.2, 15.3), (17.0, 17.3), (18.8, 19.4),
-         (20.8, 21.6), (23.6, 24.4), (26.4, 27.3), (30.0, 30.6), (31.3, 31.9), (34.0, 34.6), (35.8, 36.5),
-         (38.5, 39.2), (42.0, 42.7), (45.8, 46.4), (49.6, 50.0), (53.1, 53.3), (55.9, 56.6), (58.6, 59.6),
-         (61.9, 63.1), (65.6, 66.6), (69.5, 70.5), (71.2, 72.1), (73.2, 74.1), (75.6, 76.5), (82.0, 83.1),
-         (87.0, 88.0)]
+# Recalage sur la voix « Voix Louange Douce » (moteur Eco) : temps de l'ancienne voix -> temps de la nouvelle
+KNOTS = [(0, 0), (3.4, 2.98), (15.14, 14.56), (20.68, 20.44), (30.02, 28.58), (38.44, 36.12), (53.08, 47.56),
+         (58.56, 53.26), (61.86, 56.46), (63.76, 58.84), (69.52, 63.3), (71.18, 65.02), (73.1, 67.2),
+         (75.6, 69.84), (82.1, 76.2), (84.3, 78.42), (87.0, 81.5)]
 
 
 def R(t):
