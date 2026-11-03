@@ -4,7 +4,9 @@
 - `images/` : photos fournies (louange, préau du lycée, pont de Yabassi)
 - `render.py` : montage automatique (1920x1080, 30 i/s)
 - `audio/musique-fond.mp3` : musique de fond fournie
+- `audio/voix-off.mp3` : voix off « Annonceur Croisade » (IziVoice)
 - `mix.sh` : mixage voix + musique (musique à -30 LUFS, baissée sous la voix)
+- `export/` : spot final en 720p (la version 1080p fait 107 Mo, hors dépôt)
 
 ## Rendu
 
