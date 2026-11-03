@@ -22,7 +22,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "images")
 W, H, FPS = 1920, 1080, 30
-TOTAL = 87.0
+TOTAL = 88.0
 
 WHITE = (255, 255, 255)
 ORANGE = (246, 140, 40)
@@ -240,12 +240,12 @@ def T_end(L, lt, dur):
           delay=5.6, align="center")
     t3 = "TOUT POUR LA GLOIRE DE JÉSUS"
     tw = text_width(t3, "m800", 46, 6)
-    scramble(L, t3, W / 2 - tw / 2, 860, lt, None, 46, color=ORANGE, tracking=6, delay=10.9, exit_=False)
+    scramble(L, t3, W / 2 - tw / 2, 860, lt, None, 46, color=ORANGE, tracking=6, delay=11.2, exit_=False)
 
 
 def watermark(L, T):
     """Petit logo en haut à gauche."""
-    a = clamp((T - 3.6) / 0.5) * (1 - clamp((T - 70.7) / 0.5))
+    a = clamp((T - 3.6) / 0.5) * (1 - clamp((T - 71.6) / 0.5))
     if a <= 0:
         return
     ImageDraw.Draw(L).ellipse((58, 58, 68, 68), fill=ORANGE + (int(255 * a),))
@@ -335,6 +335,21 @@ def shot(t0, t1, imgs, text=None, gr=None, flash=False, scrim=(540, 0.35), sfx="
         CUES.append(dict(t=t0 + seg * k - 0.05, type="swish", gain=-10))
 
 
+# Recalage sur la voix « Voix Louange Femme » : temps de l'ancienne voix -> temps de la nouvelle
+KNOTS = [(0, 0), (1.9, 1.9), (3.6, 3.6), (7.0, 7.0), (10.2, 9.8), (15.2, 15.3), (17.0, 17.3), (18.8, 19.4),
+         (20.8, 21.6), (23.6, 24.4), (26.4, 27.3), (30.0, 30.6), (31.3, 31.9), (34.0, 34.6), (35.8, 36.5),
+         (38.5, 39.2), (42.0, 42.7), (45.8, 46.4), (49.6, 50.0), (53.1, 53.3), (55.9, 56.6), (58.6, 59.6),
+         (61.9, 63.1), (65.6, 66.6), (69.5, 70.5), (71.2, 72.1), (73.2, 74.1), (75.6, 76.5), (82.0, 83.1),
+         (87.0, 88.0)]
+
+
+def R(t):
+    for (a0, b0), (a1, b1) in zip(KNOTS, KNOTS[1:]):
+        if t <= a1:
+            return round(b0 + (t - a0) * (b1 - b0) / (a1 - a0), 3)
+    return t + (KNOTS[-1][1] - KNOTS[-1][0])
+
+
 def K(name, z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.0, dy=0.0):
     return (name, dict(z0=z0, z1=z1, fx=fx, fy=fy, dx=dx, dy=dy))
 
@@ -400,13 +415,17 @@ def build_timeline():
     CUES.append(dict(t=71.2, type="riser", dur=2.2, gain=-11, end_at=True))
     shot(69.5, 71.2, K("11", 1.0, 1.12, 0.5, 0.35), T_word("JÉSUS T'ATTEND", size=160), flash=True)
     # I. Carton final
-    shot(71.2, TOTAL, K("13", 1.1, 1.25, 0.5, 0.5), T_end, gr=dict(bright=0.35, sat=0.7), flash=True,
+    shot(71.2, 87.0, K("13", 1.1, 1.25, 0.5, 0.5), T_end, gr=dict(bright=0.35, sat=0.7), flash=True,
          scrim=None, sfx=None)
     CUES.append(dict(t=71.2, type="subdrop", gain=-4))
     CUES.append(dict(t=73.2, type="whoosh", gain=-6))
     CUES.append(dict(t=75.5, type="whoosh", gain=-7))
     CUES.append(dict(t=75.6, type="ticks", gain=-10))
     CUES.append(dict(t=82.0, type="shimmer", gain=2))
+    for sh in SHOTS:
+        sh["t0"], sh["t1"] = R(sh["t0"]), (TOTAL if sh["t1"] >= 87 else R(sh["t1"]))
+    for c in CUES:
+        c["t"] = R(c["t"])
 
 
 # ---------------------------------------------------------------- rendu
