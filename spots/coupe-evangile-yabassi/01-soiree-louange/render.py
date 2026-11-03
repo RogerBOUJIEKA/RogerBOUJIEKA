@@ -1,32 +1,32 @@
 #!/usr/bin/env python3
 """Montage du spot « Soirée de louange et de guérison » (Coupe de l'Évangile, Yabassi).
 
-Rend une vidéo 1920x1080 à 30 i/s à partir des photos du dossier images/,
-avec titres animés, étalonnage chaud, poussière dorée, halos de lumière et grain.
+Style de textes inspiré de la vidéo de référence : gros mots en capitales (Montserrat ExtraBold),
+lettres qui apparaissent dans le désordre devant un « fantôme » flou du mot qui se resserre,
+cercle fin animé, blocs chiffre + libellé, petit logo en haut à gauche, flashs blancs.
 
 Usage :
-    python3 render.py --fonts DOSSIER_POLICES --out spot.mp4 [--audio mix.wav] [--draft]
-
-Les polices attendues (Fontsource, via npm) : Anton, Montserrat, Playfair Display.
+    python3 render.py --fonts DOSSIER_POLICES --out spot.mp4 [--jobs 4] [--draft]
+    python3 render.py --fonts DOSSIER_POLICES --cues cues.json   # exporte les repères d'effets sonores
 """
 import argparse
 import glob
-import math
+import json
 import os
 import random
 import subprocess
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "images")
 W, H, FPS = 1920, 1080, 30
+TOTAL = 87.0
 
-GOLD = (242, 181, 68)
-EMBER = (255, 106, 26)
 WHITE = (255, 255, 255)
-CREAM = (255, 240, 214)
+ORANGE = (246, 140, 40)
+GREY = (215, 215, 215)
 
 
 # ---------------------------------------------------------------- utilitaires
@@ -48,6 +48,7 @@ def lerp(a, b, t):
     return a + (b - a) * t
 
 
+FONT_FILES = {}
 FONTS = {}
 
 
@@ -58,39 +59,36 @@ def font(name, size):
     return FONTS[key]
 
 
-TEXT_CACHE = {}
+GLYPHS = {}
 
 
-def text_img(txt, fname, size, color=WHITE, tracking=0, glow=0, glow_color=None):
-    """Rend un texte sur un calque RGBA ajusté, avec interlettrage et halo optionnels."""
-    key = (txt, fname, size, color, tracking, glow, glow_color)
-    if key in TEXT_CACHE:
-        return TEXT_CACHE[key]
+def glyph(ch, fname, size, color, shadow=True):
+    """Une lettre sur calque RGBA, avec ombre douce pour la lisibilité."""
+    key = (ch, fname, size, color, shadow)
+    if key in GLYPHS:
+        return GLYPHS[key]
     f = font(fname, size)
     asc, desc = f.getmetrics()
-    if tracking:
-        widths = [f.getlength(c) for c in txt]
-        tw = int(sum(widths) + tracking * (len(txt) - 1)) + 4
-    else:
-        tw = int(f.getlength(txt)) + 4
-    pad = glow * 3 + 4
-    im = Image.new("RGBA", (tw + pad * 2, asc + desc + pad * 2), (0, 0, 0, 0))
-    d = ImageDraw.Draw(im)
-    if tracking:
-        x = pad
-        for c, w_ in zip(txt, widths):
-            d.text((x, pad), c, font=f, fill=color + (255,))
-            x += w_ + tracking
-    else:
-        d.text((pad, pad), txt, font=f, fill=color + (255,))
-    if glow:
-        a = im.split()[3].filter(ImageFilter.GaussianBlur(glow))
-        gc = glow_color or color
-        g = Image.new("RGBA", im.size, gc + (0,))
-        g.putalpha(a.point(lambda v: min(255, int(v * 1.6))))
-        im = Image.alpha_composite(g, im)
-    TEXT_CACHE[key] = im
-    return im
+    w = max(1, int(f.getlength(ch))) + 4
+    pad = 14
+    im = Image.new("RGBA", (w + pad * 2, asc + desc + pad * 2), (0, 0, 0, 0))
+    ImageDraw.Draw(im).text((pad, pad), ch, font=f, fill=color + (255,))
+    if shadow:
+        a = im.split()[3].filter(ImageFilter.GaussianBlur(6)).point(lambda v: int(v * 0.55))
+        sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
+        sh.putalpha(a)
+        im = Image.alpha_composite(sh, im)
+    GLYPHS[key] = (im, pad)
+    return GLYPHS[key]
+
+
+def text_width(txt, fname, size, tracking=0):
+    return font(fname, size).getlength(txt) + tracking * max(0, len(txt) - 1)
+
+
+def letter_positions(txt, fname, size, tracking=0):
+    f = font(fname, size)
+    return [f.getlength(txt[:i]) + tracking * i for i in range(len(txt))]
 
 
 def paste_alpha(base, layer, x, y, alpha=1.0):
@@ -99,28 +97,160 @@ def paste_alpha(base, layer, x, y, alpha=1.0):
     if alpha < 0.999:
         layer = layer.copy()
         layer.putalpha(layer.split()[3].point(lambda v: int(v * alpha)))
-    base.alpha_composite(layer, (int(x), int(y)))
+    base.alpha_composite(layer, (int(round(x)), int(round(y))))
 
 
-def reveal(base, layer, cx, y, p, align="center", rise=1.0, alpha_mult=1.0):
-    """Révélation par masque : le texte monte depuis une fente invisible."""
-    if p <= 0:
+WHOLE = {}
+
+
+def whole_text(txt, fname, size, color, tracking=0):
+    key = (txt, fname, size, color, tracking)
+    if key not in WHOLE:
+        tw = int(text_width(txt, fname, size, tracking)) + 8
+        f = font(fname, size)
+        asc, desc = f.getmetrics()
+        im = Image.new("RGBA", (tw, asc + desc + 8), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im)
+        for ch, x in zip(txt, letter_positions(txt, fname, size, tracking)):
+            d.text((x + 4, 4), ch, font=f, fill=color + (255,))
+        WHOLE[key] = im
+    return WHOLE[key]
+
+
+# ---------------------------------------------------------------- animation des mots
+def scramble(L, txt, x, y, lt, dur, size=130, fname="m800", color=WHITE, tracking=2, delay=0.0,
+             ghost=True, spread=0.4, exit_=True):
+    """Lettres qui apparaissent dans le désordre + fantôme flou qui se resserre.
+    (x, y) = coin haut-gauche de la ligne. Renvoie la largeur du texte."""
+    t = lt - delay
+    tw = text_width(txt, fname, size, tracking)
+    if t <= 0:
+        return tw
+    rnd = random.Random(txt + str(size))
+    order = [rnd.uniform(0, spread) for _ in txt]
+    outs = [rnd.uniform(0, 0.22) for _ in txt]
+    if ghost and t < 0.7:
+        p = ease_out(t / 0.7)
+        g = whole_text(txt, fname, size, color, tracking)
+        s = lerp(1.65, 1.0, p)
+        gw, gh = int(g.width * s), int(g.height * s)
+        gi = g.resize((gw, gh), Image.BILINEAR).filter(ImageFilter.GaussianBlur(lerp(10, 2, p)))
+        cx, cy = x + g.width / 2, y + g.height / 2
+        paste_alpha(L, gi, cx - gw / 2, cy - gh / 2, alpha=0.38 * (1 - p))
+    xs = letter_positions(txt, fname, size, tracking)
+    for ch, lx, o, out in zip(txt, xs, order, outs):
+        if ch == " ":
+            continue
+        a = clamp((t - o) / 0.09)
+        if exit_ and dur:
+            a *= 1 - clamp((lt - (dur - 0.28 + out * 0.8)) / 0.06)
+        if a <= 0:
+            continue
+        im, pad = glyph(ch, fname, size, color)
+        paste_alpha(L, im, x + lx - pad + 4, y - pad + 4, alpha=a)
+    return tw
+
+
+def ring(L, cx, cy, r, lt, dur, delay=0.0, alpha=0.55):
+    t = lt - delay
+    if t <= 0:
         return
-    e = ease_out(p)
-    w, h = layer.size
-    x = cx - w / 2 if align == "center" else cx
-    off = int((1 - e) * h * rise)
-    visible = layer.crop((0, 0, w, h - off)) if off > 0 else layer
-    if visible.size[1] <= 0:
+    p = ease_out(t / 0.8)
+    out = 1 - ease_in_out((lt - (dur - 0.3)) / 0.3)
+    a = alpha * p * out
+    if a <= 0:
         return
-    paste_alpha(base, visible, x, y + off, alpha=clamp(e * 1.4) * alpha_mult)
+    sweep = 300 * p
+    start = -90 + t * 25
+    ImageDraw.Draw(L).arc((cx - r, cy - r, cx + r, cy + r), start, start + sweep,
+                          fill=WHITE + (int(255 * a),), width=2)
 
 
-def fade_text(base, layer, cx, y, p, out=0.0, dy=30, align="center"):
-    e = ease_out(p) * (1 - ease_in_out(out))
-    w, h = layer.size
-    x = cx - w / 2 if align == "center" else cx
-    paste_alpha(base, layer, x, y + (1 - ease_out(p)) * dy, alpha=e)
+def small(L, txt, x, y, lt, dur, size=30, fname="m500", color=WHITE, delay=0.25, tracking=0, align="left"):
+    if lt - delay <= 0:
+        return
+    if align == "center":
+        x = x - text_width(txt, fname, size, tracking) / 2
+    scramble(L, txt, x, y, lt, dur, size, fname, color, tracking, delay, ghost=False, spread=0.3)
+
+
+# ---------------------------------------------------------------- mises en page (style référence)
+def T_word(main, sup=None, sub=None, size=140, ring_on=False, line2=None, line2_color=ORANGE, y=None):
+    """Mot central : petite ligne au-dessus (sup), gros mot, petite ligne en dessous (sub)."""
+    def f(L, lt, dur):
+        tw = text_width(main, "m800", size, 2)
+        x = W / 2 - tw / 2
+        yy = y if y is not None else H / 2 - size * 0.62
+        if ring_on:
+            ring(L, W / 2, yy + size * 0.62, size * 1.35, lt, dur)
+        if sup:
+            small(L, sup, x + 6, yy - 34, lt, dur, size=30, fname="m500", color=GREY, delay=0.15)
+        scramble(L, main, x, yy, lt, dur, size)
+        ny = yy + size * 1.18
+        if line2:
+            s2 = int(size * 0.62)
+            tw2 = text_width(line2, "m800", s2, 2)
+            scramble(L, line2, W / 2 - tw2 / 2, ny, lt, dur, s2, color=line2_color, delay=0.2)
+            ny += size * 0.8
+        if sub:
+            small(L, sub, x + 6, ny + 4, lt, dur, size=26, fname="m600", color=WHITE, delay=0.35, tracking=3)
+    return f
+
+
+def T_corner(num, l1, l2, label=None):
+    """Bloc bas-gauche : gros chiffre + deux lignes (ex. « 18 | Vendredi / DÉCEMBRE »)."""
+    def f(L, lt, dur):
+        x0, y0 = 110, 740
+        nw = scramble(L, num, x0, y0, lt, dur, 190, ghost=True)
+        xl = x0 + nw + 30
+        small(L, l1, xl, y0 + 40, lt, dur, size=34, fname="m500", color=GREY, delay=0.2)
+        scramble(L, l2, xl, y0 + 82, lt, dur, 64, delay=0.3, ghost=False)
+        if label:
+            p = ease_out((lt - 0.5) / 0.6) * (1 - ease_in_out((lt - (dur - 0.3)) / 0.3))
+            if p > 0:
+                d = ImageDraw.Draw(L)
+                lw = 620 * p
+                d.line((x0, y0 + 232, x0 + lw, y0 + 232), fill=(255, 255, 255, int(150 * p)), width=2)
+                d.line((x0, y0 + 232, x0 + min(lw, 70), y0 + 232), fill=ORANGE + (int(255 * p),), width=4)
+            small(L, label, x0, y0 + 246, lt, dur, size=20, fname="m600", color=WHITE, delay=0.6, tracking=6)
+    return f
+
+
+def T_end(L, lt, dur):
+    # calé sur la voix : « La Coupe de l'Évangile » (0 s), « Soirée… » (1,9 s), date (4,4 s), gloire (10,9 s)
+    small(L, "La Coupe de l'Évangile", W / 2, 250, lt, None, size=38, fname="m500", color=GREY, delay=0.1,
+          align="center")
+    t1 = "SOIRÉE DE LOUANGE"
+    tw = text_width(t1, "m800", 120, 2)
+    scramble(L, t1, W / 2 - tw / 2, 310, lt, None, 120, delay=1.9, exit_=False)
+    t2 = "& DE GUÉRISON"
+    tw = text_width(t2, "m800", 84, 2)
+    scramble(L, t2, W / 2 - tw / 2, 455, lt, None, 84, color=ORANGE, delay=2.2, exit_=False)
+    small(L, "« La Parole de Dieu : une source de vie et de guérison »", W / 2, 580, lt, None, size=30,
+          fname="m500", color=GREY, delay=2.9, align="center")
+    p = ease_out((lt - 4.2) / 0.8)
+    if p > 0:
+        d = ImageDraw.Draw(L)
+        d.line((W / 2 - 420 * p, 645, W / 2 + 420 * p, 645), fill=(255, 255, 255, int(120 * p)), width=2)
+        d.line((W / 2 - 40 * p, 644, W / 2 + 40 * p, 644), fill=ORANGE + (255,), width=4)
+    d1 = "VENDREDI 18 DÉCEMBRE 2026  ·  DÈS 18H30"
+    tw = text_width(d1, "m800", 50, 2)
+    scramble(L, d1, W / 2 - tw / 2, 670, lt, None, 50, delay=4.4, ghost=False, exit_=False)
+    small(L, "Préau du Lycée bilingue de Yabassi", W / 2, 745, lt, None, size=34, fname="m600", color=WHITE,
+          delay=5.6, align="center")
+    t3 = "TOUT POUR LA GLOIRE DE JÉSUS"
+    tw = text_width(t3, "m800", 46, 6)
+    scramble(L, t3, W / 2 - tw / 2, 860, lt, None, 46, color=ORANGE, tracking=6, delay=10.9, exit_=False)
+
+
+def watermark(L, T):
+    """Petit logo en haut à gauche."""
+    a = clamp((T - 3.6) / 0.5) * (1 - clamp((T - 70.7) / 0.5))
+    if a <= 0:
+        return
+    ImageDraw.Draw(L).ellipse((58, 58, 68, 68), fill=ORANGE + (int(255 * a),))
+    paste_alpha(L, whole_text("COUPE DE L'ÉVANGILE", "m800", 22, WHITE, 4), 78, 49, a * 0.9)
+    paste_alpha(L, whole_text("Yabassi · Soirée de louange & de guérison", "m500", 17, GREY, 1), 78, 80, a * 0.75)
 
 
 # ---------------------------------------------------------------- images
@@ -131,21 +261,19 @@ def src(name):
     if name not in SRC:
         p = glob.glob(os.path.join(IMG, name + "*.jpg"))[0]
         im = Image.open(p).convert("RGB")
-        # agrandissement unique de qualité + légère accentuation
         scale = max(2400 / im.width, 1350 / im.height)
         im = im.resize((int(im.width * scale), int(im.height * scale)), Image.LANCZOS)
-        im = im.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
-        SRC[name] = im
+        SRC[name] = im.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
     return SRC[name]
 
 
 def frame_from(name, t, z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.0, dy=0.0):
-    """Ken Burns : zoom de z0 à z1, centré sur (fx, fy) avec dérive (dx, dy)."""
+    if name is None:
+        return Image.new("RGB", (W, H), (6, 6, 8))
     im = src(name)
     iw, ih = im.size
-    z = lerp(z0, z1, ease_in_out(t) * 0.6 + t * 0.4)
-    base_w = min(iw, ih * W / H)
-    cw = base_w / z
+    z = lerp(z0, z1, ease_in_out(t) * 0.5 + t * 0.5)
+    cw = min(iw, ih * W / H) / z
     ch = cw * H / W
     cx = clamp(fx + dx * t, 0, 1) * iw
     cy = clamp(fy + dy * t, 0, 1) * ih
@@ -157,7 +285,7 @@ def frame_from(name, t, z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.0, dy=0.0):
 LUTS = {}
 
 
-def grade(im, sat=1.0, bright=1.0, warm=0.0, bw=False):
+def grade(im, sat=0.85, bright=0.85, warm=0.0, bw=False):
     if bw:
         im = ImageEnhance.Color(im).enhance(0.0)
     elif sat != 1.0:
@@ -165,308 +293,170 @@ def grade(im, sat=1.0, bright=1.0, warm=0.0, bw=False):
     key = (bright, warm)
     if key not in LUTS:
         x = np.arange(256) / 255
-        # contraste filmique doux
-        c = 255 * (0.5 + 0.5 * np.tanh((x - 0.5) * 2.1) / np.tanh(1.05))
-        gains = (1 + 0.10 * warm, 1 + 0.03 * warm, 1 - 0.10 * warm)
+        c = 255 * (0.5 + 0.5 * np.tanh((x - 0.5) * 2.0) / np.tanh(1.0))
+        gains = (1 + 0.06 * warm, 1 + 0.02 * warm, 1 - 0.06 * warm)
         LUTS[key] = sum([list(np.clip(c * g * bright, 0, 255).astype(int)) for g in gains], [])
     return im.point(LUTS[key])
 
 
-# ---------------------------------------------------------------- effets
 rng = np.random.default_rng(7)
-GRAIN = [rng.normal(0, 7, (H, W, 1)).astype(np.float32) for _ in range(4)]
-yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-VIGNETTE = (1 - 0.55 * np.clip((((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H / 2) / (H * 0.62)) ** 2), 0, 1) ** 1.3)[..., None]
-del yy, xx
-_ly, _lx = np.mgrid[-H:H, -W:W].astype(np.float32)
-LEAK_SPRITE = {}
-
-
-def leak_sprite(radius):
-    if radius not in LEAK_SPRITE:
-        LEAK_SPRITE[radius] = np.exp(-((_lx ** 2 + _ly ** 2) / radius ** 2) * 2.2)
-    return LEAK_SPRITE[radius]
-
-
-def leak(t, strength, cx, cy, color=EMBER, radius=900):
-    """Halo de lumière (light leak) additif, découpé dans un sprite précalculé."""
-    sp = leak_sprite(radius)
-    x0 = int(clamp(W - cx, 0, W))
-    y0 = int(clamp(H - cy, 0, H))
-    m = sp[y0:y0 + H, x0:x0 + W]
-    return (m * strength)[..., None] * np.array(color, np.float32)[None, None, :]
-
-
-random.seed(3)
-PARTICLES = [
-    (random.random() * W, random.random() * H, random.uniform(0.3, 1.0), random.uniform(-12, 12),
-     random.uniform(-40, -12), random.uniform(0, 6.28))
-    for _ in range(70)
-]
-DOT = {}
-
-
-def dot(r):
-    if r not in DOT:
-        s = r * 6
-        im = Image.new("L", (s, s), 0)
-        ImageDraw.Draw(im).ellipse((s / 2 - r, s / 2 - r, s / 2 + r, s / 2 + r), fill=255)
-        im = im.filter(ImageFilter.GaussianBlur(r * 0.9))
-        g = Image.new("RGBA", (s, s), GOLD + (0,))
-        g.putalpha(im)
-        DOT[r] = g
-    return DOT[r]
-
-
-def particles(layer, T, amount):
-    if amount <= 0:
-        return
-    for (x, y, depth, vx, vy, ph) in PARTICLES:
-        px = (x + vx * T * depth + 20 * math.sin(T * 0.7 + ph)) % W
-        py = (y + vy * T * depth) % H
-        r = int(2 + depth * 4)
-        a = amount * (0.35 + 0.65 * (0.5 + 0.5 * math.sin(T * 2 + ph))) * depth
-        paste_alpha(layer, dot(r), px - r * 3, py - r * 3, alpha=a)
-
-
-def gold_line(layer, cx, y, width, p, thick=3):
-    w = int(width * ease_out(p))
-    if w > 2:
-        ImageDraw.Draw(layer).rectangle((cx - w / 2, y, cx + w / 2, y + thick), fill=GOLD + (255,))
-
-
-# ---------------------------------------------------------------- plans
-# Chaque plan : (début, fin, image, réglages ken burns, étalonnage, fonction de texte)
-SHOTS = []
-
-
-def shot(t0, t1, img, kb=None, gr=None, text=None, flash_in=False, scrim=(540, 0.3)):
-    SHOTS.append(dict(t0=t0, t1=t1, img=img, kb=kb or {}, gr=gr or {}, text=text, flash_in=flash_in, scrim=scrim))
-
-
+GRAIN = [rng.normal(0, 3.5, (H, W, 1)).astype(np.float32) for _ in range(4)]
+_yy, _xx = np.mgrid[0:H, 0:W].astype(np.float32)
+VIGNETTE = (1 - 0.6 * np.clip((((_xx - W / 2) / (W * 0.6)) ** 2 + ((_yy - H / 2) / (H * 0.6)) ** 2), 0, 1) ** 1.4)[..., None]
+del _yy, _xx
 BANDS = {}
 
 
 def band(yc, strength):
-    """Bande sombre horizontale derrière les textes pour la lisibilité."""
     key = (yc, strength)
     if key not in BANDS:
         y = np.arange(H, dtype=np.float32)
-        BANDS[key] = (1 - strength * np.exp(-((y - yc) / 260) ** 2))[:, None, None]
+        BANDS[key] = (1 - strength * np.exp(-((y - yc) / 300) ** 2))[:, None, None]
     return BANDS[key]
 
 
-def T_kicker_title(kicker, title, title_size=150, title_color=WHITE, y=420, sub=None, sub_font="playi"):
-    def f(L, lt, dur):
-        k = text_img(kicker, "mont7", 40, GOLD, tracking=10, glow=6, glow_color=(0, 0, 0))
-        reveal(L, k, W / 2, y - 70, (lt - 0.15) / 0.5)
-        tl = text_img(title, "anton", title_size, title_color, tracking=4, glow=10, glow_color=(0, 0, 0))
-        reveal(L, tl, W / 2, y, (lt - 0.3) / 0.55)
-        gold_line(L, W / 2, y + tl.size[1] + 6, 260, (lt - 0.6) / 0.6)
-        if sub:
-            s = text_img(sub, sub_font, 56, CREAM)
-            fade_text(L, s, W / 2, y + tl.size[1] + 40, (lt - 0.8) / 0.6)
-    return f
+# ---------------------------------------------------------------- timeline
+SHOTS = []
+CUES = []
 
 
-def T_big_word(word, sub=None, size=210, y=380):
-    def f(L, lt, dur):
-        # interlettrage qui se resserre
-        tr = int(lerp(60, 14, ease_out(lt / 1.2)))
-        tl = text_img(word, "anton", size, WHITE, tracking=tr, glow=14, glow_color=(0, 0, 0))
-        fade_text(L, tl, W / 2, y, lt / 0.4, dy=0)
-        if sub:
-            s = text_img(sub, "playi", 60, GOLD)
-            fade_text(L, s, W / 2, y + tl.size[1] + 10, (lt - 0.5) / 0.5)
-    return f
+def shot(t0, t1, imgs, text=None, gr=None, flash=False, scrim=(540, 0.35), sfx="whoosh"):
+    """imgs : liste de (image, réglages) ; l'image change à intervalles réguliers (coupes rapides)."""
+    if isinstance(imgs, tuple):
+        imgs = [imgs]
+    SHOTS.append(dict(t0=t0, t1=t1, imgs=imgs, text=text, gr=gr or {}, flash=flash, scrim=scrim))
+    if flash:
+        CUES.append(dict(t=t0, type="impact", gain=-3))
+    if text and sfx:
+        CUES.append(dict(t=max(0, t0 - 0.12), type=sfx, gain=-5))
+        CUES.append(dict(t=t0 + 0.05, type="ticks", gain=-10))
+    seg = (t1 - t0) / len(imgs)
+    for k in range(1, len(imgs)):
+        CUES.append(dict(t=t0 + seg * k - 0.05, type="swish", gain=-10))
 
 
-def T_serif(lines, y=430, size=86, color=CREAM, stagger=0.45):
-    def f(L, lt, dur):
-        cy = y
-        for i, ln in enumerate(lines):
-            im = text_img(ln, "playi", size, color, glow=10, glow_color=(0, 0, 0))
-            reveal(L, im, W / 2, cy, (lt - 0.2 - i * stagger) / 0.6)
-            cy += int(size * 1.25)
-    return f
-
-
-def T_question(word):
-    def f(L, lt, dur):
-        im = text_img(word, "playi", 120, WHITE, glow=12, glow_color=(0, 0, 0))
-        reveal(L, im, W / 2, 440, (lt - 0.1) / 0.5)
-    return f
-
-
-def T_programme(word, sub, idx):
-    def f(L, lt, dur):
-        n = text_img(f"0{idx}", "anton", 120, GOLD)
-        fade_text(L, n, 150, 640, lt / 0.4, align="left", dy=0)
-        tl = text_img(word, "anton", 150, WHITE, tracking=6, glow=10, glow_color=(0, 0, 0))
-        reveal(L, tl, 320, 620, (lt - 0.15) / 0.5, align="left")
-        s = text_img(sub, "playi", 58, CREAM, glow=8, glow_color=(0, 0, 0))
-        fade_text(L, s, 330, 620 + tl.size[1] - 6, (lt - 0.5) / 0.5, align="left", dy=15)
-        d = ImageDraw.Draw(L)
-        h = int(200 * ease_out((lt - 0.1) / 0.5))
-        if h > 0:
-            d.rectangle((290, 640, 294, 640 + h), fill=GOLD + (255,))
-    return f
-
-
-def T_date(L, lt, dur):
-    big = text_img("18", "anton", 330, GOLD, glow=16, glow_color=(0, 0, 0))
-    reveal(L, big, 560, 300, lt / 0.5, align="left")
-    a = text_img("VENDREDI", "anton", 110, WHITE, tracking=6)
-    b = text_img("DÉCEMBRE 2026", "mont7", 54, CREAM, tracking=8)
-    x = 560 + big.size[1] * 0.0 + big.size[0] + 10
-    reveal(L, a, x, 360, (lt - 0.25) / 0.5, align="left")
-    reveal(L, b, x + 6, 500, (lt - 0.45) / 0.5, align="left")
-    k = text_img("RENDEZ-VOUS LE", "mont7", 40, GOLD, tracking=10, glow=6, glow_color=(0, 0, 0))
-    reveal(L, k, W / 2, 250, (lt - 0.05) / 0.5)
-
-
-def T_end(L, lt, dur):
-    # apparitions calées sur la voix : « La Coupe de l'Évangile » (0 s), « Soirée… » (1,9 s),
-    # date et lieu (4,4 s), « Tout pour la gloire de Jésus » (10,9 s)
-    k = text_img("LA COUPE DE L'ÉVANGILE", "mont7", 40, GOLD, tracking=12, glow=6, glow_color=(0, 0, 0))
-    reveal(L, k, W / 2, 150, (lt - 0.1) / 0.5)
-    t1 = text_img("SOIRÉE DE LOUANGE", "anton", 140, WHITE, tracking=4, glow=12, glow_color=(0, 0, 0))
-    reveal(L, t1, W / 2, 210, (lt - 1.9) / 0.5)
-    t2 = text_img("& DE GUÉRISON", "anton", 110, GOLD, tracking=6, glow=12, glow_color=(0, 0, 0))
-    reveal(L, t2, W / 2, 400, (lt - 2.3) / 0.5)
-    th = text_img("« La Parole de Dieu : une source de vie et de guérison »", "playi", 50, CREAM)
-    fade_text(L, th, W / 2, 570, (lt - 2.9) / 0.6)
-    gold_line(L, W / 2, 665, 900, (lt - 3.4) / 0.8, thick=2)
-    items = [("VEN. 18 DÉC. 2026", "Date"), ("DÈS 18H30", "Heure"), ("PRÉAU DU LYCÉE BILINGUE", "Yabassi")]
-    xs = [W / 2 - 560, W / 2, W / 2 + 560]
-    for i, ((v, lab), x) in enumerate(zip(items, xs)):
-        a = text_img(lab.upper(), "mont7", 26, GOLD, tracking=8)
-        b = text_img(v, "anton", 60, WHITE, tracking=2)
-        p = (lt - 4.4 - i * 0.9) / 0.5
-        fade_text(L, a, x, 700, p)
-        fade_text(L, b, x, 740, p)
-    f = text_img("Tout pour la gloire de Jésus !", "playi", 64, GOLD, glow=8, glow_color=(0, 0, 0))
-    fade_text(L, f, W / 2, 890, (lt - 10.9) / 0.8)
+def K(name, z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.0, dy=0.0):
+    return (name, dict(z0=z0, z1=z1, fx=fx, fy=fy, dx=dx, dy=dy))
 
 
 def build_timeline():
     """Plans calés sur la voix off « Annonceur Croisade » (1 min 24)."""
-    # A. Accroche — « Yabassi, Dieu a une parole pour toi. » (0,4 → 3,4)
-    shot(0.0, 1.9, "13", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.5), dict(warm=0.6, bright=0.85),
-         T_big_word("YABASSI", size=230, y=360))
-    shot(1.9, 3.6, "11", dict(z0=1.05, z1=1.2, fx=0.5, fy=0.4), dict(warm=0.4),
-         T_serif(["Dieu a une parole", "pour toi."], y=640, size=96, stagger=0.3), flash_in=True, scrim=(720, 0.4))
-    # B. Titre et thème (3,4 → 15,1)
-    shot(3.6, 7.0, "05", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.45), dict(warm=0.3, bright=0.8),
-         T_kicker_title("DANS LE CADRE DE", "LA COUPE DE L'ÉVANGILE", 140))
-    shot(7.0, 10.2, "03", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.4), dict(bright=0.75),
-         T_kicker_title("GRANDE SOIRÉE", "LOUANGE & GUÉRISON", 150), flash_in=True)
-    shot(10.2, 15.2, "09", dict(z0=1.1, z1=1.25, fx=0.45, fy=0.5, dx=0.05), dict(warm=0.4, bright=0.7),
-         T_serif(["« La Parole de Dieu :", "une source de vie et de guérison »"], y=400, size=84))
-    # C. Émotion (15,1 → 30,0)
-    shot(15.2, 17.0, "07", dict(z0=1.05, z1=1.2, fx=0.55, fy=0.55), dict(bw=True, bright=0.85), T_question("La maladie ?"))
-    shot(17.0, 18.8, "08", dict(z0=1.1, z1=1.25, fx=0.55, fy=0.55), dict(sat=0.25, bright=0.8), T_question("Le découragement ?"))
-    shot(18.8, 20.8, "01", dict(z0=1.15, z1=1.3, fx=0.52, fy=0.4), dict(sat=0.4, bright=0.8), T_question("Un fardeau trop lourd ?"))
-    shot(20.8, 23.6, "10", dict(z0=1.05, z1=1.2, fx=0.4, fy=0.4), dict(warm=0.5),
-         T_serif(["Cette soirée est pour toi."], y=760, size=90), flash_in=True)
-    shot(23.6, 26.4, "02", dict(z0=1.2, z1=1.05, fx=0.45, fy=0.5), dict(warm=0.3, bright=0.85),
-         T_big_word("LES CHAÎNES TOMBENT", size=150, y=420))
-    shot(26.4, 30.0, "06", dict(z0=1.05, z1=1.18, fx=0.5, fy=0.45), dict(warm=0.6),
-         T_big_word("LA VIE RENAÎT", size=170, y=720))
-    # D. Infos (30,0 → 38,4)
-    shot(30.0, 34.0, "12", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.04), dict(warm=0.4, bright=0.55), T_date,
-         flash_in=True, scrim=(450, 0.55))
-    shot(34.0, 35.8, "14", dict(z0=1.05, z1=1.2, fx=0.4, fy=0.6), dict(warm=0.4, bright=0.6),
-         T_kicker_title("À PARTIR DE", "18H30", 260, GOLD, y=330), scrim=(450, 0.55))
-    shot(35.8, 38.5, "12", dict(z0=1.25, z1=1.1, fx=0.6, fy=0.4), dict(warm=0.4, bright=0.55),
-         T_kicker_title("YABASSI", "PRÉAU DU LYCÉE BILINGUE", 130, y=420), scrim=(450, 0.55))
-    # E. Programme (38,4 → 53,1)
-    shot(38.5, 42.0, "04", dict(z0=1.0, z1=1.15, fx=0.5, fy=0.4), dict(warm=0.3, bright=0.85),
-         T_programme("LOUANGE", "qui élève les cœurs", 1), flash_in=True, scrim=(720, 0.45))
-    shot(42.0, 45.8, "05", dict(z0=1.6, z1=1.8, fx=0.22, fy=0.38), dict(warm=0.3, bright=0.85),
-         T_programme("ENSEIGNEMENT", "de la Parole qui transforme les vies", 2), scrim=(720, 0.45))
-    shot(45.8, 49.6, "02", dict(z0=1.0, z1=1.15, fx=0.45, fy=0.5), dict(bright=0.85),
-         T_programme("GUÉRISON", "pour le corps et l'âme", 3), scrim=(720, 0.45))
-    shot(49.6, 53.1, "06", dict(z0=1.3, z1=1.15, fx=0.5, fy=0.5), dict(warm=0.4, bright=0.85),
-         T_programme("RESTAURATION", "pour les familles", 4), scrim=(720, 0.45))
-    # F. Communion (53,1 → 58,6)
-    shot(53.1, 55.9, "09", dict(z0=1.0, z1=1.1, fx=0.5, fy=0.5), dict(warm=0.4, bright=0.8),
-         T_big_word("CHANTER · PRIER", size=150, y=420))
-    shot(55.9, 58.6, "11", dict(z0=1.2, z1=1.05, fx=0.45, fy=0.4), dict(warm=0.4, bright=0.8),
-         T_big_word("CÉLÉBRER", size=210, y=400))
-    # G. Moment intime (58,6 → 61,9)
-    shot(58.6, 61.9, "01", dict(z0=1.5, z1=1.7, fx=0.52, fy=0.35), dict(warm=0.6, bright=0.75),
-         T_serif(["Ce soir-là,", "ton histoire peut changer."], y=640, size=90, stagger=0.6), scrim=(720, 0.45))
-    # H. Appel (61,9 → 71,2)
-    shot(61.9, 65.6, "04", dict(z0=1.3, z1=1.15, fx=0.4, fy=0.5), dict(warm=0.4, bright=0.75),
-         T_kicker_title("ALORS NE RESTE PAS SEUL", "VIENS !", 230, y=360), flash_in=True)
-    shot(65.6, 69.5, "09", dict(z0=1.2, z1=1.35, fx=0.6, fy=0.45), dict(warm=0.5, bright=0.75),
-         T_serif(["Amène ta famille,", "tes amis, tes voisins."], y=420, size=92, stagger=0.9))
-    shot(69.5, 71.2, "11", dict(z0=1.0, z1=1.12, fx=0.5, fy=0.35), dict(warm=0.5, bright=0.8),
-         T_big_word("JÉSUS T'ATTEND !", size=190, y=400), flash_in=True)
-    # I. Carton final (71,2 → 87,0)
-    shot(71.2, 87.0, "05", dict(z0=1.1, z1=1.22, fx=0.5, fy=0.5), dict(warm=0.5, bright=0.3, sat=0.7), T_end, flash_in=True)
+    SHOTS.clear()
+    CUES.clear()
+    # A. Accroche — « Yabassi, Dieu a une parole pour toi. »
+    shot(0.0, 1.9, K("13", 1.0, 1.15, 0.45), T_word("YABASSI", size=190, ring_on=True), gr=dict(bright=0.8))
+    shot(1.9, 3.6, K("11", 1.05, 1.2, 0.5, 0.4), T_word("PAROLE", sup="Dieu a une", sub="POUR TOI", size=170),
+         flash=True)
+    # B. Titre et thème
+    shot(3.6, 7.0, [K("05", 1.0, 1.12, 0.45, 0.45), K("09", 1.1, 1.2, 0.4)],
+         T_word("LA COUPE DE L'ÉVANGILE", sup="Dans le cadre de", size=120))
+    shot(7.0, 10.2, [K("03", 1.0, 1.1, 0.5, 0.4), K("04", 1.05, 1.15, 0.5, 0.4)],
+         T_word("SOIRÉE DE LOUANGE", line2="& DE GUÉRISON", size=130), flash=True)
+    shot(10.2, 15.2, [K("09", 1.1, 1.25, 0.45, dx=0.05), K("10", 1.05, 1.15, 0.45, 0.4), K("06", 1.1, 1.2)],
+         T_word("LA PAROLE DE DIEU", sup="Thème", sub="UNE SOURCE DE VIE ET DE GUÉRISON", size=130))
+    # C. Émotion
+    shot(15.2, 17.0, K("07", 1.05, 1.2, 0.55, 0.55), T_word("MALADIE", size=170), gr=dict(bw=True, bright=0.8))
+    shot(17.0, 18.8, K("08", 1.1, 1.25, 0.55, 0.55), T_word("DÉCOURAGEMENT", size=150), gr=dict(sat=0.3, bright=0.75))
+    shot(18.8, 20.8, K("01", 1.15, 1.3, 0.52, 0.4), T_word("FARDEAU", sup="Un", sub="TROP LOURD À PORTER", size=170),
+         gr=dict(sat=0.4, bright=0.75))
+    shot(20.8, 23.6, K("10", 1.05, 1.2, 0.4, 0.4), T_word("POUR TOI", sup="Cette soirée est", size=180, ring_on=True),
+         flash=True)
+    shot(23.6, 26.4, [K("02", 1.2, 1.05, 0.45), K("07", 1.3, 1.4, 0.4, 0.5)],
+         T_word("LES CHAÎNES TOMBENT", size=130), gr=dict(bright=0.8))
+    shot(26.4, 30.0, [K("06", 1.05, 1.18, 0.5, 0.45), K("11", 1.2, 1.3, 0.45, 0.35)],
+         T_word("LA VIE RENAÎT", sub="LES CŒURS SONT RESTAURÉS", size=160))
+    CUES.append(dict(t=30.0, type="riser", dur=3.0, gain=-10, end_at=True))
+    # D. Infos
+    shot(30.0, 31.3, (None, {}), T_word("RENDEZ-VOUS", size=120, ring_on=True), sfx=None)
+    CUES.append(dict(t=30.0, type="boom", gain=-4))
+    shot(31.3, 34.0, K("12", 1.0, 1.1, 0.5, 0.5, dx=0.04),
+         T_corner("18", "Vendredi", "DÉCEMBRE", "SOIRÉE DE LOUANGE & DE GUÉRISON"), gr=dict(bright=0.6), flash=True,
+         scrim=(880, 0.55))
+    shot(34.0, 35.8, K("14", 1.05, 1.2, 0.4, 0.6), T_corner("18H30", "À partir de", "VENDREDI SOIR"),
+         gr=dict(bright=0.6), scrim=(880, 0.55))
+    shot(35.8, 38.5, K("12", 1.25, 1.1, 0.6, 0.4),
+         T_word("PRÉAU DU LYCÉE BILINGUE", sub="DE YABASSI", size=110), gr=dict(bright=0.55), scrim=(540, 0.5))
+    # E. Programme
+    shot(38.5, 42.0, [K("04", 1.0, 1.12, 0.5, 0.4), K("11", 1.1, 1.2, 0.5, 0.35)],
+         T_word("LOUANGE", sub="QUI ÉLÈVE LES CŒURS", size=170), flash=True)
+    shot(42.0, 45.8, [K("05", 1.6, 1.8, 0.22, 0.38), K("05", 1.1, 1.2, 0.5, 0.5)],
+         T_word("ENSEIGNEMENT", sub="DE LA PAROLE QUI TRANSFORME LES VIES", size=160))
+    shot(45.8, 49.6, [K("02", 1.0, 1.15, 0.45), K("08", 1.1, 1.2, 0.5, 0.5)],
+         T_word("GUÉRISON", sub="POUR LE CORPS ET L'ÂME", size=170))
+    shot(49.6, 53.1, [K("06", 1.3, 1.15, 0.5), K("10", 1.1, 1.25, 0.4, 0.4)],
+         T_word("RESTAURATION", sub="POUR LES FAMILLES", size=160))
+    # F. Communion
+    shot(53.1, 55.9, [K("09", 1.0, 1.1), K("04", 1.2, 1.3, 0.6, 0.5)], T_word("TOUS ENSEMBLE", size=150))
+    shot(55.9, 58.6, [K("11", 1.2, 1.05, 0.45, 0.4), K("03", 1.0, 1.1, 0.5, 0.4)],
+         T_word("CHANTER · PRIER · CÉLÉBRER", size=110))
+    # G. Moment intime
+    shot(58.6, 61.9, K("01", 1.5, 1.7, 0.52, 0.35), T_word("TON HISTOIRE", sup="Ce soir-là,", sub="PEUT CHANGER", size=160),
+         gr=dict(bright=0.75), flash=True)
+    # H. Appel
+    shot(61.9, 65.6, [K("04", 1.3, 1.15, 0.4), K("09", 1.2, 1.3, 0.5, 0.45)],
+         T_word("VIENS !", sup="Ne reste pas seul.", size=210, ring_on=True), flash=True)
+    shot(65.6, 69.5, [K("09", 1.2, 1.35, 0.6, 0.45), K("06", 1.1, 1.2, 0.5, 0.45), K("10", 1.2, 1.3, 0.4, 0.4)],
+         T_word("AMÈNE TA FAMILLE", sub="TES AMIS · TES VOISINS", size=140))
+    CUES.append(dict(t=71.2, type="riser", dur=2.2, gain=-11, end_at=True))
+    shot(69.5, 71.2, K("11", 1.0, 1.12, 0.5, 0.35), T_word("JÉSUS T'ATTEND", size=160), flash=True)
+    # I. Carton final
+    shot(71.2, TOTAL, K("13", 1.1, 1.25, 0.5, 0.5), T_end, gr=dict(bright=0.35, sat=0.7), flash=True,
+         scrim=None, sfx=None)
+    CUES.append(dict(t=71.2, type="subdrop", gain=-4))
+    CUES.append(dict(t=73.2, type="whoosh", gain=-6))
+    CUES.append(dict(t=75.5, type="whoosh", gain=-7))
+    CUES.append(dict(t=75.6, type="ticks", gain=-10))
+    CUES.append(dict(t=82.0, type="shimmer", gain=2))
 
 
-def render(out, audio=None, draft=False, start=0.0, end=None):
+# ---------------------------------------------------------------- rendu
+def render(out, draft=False, start=0.0, end=None):
     build_timeline()
-    total = SHOTS[-1]["t1"]
-    end = end or total
+    end = end or TOTAL
     scale = 0.5 if draft else 1.0
     ow, oh = int(W * scale), int(H * scale)
     cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
-           "-r", str(FPS), "-i", "-"]
-    if audio:
-        cmd += ["-ss", str(start), "-i", audio]
-    cmd += ["-vf", f"scale={ow}:{oh}:flags=lanczos", "-c:v", "libx264", "-preset", "veryfast" if draft else "medium",
-            "-crf", "26" if draft else "21", "-maxrate", "10M", "-bufsize", "20M", "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
-    if audio:
-        cmd += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
-    cmd += [out]
+           "-r", str(FPS), "-i", "-", "-vf", f"scale={ow}:{oh}:flags=lanczos", "-c:v", "libx264",
+           "-preset", "veryfast" if draft else "medium", "-crf", "26" if draft else "20",
+           "-maxrate", "10M", "-bufsize", "20M", "-pix_fmt", "yuv420p", "-movflags", "+faststart", out]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    XF = 0.35  # durée des fondus
-    n0, n1 = int(start * FPS), int(end * FPS)
-    for n in range(n0, n1):
+    XF = 0.22
+    for n in range(int(start * FPS), int(end * FPS)):
         T = n / FPS
         i = next(k for k, s in enumerate(SHOTS) if s["t0"] <= T < s["t1"] or k == len(SHOTS) - 1)
         s = SHOTS[i]
 
-        def layer_for(sh, Tt):
+        def base_for(sh, Tt):
             dur = sh["t1"] - sh["t0"]
             lt = Tt - sh["t0"]
-            img = frame_from(sh["img"], clamp(lt / dur), **sh["kb"])
-            a = np.asarray(grade(img, **sh["gr"]), dtype=np.float32)
-            return a, lt, dur
+            seg = dur / len(sh["imgs"])
+            k = min(len(sh["imgs"]) - 1, int(lt / seg))
+            name, kb = sh["imgs"][k]
+            img = frame_from(name, clamp((lt - k * seg) / seg), **kb)
+            return np.asarray(grade(img, **sh["gr"]), dtype=np.float32), lt, dur, k, seg
 
-        a, lt, dur = layer_for(s, T)
-        # fondu enchaîné avec le plan précédent
-        if i > 0 and lt < XF and not s["flash_in"]:
-            pa, _, _ = layer_for(SHOTS[i - 1], T)
-            k = ease_in_out(lt / XF)
-            a = pa * (1 - k) + a * k
+        a, lt, dur, k, seg = base_for(s, T)
+        if i > 0 and lt < XF and not s["flash"]:
+            pa = base_for(SHOTS[i - 1], T)[0]
+            e = ease_in_out(lt / XF)
+            a = pa * (1 - e) + a * e
         a = a * VIGNETTE
         if s["text"] and s["scrim"]:
             a = a * band(*s["scrim"])
-        # halos de lumière
-        a = a + leak(T, 0.22 + 0.1 * math.sin(T * 0.9), W * (0.15 + 0.1 * math.sin(T * 0.3)), H * 0.1)
-        a = a + leak(T, 0.16, W * (0.9 + 0.05 * math.cos(T * 0.4)), H * 0.95, GOLD, 800)
-        # flash blanc-or à l'entrée des plans marqués
-        if s["flash_in"] and lt < 0.4:
-            fl = (1 - lt / 0.4) ** 2
-            a = a * (1 - fl * 0.3) + fl * np.array([255, 225, 170], np.float32) * 0.9
-        # grain
+        if s["flash"] and lt < 0.3:
+            fl = (1 - lt / 0.3) ** 2
+            a = a * (1 - fl) + fl * 255
+        elif k > 0 and (lt - k * seg) < 0.06:  # micro-flash sur les coupes internes
+            a = a * 0.8 + 50
         a += GRAIN[n % len(GRAIN)]
         frame = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("RGBA")
-        particles(frame, T, 0.9 if T >= 71.2 else 0.55)
+        L = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         if s["text"]:
-            # sortie du texte : fondu sur les 0,25 dernières secondes
-            L = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             s["text"](L, lt, dur)
-            out_a = 1 - ease_in_out((lt - (dur - 0.25)) / 0.25) if i < len(SHOTS) - 1 else 1
-            paste_alpha(frame, L, 0, 0, alpha=out_a)
-        # fondu au noir final
-        if T > total - 0.8:
-            frame = Image.blend(frame, Image.new("RGBA", (W, H), (0, 0, 0, 255)), clamp((T - (total - 0.8)) / 0.8))
+        watermark(L, T)
+        frame.alpha_composite(L)
+        if T > TOTAL - 1.0:
+            frame = Image.blend(frame, Image.new("RGBA", (W, H), (0, 0, 0, 255)), clamp((T - (TOTAL - 1.0)) / 1.0))
         proc.stdin.write(frame.convert("RGB").tobytes())
     proc.stdin.close()
     proc.wait()
@@ -476,29 +466,28 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--fonts", required=True)
     ap.add_argument("--out", default="spot.mp4")
-    ap.add_argument("--audio")
     ap.add_argument("--draft", action="store_true")
     ap.add_argument("--start", type=float, default=0.0)
     ap.add_argument("--end", type=float)
     ap.add_argument("--jobs", type=int, default=1)
+    ap.add_argument("--cues")
     args = ap.parse_args()
 
     def ff(pattern):
         return glob.glob(os.path.join(args.fonts, "**", pattern), recursive=True)[0]
 
-    FONT_FILES = {
-        "anton": ff("anton-latin-400-normal.woff"),
-        "mont7": ff("montserrat-latin-700-normal.woff"),
-        "playi": ff("playfair-display-latin-400-italic.woff"),
-    }
-    if args.jobs > 1:
-        import concurrent.futures as cf
-        import sys
+    FONT_FILES.update({
+        "m800": ff("montserrat-latin-800-normal.woff"),
+        "m600": ff("montserrat-latin-600-normal.woff"),
+        "m500": ff("montserrat-latin-500-normal.woff"),
+    })
+    if args.cues:
         build_timeline()
-        end = args.end or SHOTS[-1]["t1"]
-        SHOTS.clear()
-        edges = [args.start + (end - args.start) * k / args.jobs for k in range(args.jobs + 1)]
-        edges = [round(e * FPS) / FPS for e in edges]
+        json.dump(CUES, open(args.cues, "w"), indent=1)
+    elif args.jobs > 1:
+        import sys
+        end = args.end or TOTAL
+        edges = [round((args.start + (end - args.start) * k / args.jobs) * FPS) / FPS for k in range(args.jobs + 1)]
         parts = [f"{args.out}.part{k}.mp4" for k in range(args.jobs)]
         base = [sys.executable, os.path.abspath(__file__), "--fonts", args.fonts] + (["--draft"] if args.draft else [])
         procs = [subprocess.Popen(base + ["--out", parts[k], "--start", str(edges[k]), "--end", str(edges[k + 1])])
@@ -507,12 +496,9 @@ if __name__ == "__main__":
         lst = args.out + ".txt"
         with open(lst, "w") as fh:
             fh.writelines(f"file '{os.path.abspath(p)}'\n" for p in parts)
-        cmd = ["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst]
-        if args.audio:
-            cmd += ["-i", args.audio, "-map", "0:v", "-map", "1:a", "-c:a", "aac", "-b:a", "192k", "-shortest"]
-        cmd += ["-c:v", "copy", "-movflags", "+faststart", args.out]
-        subprocess.check_call(cmd)
+        subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst,
+                               "-c", "copy", "-movflags", "+faststart", args.out])
         for p in parts + [lst]:
             os.remove(p)
     else:
-        render(args.out, args.audio, args.draft, args.start, args.end)
+        render(args.out, args.draft, args.start, args.end)

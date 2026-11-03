@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Mixage voix off + musique de fond.
-# Usage : ./mix.sh voix.mp3 musique.mp3 sortie.wav [durée_en_s]
+# Usage : ./mix.sh voix.mp3 musique.mp3 sortie.wav [durée_en_s] [effets.wav]
 # - voix compressée, éclaircie et forte (-10 LUFS)
 # - musique en retrait (-27 LUFS) et baissée encore quand la voix parle (sidechain)
 # - fondu d'entrée 0,5 s et de sortie 3 s sur la musique
 set -euo pipefail
-VOICE="$1"; MUSIC="$2"; OUT="$3"; DUR="${4:-80}"
+VOICE="$1"; MUSIC="$2"; OUT="$3"; DUR="${4:-80}"; SFX="${5:-}"
 FADE_START=$(python3 -c "print(max(0, $DUR - 3))")
 if [ "$VOICE" = "-" ]; then
   ffmpeg -v error -y -i "$MUSIC" -filter_complex \
@@ -13,9 +13,18 @@ if [ "$VOICE" = "-" ]; then
     -map "[m]" -ar 48000 -ac 2 "$OUT"
   exit 0
 fi
-ffmpeg -v error -y -i "$VOICE" -i "$MUSIC" -filter_complex \
+if [ -n "$SFX" ]; then
+  SFX_IN=(-i "$SFX")
+  SFX_CHAIN="[2:a]aresample=48000,volume=-3dB[fx]; [md][fx]amix=inputs=2:duration=first:normalize=0[bed];"
+  BED="[bed]"
+else
+  SFX_IN=()
+  SFX_CHAIN=""
+  BED="[md]"
+fi
+ffmpeg -v error -y -i "$VOICE" -i "$MUSIC" "${SFX_IN[@]}" -filter_complex \
   "[0:a]adelay=300|300,highpass=f=70,acompressor=threshold=-20dB:ratio=3:attack=5:release=120:makeup=4,equalizer=f=3000:t=q:w=1.2:g=3,equalizer=f=150:t=q:w=1:g=2,loudnorm=I=-10:TP=-1:LRA=5,aresample=48000,aformat=channel_layouts=stereo,apad=whole_dur=$DUR,atrim=0:$DUR,asplit=2[v][sc]; \
    [1:a]atrim=0:$DUR,asetpts=N/SR/TB,loudnorm=I=-27:TP=-2,aresample=48000,afade=t=in:d=0.5,afade=t=out:st=$FADE_START:d=3[m]; \
-   [m][sc]sidechaincompress=threshold=0.03:ratio=4:attack=30:release=400[md]; \
-   [md][v]amix=inputs=2:duration=longest:normalize=0,volume=3.5dB,alimiter=limit=0.95:attack=3:release=60:level=disabled[out]" \
+   [m][sc]sidechaincompress=threshold=0.03:ratio=4:attack=30:release=400[md]; $SFX_CHAIN \
+   $BED[v]amix=inputs=2:duration=longest:normalize=0,volume=3.5dB,alimiter=limit=0.89:attack=3:release=60:level=disabled[out]" \
   -map "[out]" -ar 48000 -ac 2 "$OUT"
