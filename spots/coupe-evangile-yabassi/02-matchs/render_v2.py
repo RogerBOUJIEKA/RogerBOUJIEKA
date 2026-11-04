@@ -116,7 +116,7 @@ def apply_plastic(a, p, offset, strength=1.0, refract=True, edges_only=False):
 
 
 # ---------------------------------------------------------------- textes
-def typewriter(L, lines, cx, y, lt, dur, size, color, delay=0.25, step=0.035, exit_=True, line_gap=1.02,
+def typewriter(L, lines, cx, y, lt, dur, size, color, delay=0.1, step=0.035, exit_=True, line_gap=1.02,
                fname="u800", tracking=0):
     """Lignes centrées, lettres qui apparaissent de gauche à droite. Renvoie le bas du bloc."""
     t = lt - delay
@@ -178,7 +178,7 @@ def T_white(lines, sub=None, size=118):
         y = H / 2 - h / 2 - (40 if sub else 0)
         yb = typewriter(L, lines, W / 2, y, lt, dur, size, WHITE)
         if sub:
-            pill(L, sub, W / 2, yb + 20, lt, dur, delay=0.25 + 0.035 * sum(len(s) for s in lines))
+            pill(L, sub, W / 2, yb + 20, lt, dur, delay=0.1 + 0.035 * sum(len(s) for s in lines))
     f.title_card = False
     return f
 
@@ -189,7 +189,7 @@ def T_red(lines, sub=None, size=150):
         y = H / 2 - h / 2 - 30
         yb = typewriter(L, lines, W / 2, y, lt, dur, size, RED)
         if sub:
-            pill(L, sub, W / 2, yb + 24, lt, dur, delay=0.25 + 0.035 * sum(len(s) for s in lines))
+            pill(L, sub, W / 2, yb + 24, lt, dur, delay=0.1 + 0.035 * sum(len(s) for s in lines))
     f.title_card = True
     return f
 
@@ -197,12 +197,12 @@ def T_red(lines, sub=None, size=150):
 def T_end(L, lt, dur):
     # calé sur la voix : « La Coupe de l'Évangile » (0 s), « chaque samedi » (1,8 s), stade (4,5 s), gloire (7,4 s)
     yb = typewriter(L, ["LA COUPE DE", "L'ÉVANGILE"], W / 2, 170, lt, None, 130, RED, delay=0.1, exit_=False)
-    pill(L, "Chaque samedi dès le 5 décembre  ·  14h – 18h", W / 2, yb + 18, lt, None, delay=1.8, exit_=False)
-    typewriter(L, ["STADE DU LYCÉE BILINGUE DE YABASSI"], W / 2, yb + 130, lt, None, 46, WHITE, delay=4.5,
+    pill(L, "Chaque samedi dès le 5 décembre  ·  14h – 18h", W / 2, yb + 18, lt, None, delay=1.65, exit_=False)
+    typewriter(L, ["STADE DU LYCÉE BILINGUE DE YABASSI"], W / 2, yb + 130, lt, None, 46, WHITE, delay=4.36,
                step=0.02, exit_=False)
-    typewriter(L, ["GRANDE FINALE : SAMEDI 19 DÉCEMBRE 2026"], W / 2, yb + 200, lt, None, 34, WHITE, delay=5.3,
+    typewriter(L, ["GRANDE FINALE : SAMEDI 19 DÉCEMBRE 2026"], W / 2, yb + 200, lt, None, 34, WHITE, delay=5.2,
                step=0.015, exit_=False, fname="m600")
-    typewriter(L, ["TOUT POUR LA GLOIRE DE JÉSUS"], W / 2, yb + 290, lt, None, 56, RED, delay=7.4, step=0.03,
+    typewriter(L, ["TOUT POUR LA GLOIRE DE JÉSUS"], W / 2, yb + 290, lt, None, 56, RED, delay=7.24, step=0.03,
                exit_=False)
 
 
@@ -228,39 +228,43 @@ def shot(t0, t1, img, text, plastic_in=True, gr=None):
 
 
 def build_timeline():
+    """Même calage mot par mot que la version 1 (voir WORDS dans render.py)."""
+    w = R.w
     SHOTS.clear()
     CUES.clear()
-    shot(0.0, 1.6, K("13", 1.0, 1.15, 0.45), T_red(["YABASSI"], "Coupe de l'Évangile  ·  Les matchs", 190),
+    shot(0.0, w("ballon"), K("13", 1.0, 1.15, 0.45), T_red(["YABASSI"], "Coupe de l'Évangile  ·  Les matchs", 190),
          plastic_in=False)
-    shot(1.6, 4.3, K("f1", 1.0, 1.15, 0.5, 0.55), T_white(["LE BALLON VA ROULER", "POUR LA GLOIRE DE DIEU"], size=92))
-    shot(4.3, 6.9, K("f4", 1.05, 1.2, 0.5, 0.5), T_red(["LA COUPE DE", "L'ÉVANGILE"], "est lancée !"))
-    shot(6.9, 10.3, K("f2", 1.0, 1.12, 0.5, 0.35), T_white(["DÈS LE SAMEDI", "5 DÉCEMBRE"], "Chaque samedi  ·  2026"))
-    shot(10.3, 13.6, K("f3", 1.0, 1.15, 0.5, 0.5), T_white(["STADE DU LYCÉE", "BILINGUE"], "Yabassi"))
-    shot(13.6, 17.0, K("f1", 1.4, 1.6, 0.5, 0.6), T_white(["LES MEILLEURES", "ÉQUIPES"], "s'affrontent"))
-    shot(17.0, 19.9, K("f4", 1.2, 1.35, 0.55, 0.5), T_red(["2 MATCHS"], "chaque samedi", 190))
-    shot(19.9, 25.5, K("f4", 1.0, 1.15, 0.45, 0.5), T_white(["MATCH 1"], "14h – 16h", 150))
-    shot(25.5, 29.9, K("f1", 1.2, 1.35, 0.4, 0.6), T_white(["MATCH 2"], "16h – 18h", 150))
-    shot(29.9, 32.3, K("f3", 1.1, 1.2, 0.5, 0.55), T_white(["AVANT CHAQUE", "MATCH"]))
-    shot(32.3, 35.0, K("08", 1.1, 1.25, 0.55, 0.55), T_white(["MÉDITATION", "& PRIÈRE"]))
-    shot(35.0, 37.6, K("f2", 1.0, 1.1, 0.5, 0.5), T_white(["DIEU AU CENTRE", "DU TERRAIN"]))
-    CUES.append(dict(t=37.6, type="riser", dur=2.0, gain=-12, end_at=True))
-    shot(37.6, 38.7, K("f1", 1.5, 1.7, 0.45, 0.55), T_white(["JEU"], size=200))
-    shot(38.7, 39.8, K("f4", 1.3, 1.45, 0.6, 0.5), T_white(["PASSION"], size=180), plastic_in=False)
-    shot(39.8, 42.4, K("f2", 1.4, 1.6, 0.5, 0.3), T_white(["FAIR-PLAY"], size=180), plastic_in=False)
-    shot(42.4, 45.9, K("06", 1.05, 1.18, 0.5, 0.45), T_white(["LA JOIE DE", "L'ÉVANGILE"], "et surtout…"))
-    CUES.append(dict(t=45.9, type="riser", dur=2.0, gain=-11, end_at=True))
-    CUES.append(dict(t=45.9, type="boom", gain=-4))
-    shot(45.9, 49.4, K("f1", 1.0, 1.12, 0.5, 0.5), T_red(["GRANDE", "FINALE"], "Samedi 19 décembre 2026", 170))
-    shot(49.4, 52.9, K("f3", 1.05, 1.18, 0.5, 0.5), T_white(["SAMEDI", "19 DÉCEMBRE"]))
-    shot(52.9, 54.8, K("05", 1.6, 1.8, 0.22, 0.38), T_white(["ENSEIGNEMENT"], "au programme", 120))
-    shot(54.8, 56.0, K("f4", 1.1, 1.2, 0.5, 0.5), T_white(["JEUX"], size=200), plastic_in=False)
-    shot(56.0, 57.0, K("09", 1.1, 1.2, 0.5, 0.5), T_white(["MANÈGE"], "pour les enfants", 170), plastic_in=False)
-    shot(57.0, 57.8, K("f1", 1.3, 1.4, 0.5, 0.5), T_white(["REMISE", "DES PRIX"], size=130), plastic_in=False)
-    shot(57.8, 62.4, K("f1", 1.6, 1.8, 0.5, 0.75), T_white(["VENEZ", "NOMBREUX"], "Supporters  ·  familles  ·  jeunes  ·  anciens", 150))
-    CUES.append(dict(t=62.4, type="riser", dur=2.0, gain=-11, end_at=True))
-    shot(62.4, TOTAL, K("f2", 1.05, 1.18, 0.5, 0.4), T_end, gr=dict(bright=0.4))
-    CUES.append(dict(t=62.4, type="subdrop", gain=-4))
-    CUES.append(dict(t=69.8, type="shimmer", gain=2))
+    shot(w("ballon"), w("coupe"), K("f1", 1.0, 1.15, 0.5, 0.55), T_white(["LE BALLON VA ROULER", "POUR LA GLOIRE DE DIEU"], size=92))
+    shot(w("coupe"), w("date"), K("f4", 1.05, 1.2, 0.5, 0.5), T_red(["LA COUPE DE", "L'ÉVANGILE"], "est lancée !"))
+    shot(w("date"), w("stade"), K("f2", 1.0, 1.12, 0.5, 0.35), T_white(["DÈS LE SAMEDI", "5 DÉCEMBRE"], "Chaque samedi  ·  2026"))
+    shot(w("stade"), w("equipes"), K("f3", 1.0, 1.15, 0.5, 0.5), T_white(["STADE DU LYCÉE", "BILINGUE"], "Yabassi"))
+    shot(w("equipes"), w("samedi"), K("f1", 1.4, 1.6, 0.5, 0.6), T_white(["LES MEILLEURES", "ÉQUIPES"], "s'affrontent"))
+    shot(w("samedi"), w("match1"), K("f4", 1.2, 1.35, 0.55, 0.5), T_red(["2 MATCHS"], "chaque samedi", 190))
+    shot(w("match1"), w("match2"), K("f4", 1.0, 1.15, 0.45, 0.5), T_white(["MATCH 1"], "14h – 16h", 150))
+    shot(w("match2"), w("avant"), K("f1", 1.2, 1.35, 0.4, 0.6), T_white(["MATCH 2"], "16h – 18h", 150))
+    shot(w("avant"), w("meditation"), K("f3", 1.1, 1.2, 0.5, 0.55), T_white(["AVANT CHAQUE", "MATCH"]))
+    shot(w("meditation"), w("dieu"), K("08", 1.1, 1.25, 0.55, 0.55), T_white(["MÉDITATION", "& PRIÈRE"]))
+    shot(w("dieu"), w("jeu"), K("f2", 1.0, 1.1, 0.5, 0.5), T_white(["DIEU AU CENTRE", "DU TERRAIN"]))
+    CUES.append(dict(t=w("jeu"), type="riser", dur=2.0, gain=-12, end_at=True))
+    shot(w("jeu"), w("passion"), K("f1", 1.5, 1.7, 0.45, 0.55), T_white(["JEU"], size=200))
+    shot(w("passion"), w("fairplay"), K("f4", 1.3, 1.45, 0.6, 0.5), T_white(["PASSION"], size=180), plastic_in=False)
+    shot(w("fairplay"), w("joie"), K("f2", 1.4, 1.6, 0.5, 0.3), T_white(["FAIR-PLAY"], size=180), plastic_in=False)
+    shot(w("joie"), w("rdv"), K("06", 1.05, 1.18, 0.5, 0.45), T_white(["LA JOIE DE", "L'ÉVANGILE"], "et surtout…"))
+    CUES.append(dict(t=w("grande"), type="riser", dur=2.0, gain=-11, end_at=True))
+    CUES.append(dict(t=w("grande"), type="boom", gain=-4))
+    shot(w("rdv"), w("date19"), K("f1", 1.0, 1.12, 0.5, 0.5), T_red(["GRANDE", "FINALE"], "Rendez-vous pour la", 170))
+    shot(w("date19"), w("programme"), K("f3", 1.05, 1.18, 0.5, 0.5), T_white(["SAMEDI", "19 DÉCEMBRE"], "2026"))
+    shot(w("programme"), w("jeux"), K("05", 1.6, 1.8, 0.22, 0.38), T_white(["ENSEIGNEMENT"], "au programme", 120))
+    shot(w("jeux"), w("manege"), K("f4", 1.1, 1.2, 0.5, 0.5), T_white(["JEUX"], size=200), plastic_in=False)
+    shot(w("manege"), w("prix"), K("09", 1.1, 1.2, 0.5, 0.5), T_white(["MANÈGE"], "pour les enfants", 170), plastic_in=False)
+    shot(w("prix"), w("supporters"), K("f1", 1.3, 1.4, 0.5, 0.5), T_white(["REMISE", "DES PRIX"], "aux vainqueurs", 130),
+         plastic_in=False)
+    shot(w("supporters"), w("venez"), K("f1", 1.6, 1.8, 0.5, 0.75), T_white(["SUPPORTERS"], "familles  ·  jeunes  ·  anciens", 150))
+    shot(w("venez"), w("fin"), K("09", 1.0, 1.1, 0.5, 0.5), T_white(["VENEZ", "NOMBREUX"], "encourager vos équipes", 150))
+    CUES.append(dict(t=w("fin"), type="riser", dur=2.0, gain=-11, end_at=True))
+    shot(w("fin"), TOTAL, K("f2", 1.05, 1.18, 0.5, 0.4), T_end, gr=dict(bright=0.4))
+    CUES.append(dict(t=w("fin"), type="subdrop", gain=-4))
+    CUES.append(dict(t=w("gloire"), type="shimmer", gain=2))
 
 
 def cool_grade(img, bright=0.82):

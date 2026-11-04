@@ -223,7 +223,7 @@ def T_end(L, lt, dur):
     scramble(L, t1, W / 2 - tw / 2, 230, lt, None, 110, delay=0.05, exit_=False)
     t2 = "CHAQUE SAMEDI DÈS LE 5 DÉCEMBRE"
     tw = text_width(t2, "m800", 64, 2)
-    scramble(L, t2, W / 2 - tw / 2, 375, lt, None, 64, color=ORANGE, delay=1.8, exit_=False)
+    scramble(L, t2, W / 2 - tw / 2, 375, lt, None, 64, color=ORANGE, delay=1.65, exit_=False)
     small(L, "Match 1 : 14h – 16h   ·   Match 2 : 16h – 18h", W / 2, 470, lt, None, size=34, fname="m600",
           color=WHITE, delay=2.4, align="center")
     p = ease_out((lt - 4.3) / 0.8)
@@ -233,17 +233,17 @@ def T_end(L, lt, dur):
         d.line((W / 2 - 40 * p, 544, W / 2 + 40 * p, 544), fill=ORANGE + (255,), width=4)
     d1 = "STADE DU LYCÉE BILINGUE DE YABASSI"
     tw = text_width(d1, "m800", 54, 2)
-    scramble(L, d1, W / 2 - tw / 2, 575, lt, None, 54, delay=4.5, ghost=False, exit_=False)
+    scramble(L, d1, W / 2 - tw / 2, 575, lt, None, 54, delay=4.36, ghost=False, exit_=False)
     small(L, "Grande finale : samedi 19 décembre 2026", W / 2, 665, lt, None, size=36, fname="m600", color=GREY,
           delay=5.3, align="center")
     t3 = "TOUT POUR LA GLOIRE DE JÉSUS"
     tw = text_width(t3, "m800", 50, 6)
-    scramble(L, t3, W / 2 - tw / 2, 820, lt, None, 50, color=ORANGE, tracking=6, delay=7.4, exit_=False)
+    scramble(L, t3, W / 2 - tw / 2, 820, lt, None, 50, color=ORANGE, tracking=6, delay=7.24, exit_=False)
 
 
 def watermark(L, T):
     """Petit logo en haut à gauche."""
-    a = clamp((T - 4.3) / 0.5) * (1 - clamp((T - 61.9) / 0.5))
+    a = clamp((T - 4.5) / 0.5) * (1 - clamp((T - 62.1) / 0.5))
     if a <= 0:
         return
     ImageDraw.Draw(L).ellipse((58, 58, 68, 68), fill=ORANGE + (int(255 * a),))
@@ -337,64 +337,71 @@ def K(name, z0=1.0, z1=1.12, fx=0.5, fy=0.5, dx=0.0, dy=0.0):
     return (name, dict(z0=z0, z1=z1, fx=fx, fy=fy, dx=dx, dy=dy))
 
 
+# Moments où la voix prononce chaque mot clé (secondes dans le fichier de voix, vérifiés par transcription
+# et par détection des syllabes). La voix est décalée de +0,3 s au mixage : on ouvre chaque plan 0,2 s après le mot.
+WORDS = dict(yabassi=0.31, ballon=1.27, coupe=4.34, date=6.89, stade=10.0, equipes=12.74, samedi=17.05,
+             match1=19.93, match2=22.57, avant=25.49, meditation=27.96, dieu=29.90, jeu=32.39, passion=33.63,
+             fairplay=35.02, joie=36.44, rdv=40.53, grande=41.53, date19=42.50, programme=45.87, jeux=49.39,
+             manege=50.42, prix=52.88, supporters=55.59, venez=59.44, fin=62.39, gloire=69.83)
+
+
+def w(name):
+    return round(WORDS[name] + 0.2, 2)
+
+
 def build_timeline():
-    """Plans calés sur la voix off des matchs (« Annonceur Croisade », 1 min 12)."""
+    """Plans calés mot par mot sur la voix off des matchs (« Annonceur Croisade », 1 min 12)."""
     SHOTS.clear()
     CUES.clear()
-    # « Yabassi… le ballon va rouler pour la gloire de Dieu ! » (0,3 → 3,8)
-    shot(0.0, 1.6, K("13", 1.0, 1.15, 0.45), T_word("YABASSI", size=190, ring_on=True), gr=dict(bright=0.8))
-    shot(1.6, 4.3, K("f1", 1.0, 1.15, 0.5, 0.55), T_word("POUR LA GLOIRE DE DIEU", sup="Le ballon va rouler", size=120),
-         flash=True)
-    # « La Coupe de l'Évangile est lancée ! » (4,3 → 6,4)
-    shot(4.3, 6.9, K("f4", 1.05, 1.2, 0.5, 0.5), T_word("LA COUPE DE L'ÉVANGILE", sub="EST LANCÉE !", size=120,
-         ring_on=True), flash=True)
-    # Date, lieu, équipes (6,9 → 16,7)
-    shot(6.9, 10.3, K("f2", 1.0, 1.12, 0.5, 0.35), T_corner("05", "À partir du samedi", "DÉCEMBRE", "CHAQUE SAMEDI · 2026"),
-         scrim=(880, 0.55))
-    shot(10.3, 13.6, K("f3", 1.0, 1.15, 0.5, 0.5), T_word("STADE DU LYCÉE BILINGUE", sub="DE YABASSI", size=110),
-         gr=dict(bright=0.7))
-    shot(13.6, 17.0, [K("f1", 1.4, 1.6, 0.5, 0.6), K("f2", 1.6, 1.8, 0.55, 0.3)],
+    shot(0.0, w("ballon"), K("13", 1.0, 1.15, 0.45), T_word("YABASSI", size=190, ring_on=True), gr=dict(bright=0.8))
+    shot(w("ballon"), w("coupe"), K("f1", 1.0, 1.15, 0.5, 0.55),
+         T_word("POUR LA GLOIRE DE DIEU", sup="Le ballon va rouler", size=120), flash=True)
+    shot(w("coupe"), w("date"), K("f4", 1.05, 1.2, 0.5, 0.5),
+         T_word("LA COUPE DE L'ÉVANGILE", sub="EST LANCÉE !", size=120, ring_on=True), flash=True)
+    shot(w("date"), w("stade"), K("f2", 1.0, 1.12, 0.5, 0.35),
+         T_corner("05", "À partir du samedi", "DÉCEMBRE", "CHAQUE SAMEDI · 2026"), scrim=(880, 0.55))
+    shot(w("stade"), w("equipes"), K("f3", 1.0, 1.15, 0.5, 0.5),
+         T_word("STADE DU LYCÉE BILINGUE", sub="DE YABASSI", size=110), gr=dict(bright=0.7))
+    shot(w("equipes"), w("samedi"), [K("f1", 1.4, 1.6, 0.5, 0.6), K("f2", 1.6, 1.8, 0.55, 0.3)],
          T_word("LES MEILLEURES ÉQUIPES", sub="S'AFFRONTENT", size=120))
-    # Horaires (17,0 → 29,4)
-    shot(17.0, 19.9, (None, {}), T_word("2 MATCHS", sup="Chaque samedi", size=170, ring_on=True), sfx=None)
-    CUES.append(dict(t=17.0, type="boom", gain=-6))
-    shot(19.9, 25.5, K("f4", 1.0, 1.15, 0.45, 0.5), T_corner("14H", "Match 1", "JUSQU'À 16H", "PREMIER MATCH"),
+    shot(w("samedi"), w("match1"), (None, {}), T_word("2 MATCHS", sup="Chaque samedi", size=170, ring_on=True), sfx=None)
+    CUES.append(dict(t=w("samedi"), type="boom", gain=-6))
+    shot(w("match1"), w("match2"), K("f4", 1.0, 1.15, 0.45, 0.5), T_corner("14H", "Match 1", "JUSQU'À 16H", "PREMIER MATCH"),
          flash=True, scrim=(880, 0.55))
-    shot(25.5, 29.9, K("f1", 1.2, 1.35, 0.4, 0.6), T_corner("16H", "Match 2", "JUSQU'À 18H", "DEUXIÈME MATCH"),
+    shot(w("match2"), w("avant"), K("f1", 1.2, 1.35, 0.4, 0.6), T_corner("16H", "Match 2", "JUSQU'À 18H", "DEUXIÈME MATCH"),
          flash=True, scrim=(880, 0.55))
-    # Prière (29,9 → 37,2)
-    shot(29.9, 32.3, K("f3", 1.1, 1.2, 0.5, 0.55), T_word("AVANT CHAQUE MATCH", size=120), gr=dict(bright=0.7))
-    shot(32.3, 35.0, K("08", 1.1, 1.25, 0.55, 0.55), T_word("MÉDITATION & PRIÈRE", size=120), gr=dict(sat=0.6, bright=0.8))
-    shot(35.0, 37.6, K("f2", 1.0, 1.1, 0.5, 0.5), T_word("DIEU AU CENTRE", sub="DU TERRAIN", size=150))
-    CUES.append(dict(t=37.6, type="riser", dur=2.0, gain=-12, end_at=True))
-    # Énergie (37,6 → 45,3)
-    shot(37.6, 38.7, K("f1", 1.5, 1.7, 0.45, 0.55), T_word("JEU", size=230), flash=True)
-    shot(38.7, 39.8, K("f4", 1.3, 1.45, 0.6, 0.5), T_word("PASSION", size=210), flash=True)
-    shot(39.8, 42.4, K("f2", 1.4, 1.6, 0.5, 0.3), T_word("FAIR-PLAY", size=200), flash=True)
-    shot(42.4, 45.9, [K("06", 1.05, 1.18, 0.5, 0.45), K("11", 1.1, 1.2, 0.5, 0.35)],
+    shot(w("avant"), w("meditation"), K("f3", 1.1, 1.2, 0.5, 0.55), T_word("AVANT CHAQUE MATCH", size=120),
+         gr=dict(bright=0.7))
+    shot(w("meditation"), w("dieu"), K("08", 1.1, 1.25, 0.55, 0.55), T_word("MÉDITATION & PRIÈRE", size=120),
+         gr=dict(sat=0.6, bright=0.8))
+    shot(w("dieu"), w("jeu"), K("f2", 1.0, 1.1, 0.5, 0.5), T_word("DIEU AU CENTRE", sub="DU TERRAIN", size=150))
+    CUES.append(dict(t=w("jeu"), type="riser", dur=2.0, gain=-12, end_at=True))
+    shot(w("jeu"), w("passion"), K("f1", 1.5, 1.7, 0.45, 0.55), T_word("JEU", size=230), flash=True)
+    shot(w("passion"), w("fairplay"), K("f4", 1.3, 1.45, 0.6, 0.5), T_word("PASSION", size=210), flash=True)
+    shot(w("fairplay"), w("joie"), K("f2", 1.4, 1.6, 0.5, 0.3), T_word("FAIR-PLAY", size=200), flash=True)
+    shot(w("joie"), w("rdv"), [K("06", 1.05, 1.18, 0.5, 0.45), K("11", 1.1, 1.2, 0.5, 0.35)],
          T_word("LA JOIE DE L'ÉVANGILE", sup="Et surtout…", size=120), flash=True)
-    # Finale (45,9 → 52,4)
-    shot(45.9, 49.4, (None, {}), T_word("GRANDE FINALE", size=150, ring_on=True), sfx=None)
-    CUES.append(dict(t=45.9, type="riser", dur=2.0, gain=-11, end_at=True))
-    CUES.append(dict(t=45.9, type="boom", gain=-4))
-    shot(49.4, 52.9, K("f1", 1.0, 1.12, 0.5, 0.5), T_corner("19", "Samedi", "DÉCEMBRE", "GRANDE FINALE · 2026"),
+    shot(w("rdv"), w("date19"), (None, {}), T_word("GRANDE FINALE", sup="Rendez-vous pour la", size=150, ring_on=True),
+         sfx=None)
+    CUES.append(dict(t=w("grande"), type="riser", dur=2.0, gain=-11, end_at=True))
+    CUES.append(dict(t=w("grande"), type="boom", gain=-4))
+    shot(w("date19"), w("programme"), K("f1", 1.0, 1.12, 0.5, 0.5), T_corner("19", "Samedi", "DÉCEMBRE", "GRANDE FINALE · 2026"),
          flash=True, scrim=(880, 0.55))
-    # Programme de la finale (52,9 → 57,8)
-    shot(52.9, 54.8, K("05", 1.6, 1.8, 0.22, 0.38), T_word("ENSEIGNEMENT", sup="Au programme", size=150), flash=True)
-    shot(54.8, 56.0, K("f4", 1.1, 1.2, 0.5, 0.5), T_word("JEUX", size=210))
-    shot(56.0, 57.0, K("09", 1.1, 1.2, 0.5, 0.5), T_word("MANÈGE", sub="POUR LES ENFANTS", size=190))
-    shot(57.0, 57.8, K("f1", 1.3, 1.4, 0.5, 0.5), T_word("REMISE DES PRIX", size=140))
-    # Appel (57,8 → 62,4)
-    shot(57.8, 62.4, [K("f1", 1.6, 1.8, 0.5, 0.75), K("09", 1.0, 1.1, 0.5, 0.5)],
-         T_word("VENEZ NOMBREUX", sup="Supporters, familles, jeunes et anciens", sub="ENCOURAGER VOS ÉQUIPES", size=150),
+    shot(w("programme"), w("jeux"), K("05", 1.6, 1.8, 0.22, 0.38), T_word("ENSEIGNEMENT", sup="Au programme", size=150),
          flash=True)
-    # Carton final (62,4 → fin)
-    CUES.append(dict(t=62.4, type="riser", dur=2.0, gain=-11, end_at=True))
-    shot(62.4, TOTAL, K("f2", 1.05, 1.18, 0.5, 0.4), T_end, gr=dict(bright=0.35, sat=0.75), flash=True, scrim=None, sfx=None)
-    CUES.append(dict(t=62.4, type="subdrop", gain=-4))
-    CUES.append(dict(t=64.2, type="whoosh", gain=-6))
-    CUES.append(dict(t=66.9, type="whoosh", gain=-7))
-    CUES.append(dict(t=69.8, type="shimmer", gain=2))
+    shot(w("jeux"), w("manege"), K("f4", 1.1, 1.2, 0.5, 0.5), T_word("JEUX", size=210))
+    shot(w("manege"), w("prix"), K("09", 1.1, 1.2, 0.5, 0.5), T_word("MANÈGE", sub="POUR LES ENFANTS", size=190))
+    shot(w("prix"), w("supporters"), K("f1", 1.3, 1.4, 0.5, 0.5), T_word("REMISE DES PRIX", sub="AUX VAINQUEURS", size=140))
+    shot(w("supporters"), w("venez"), K("f1", 1.6, 1.8, 0.5, 0.75),
+         T_word("SUPPORTERS", sub="FAMILLES · JEUNES · ANCIENS", size=170), flash=True)
+    shot(w("venez"), w("fin"), K("09", 1.0, 1.1, 0.5, 0.5),
+         T_word("VENEZ NOMBREUX", sub="ENCOURAGER VOS ÉQUIPES", size=150), flash=True)
+    CUES.append(dict(t=w("fin"), type="riser", dur=2.0, gain=-11, end_at=True))
+    shot(w("fin"), TOTAL, K("f2", 1.05, 1.18, 0.5, 0.4), T_end, gr=dict(bright=0.35, sat=0.75), flash=True, scrim=None, sfx=None)
+    CUES.append(dict(t=w("fin"), type="subdrop", gain=-4))
+    CUES.append(dict(t=w("fin") + 1.85, type="whoosh", gain=-6))
+    CUES.append(dict(t=w("fin") + 4.56, type="whoosh", gain=-7))
+    CUES.append(dict(t=w("gloire"), type="shimmer", gain=2))
 
 
 # ---------------------------------------------------------------- rendu
