@@ -154,6 +154,24 @@ def shimmer(dur=1.4):
     return norm(stereo(reverb(y, 1.5, 0.4), 0, 0, 0.7), 0.5)
 
 
+def crinkle(dur=0.8):
+    """Plastique froissé : crépitements aléatoires + souffle filtré."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    y = np.zeros(n)
+    count = int(dur * 260)
+    pos = rng.uniform(0, dur, count)
+    for tt in pos:
+        i = int(tt * SR)
+        m = int(rng.uniform(0.002, 0.009) * SR)
+        burst = rng.standard_normal(m) * np.exp(-np.arange(m) / (m / 3))
+        y[i:i + m] += burst[: n - i] * rng.uniform(0.2, 1.0)
+    y = signal.sosfilt(signal.butter(2, [1500, 9000], "band", fs=SR, output="sos"), y)
+    air = sweep_filter(noise(dur), 2000, 5000, q=1.5) * 0.3
+    e = env_ar(n, 0.45, curve=1.5)
+    return norm(stereo((y + air) * e, 0.7, -0.7, 0.5), 0.7)
+
+
 def ticks(dur=0.45, count=7):
     """Petits clics numériques pour l'apparition des lettres."""
     n = int(dur * SR)
@@ -169,7 +187,7 @@ def ticks(dur=0.45, count=7):
 
 
 FX = dict(whoosh=whoosh, swish=swish, impact=impact, boom=boom, subdrop=subdrop,
-          riser=riser, reverse=reverse, shimmer=shimmer, ticks=ticks)
+          riser=riser, reverse=reverse, shimmer=shimmer, ticks=ticks, crinkle=crinkle)
 
 
 def build(cues, total, out):
