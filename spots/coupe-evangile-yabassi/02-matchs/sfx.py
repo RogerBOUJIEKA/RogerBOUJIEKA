@@ -172,6 +172,19 @@ def crinkle(dur=0.8):
     return norm(stereo((y + air) * e, 0.7, -0.7, 0.5), 0.7)
 
 
+def whistle(dur=0.9):
+    """Coup de sifflet d'arbitre : deux sons aigus avec roulement de la bille."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    trill = 1 + 0.035 * np.sign(np.sin(2 * np.pi * 38 * t))
+    f = 2850 * trill
+    tone = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.3 * np.sin(2 * np.pi * np.cumsum(f * 2) / SR)
+    breath = signal.sosfilt(signal.butter(2, [2500, 6000], "band", fs=SR, output="sos"), noise(dur)) * 0.25
+    e = np.clip(t / 0.02, 0, 1) * np.clip((dur - t) / 0.08, 0, 1)
+    e *= np.where((t > 0.28) & (t < 0.36), 0.05, 1.0)  # deux coups : « tuuut-tuuuuut »
+    return norm(stereo(reverb((tone + breath) * e, 1.0, 0.25), 0, 0, 0.4), 0.7)
+
+
 def ticks(dur=0.45, count=7):
     """Petits clics numériques pour l'apparition des lettres."""
     n = int(dur * SR)
@@ -187,7 +200,7 @@ def ticks(dur=0.45, count=7):
 
 
 FX = dict(whoosh=whoosh, swish=swish, impact=impact, boom=boom, subdrop=subdrop,
-          riser=riser, reverse=reverse, shimmer=shimmer, ticks=ticks, crinkle=crinkle)
+          riser=riser, reverse=reverse, shimmer=shimmer, ticks=ticks, crinkle=crinkle, whistle=whistle)
 
 
 def build(cues, total, out):
