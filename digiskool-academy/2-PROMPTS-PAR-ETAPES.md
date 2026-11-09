@@ -17,13 +17,18 @@ francophone, l'Afrique anglophone, la diaspora et
 l'international. Site web + application (Android, iPhone,
 ordinateur).
 
-Voici le cahier des charges complet :
+Les documents de référence (à lire en entier) :
+- le cahier des charges : 1-PROMPT-COMPLET.md
+- la charte de marque, qui s'applique sans exception :
+  4-CHARTE-DE-MARQUE.md
+- les maquettes des écrans clés : 5-MAQUETTES.md
+- les prompts de l'IA intégrée : 3-PROMPTS-IA.md
 
-[COLLE ICI TOUT LE CONTENU DU FICHIER 1-PROMPT-COMPLET.md]
-
-Et voici la charte de marque, qui s'applique sans exception :
-
-[COLLE ICI TOUT LE CONTENU DU FICHIER 4-CHARTE-DE-MARQUE.md]
+[AVEC CLAUDE CODE OU CURSOR : place ces fichiers dans le
+dossier docs/ du projet et écris « Lis les fichiers du
+dossier docs/ ».
+AVEC LOVABLE OU BOLT : colle ici le contenu des fichiers 1,
+4 et 5, ou mets-les dans l'espace « Knowledge » du projet.]
 
 Les priorités absolues :
 1. Zéro inscription, zéro mot de passe pour les clients.
@@ -31,6 +36,8 @@ Les priorités absolues :
    en quelques secondes, prix dans la devise du visiteur).
 3. Accès immédiat au produit après le paiement.
 4. Un niveau de design et de finition international.
+5. Les e-books au cœur du catalogue : la meilleure
+   expérience de lecture possible.
 
 Pour l'instant, ne code rien. Je veux que tu :
 1. Résumes en 15 points ce que tu as compris.
@@ -107,6 +114,9 @@ moindres détails.
 6. Pages /admin/design et /admin/marque.
 7. Générateur de couvertures automatiques (section 11) et
    couvertures des produits de démonstration, côte à côte.
+8. Police de lecture Literata pour les e-books (charte 5.3).
+9. Respecte l'ordre et la hiérarchie des maquettes
+   5-MAQUETTES.md pour tous les écrans.
 ```
 
 **Je vérifie :**
@@ -182,7 +192,10 @@ Phase 4 : sections 12 et 34 du cahier des charges.
 Phase 5 : sections 13, 14 et 15 du cahier des charges.
 
 1. Page produit mobile dans l'ordre exact de la section
-   13.1, puis 13.3 et 13.4.
+   13.1, puis 13.3 et 13.4, conforme aux maquettes 3 et 4.
+   Onglets collants (13.7), spécificités e-book (13.8),
+   bloc « Valeur de l'offre » (13.9), spécificités
+   formation (13.10), questions des lecteurs (13.11).
 2. Version ordinateur façon Udemy (13.2).
 3. Barre d'achat collante (13.5) et micro-détails (13.6).
 4. Aperçus (section 14) : feuilleter l'e-book avec pages
@@ -203,13 +216,15 @@ inventé.
 - [ ] Sans faire défiler, je vois le prix dans ma devise, la réduction, le chrono et « Acheter maintenant ».
 - [ ] Je feuillette un e-book : premières pages lisibles, suite floutée.
 - [ ] Je regarde une leçon gratuite sans être connecté.
+- [ ] Je vois « Aperçu de l'intérieur », le sommaire avec le temps de lecture, et le bloc « Valeur de l'offre ».
 
 ---
 
 ## Phase 6 — Promotions, popups, notifications et communauté
 
 ```text
-Phase 6 : sections 19, 21, 22 et 23 du cahier des charges.
+Phase 6 : sections 19, 21, 22, 23, 24.9 et 31.2 du cahier
+des charges.
 
 1. Moteur de promotions (section 21) : campagnes, modèles
    en un clic, récurrences, prix de lancement, priorités,
@@ -218,12 +233,21 @@ Phase 6 : sections 19, 21, 22 et 23 du cahier des charges.
    du visiteur.
 2. Codes promo, liens ?promo=CODE, QR codes, historique
    des prix.
-3. Popups et centre de notifications (section 22) avec
-   toutes les règles.
+3. Système complet de popups (section 22) : les 14 modèles,
+   les 3 familles, le ciblage (dont la source publicitaire),
+   les règles de confort, le design, le gestionnaire central,
+   les tests A/B et les statistiques. Calendrier
+   promotionnel et produit de la semaine (21.7).
 4. Bloc WhatsApp (section 19) dans toutes ses variantes et
    bouton flottant (communauté en premier).
 5. Communauté (23.1) et parrainage (23.2) avec anti-fraude.
-6. Tests : calcul des prix, parrainage.
+6. Listes d'attente « Bientôt disponible » (24.9) et
+   alertes prix sur les favoris.
+7. Séquences automatiques (31.2) avec leurs règles (1 message
+   par jour maximum, arrêt à l'achat, STOP, pas de message
+   entre 21 h et 8 h).
+8. Tests : calcul des prix, parrainage, gestionnaire de
+   popups (jamais deux fenêtres dans la même visite).
 ```
 
 **Je vérifie :**
@@ -232,6 +256,9 @@ Phase 6 : sections 19, 21, 22 et 23 du cahier des charges.
 - [ ] Je ne vois jamais deux popups dans la même visite.
 - [ ] Le bouton flottant propose d'abord la communauté.
 - [ ] Mon lien de parrainage donne -10 % à un ami.
+- [ ] Je vois des notifications discrètes (nouveauté, achat récent) espacées, jamais sur la page de paiement.
+- [ ] Je viens d'un lien publicitaire pour un e-book : le popup me montre cet e-book, pas un autre.
+- [ ] Je m'inscris sur la liste d'attente d'un produit et je reçois le message à sa sortie.
 
 ---
 
@@ -258,8 +285,11 @@ Sections 8, 17, 18 et 31 du cahier des charges.
    fermée, « Retrouver mon achat », accès non ouverts.
 6. Messages WhatsApp / SMS / email (section 31).
 7. Entonnoir du checkout, relance des paniers abandonnés.
-8. Tests : webhook (signature, doublon, montant/devise),
-   connexion automatique (jeton à usage unique).
+8. Produits gratuits : seulement nom + numéro, sans paiement,
+   accès immédiat.
+9. Respecte les maquettes 6, 7, 8 et 13.
+10. Tests : webhook (signature, doublon, montant/devise),
+    connexion automatique (jeton à usage unique).
 
 Mesure : sur un écran de 360 px, de la page produit au
 produit ouvert en moins de 60 secondes et 3 champs maximum.
@@ -284,8 +314,12 @@ Phase 8 : sections 24, 25 et 26 du cahier des charges.
    parrainage, profil, appareils.
 2. PDF professionnels (modèle de la charte), images
    d'aperçu.
-3. Liseuse (bascule FR ⇄ EN sur le même chapitre, thèmes,
-   reprise, marque-pages, filigrane, mini-guide).
+3. Liseuse complète (section 25.2, maquette 10) : réglages
+   Aa, Literata, pages ou défilement, surlignage et notes,
+   recherche, partage de citation en image, exercices
+   cochables, bascule FR ⇄ EN, fins de chapitre et de livre,
+   mini-guide.
+3 bis. Lecteur audio (25.3) et collections d'e-books (24.3).
 4. Lecteur vidéo Bunny Stream (reprise, vitesse,
    sous-titres, version FR/EN, filigrane).
 5. Téléchargements sécurisés (URL signée, limite,
@@ -302,6 +336,8 @@ Phase 8 : sections 24, 25 et 26 du cahier des charges.
 - [ ] La bascule FR ⇄ EN garde le même chapitre.
 - [ ] Le PDF est beau et porte mon nom en bas de page.
 - [ ] Mon certificat a un QR code qui ouvre une page de vérification.
+- [ ] Je surligne une phrase, j'ajoute une note, et je partage une citation en image sur mon statut WhatsApp.
+- [ ] J'écoute un chapitre en version audio, écran verrouillé, dans l'application.
 
 ---
 
@@ -332,7 +368,7 @@ Phase 9 : sections 20, 28.1 et 28.2 du cahier des charges.
 
 ```text
 Phase 10 : section 29 du cahier des charges (les points 3
-et 16 seront faits aux phases 11 et 12 : prévois leur
+et 19 seront faits aux phases 11 et 12 : prévois leur
 emplacement).
 
 Je gère ma boutique depuis mon téléphone : tout doit être
@@ -342,7 +378,10 @@ comme application.
 Points importants : tableau de bord complet (entonnoir,
 accès non ouverts, ventes par pays et devise), produits
 FR/EN et prix par zone, éditeur d'e-book, formations, pages
-publicitaires, promotions en un clic, notifications push,
+publicitaires, promotions en un clic, calendrier
+promotionnel, popups (modèles, ciblage, statistiques),
+notifications push, séquences, listes d'attente, collections,
+versions audio, questions des lecteurs,
 commandes (renvoyer l'accès en un clic), clients, avis et
 témoignages, aide, paiements (taux, zones, instructions,
 bandeau d'incident), messages, application, paramètres,
@@ -375,12 +414,19 @@ Voici les prompts système à utiliser :
 3. Import de contenu existant.
 4. Estimation du coût, coût réel, budget mensuel.
 5. Boutons IA dans tout l'admin.
+6. Version audio des e-books (27.4) avec adaptation à l'oral
+   et option de voix de Roger.
+7. Bonus automatiques (27.5), mises à jour d'e-books (27.6),
+   contenus marketing (27.7), brouillons de réponses aux avis
+   et questions.
 ```
 
 **Je vérifie :**
 - [ ] Un e-book de 30 pages demandé fait environ 30 pages, en FR et en EN.
 - [ ] La page produit et la page publicitaire sont générées dans les deux langues.
 - [ ] Je régénère un chapitre : seul ce chapitre change.
+- [ ] La version audio est agréable à écouter, et les noms propres sont bien prononcés.
+- [ ] Le cahier d'exercices, la fiche mémo, les citations en image et les scripts vidéo sont générés.
 
 ---
 

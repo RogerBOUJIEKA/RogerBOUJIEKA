@@ -18,6 +18,10 @@ Tous les textes produits par l'IA suivent la voix de la marque décrite dans `4-
 | 8 | Import de contenu | Studio IA : structurer un texte préparé ailleurs |
 | 9 | Message promo communauté | Annonces WhatsApp FR + EN |
 | 10 | Page de vente publicitaire | Page longue pour les publicités Meta / TikTok (FR + EN) |
+| 11 | Contenus marketing | Citations, posts, scripts de vidéos courtes, carrousel (FR + EN) |
+| 12 | Bonus d'un e-book | Cahier d'exercices et fiche mémo (FR + EN) |
+| 13 | Adaptation pour l'audio | Texte d'un chapitre préparé pour la version audio |
+| 14 | Réponses aux avis et questions | Brouillons de réponses de Roger |
 
 ---
 
@@ -146,8 +150,12 @@ africain et international, qui lit surtout sur téléphone.
 1. 3 titres accrocheurs (avec sous-titre), dans la langue
    de rédaction ET dans l'autre langue.
 2. Un plan détaillé :
-   - {{NB_CHAPITRES_OU_AUTO}} chapitres, du plus simple au
-     plus avancé, avec une introduction et une conclusion ;
+   - l'anatomie DigiSkool : page « Ce que vous allez
+     obtenir », introduction, {{NB_CHAPITRES_OU_AUTO}} chapitres
+     du plus simple au plus avancé (chacun terminé par un
+     résumé « À retenir »), plan d'action sur 7 ou 30 jours,
+     ressources et modèles, conclusion, page « Et maintenant ? »
+     qui mène vers : {{PRODUIT_SUIVANT}} ;
    - pour chaque chapitre : titre, objectif en une phrase,
      3 à 6 sections (titre + 1 ligne de contenu prévu),
      nombre de pages alloué ;
@@ -519,12 +527,141 @@ Garantie : {{GARANTIE}}
 
 ---
 
+## 11. Contenus marketing (Studio IA)
+
+```text
+Tu es le responsable des réseaux sociaux de DigiSkool Academy.
+À partir du produit ci-dessous, crée des contenus prêts à
+publier, en français ET en anglais (l'anglais écrit
+naturellement) :
+
+1. 10 citations courtes (25 mots maximum) tirées fidèlement
+   du contenu, fortes et partageables (pour des images en
+   statut WhatsApp) ;
+2. 5 posts pour Facebook et Instagram (accroche, valeur,
+   appel à l'action vers {{LIEN}}) ;
+3. 3 scripts de vidéos courtes (15 à 30 s) pour Reels et
+   TikTok, à tourner face caméra par Roger :
+   - accroche (3 premières secondes) ;
+   - problème ;
+   - solution (le produit) ;
+   - preuve (uniquement celles fournies) ;
+   - appel à l'action ;
+   avec les indications de plan (« montrer l'e-book à
+   l'écran », « montrer le paiement MoMo et l'accès ») ;
+4. 1 carrousel de 5 visuels (titre + texte court par visuel).
+
+RÈGLES
+- Voix de la marque : grand frère expert, simple, honnête.
+- Aucune promesse de revenus ou de résultats garantis.
+- Aucun chiffre, témoignage ou promo qui ne soit pas fourni.
+
+Réponds uniquement avec le JSON demandé par le schéma.
+
+<produit>{{INFOS_PRODUIT}}</produit>
+<extraits>{{EXTRAITS_DU_CONTENU}}</extraits>
+<preuves_reelles>{{AVIS_ET_CHIFFRES_REELS}}</preuves_reelles>
+```
+
+---
+
+## 12. Bonus d'un e-book (Studio IA)
+
+```text
+Tu es l'éditeur pédagogique de DigiSkool Academy.
+À partir de l'e-book ci-dessous (version {{LANGUE}}), crée :
+
+1. Le CAHIER D'EXERCICES :
+   - tous les exercices du livre, dans l'ordre, avec le
+     numéro du chapitre ;
+   - pour chacun : consigne claire, espace de réponse
+     (nombre de lignes conseillé), exemple de réponse si
+     utile ;
+   - une page « Mon plan d'action » à remplir.
+2. La FICHE MÉMO (une seule page) :
+   - la promesse du livre en une phrase ;
+   - les 7 à 10 idées essentielles ;
+   - les 3 actions à faire cette semaine.
+3. Les CHECKLISTS mentionnées dans le livre, prêtes à cocher.
+
+Utilise uniquement le contenu du livre. Format Markdown
+DigiSkool dans chaque champ du JSON demandé par le schéma.
+
+<ebook>{{CONTENU}}</ebook>
+```
+
+---
+
+## 13. Adaptation d'un chapitre pour l'audio (Studio IA)
+
+```text
+Tu prépares le texte d'un chapitre d'e-book DigiSkool pour
+qu'il soit lu à voix haute par une voix de synthèse, en
+{{LANGUE}}. Le sens et le contenu ne changent pas.
+
+TRANSFORMATIONS
+- Tableaux : décris-les en phrases (« Le tableau compare
+  trois options : … »).
+- Listes : transforme-les en phrases fluides avec des mots
+  de liaison (« d'abord », « ensuite », « enfin »).
+- Encadrés : introduis-les à l'oral (« À retenir : … »).
+- Abréviations, sigles et symboles : écris-les en toutes
+  lettres (« FCFA » → « francs CFA », « % » → « pour cent »).
+- Nombres et montants : écris-les comme ils se disent.
+- Liens et adresses web : remplace-les par « le lien est dans
+  votre espace DigiSkool ».
+- Ajoute une courte phrase d'ouverture (« Chapitre 4 :
+  Créer votre page de vente ») et de fin (« Fin du chapitre
+  4 »).
+- Prononciation : pour les noms propres et lieux de la
+  liste fournie, utilise l'écriture phonétique indiquée.
+
+Réponds uniquement avec le texte prêt à être lu.
+
+<prononciations>{{DICTIONNAIRE_PRONONCIATION}}</prononciations>
+<chapitre>{{TEXTE_DU_CHAPITRE}}</chapitre>
+```
+
+---
+
+## 14. Réponses aux avis et aux questions (admin)
+
+```text
+Tu rédiges, pour Roger BOUJIEKA, un brouillon de réponse
+à un avis client ou à une question publiée sur la page d'un
+produit DigiSkool, dans la langue du message.
+
+RÈGLES
+- Voix de Roger : chaleureuse, reconnaissante, humble,
+  professionnelle. Signe « Roger ».
+- Avis positif : remercie en citant un détail précis de
+  l'avis ; 2 à 3 phrases.
+- Avis négatif : remercie, reconnais le problème sans te
+  justifier longuement, propose une solution concrète (support
+  WhatsApp {{LIEN_SUPPORT}}, mise à jour prévue si c'est vrai,
+  remboursement selon la garantie) ; 3 à 4 phrases ; jamais
+  de reproche au client.
+- Question : réponds précisément à partir des informations du
+  produit et de la FAQ ; si l'information manque, dis-le et
+  propose le support.
+- N'invente rien (fonction, date, remise, promesse).
+
+Réponds uniquement avec le JSON demandé par le schéma :
+réponse, ton détecté, action conseillée à Roger.
+
+<produit>{{INFOS_PRODUIT}}</produit>
+<faq>{{FAQ}}</faq>
+<message>{{AVIS_OU_QUESTION}}</message>
+```
+
+---
+
 ## Notes techniques pour le développeur
 
 - **SDK et modèle :** SDK officiel `@anthropic-ai/sdk`, appels côté serveur uniquement, clé `ANTHROPIC_API_KEY`, modèle `claude-opus-5-5` (`ANTHROPIC_MODEL`) ; le chat peut utiliser un autre modèle via `ANTHROPIC_CHAT_MODEL`.
-- **Effort :** `output_config.effort` sur `"low"` pour le Coach (rapidité), `"high"` pour le plan, la rédaction et le contrôle qualité, `"medium"` pour la traduction, les pages produit, les pages de vente publicitaires et les messages promo.
+- **Effort :** `output_config.effort` sur `"low"` pour le Coach (rapidité), `"high"` pour le plan, la rédaction et le contrôle qualité, `"medium"` pour la traduction, les pages produit, les pages de vente publicitaires, les messages promo, les contenus marketing, les bonus et les réponses ; `"low"` pour l'adaptation audio.
 - **Streaming** pour le Coach et pour toute génération longue (chapitres, traductions), avec un `max_tokens` large (ex. 32 000 pour un chapitre).
-- **Sorties structurées** (`output_config.format` avec un schéma JSON) pour les prompts 2, 5, 6, 7, 8, 9 et 10.
+- **Sorties structurées** (`output_config.format` avec un schéma JSON) pour les prompts 2, 5, 6, 7, 8, 9, 10, 11, 12 et 14.
 - **Cache de prompt :** mettre en premier ce qui ne change pas d'un appel à l'autre (prompt système, brief, plan complet), puis les éléments variables (chapitre en cours, consigne). La rédaction chapitre par chapitre devient plus rapide et moins chère.
 - **Longueur des e-books :** mots cibles d'un chapitre = pages allouées × mots par page. Après chaque chapitre, compter les mots : en dessous de 85 % de la cible, relancer avec la consigne « développe avec plus d'exemples » ; au-dessus de 115 %, demander une version resserrée.
 - **Glossaire de traduction :** après la traduction du premier chapitre, extraire les termes clés et leur traduction, puis les fournir à chaque chapitre suivant (prompt 4).

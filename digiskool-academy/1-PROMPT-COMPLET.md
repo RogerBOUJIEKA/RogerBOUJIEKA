@@ -16,7 +16,7 @@ Tu avances par phases, tu expliques brièvement ce que tu fais, tu ne casses jam
 - **Signature :** « Apprenez. Appliquez. Avancez. » / "Learn. Apply. Grow."
 - **Propriétaire :** Roger BOUJIEKA, vendeur de produits digitaux depuis 2 ans, designer graphique.
 - **Type :** plateforme **personnelle**, avec **un seul vendeur**. Ce n'est **pas** une marketplace, ni un outil pour d'autres créateurs. Il y a un administrateur (Roger), éventuellement une équipe support, et des clients.
-- **Produits (par priorité) :** 1. **e-books** rédigés et hébergés sur la plateforme ; 2. **formations vidéo** ; 3. **vidéos** à l'unité ; 4. templates et packs.
+- **Produits (par priorité) :** 1. **e-books**, le cœur du catalogue (lecture en ligne, PDF, version audio, bonus — section 24) ; 2. **formations vidéo** ; 3. **vidéos** à l'unité ; 4. templates et packs.
 - **Marchés :** Afrique francophone, Afrique anglophone, diaspora, international. Clients surtout **sur téléphone**, souvent venus d'une **publicité**, parfois avec une connexion lente.
 - **Langues :** français et anglais partout. **Chaque produit existe dans les deux langues**, et un achat donne accès aux deux.
 - **Formats :** site web **et application** (Android, iPhone, ordinateur).
@@ -74,6 +74,7 @@ Udemy pour la structure et le sérieux (cartes produit, page produit avec en-tê
 - **IA :** API Claude d'Anthropic, SDK officiel `@anthropic-ai/sdk`, côté serveur uniquement
 - **PDF :** `@react-pdf/renderer` (e-books), `pdf-lib` (filigrane)
 - **Images générées :** `@vercel/og` (Satori) et `sharp`
+- **Synthèse vocale** (versions audio des e-books) : service de voix haute qualité en FR et EN (ex. ElevenLabs ou équivalent), avec option de voix de Roger clonée avec son accord
 - **Emails :** Resend + React Email
 - **Anti-robots :** Cloudflare Turnstile, invisible
 - **Éditeur riche (admin) :** Tiptap — **Validation :** Zod — **Formulaires :** React Hook Form
@@ -292,7 +293,7 @@ Une seule base de code (la plateforme web) devient une application installable p
 
 ### 10.3 Lecture hors ligne
 
-- Dans l'application, bouton « **Disponible hors ligne** » sur chaque e-book et chaque leçon (si le téléchargement est autorisé pour les vidéos).
+- Dans l'application, bouton « **Disponible hors ligne** » sur chaque e-book, chaque version audio et chaque leçon (si le téléchargement est autorisé pour les vidéos).
 - Le contenu est stocké dans l'application, lisible **uniquement dans l'application**, avec vérification du droit d'accès à chaque reconnexion (au moins tous les 30 jours).
 - La progression se synchronise au retour de la connexion.
 - Gestion de l'espace utilisé (« 120 Mo utilisés — Libérer de l'espace »).
@@ -335,6 +336,44 @@ Barre d'onglets en bas, transitions fluides, tirer pour actualiser, retour arri�
 
 ## 12. Pages publiques et navigation
 
+### Arborescence de la plateforme
+
+```
+DigiSkool Academy
+├── Accueil
+├── Boutique
+│   ├── E-books ─── Collections
+│   ├── Formations vidéo
+│   ├── Vidéos
+│   ├── Packs
+│   ├── Gratuits (e-books offerts)
+│   ├── Promotions
+│   ├── Nouveautés
+│   └── Bientôt disponibles (listes d'attente)
+├── Catégories
+├── Page produit ─── Page publicitaire (/offre)
+├── Panier ─── Paiement ─── Attente Mobile Money ─── Paiement réussi
+├── Mes produits
+│   ├── Bibliothèque ─── Liseuse · Lecteur audio · Lecteur vidéo
+│   ├── Mes notes et surlignages
+│   ├── Commandes et reçus
+│   ├── Certificats
+│   ├── Favoris et alertes prix
+│   ├── Parrainage
+│   └── Profil et appareils
+├── Retrouver mon achat
+├── Communauté
+├── Aide (centre d'aide)
+├── Installer l'application
+├── À propos (Roger) · Contact · Blog
+├── Vérification de certificat
+└── Pages légales
+
+Back-office /admin (séparé, réservé à l'équipe)
+```
+
+Les écrans clés suivent les maquettes du fichier `5-MAQUETTES.md`.
+
 ### 12.1 Header
 
 - **Barre de promotion** tout en haut quand une promo est active (section 21.4).
@@ -354,7 +393,9 @@ Barre d'onglets en bas, transitions fluides, tirer pour actualiser, retour arri�
 
 ### 12.3 Boutique, catégories, Promotions, Nouveautés
 
-Filtres (tiroir sur mobile), pastilles des filtres actifs, tri (populaires, récents, prix, plus grosse réduction, mieux notés), résultats instantanés, « Voir plus ». Pages Promotions et Nouveautés.
+Filtres (tiroir sur mobile), pastilles des filtres actifs, tri (populaires, récents, prix, plus grosse réduction, mieux notés), résultats instantanés, « Voir plus ». Pages Promotions, Nouveautés, Gratuits, Collections et Bientôt disponibles.
+
+**Catégories proposées** (modifiables dans l'admin, chacune avec une icône bicolore de la charte) : Business en ligne et vente digitale · Marketing digital et publicité · Réseaux sociaux et création de contenu · Intelligence artificielle et productivité · Design et Canva · E-commerce · Freelance et services en ligne · Finances personnelles · Développement personnel · Compétences numériques de base.
 
 ### 12.4 Carte produit
 
@@ -395,12 +436,12 @@ Pages / modules / leçons / heures · versions FR et EN · lecture en ligne · *
 3. Programme / sommaire (résumé chiffré, accordéon, « Tout développer », leçons gratuites « Aperçu », cadenas sur les autres).
 4. Pour qui / pour qui ce n'est pas.
 5. Description (« Lire la suite »).
-6. Bonus (valeur réelle).
+6. **Valeur de l'offre** et bonus (section 13.9).
 7. Preuves sociales (section 15).
-8. L'auteur.
+8. **Le mot de l'auteur** : courte vidéo (60 s) où Roger présente le produit, puis sa biographie.
 9. Garantie ([REMBOURSEMENT]).
 10. **« Comment ça marche »** : 3 étapes illustrées (choisir, payer, accéder).
-11. FAQ (dont : comment payer, comment accéder, FR + EN, hors ligne, devise).
+11. FAQ (dont : comment payer, comment accéder, FR + EN, hors ligne, devise), puis **Questions des lecteurs** (section 13.11).
 12. Souvent achetés ensemble (pack, ajout en un clic).
 13. Les clients ont aussi acheté.
 14. Appel à l'action final (prix + chrono + bouton).
@@ -419,6 +460,41 @@ Quand le bouton principal sort de l'écran : miniature, prix, mini-chrono, « Ac
 - Pack contre achat séparé.
 - Produit déjà acheté → bouton **« Accéder à mon produit »**.
 - Partage WhatsApp en un geste.
+
+### 13.7 Onglets collants
+
+Dès que le visiteur dépasse le bloc prix, une rangée d'onglets reste fixée en haut : **Aperçu · Contenu · Avis · FAQ** (comme Udemy). Un toucher fait défiler jusqu'à la section ; l'onglet actif suit la lecture.
+
+### 13.8 Spécificités de la page e-book
+
+- **« Aperçu de l'intérieur »** : carrousel de 6 vraies pages mises en page (ouverture de chapitre, encadré « À retenir », exercice, checklist, schéma, page « Plan d'action »). C'est ce qui prouve la qualité.
+- **Formats livrés** en icônes : Lire en ligne · PDF · Version audio (si disponible) · Hors ligne · FR + EN.
+- **Chiffres clés :** nombre de pages, temps de lecture total (« 3 h de lecture »), nombre d'exercices et de modèles.
+- **« Écouter un extrait »** de 30 s si la version audio existe.
+- **Sommaire** avec le nombre de pages et le temps de lecture de chaque chapitre.
+- **« Ce que contient le pack »** : e-book + bonus (cahier d'exercices, fiche mémo, modèles).
+- **Collection** : « Tome 2 sur 3 de la collection Vendre en ligne » + bouton « Acheter la collection » avec l'économie réalisée.
+- **« X lecteurs l'ont terminé »** (réel, à partir d'un seuil).
+
+### 13.9 Bloc « Valeur de l'offre »
+
+Liste de tout ce que le client reçoit, chaque élément avec sa **valeur réelle** (le prix auquel il est ou a été vendu séparément) :
+
+> E-book (FR + EN) — 15 000 FCFA · Cahier d'exercices — 3 000 FCFA · Version audio — 5 000 FCFA
+> **Valeur totale : 23 000 FCFA — Aujourd'hui : 9 900 FCFA**
+
+Les valeurs sont saisies dans l'admin et doivent correspondre à des prix réels ; jamais de valeur inventée.
+
+### 13.10 Spécificités de la page formation vidéo
+
+- Vidéo de présentation, « 8 modules · 46 leçons · 5 h 20 », niveau, prérequis.
+- Projets pratiques et ressources téléchargeables listés.
+- **Aperçu du certificat** (image du certificat de fin de formation).
+- **« Ce que les apprenants ont réalisé »** : vrais résultats ou projets, avec leur accord.
+
+### 13.11 Questions des lecteurs
+
+Les visiteurs posent une question sur la page produit ; l'admin y répond (brouillon proposé par l'IA) et la publie. Les questions publiées rassurent les suivants et améliorent le référencement.
 
 ## 14. Aperçus gratuits
 
@@ -451,6 +527,8 @@ Quand le bouton principal sort de l'écran : miniature, prix, mini-chrono, « Ac
 - **Achats récents et visiteurs en direct :** réels uniquement.
 - **Badges automatiques :** Best-seller (top 30 jours), Populaire, Nouveau, Mis à jour.
 - **Certificats vérifiables** (QR code → page publique de vérification) : preuve partageable sur LinkedIn.
+- **Lecteurs ayant terminé** un e-book et **apprenants ayant fini** une formation (réels, à partir d'un seuil).
+- **Réponse de l'auteur** sous les avis : Roger répond, publiquement, aux avis (surtout aux critiques). Rien ne rassure davantage.
 - **Signaux de confiance :** garantie, logos de paiement, photo réelle de Roger, numéro WhatsApp visible, réseaux sociaux, pages légales, informations de l'entreprise, « Vu dans » (si réel).
 - **Interdit :** faux avis, faux compteurs, fausses notifications.
 
@@ -458,7 +536,7 @@ Quand le bouton principal sort de l'écran : miniature, prix, mini-chrono, « Ac
 
 - Page longue automatique par produit : `/fr/offre/[slug]`, `/en/offer/[slug]`.
 - **Sans menu** : logo, FR | EN, devise, chrono, bouton WhatsApp.
-- Structure : accroche → problème → solution → produit → contenu → aperçu → bénéfices → preuves → auteur → bonus → offre → garantie → « Comment ça marche » → FAQ. **Bouton d'achat toutes les 2 à 3 sections** + barre collante.
+- Structure : accroche → problème → solution → produit → contenu → aperçu de l'intérieur → bénéfices → preuves → mot de l'auteur → bonus → **valeur de l'offre** → offre → garantie → « Comment ça marche » → FAQ. **Bouton d'achat toutes les 2 à 3 sections** + barre collante.
 - Textes générés par le Studio IA (FR + EN), modifiables et activables section par section.
 - Checkout express **sans quitter la page**.
 - Tests A/B (titre, visuel, prix affiché) : phase 2.
@@ -478,6 +556,7 @@ Objectif : **payer en moins de 60 secondes**, même pour un premier achat en lig
 - Client déjà connu sur cet appareil : **tout est pré-rempli**, paiement en un geste (lien « Ce n'est pas moi »).
 - **Récapitulatif** : miniature, titre, « FR + EN inclus », prix dans la devise du visiteur, prix barré, économie, chrono.
 - **Code promo replié** ; appliqué automatiquement s'il vient d'un lien.
+- **Produit gratuit** (section 24.3) : seulement le nom et le numéro WhatsApp (ou l'email), pas de paiement, accès immédiat.
 - **Un seul order bump.**
 - **Moyens de paiement du pays** en grandes tuiles avec logos ; **opérateur pré-sélectionné selon le numéro** ; numéro de paiement pré-rempli, modifiable.
 - **Montant débité affiché** si la devise de paiement diffère (section 7.5).
@@ -584,16 +663,81 @@ Codes avec canal (communauté, TikTok, Facebook, Instagram, influenceur, email, 
 
 `price_history` : prix barré toujours réel, prix de référence légal affichable (règle européenne des 30 jours).
 
-## 22. Popups, notifications et nouveautés
+### 21.7 Calendrier promotionnel
 
-- **Bienvenue** (1re visite) : « Rejoignez la communauté VIP : codes promo jusqu'à -45 % ».
-- **Offre spéciale** (campagne active), une fois par campagne ; sur ordinateur, aussi quand la souris quitte la page.
-- **Nouveauté** (produit de moins de 7 jours) : carte élégante en bas de l'écran, une fois par produit.
-- **Hésitation** (45 s sans action sur une page produit) : « Une question avant d'acheter ? » → aide ou WhatsApp.
-- **Panier abandonné** (au retour) : « Votre panier vous attend ».
-- **Achats récents** (option) : vraies commandes uniquement.
-- **Centre de notifications** (cloche) : promos, nouveautés, commandes, rappels, avec pastille du nombre de non lus.
-- **Règles :** un seul popup par visite (priorité : offre > nouveauté > bienvenue) ; jamais sur le checkout, l'attente, le succès, la liseuse, le lecteur ; ne cache jamais le bouton d'achat ; tout réglable dans l'admin.
+- Vue **calendrier** dans l'admin : toutes les campagnes, codes, popups et notifications programmés, semaine par semaine.
+- **« Produit de la semaine »** : un produit mis en avant automatiquement chaque semaine (bandeau, popup « À la une », notification), choisi par l'admin ou en rotation.
+- Alerte à l'admin si **aucune promotion n'est programmée** pour la semaine suivante.
+- Rythme conseillé : voir `6-PLAN-DE-LANCEMENT.md`.
+
+## 22. Système de popups, notifications et mises en avant
+
+Objectif : des réductions et des produits **mis en avant en permanence**, de façon professionnelle, **sans jamais gêner l'achat**.
+
+### 22.1 Trois familles d'éléments
+
+| Famille | Exemples | Fréquence maximale |
+|---|---|---|
+| **Fenêtres** (popups au centre sur ordinateur, tiroir en bas sur mobile) | Offre spéciale, produit à la une, bienvenue, sortie | **1 par visite** |
+| **Notifications discrètes** (petites cartes dans un coin, disparaissent seules après 6 s) | Nouveauté, achat récent, rappel de promo, vu récemment | **1 toutes les 60 à 90 s, 4 par visite au maximum** |
+| **Éléments permanents** | Barre promo en haut, étiquettes, chronos, bandeau « À la une », pastille de la cloche | Visibles pendant toute la campagne |
+
+C'est cet équilibre qui donne l'impression d'une boutique **vivante, toujours en promotion**, sans jamais agacer.
+
+### 22.2 Modèles prêts à l'emploi
+
+**Fenêtres**
+
+1. **Offre spéciale** (campagne active) : collage des couvertures concernées, « -45 % sur toutes les formations », chrono réel, code à copier, bouton « Voir les offres ». Après 8 s ou 40 % de défilement. Une fois par campagne.
+2. **Produit à la une** : couverture 3D, titre, note, prix promo, « Découvrir ». Programmé par l'admin (ex. l'e-book de la semaine), ciblé selon la catégorie consultée.
+3. **Bienvenue** (1re visite) : « Rejoignez la communauté DigiSkool : codes promo exclusifs jusqu'à -45 % » (bouton vert), ou e-book gratuit contre le numéro WhatsApp.
+4. **Intention de sortie** (ordinateur, la souris quitte la page) : e-book gratuit, ou code réel si une campagne « sortie » est active.
+5. **Rappel de panier** (au retour d'un visiteur avec un panier) : « Votre panier vous attend » + chrono si promo.
+6. **Vente croisée à l'ajout au panier** : « Ajouté ✅ — Souvent acheté avec : [produit], -20 % en pack » + « Payer maintenant ».
+7. **Alerte prix** : « Un produit de vos favoris est en promo : -40 % jusqu'à dimanche ».
+8. **Installer l'application** : à la 2e visite ou après un achat.
+9. **Liste d'attente** : « [Produit] sort vendredi. Soyez prévenu en premier et profitez du prix de lancement. »
+
+**Notifications discrètes**
+
+10. **Nouveauté** (produit de moins de 7 jours) : miniature, « Nouveau », titre.
+11. **Achat récent** (réel) : « Un lecteur de Douala vient d'acheter [produit] · il y a 12 min ».
+12. **Rappel de promo** : « ⏳ Plus que 3 h pour profiter de -45 % ».
+13. **Vu récemment** : « Toujours intéressé par [produit] ? Il est à -40 % ».
+14. **Reprendre** (clients) : « Reprendre [e-book] au chapitre 4 ».
+
+### 22.3 Ciblage
+
+Chaque élément peut cibler :
+- des **pages** (accueil, boutique, catégorie, produit précis, toutes) ;
+- un **type de visiteur** : nouveau ou connu, client ou non, acheteur ou non d'un produit précis ;
+- une **langue**, un **pays** ou une **zone de prix**, un **appareil** ;
+- une **source de trafic** : un visiteur venu d'une publicité TikTok pour l'e-book X voit l'offre de l'e-book X, pas une autre ;
+- une **période** et une **campagne**.
+
+### 22.4 Règles de confort (non négociables)
+
+- **Jamais** sur le checkout, l'attente Mobile Money, le succès, la liseuse, le lecteur, l'aide.
+- **Jamais** pendant que le visiteur tape, ni pendant une vidéo.
+- **Jamais** par-dessus le bouton d'achat ou la barre d'achat.
+- Fermeture facile : croix de 44 px, toucher en dehors, glisser vers le bas, touche Échap. Un élément fermé ne revient pas avant le délai réglé.
+- Un **gestionnaire central** décide de ce qui s'affiche, pour éviter les conflits.
+- Aucun décalage de mise en page ; animations et design de la charte ; accessible.
+- **Contenu réel** : prix, chronos, achats et chiffres viennent de la base.
+
+### 22.5 Design
+
+- **Fenêtre :** coins 20 px, ombre douce, fond blanc ou Nuit avec trame, visuel en haut, titre Plus Jakarta Sans 24 px, un seul bouton principal (Or) + lien « Plus tard ». Sur mobile : tiroir du bas, poignée de glissement.
+- **Notification discrète :** 360 px de large maximum, en bas à gauche sur ordinateur, au-dessus de la barre d'onglets sur mobile ; miniature 48 px, 2 lignes de texte, fine barre de progression de 6 s ; glisser pour fermer.
+- **Barre promo :** fond Rouge Promo ou Nuit, texte blanc, chrono en chiffres tabulaires, bouton « Copier le code ».
+
+### 22.6 Centre de notifications (cloche)
+
+Promos, nouveautés, commandes, rappels, mises à jour d'e-books ; pastille du nombre de non lus ; synchronisé avec les notifications push.
+
+### 22.7 Gestion et mesure
+
+Création depuis les modèles, aperçu mobile et ordinateur, programmation, ciblage, **test A/B** (2 versions), statistiques : affichages, clics, fermetures, **ventes et chiffre d'affaires générés**. Alerte si un élément est fermé par la grande majorité des visiteurs (il gêne : à revoir).
 
 ## 23. Communauté WhatsApp et parrainage
 
@@ -611,45 +755,142 @@ Codes avec canal (communauté, TikTok, Facebook, Instagram, influenceur, email, 
 - Page `/parrainage` et suivi dans l'espace client (« 3 amis ont acheté grâce à vous »).
 - **Programme d'affiliation** pour influenceurs (commission, paiement Mobile Money manuel) : phase 2.
 
-## 24. Produits bilingues et formats
+## 24. Catalogue, formats et stratégie produits
 
-### 24.1 Deux versions
+### 24.1 Stratégie : l'échelle de valeur
 
-Chaque produit en **français** et en **anglais** (titre, description, contenu, couverture, aperçu). **Un achat = les deux versions.**
+Chaque produit a une place sur une « échelle » qui fait passer le visiteur de gratuit à client fidèle. La plateforme pousse toujours vers la marche suivante (page « Et maintenant ? » des e-books, recommandations, séquences, offres réservées aux clients).
 
-### 24.2 E-books hébergés sur la plateforme
+| Marche | Produit | Rôle | Prix indicatif (zone FCFA, à adapter) |
+|---|---|---|---|
+| 0 | E-books **gratuits** | Récolter des numéros WhatsApp et des emails | Gratuit |
+| 1 | **Mini e-book** « produit d'appel » | Transformer un visiteur en client | 1 000 – 3 000 FCFA |
+| 2 | **E-book principal** | Cœur du catalogue | 5 000 – 10 000 FCFA |
+| 3 | **E-book premium** + bonus + version audio | Méthode complète | 10 000 – 20 000 FCFA |
+| 4 | **Collection / pack** d'e-books | Augmenter le panier | 15 000 – 30 000 FCFA |
+| 5 | **Formation vidéo** | Accompagnement complet | 20 000 – 60 000 FCFA |
+| 6 | **Pass DigiSkool** 12 mois | Tout le catalogue | À fixer quand le catalogue sera large |
 
-Chapitres → sections (texte riche, encadrés « À retenir », listes, tableaux, images, exercices, checklists), en FR et EN. Créés avec le Studio IA, écrits ou importés. À la publication : **PDF professionnel** par langue (modèle de la charte), nombre réel de pages, images d'aperçu. Lecture en ligne et téléchargement activables séparément. EPUB : phase 2.
+Chaque produit indique sa marche dans l'admin ; le Studio IA s'en sert pour adapter la longueur, le ton et le prix suggéré.
 
-### 24.3 Formations vidéo
+### 24.2 Deux versions
 
-Modules → leçons : vidéo FR et/ou EN, sous-titres FR et EN, texte, pièces jointes, quiz (phase 2). Téléchargement activable par formation et par leçon. Certificat vérifiable.
+Chaque produit en **français** et en **anglais** (titre, description, contenu, couverture, aperçu, audio). **Un achat = les deux versions.**
 
-### 24.4 Vidéos à l'unité
+### 24.3 E-books : le cœur du catalogue
+
+#### Formats livrés
+
+Pour chaque e-book, en FR et en EN : **lecture en ligne** (liseuse), **PDF** mis en page, **version audio** (option, section 27.4), **bonus** (section 27.5), **lecture hors ligne** dans l'application. EPUB : phase 2. Chaque format est activable séparément par l'admin.
+
+#### Anatomie d'un e-book DigiSkool
+
+Une structure standard, qui fait la qualité perçue et la vente suivante :
+
+1. **Couverture** (modèle de la charte).
+2. **« Ce que vous allez obtenir »** : la promesse et les résultats concrets, en une page.
+3. **Sommaire** cliquable, avec le temps de lecture de chaque chapitre.
+4. **Introduction** : le problème, la promesse, comment utiliser ce livre.
+5. **Chapitres** : page d'ouverture, sections, exemples africains concrets, encadrés, exercices, et un résumé « À retenir » à la fin.
+6. **Plan d'action** sur 7 ou 30 jours.
+7. **Ressources et modèles.**
+8. **Conclusion.**
+9. **« Et maintenant ? »** : la prochaine étape (produit suivant de l'échelle, avec un code **réel** réservé aux lecteurs), la communauté, la demande d'avis en un clic, le parrainage.
+10. **À propos de l'auteur.**
+11. **Mentions** : droits d'auteur, licence personnelle au nom de l'acheteur.
+
+#### Mise en page du PDF
+
+- Format **A5** (148 × 210 mm) : confortable sur téléphone, imprimable. Marges 18 mm.
+- Texte en **Literata** 11 pt (police de lecture de la charte), interligne 1,5 ; titres en Plus Jakarta Sans.
+- **Ouverture de chapitre** : pleine page dans la couleur du produit, trame DigiSkool, grand numéro, titre, objectif du chapitre.
+- **Encadrés** : « À retenir » (Or), « Exemple » (Nuit 100), « Astuce » (vert), « Attention » (rouge), « Exercice » (contour Nuit, cases à cocher).
+- **Pied de page** : titre · numéro de page · « Licence : [nom] ».
+- Schémas et illustrations dans le style de la charte.
+
+#### Collections
+
+E-books en séries (ex. « Collection Vendre en ligne », tomes 1 à 3) : page de collection, couvertures de série (même couleur, numéro de tome), prix de la collection avec l'économie affichée.
+
+#### Mises à jour
+
+Chaque e-book a un numéro de version. Les acheteurs reçoivent **gratuitement** les mises à jour, avec une notification « Nouvelle version : 2 chapitres ajoutés ». Badge « Mis à jour en [mois] » sur la page produit.
+
+#### E-books gratuits
+
+Téléchargement contre le numéro WhatsApp (ou l'email) : checkout simplifié **sans paiement**, accès immédiat, entrée dans la séquence de bienvenue (section 31.2).
+
+### 24.4 Formations vidéo
+
+Modules → leçons : vidéo FR et/ou EN, sous-titres FR et EN, texte, pièces jointes, **cahier d'exercices PDF**, quiz (phase 2). Téléchargement activable par formation et par leçon. Certificat vérifiable.
+
+### 24.5 Vidéos à l'unité
 
 Lecteur, sous-titres FR/EN, téléchargement activable.
 
-### 24.5 Templates et packs
+### 24.6 Templates et packs
 
-Templates téléchargeables ; packs à prix réduit.
+Templates téléchargeables (une version par langue si besoin). Packs à prix réduit, avec l'économie affichée.
 
-### 24.6 Offrir un produit
+### 24.7 Offrir un produit
 
 Nom et numéro WhatsApp (ou email) du destinataire + message : il reçoit l'accès directement.
 
-### 24.7 Pass DigiSkool (suggestion pour plus tard)
+### 24.8 Pass DigiSkool (pour plus tard)
 
-Accès à **tout le catalogue pendant 12 mois** pour un paiement unique (le Mobile Money se prête mal aux abonnements automatiques). Excellent pour augmenter le panier moyen quand le catalogue dépasse une dizaine de produits.
+Accès à **tout le catalogue pendant 12 mois** pour un paiement unique (le Mobile Money se prête mal aux abonnements automatiques). À lancer quand le catalogue dépasse une dizaine de produits.
 
-## 25. Espace client et expérience d'apprentissage
+### 24.9 « Bientôt disponible » et listes d'attente
 
-- **Accueil « Mes produits » :** produits achetés **en premier**, en grand, avec « Reprendre » ; puis promo, nouveautés, communauté, parrainage.
-- **Bibliothèque :** pour chaque produit et chaque langue : Lire / Regarder, Télécharger (si activé), Disponible hors ligne (application).
-- **Liseuse :** sommaire, progression, reprise automatique, **bascule FR ⇄ EN sur le même chapitre**, taille du texte, thèmes clair / sépia / sombre, plein écran, marque-pages (surlignage et notes en phase 2), filigrane discret.
-- **Lecteur vidéo :** progression, reprise à la seconde, vitesse, qualité, sous-titres FR/EN, version FR/EN, téléchargement si activé, filigrane dynamique.
-- **Motivation (inspiré des meilleures applications d'apprentissage) :** série de jours d'apprentissage, badges (premier chapitre, première formation terminée…), anneau de progression, rappels d'apprentissage par notification ou WhatsApp (si accepté), **certificat vérifiable** à partager.
-- **Recommandations** à la fin d'un produit (« Prochaine étape : … ») avec un code réservé aux clients.
-- Commandes et reçus, certificats, favoris, parrainage, profil (nom, numéro, email, pays, langue, devise, notifications, appareils connectés).
+- Page produit en mode « Bientôt » : couverture, date de sortie (chrono), aperçu, bouton **« Me prévenir »** (numéro WhatsApp ou email).
+- **Prix de lancement réservé à la liste d'attente** pendant 48 h après la sortie (réel).
+- À la sortie : message WhatsApp + notification push + email automatiques.
+- Idéal pour lancer chaque nouvel e-book avec des ventes dès la première heure.
+
+## 25. Espace client : lecture, écoute et apprentissage
+
+### 25.1 « Mes produits »
+
+- Produits achetés **en premier**, en grand ; carrousel **« Continuer »** (lecture, écoute, formation en cours).
+- **Bibliothèque** : pour chaque produit et chaque langue : Lire / Écouter / Regarder, Télécharger (si activé), Disponible hors ligne (application).
+- Puis : promo en cours, nouveautés, communauté, parrainage.
+
+### 25.2 Liseuse d'e-books (la meilleure expérience possible)
+
+- **Ouverture instantanée** au dernier endroit lu. Mise en page fluide adaptée à l'écran (pas un PDF qu'il faut zoomer).
+- **Barre du haut** (se masque pendant la lecture, réapparaît d'un toucher) : retour, titre, **FR ⇄ EN**, **Aa** (réglages), marque-page, recherche.
+- **Barre du bas** : « Chapitre 3/12 · 34 % · 12 min restantes dans ce chapitre ».
+- **Réglages Aa** : taille du texte (5 niveaux), police (Literata ou Inter), interligne, thèmes **clair / sépia / sombre**, largeur de colonne sur ordinateur.
+- **Navigation** : mode pages (glisser ou toucher les bords) ou défilement continu, au choix ; sommaire en tiroir.
+- **Surlignage** en 4 couleurs et **notes** personnelles ; page « Mes notes » exportable en PDF.
+- **Recherche** dans le livre.
+- **Partager une citation** : le lecteur sélectionne une phrase → la plateforme crée une **image élégante** (9:16 ou 1:1, charte, couverture, logo, lien du produit) à partager en statut WhatsApp. Chaque lecteur devient un relais publicitaire.
+- **Exercices et checklists cochables**, sauvegardés.
+- **Bascule FR ⇄ EN** au même endroit (même section).
+- **Écouter** (si version audio) : mini-lecteur en bas, synchronisé avec le chapitre.
+- **Fin de chapitre** : « Chapitre terminé ✅ », résumé « À retenir », « Chapitre suivant ».
+- **Fin du livre** : écran de félicitations, badge, demande d'avis en 2 clics, page « Et maintenant ? », partage de la réussite.
+- Protection : filigrane discret, copier-coller limité à quelques lignes, contenu hors ligne lisible uniquement dans l'application.
+
+### 25.3 Lecteur audio
+
+Lecture chapitre par chapitre, vitesse de 0,75× à 2×, avance et recul de 15 s, minuterie de sommeil, lecture en arrière-plan et écran verrouillé (application), hors ligne, reprise automatique, bascule FR ⇄ EN.
+
+### 25.4 Lecteur vidéo
+
+Modules et leçons, progression, reprise à la seconde, vitesse, qualité, sous-titres FR/EN, version FR/EN de la vidéo, **notes horodatées**, ressources et cahier d'exercices, « Marquer comme terminé », « Leçon suivante », téléchargement si activé, filigrane dynamique.
+
+### 25.5 Motivation
+
+Série de jours d'apprentissage, badges (premier chapitre, premier livre terminé, première formation terminée…), anneau de progression, rappels par notification ou WhatsApp (si accepté), **certificat vérifiable** à partager.
+
+### 25.6 Recommandations
+
+À la fin d'un produit : « Prochaine étape » (marche suivante de l'échelle) avec un code réel réservé aux clients.
+
+### 25.7 Compte
+
+Commandes et reçus, certificats, favoris et alertes prix, parrainage, profil (nom, numéro, email, pays, langue, devise, notifications, appareils connectés).
 
 ## 26. Livraison sécurisée et anti-piratage
 
@@ -662,26 +903,57 @@ Accès à **tout le catalogue pendant 12 mois** pour un paiement unique (le Mobi
 
 ## 27. Studio IA
 
+Je donne les informations et la stratégie, l'IA fabrique le produit complet. Je relis et je valide toujours avant publication.
+
 ### 27.1 E-book
 
-1. **Brief :** sujet, public, problème, promesse, **nombre de pages**, niveau, ton, **stratégie** (produit d'appel, principal, premium, lead magnet) et prix visé, langue de rédaction, notes et documents, contexte africain à privilégier.
-2. **Plan :** 3 titres + plan détaillé à valider.
+1. **Brief :** sujet, public, problème, promesse, **nombre de pages**, niveau, ton, **marche de l'échelle de valeur** (section 24.1) et prix visé, collection éventuelle, bonus souhaités, version audio (oui / non), langue de rédaction, notes et documents, contexte africain à privilégier.
+2. **Plan :** 3 titres + plan détaillé respectant l'**anatomie DigiSkool** (section 24.3), à valider.
 3. **Rédaction** chapitre par chapitre (tâche de fond, progression), 1 page ≈ 300 mots (réglable).
 4. **Traduction** complète et naturelle.
 5. **Contrôle qualité.**
 6. **Relecture** et régénération ciblée avec consigne.
-7. **Génération en FR et EN :** couverture, page produit, page publicitaire, « Ce que vous allez apprendre », FAQ, bonus suggérés, SEO, aperçus, **prix suggéré par zone**, posts réseaux sociaux, annonce communauté, **notification push**.
-8. **Aperçu → Publier** (ou programmer) ; déclenche le popup « Nouveauté ».
+7. **Génération en FR et EN :** couverture, PDF mis en page, aperçus (pages lisibles, pages floutées, « Aperçu de l'intérieur »), page produit, page publicitaire, bloc « Valeur de l'offre », FAQ, SEO, **prix suggéré par zone**, bonus (27.5), version audio (27.4), page « Et maintenant ? », contenus marketing (27.7).
+8. **Aperçu → Publier**, programmer, ou mettre en **« Bientôt disponible »** (liste d'attente). La publication déclenche la nouveauté (popup, notification, message à la liste d'attente).
 
 ### 27.2 Formation vidéo ou vidéo
 
-Vidéos + brief → transcription → sous-titres FR et EN → structure (modules, leçons, leçons d'aperçu conseillées) → pages de vente FR/EN, couverture, prix, annonces → support PDF en option → relecture → publication.
+Vidéos + brief → transcription → sous-titres FR et EN → structure (modules, leçons, leçons d'aperçu conseillées) → pages de vente FR/EN, couverture, prix, annonces → cahier d'exercices PDF → relecture → publication.
 
 ### 27.3 Import de contenu existant
 
-Contenus préparés ailleurs (ex. avec Claude dans son application ou son extension) : texte collé ou fichier (.md, .docx, .pdf, .txt) → découpage → traduction → couverture → pages de vente. Format Markdown documenté dans le README.
+Contenus préparés ailleurs (ex. avec Claude dans son application ou son extension) : texte collé ou fichier (.md, .docx, .pdf, .txt) → découpage selon l'anatomie DigiSkool → traduction → couverture → pages de vente. Format Markdown documenté dans le README.
 
-### 27.4 Technique
+### 27.4 Version audio des e-books
+
+- Générée à partir du texte final par un service de **synthèse vocale haute qualité**, en FR et en EN.
+- **Option forte pour la marque : la voix de Roger**, clonée avec son accord, qui lit ses propres livres.
+- Texte d'abord **adapté à l'oral** par l'IA (prompt n° 13) : tableaux décrits, abréviations développées, nombres lisibles, prononciations des noms propres et des lieux.
+- Chapitre par chapitre, avec un court générique sonore DigiSkool (option).
+- Dans l'admin : écouter, régénérer un chapitre, publier ; coût estimé avant génération.
+- Page produit : « 🎧 Version audio incluse · 3 h 20 » + extrait de 30 s.
+
+### 27.5 Bonus automatiques
+
+À partir du contenu de l'e-book, en FR et EN, mis en page avec la charte :
+- **cahier d'exercices** (exercices du livre avec espace pour écrire) ;
+- **fiche mémo** d'une page (l'essentiel du livre) ;
+- **checklists** et **modèles** mentionnés dans le livre.
+
+### 27.6 Mises à jour d'un e-book
+
+Ajouter ou réviser des chapitres → nouvelle version → **liste des changements** générée en FR/EN → PDF, audio et aperçus régénérés → acheteurs prévenus (notification, et WhatsApp ou email s'ils l'ont accepté).
+
+### 27.7 Contenus marketing générés
+
+Pour chaque produit, en FR et EN, prêts à publier :
+- 10 **citations** en images (formats statut et carré, charte) ;
+- 5 **posts** pour les réseaux sociaux ;
+- 3 **scripts de vidéos courtes** (15 à 30 s) pour Reels et TikTok : accroche, problème, solution, appel à l'action ;
+- 1 **carrousel** de 5 visuels ;
+- l'annonce pour la communauté, la notification push, l'email de lancement.
+
+### 27.8 Technique
 
 Tâches de fond avec reprise et notification ; estimation du coût, coût réel, budget mensuel ; prompts de `3-PROMPTS-IA.md` dans des fichiers dédiés. Règles : section 28.3.
 
@@ -717,20 +989,23 @@ Rôle `admin` (et `support` limité), vérifié côté serveur, double authentif
 6. **Pages publicitaires.**
 7. **Packs.**
 8. **Promotions** (campagnes, modèles, récurrences, codes, liens, QR codes, annonces, visuels, statistiques).
-9. **Popups, bannières, centre de notifications.**
+9. **Popups et mises en avant** (section 22) : modèles, ciblage, programmation, tests A/B, statistiques ; bannières ; **calendrier promotionnel** et produit de la semaine (section 21.7).
 10. **Notifications push :** rédaction FR/EN (avec l'IA), ciblage, programmation, statistiques d'ouverture.
-11. **Commandes :** renvoyer l'accès (WhatsApp / SMS / email), rembourser (retire l'accès), valider un paiement manuel, offrir.
-12. **Clients :** historique, accès, appareils connectés, export CSV.
-13. **Avis et témoignages** (modération, import).
-14. **Abonnés, communauté et parrainage.**
-15. **Centre d'aide :** articles FR/EN, vidéos, guides audio, statistiques.
-16. **Pixels et suivi** (section 30).
-17. **Paiements :** fournisseurs, routage par pays, **devises, taux, arrondis, zones de prix**, instructions par opérateur et par pays, messages d'erreur, **bandeau d'incident opérateur**, paiement manuel.
-18. **Messages :** modèles WhatsApp / SMS / email FR et EN, journal des envois.
-19. **Application :** version, liens des stores, bannière d'installation, statistiques.
-20. **Paramètres :** langue par défaut, liens communauté, numéros WhatsApp, réseaux, limites (téléchargements, appareils), seuils d'affichage, mots par page, budget IA.
-21. **Équipe, journal d'activité.**
-22. **Design** (`/admin/design`) et **Marque** (`/admin/marque`).
+11. **Séquences automatiques** (section 31.2) : activation, textes FR/EN, statistiques par étape.
+12. **Commandes :** renvoyer l'accès (WhatsApp / SMS / email), rembourser (retire l'accès), valider un paiement manuel, offrir.
+13. **Clients :** historique, accès, appareils connectés, export CSV.
+14. **Avis et témoignages** (modération, import).
+15. **Abonnés, communauté, parrainage, listes d'attente et alertes prix.**
+16. **Collections** d'e-books, **versions audio**, **bonus** et **mises à jour** d'e-books.
+17. **Questions des lecteurs** : réponses (brouillon IA) et publication.
+18. **Centre d'aide :** articles FR/EN, vidéos, guides audio, statistiques.
+19. **Pixels et suivi** (section 30).
+20. **Paiements :** fournisseurs, routage par pays, **devises, taux, arrondis, zones de prix**, instructions par opérateur et par pays, messages d'erreur, **bandeau d'incident opérateur**, paiement manuel.
+21. **Messages :** modèles WhatsApp / SMS / email FR et EN, journal des envois.
+22. **Application :** version, liens des stores, bannière d'installation, statistiques.
+23. **Paramètres :** langue par défaut, liens communauté, numéros WhatsApp, réseaux, limites (téléchargements, appareils), seuils d'affichage, mots par page, budget IA.
+24. **Équipe, journal d'activité.**
+25. **Design** (`/admin/design`) et **Marque** (`/admin/marque`).
 
 ## 30. Pixels, suivi et publicité
 
@@ -785,17 +1060,34 @@ Bannière cookies FR/EN ; consentement obligatoire avant les pixels (réglable, 
 
 ## 31. Emails, WhatsApp, SMS et notifications push
 
-**WhatsApp** (modèles validés par Meta, SMS en secours) : accès au produit · code « Mes produits » · paiement en attente / échoué · panier abandonné · demande d'avis · accès non ouvert · rappel d'apprentissage (si accepté) · parrainage réussi · promos et nouveautés (**uniquement** avec consentement).
+### 31.1 Messages transactionnels
 
-**Email :** bienvenue, confirmation + accès + communauté, paiement en attente / échoué, lead magnet, panier abandonné, nouveau produit (abonnés).
+**WhatsApp** (modèles validés par Meta, SMS en secours) : accès au produit · code « Mes produits » · paiement en attente / échoué · accès non ouvert · mise à jour d'un e-book · parrainage réussi · produit disponible (liste d'attente).
 
-**Push :** nouveautés, promos flash, rappels, commandes (section 10.4).
+**Email :** bienvenue, confirmation + accès + communauté, paiement en attente / échoué, e-book gratuit.
 
-**Admin :** chaque vente, accès non ouvert, paiement manuel, génération IA terminée, promo récurrente, incidents (section 35).
+**Push :** commandes, mises à jour, rappels (section 10.4).
 
 Modèle du message d'accès :
 - FR : « Merci {{prénom}} ! ✅ Votre achat *{{produit}}* est confirmé. Accédez-y ici (versions FR + EN) : {{lien}} — Besoin d'aide ? Répondez à ce message. »
 - EN : « Thank you {{first_name}}! ✅ Your purchase *{{product}}* is confirmed. Access it here (FR + EN versions): {{link}} — Need help? Just reply to this message. »
+
+### 31.2 Séquences automatiques (uniquement avec consentement)
+
+| Séquence | Déclencheur | Étapes |
+|---|---|---|
+| **Bienvenue** | E-book gratuit téléchargé | J0 : l'e-book + la communauté · J+1 : un conseil utile · J+3 : un témoignage réel + le produit d'appel · J+5 : rappel si une offre est en cours (vraie date de fin) |
+| **Après achat** | Paiement | J0 : accès · J+1 : « Avez-vous commencé ? » + astuces (liseuse, audio, application) · J+3 : demande d'avis (e-book) · J+7 : la marche suivante avec un code réservé aux clients |
+| **Panier abandonné** | Checkout non payé | +1 h : rappel + aide au paiement · +24 h : rappel avec la promo en cours s'il y en a une |
+| **Lecteur inactif** | Produit non ouvert depuis 7 jours | « Reprenez au chapitre 4 » |
+| **Alerte prix** | Un favori passe en promo | Message immédiat avec la réduction et la vraie fin |
+| **Réactivation** | Aucun achat depuis 60 jours | Nouveauté + offre réelle |
+
+**Règles :** 1 message marketing par jour au maximum, par personne et par canal ; arrêt dès l'achat ; désinscription en répondant « STOP » sur WhatsApp et par lien dans les emails ; **aucun message entre 21 h et 8 h, heure locale du client** ; toujours dans la langue du client.
+
+### 31.3 Notifications admin
+
+Chaque vente, accès non ouvert, paiement manuel à valider, génération IA terminée, promo récurrente déclenchée, semaine sans promo programmée, incidents (section 35).
 
 ## 32. Modèle de données (Postgres / Supabase)
 
@@ -817,11 +1109,17 @@ Montants en **entiers** (plus petite unité). Chaque table : `id uuid`, `created
 - `products` : `type`, `category_id`, `base_price`, `base_currency`, `cover_color`, `status`, `published_at`, `content_updated_at`, `is_featured`, `reading_enabled`, `download_enabled`, `offline_enabled`, `preview_pages`, `preview_seconds`, `target_pages`, `words_per_page`, `duration_minutes`, `historical_sales`, `show_sales_count`, `launch_limit`, `sales_count`, `rating_avg`, `rating_count`.
 - `product_translations` : `title`, `slug`, `subtitle`, `short_description`, `description`, `benefits`, `learning_outcomes`, `target_audience`, `not_for`, `faq`, `seo_title`, `seo_description`, `cover_url`, `cover_variants`, `pdf_path`, `page_count`, `preview_images`, `is_complete`.
 - `product_prices` : `product_id`, `price_zone` ou `currency`, `price`.
-- `price_history`, `product_bonuses` (+ traductions), `bundle_items`, `landing_pages`, `short_links`, `banners` (+ traductions).
+- `price_history`, `product_bonuses` (+ traductions, `value`), `bundle_items`, `landing_pages`, `short_links`, `banners` (+ traductions).
+- `collections` + `collection_translations` + `collection_items` (`position`, numéro de tome).
+- `product_versions` : `product_id`, `version`, `changelog` (FR/EN), `published_at`.
+- `audio_tracks` : `product_id`, `chapter_id`, `locale`, `audio_path`, `duration_seconds`, `voice`.
+- `waitlists` : `product_id`, `phone`, `email`, `locale`, `notified_at`.
+- `product_questions` : `product_id`, `user_id`, `question`, `answer`, `locale`, `is_published`.
+- Champs produits supplémentaires : `value_ladder_step`, `release_at` (Bientôt disponible), `audio_enabled`, `reading_time_minutes`.
 
 **E-books, formations, progression**
 - `ebook_chapters` + `ebook_chapter_translations` ; `course_modules` + traductions ; `course_lessons` + `course_lesson_translations`.
-- `reading_progress`, `bookmarks`, `lesson_progress`, `learning_streaks`, `user_badges`, `certificates` (`verification_code` unique).
+- `reading_progress`, `bookmarks`, `highlights` (`chapter_id`, `locale`, `range`, `color`, `note`), `checklist_states`, `audio_progress`, `lesson_progress`, `learning_streaks`, `user_badges`, `certificates` (`verification_code` unique).
 
 **Ventes et accès**
 - `checkout_sessions`, `checkout_events`.
@@ -829,11 +1127,14 @@ Montants en **entiers** (plus petite unité). Chaque table : `id uuid`, `created
 - `order_items`, `gifts`, `entitlements` (accès aux deux langues), `access_links`, `download_counts`, `offline_licenses` (`user_id`, `product_id`, `device_hash`, `expires_at`), `webhook_events`.
 
 **Promotions et croissance**
-- `promotions` + traductions, `coupons`, `announcements` + traductions.
+- `promotions` + traductions, `coupons`.
+- `popups` : `template`, `family` (`window` | `toast` | `permanent`), `targeting` (jsonb : pages, visiteurs, langue, zone, appareil, source), `schedule`, `frequency`, `variant`, `priority`, `is_active` + `popup_translations`.
+- `popup_events` : `popup_id`, `variant`, `event` (`view` | `click` | `close` | `conversion`), `visitor_id`, `order_id`.
 - `referrals` : `referrer_id`, `referred_user_id`, `order_id`, `reward_coupon_id`, `status`.
 
 **Preuves sociales et marketing**
-- `reviews`, `testimonials`, `wishlists`, `subscribers`, `community_clicks`, `tracking_settings`, `tracking_events`.
+- `reviews` (+ `author_reply`), `testimonials`, `wishlists`, `price_alerts` (`user_id`, `product_id`, `notified_at`), `subscribers`, `community_clicks`, `tracking_settings`, `tracking_events`.
+- `sequences`, `sequence_steps` (canal, délai, modèle), `sequence_enrollments` (`user_id` ou `subscriber_id`, `step`, `next_at`, `stopped_at`).
 
 **Aide**
 - `help_articles` + `help_article_translations` (`title`, `body`, `video_url`, `audio_url`), `help_searches` (`query`, `locale`, `results_count`).
@@ -937,9 +1238,11 @@ Identifiants de pixels, liens de communauté et numéros affichés : réglés da
 
 - Code complet, arborescence claire ; migrations SQL (tables, index, RLS, triggers, fonctions, buckets) ; `fr.json` et `en.json` complets.
 - Jetons de design (JSON + CSS + Tailwind), logo et icônes en SVG, pages `/admin/design` et `/admin/marque`.
+- Écrans conformes aux maquettes `5-MAQUETTES.md`.
+- **Un e-book de démonstration complet** en FR et EN, avec l'anatomie DigiSkool, le PDF mis en page, la version audio, le cahier d'exercices et la page « Et maintenant ? ».
 - PWA complète (manifeste, icônes, écrans de démarrage, service worker, hors ligne, push).
 - Paquets Google Play (TWA) et iPhone (Capacitor) avec guide de publication.
-- Données de démonstration bilingues (3 catégories, 3 e-books, 2 formations, 1 vidéo, 1 pack, 1 campagne -45 %, 2 codes, 10 articles d'aide, avis et témoignages marqués « démo »).
+- Données de démonstration bilingues (3 catégories, 1 e-book gratuit, 3 e-books dont une collection, 2 formations, 1 vidéo, 1 pack, 1 produit « Bientôt disponible », 1 campagne -45 %, 2 codes, 5 popups, 10 articles d'aide, avis et témoignages marqués « démo »).
 - `.env.example` et `README.md` (installation, chaque service, déploiement, rôle admin, import Markdown, validation des modèles WhatsApp, publication sur les stores).
 - **Tests automatisés :** webhook (signature, doublon, montant/devise) ; calcul des prix (promos, codes, devises, taux, arrondis, zones) ; détection du pays et de la devise ; connexion automatique après paiement ; code « Mes produits » (correct, incorrect, expiré, limite d'essais) ; accès refusé sans achat ; texte des pages verrouillées jamais envoyé ; licences hors ligne ; parrainage (anti-fraude) ; détection de la langue.
 - **Tests de bout en bout** (Playwright), FR et EN, écran de 360 px : publicité → page produit → checkout → paiement test → produit ouvert, **en moins de 60 secondes et 3 champs maximum**.
@@ -963,4 +1266,4 @@ Travaille **phase par phase** :
 13. Application : hors ligne, notifications push et stores
 14. Sécurité, conformité, tests et mise en ligne
 
-À la fin de chaque phase : ce qui est fait, ce qui reste, **comment je teste moi-même**. Si une information manque, choisis l'option la plus simple et la plus sûre, puis signale-le. Si tu vois une meilleure solution, propose-la avant de l'appliquer.
+Les écrans suivent les maquettes `5-MAQUETTES.md`. À la fin de chaque phase : ce qui est fait, ce qui reste, **comment je teste moi-même**. Si une information manque, choisis l'option la plus simple et la plus sûre, puis signale-le. Si tu vois une meilleure solution, propose-la avant de l'appliquer.

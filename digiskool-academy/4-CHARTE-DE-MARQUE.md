@@ -198,6 +198,12 @@ Fond `#071427`, surfaces `#0B1F3A` / `#12294D`, texte `#F1F5F9`, texte secondair
 - Lignes de texte de 60 à 75 caractères maximum.
 - Jamais de texte en dessous de 12 px.
 
+### 5.3 Police de lecture longue : Literata (e-books)
+
+- **Literata** (Google Fonts) a été dessinée pour la lecture longue sur écran : c'est la police des e-books DigiSkool, dans la liseuse (par défaut) et dans les PDF (11 pt, interligne 1,5).
+- Le lecteur peut passer à Inter dans les réglages de la liseuse.
+- Les titres des e-books restent en Plus Jakarta Sans : le livre garde l'identité de la marque.
+
 ---
 
 ## 6. Motif signature : la « Trame DigiSkool »
@@ -268,6 +274,11 @@ Chaque animation **guide** ou **rassure**. Aucune animation décorative qui rale
 - **Ligne de réassurance :** 🔒 Paiement sécurisé · ⚡ Accès immédiat · FR + EN inclus.
 - **Carte WhatsApp :** fond vert 50, bordure verte, icône officielle, numéro en clair, bouton communauté.
 - **Certificat :** fond Brume, trame DigiSkool, sceau doré, signature de Roger, QR code de vérification.
+- **Fenêtre promo (popup) :** coins 20 px, fond Nuit avec trame (ou blanc), collage de couvertures en haut, titre Plus Jakarta Sans 24 px, chrono en cases Nuit, un seul bouton Or, lien « Plus tard » discret.
+- **Notification discrète :** carte blanche 360 px max, miniature 48 px aux coins arrondis, 2 lignes, fine barre de progression Or de 6 s.
+- **Barre promo :** fond Rouge Promo, texte blanc, chrono en chiffres tabulaires, bouton « Copier le code » en contour blanc.
+- **Couvertures de collection :** même couleur pour tous les tomes, grand numéro de tome en Or dans le coin.
+- **Citation partagée :** fond dans la couleur du produit avec trame, guillemets Or géants, citation en Literata, couverture miniature et logo en bas.
 
 ---
 
@@ -279,7 +290,9 @@ Chaque animation **guide** ou **rassure**. Aucune animation décorative qui rale
 | Icône d'application | Android (adaptative), iOS, PWA (masquable), favicon |
 | Écran de démarrage | Dégradé Aube digitale + animation du logo |
 | Images de partage (Open Graph) | Modèle par produit et par langue |
-| E-books PDF | Couverture, page de titre, ouvertures de chapitres, encadrés « À retenir », pied de page, quatrième de couverture |
+| E-books PDF | Couverture, page de titre, ouvertures de chapitres, 5 types d'encadrés, pied de page, page « Et maintenant ? », quatrième de couverture (mise en page détaillée : cahier des charges, section 24.3) |
+| Bonus des e-books | Cahier d'exercices, fiche mémo, checklists |
+| Version audio | Générique sonore court (option), image de la piste audio |
 | Certificat | Modèle FR et EN |
 | Reçu / facture | Modèle FR et EN |
 | Emails | En-tête avec trame, pied de page, boutons Or |
