@@ -15,7 +15,7 @@ Kit complet pour faire construire par une IA **DigiSkool Academy**, la plateform
 - **bilingue français / anglais**, chaque produit livré dans les deux langues ;
 - **communauté WhatsApp**, **parrainage**, **séquences automatiques**, **pixels** fiables, **Studio IA**.
 
-## Les 6 fichiers du kit
+## Les 7 fichiers du kit
 
 | Fichier | À quoi il sert |
 |---|---|
@@ -25,6 +25,7 @@ Kit complet pour faire construire par une IA **DigiSkool Academy**, la plateform
 | [4-CHARTE-DE-MARQUE.md](4-CHARTE-DE-MARQUE.md) | La **charte de marque** : essence, slogans, personas, ton, logo, couleurs, polices, motif, animations, déclinaisons. Elle sert aussi pour tes réseaux sociaux et tes publicités. |
 | [5-MAQUETTES.md](5-MAQUETTES.md) | Les **maquettes** des 13 écrans clés : accueil, carte produit, page produit, checkout, attente Mobile Money, succès, Mes produits, liseuse, lecteur vidéo, popups… |
 | [6-PLAN-DE-LANCEMENT.md](6-PLAN-DE-LANCEMENT.md) | Le **plan de lancement et de croissance** : catalogue de départ, prélancement, lancement, communauté, publicités, chiffres à suivre, routine, 90 premiers jours. |
+| [7-CLAUDE.md](7-CLAUDE.md) | Les **instructions permanentes pour Claude Code**, à copier à la racine du projet sous le nom `CLAUDE.md` : Claude Code les relit à chaque session. |
 
 ## Tes demandes → où c'est
 
@@ -75,35 +76,45 @@ Kit complet pour faire construire par une IA **DigiSkool Academy**, la plateform
 6. **Fiscalité** : vendre à l'étranger peut entraîner des taxes (TVA en Europe) ; fais valider par un comptable.
 7. **Preuves, valeurs et promos réelles**, sans exception : c'est ce qui protège tes publicités des commentaires « c'est fake ».
 
-## Comment l'utiliser
+## Ta configuration
 
-1. **Remplis la fiche ci-dessous**, puis remplace chaque `[CROCHET]` dans les fichiers par ta valeur.
-2. **Choisis ton outil :**
-   - **Claude Code** ou **Cursor** (recommandé pour un projet de cette taille) : place les fichiers 1, 3, 4 et 5 dans le dossier `docs/` du projet ; le Prompt 0 demande à l'IA de les lire.
-   - **Lovable** ou **Bolt** : mets les fichiers 1, 4 et 5 dans l'espace « Knowledge » du projet, ou colle-les dans le Prompt 0.
-3. **Envoie le Prompt 0**, puis **les phases 1 à 14, une par une**, en faisant les vérifications de chaque phase.
-4. **Pendant la construction**, prépare ton lancement avec `6-PLAN-DE-LANCEMENT.md`.
+| Élément | Choix |
+|---|---|
+| Pays de l'entreprise | **Cameroun** (+237), devise de base **XAF (FCFA)**, fuseau Africa/Douala |
+| Domaine | **digiskoolacademy.com** (adresse officielle `https://www.digiskoolacademy.com`) |
+| Outil | **Claude Code** |
+| Paiement principal | **NotchPay** : MTN MoMo et Orange Money avec demande de paiement directe sur le téléphone, carte |
+| Paiement secondaire | **Flutterwave** (licencié au Cameroun) : cartes internationales, autres pays africains, diaspora |
+| Langue pour les téléphones ni en français ni en anglais | Anglais |
+| Application Android | `com.digiskoolacademy.app` |
+| Hébergement | Vercel (fonctions à Paris) + Supabase (Europe) : les plus rapides depuis le Cameroun |
 
-> Astuce mobile : sur GitHub, ouvre un fichier puis appuie sur **Raw** pour tout sélectionner et copier facilement.
+À confirmer à l'ouverture des comptes de paiement : les tarifs, les délais de reversement et, chez Flutterwave, les pays et devises encaissables avec un compte d'entreprise camerounais. CinetPay reste une option pour d'autres pays d'Afrique francophone.
 
-## Fiche à personnaliser
+## Ce qu'il te reste à remplir
 
 | Variable | Exemple | Ta valeur |
 |---|---|---|
-| `[DOMAINE]` | digiskool-academy.com (vérifie qu'il est libre) | |
-| `[LANGUE_PAR_DEFAUT]` | anglais (téléphones ni en français ni en anglais) | |
-| `[DEVISE_DE_BASE]` | FCFA (XAF) ou USD | |
-| `[FOURNISSEUR_PRINCIPAL]` | Afrique francophone : CinetPay, NotchPay, FedaPay, Fapshi… | |
-| `[FOURNISSEUR_SECONDAIRE]` | Afrique anglophone + cartes : Paystack, Flutterwave… | |
-| `[WHATSAPP_SUPPORT]` | numéro du service client, affiché en clair | |
-| `[LIEN_COMMUNAUTE_FR]` | lien de la communauté francophone | |
+| `[WHATSAPP_SUPPORT]` | +237 6XX XX XX XX (numéro du service client, affiché en clair) | |
+| `[LIEN_COMMUNAUTE_FR]` | lien d'invitation de la communauté francophone | |
 | `[LIEN_COMMUNAUTE_EN]` | lien de la communauté anglophone (ou le même) | |
-| `[ANDROID_PACKAGE]` | com.digiskool.academy | |
 | `[RÉSEAUX]` | liens Facebook, Instagram, TikTok, YouTube | |
 | `[LEAD_MAGNET]` | titre de ton e-book gratuit | |
 | `[REMBOURSEMENT]` | ex. « Satisfait ou remboursé pendant 7 jours » | |
 
-Pour les paiements, vérifie quels fournisseurs acceptent une entreprise enregistrée dans ton pays, quels pays et moyens ils couvrent, et s'ils envoient la **demande de paiement directement sur le téléphone** du client.
+Tu peux aussi donner ces informations directement à Claude Code quand il les demande.
+
+## Comment l'utiliser avec Claude Code
+
+1. **Fusionne ce travail dans la branche `main`** de ce dépôt (pour que les fichiers soient récupérables).
+2. **Crée un dépôt GitHub privé et vide** nommé `digiskool-academy`.
+3. **Ouvre Claude Code sur ce nouveau dépôt** (application Claude, onglet Code, ou claude.ai/code) et envoie le message de l'**étape préalable** (fichier 2) : Claude Code copie les documents dans `docs/` et crée `CLAUDE.md`.
+4. **Envoie le Prompt 0**, lis sa réponse, puis donne ton feu vert.
+5. **Une phase par session** : ouvre une nouvelle session, écris « Lis CLAUDE.md et docs/AVANCEMENT.md, puis : » suivi du prompt de la phase.
+6. **Après chaque phase**, fais les vérifications « Je vérifie » sur ton téléphone avant de passer à la suite.
+7. **Pendant la construction**, prépare ton lancement avec `6-PLAN-DE-LANCEMENT.md`.
+
+> Astuce mobile : sur GitHub, ouvre un fichier puis appuie sur **Raw** pour tout sélectionner et copier facilement.
 
 ## Services à prévoir
 
@@ -111,7 +122,7 @@ Pour les paiements, vérifie quels fournisseurs acceptent une entreprise enregis
 |---|---|---|
 | Supabase | Base de données, accès, fichiers | Gratuit pour démarrer, puis offre payante |
 | Vercel | Hébergement | Plan **Pro** (le plan gratuit n'autorise pas l'usage commercial) |
-| Fournisseurs de paiement | Mobile Money + carte | Commission par vente |
+| NotchPay et Flutterwave | Mobile Money + carte | Commission par vente (grilles à demander à chaque fournisseur) |
 | WhatsApp Business Platform (Meta) | Accès, codes, confirmations, séquences | Payé par message, selon le pays ; numéro dédié et vérification de l'entreprise |
 | Service SMS (ex. Africa's Talking, Twilio) | Secours | Payé par SMS |
 | Synthèse vocale (ex. ElevenLabs ou équivalent) | Versions audio des e-books | Selon le volume ; quelques dollars par e-book |

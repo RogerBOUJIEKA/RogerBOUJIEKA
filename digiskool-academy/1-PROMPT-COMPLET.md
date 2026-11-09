@@ -14,7 +14,8 @@ Tu avances par phases, tu expliques brièvement ce que tu fais, tu ne casses jam
 
 - **Nom :** DigiSkool Academy (nom court : DigiSkool).
 - **Signature :** « Apprenez. Appliquez. Avancez. » / "Learn. Apply. Grow."
-- **Propriétaire :** Roger BOUJIEKA, vendeur de produits digitaux depuis 2 ans, designer graphique.
+- **Propriétaire :** Roger BOUJIEKA, vendeur de produits digitaux depuis 2 ans, designer graphique. **Entreprise basée au Cameroun.**
+- **Domaine :** **digiskoolacademy.com** (adresse officielle : `https://www.digiskoolacademy.com` ; le domaine sans « www » redirige vers « www »).
 - **Type :** plateforme **personnelle**, avec **un seul vendeur**. Ce n'est **pas** une marketplace, ni un outil pour d'autres créateurs. Il y a un administrateur (Roger), éventuellement une équipe support, et des clients.
 - **Produits (par priorité) :** 1. **e-books**, le cœur du catalogue (lecture en ligne, PDF, version audio, bonus — section 24) ; 2. **formations vidéo** ; 3. **vidéos** à l'unité ; 4. templates et packs.
 - **Marchés :** Afrique francophone, Afrique anglophone, diaspora, international. Clients surtout **sur téléphone**, souvent venus d'une **publicité**, parfois avec une connexion lente.
@@ -65,7 +66,7 @@ Udemy pour la structure et le sérieux (cartes produit, page produit avec en-tê
 - **PWA :** Serwist (service worker), manifeste, notifications **Web Push** (clés VAPID)
 - **Applications des stores :** Bubblewrap ou PWABuilder (Google Play, Microsoft Store), **Capacitor** (App Store)
 - **Supabase** : Postgres, Auth (connexion par numéro WhatsApp + code, Google, lien magique ; MFA pour l'admin), Storage (bucket public pour les images, buckets privés pour les fichiers vendus), **Realtime**, Row Level Security sur **toutes** les tables, Vault pour les jetons secrets
-- **libphonenumber-js** : indicatif automatique, format, détection de l'opérateur
+- **libphonenumber-js** : indicatif automatique, format et validation des numéros. L'**opérateur** (MTN, Orange…) est détecté grâce à une **table de préfixes par pays, modifiable dans l'admin** (libphonenumber-js ne fournit pas l'opérateur), ou confirmé par le fournisseur de paiement.
 - **Taux de change :** API de taux de change mise à jour chaque jour + valeurs modifiables dans l'admin
 - **Paiement :** plusieurs fournisseurs derrière une couche `PaymentProvider`
 - **WhatsApp Business Platform (Cloud API)** pour les accès, codes et confirmations ; **SMS de secours** (ex. Africa's Talking, Twilio)
@@ -79,7 +80,7 @@ Udemy pour la structure et le sérieux (cartes produit, page produit avec en-tê
 - **Anti-robots :** Cloudflare Turnstile, invisible
 - **Éditeur riche (admin) :** Tiptap — **Validation :** Zod — **Formulaires :** React Hook Form
 - **Limitation de requêtes :** Upstash Redis — **Erreurs :** Sentry — **Disponibilité :** surveillance externe (ex. Better Stack)
-- **Hébergement :** Vercel (plan Pro), domaine [DOMAINE]
+- **Hébergement :** Vercel (plan Pro), domaine `digiskoolacademy.com`. **Régions les plus proches du Cameroun** (le trafic internet camerounais passe surtout par l'Europe) : fonctions Vercel à Paris (`cdg1`), base Supabase en Europe (Paris ou Francfort).
 
 > Si l'outil impose une autre stack (ex. Lovable : React + Vite + Supabase), garde exactement la même architecture fonctionnelle et place toute la logique sensible dans des **Supabase Edge Functions**.
 
@@ -124,8 +125,8 @@ Contraste AA, focus visible, navigation au clavier, textes alternatifs, popups a
 
 ### 6.1 Détection automatique de la langue
 
-- Première visite : langue du **téléphone ou du navigateur** (`Accept-Language`) : français → **français** ; anglais → **anglais** ; autre → **[LANGUE_PAR_DEFAUT]** (réglable).
-- `/` redirige vers `/fr` ou `/en`. **Liens courts sans langue** (`[DOMAINE]/p/...`) : redirection selon le téléphone.
+- Première visite : langue du **téléphone ou du navigateur** (`Accept-Language`) : français → **français** ; anglais → **anglais** ; autre → **anglais** (réglable).
+- `/` redirige vers `/fr` ou `/en`. **Liens courts sans langue** (`digiskoolacademy.com/p/...`) : redirection selon le téléphone.
 - Lien ouvert dans une autre langue que celle du téléphone : on respecte le lien, avec un bandeau discret « This page is also available in English → Switch » (une fois).
 
 ### 6.2 Bouton de langue
@@ -217,7 +218,7 @@ Si le moyen de paiement débite dans une autre devise que celle affichée (ex. c
 
 ### 7.7 Prix régionaux (recommandé)
 
-L'admin peut fixer **un prix par zone** (Afrique centrale, Afrique de l'Ouest, Nigeria, Afrique de l'Est, Europe, International), comme Udemy adapte ses prix au pouvoir d'achat. À défaut, conversion automatique du prix de base [DEVISE_DE_BASE].
+L'admin peut fixer **un prix par zone** (Afrique centrale, Afrique de l'Ouest, Nigeria, Afrique de l'Est, Europe, International), comme Udemy adapte ses prix au pouvoir d'achat. À défaut, conversion automatique du prix de base en **XAF (FCFA)**.
 
 ## 8. Paiements locaux
 
@@ -226,7 +227,7 @@ L'admin peut fixer **un prix par zone** (Afrique centrale, Afrique de l'Ouest, N
 - **Afrique francophone :** MTN Mobile Money, Orange Money, Moov Money, Wave, Airtel Money, carte bancaire.
 - **Afrique anglophone :** carte, Mobile Money (MTN MoMo, M-Pesa…), virement, USSD.
 - **International :** carte bancaire, Apple Pay / Google Pay si le fournisseur les propose.
-- Fournisseurs : **[FOURNISSEUR_PRINCIPAL]** et **[FOURNISSEUR_SECONDAIRE]** (ex. CinetPay, NotchPay, FedaPay, Fapshi ; Paystack, Flutterwave). Préférer ceux qui envoient la **demande de paiement directement sur le téléphone** du client.
+- Fournisseurs : **NotchPay** (principal) et **Flutterwave** (secondaire), configuration détaillée en section 8.3. La couche `PaymentProvider` permet d'en ajouter d'autres (ex. CinetPay pour d'autres pays d'Afrique francophone).
 - **Routage par pays** dans l'admin : quels fournisseurs et moyens s'affichent, dans quel ordre.
 - **Paiement manuel** (dépôt + référence) : **désactivé par défaut**, il casse l'accès immédiat.
 
@@ -238,6 +239,33 @@ L'admin peut fixer **un prix par zone** (Afrique centrale, Afrique de l'Ouest, N
 4. **Idempotence** (table `webhook_events`).
 5. **Rattrapage** (Vercel Cron) : toutes les 2 min pendant 30 min, puis toutes les 10 min jusqu'à 24 h.
 6. Mode test et mode réel séparés. **3-D Secure** obligatoire pour les cartes, limites anti-fraude (tentatives répétées, cartes multiples).
+
+### 8.3 Configuration de départ : entreprise au Cameroun
+
+**Fournisseurs**
+
+| Rôle | Fournisseur | Ce qu'il apporte |
+|---|---|---|
+| **Principal** | **NotchPay** | MTN Mobile Money et Orange Money au Cameroun avec **demande de paiement envoyée directement sur le téléphone** du client (paiement direct par canal `cm.mtn` ou `cm.orange`), carte bancaire |
+| **Secondaire** | **Flutterwave** (licencié au Cameroun) | Cartes internationales, Mobile Money et paiements dans d'autres pays africains, clients de la diaspora |
+| Option | CinetPay | Autres pays d'Afrique francophone, si Flutterwave ne les couvre pas pour un compte camerounais |
+
+À confirmer à l'ouverture des comptes : grilles tarifaires, délais de reversement, et, chez Flutterwave, **les pays et devises encaissables avec un compte d'entreprise camerounais**.
+
+**Routage par défaut** (modifiable dans l'admin)
+
+| Pays du client | Moyens affichés, dans l'ordre | Fournisseur |
+|---|---|---|
+| Cameroun | MTN MoMo · Orange Money · Carte | NotchPay |
+| Autres pays de la CEMAC et de l'UEMOA | Mobile Money du pays · Carte | Flutterwave (ou CinetPay) |
+| Nigeria, Ghana, Kenya et autres pays anglophones | Moyens locaux · Carte | Flutterwave |
+| Europe, Amérique, reste du monde | Carte (Apple Pay / Google Pay si disponibles) | Flutterwave |
+
+**Valeurs par défaut**
+- Pays par défaut : **Cameroun** (indicatif **+237**), devise **XAF**.
+- Fuseau horaire des campagnes, chronos et heures calmes des messages : **Africa/Douala** pour l'admin ; heure locale du client pour l'affichage.
+- Instructions « Je n'ai pas reçu la demande » (à vérifier puis modifier dans l'admin) : MTN MoMo → composer **\*126#** pour voir et valider les paiements en attente ; Orange Money → composer **#150#**.
+- Pages légales et factures : raison sociale, **RCCM**, **NIU**, adresse au Cameroun.
 
 ## 9. Connexion sans inscription : l'accès par numéro
 
@@ -307,7 +335,7 @@ Une seule base de code (la plateforme web) devient une application installable p
 
 ### 10.5 Google Play (Android)
 
-- Publication de la PWA en **Trusted Web Activity** (Bubblewrap ou PWABuilder), nom de paquet [ANDROID_PACKAGE], Digital Asset Links, fiche du store FR et EN.
+- Publication de la PWA en **Trusted Web Activity** (Bubblewrap ou PWABuilder), nom de paquet `com.digiskoolacademy.app`, Digital Asset Links, fiche du store FR et EN.
 - **Règle des stores :** Google Play impose en général son propre système de paiement (avec commission) pour la vente de contenus numériques **à l'intérieur** de l'application. La version Google Play est donc une **application « Mes produits »** : connexion par numéro, bibliothèque, liseuse, lecteur vidéo, hors ligne, notifications, communauté, aide. **Les achats se font sur le site.** Dans cette version, les boutons et liens d'achat sont masqués (détection de l'application).
 - Liens des messages WhatsApp et emails : ils ouvrent directement l'application si elle est installée (App Links).
 - Règles à revérifier au moment de la publication : elles évoluent et varient selon les pays.
@@ -1159,9 +1187,9 @@ Montants en **entiers** (plus petite unité). Chaque table : `id uuid`, `created
 - Validation Zod, contenu riche nettoyé, limitation des requêtes (codes, checkout, codes promo, chat, formulaires), en-têtes de sécurité (CSP compatible pixels, HSTS).
 - Aucune clé secrète côté navigateur.
 - Pages légales FR/EN ; consentements (cookies, WhatsApp, email, push) ; désinscription depuis chaque message marketing.
-- **Données personnelles :** respect du RGPD pour l'Europe et des lois nationales africaines de protection des données ; export et suppression des données sur demande.
-- **Fiscalité (à valider avec un comptable) :** la vente de produits numériques à des particuliers à l'étranger peut entraîner des taxes dans le pays du client (ex. TVA européenne via le guichet unique OSS, taxes sur les services numériques dans certains pays africains). La plateforme enregistre le pays du client, les montants hors taxes et taxes, et peut afficher les prix taxes comprises par zone.
-- **Factures** conformes générées automatiquement (numérotation continue, informations de l'entreprise).
+- **Données personnelles :** respect de la loi camerounaise sur la protection des données personnelles, du RGPD pour les visiteurs européens et des lois des autres pays ciblés ; export et suppression des données sur demande.
+- **Fiscalité (à valider avec un comptable au Cameroun) :** obligations fiscales camerounaises de l'entreprise ; et la vente de produits numériques à des particuliers à l'étranger peut entraîner des taxes dans le pays du client (ex. TVA européenne via le guichet unique OSS, taxes sur les services numériques dans certains pays africains). La plateforme enregistre le pays du client, les montants hors taxes et taxes, et peut afficher les prix taxes comprises par zone.
+- **Factures** conformes générées automatiquement (numérotation continue, raison sociale, RCCM, NIU, adresse).
 
 ## 34. SEO
 
@@ -1178,18 +1206,21 @@ Métadonnées par page et par langue, `hreflang`, `canonical`, sitemap, `robots.
 ## 36. Variables d'environnement (`.env.example`)
 
 ```
-NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_SITE_URL=https://www.digiskoolacademy.com
 NEXT_PUBLIC_DEFAULT_LOCALE=en
+NEXT_PUBLIC_DEFAULT_COUNTRY=CM
+NEXT_PUBLIC_DEFAULT_CURRENCY=XAF
+ADMIN_TIMEZONE=Africa/Douala
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 
 PAYMENT_MODE=test
-PAYMENT_PRIMARY_PROVIDER=
+PAYMENT_PRIMARY_PROVIDER=notchpay
 PAYMENT_PRIMARY_PUBLIC_KEY=
 PAYMENT_PRIMARY_SECRET_KEY=
 PAYMENT_PRIMARY_WEBHOOK_SECRET=
-PAYMENT_SECONDARY_PROVIDER=
+PAYMENT_SECONDARY_PROVIDER=flutterwave
 PAYMENT_SECONDARY_PUBLIC_KEY=
 PAYMENT_SECONDARY_SECRET_KEY=
 PAYMENT_SECONDARY_WEBHOOK_SECRET=
@@ -1205,7 +1236,7 @@ SMS_SENDER_ID=
 
 NEXT_PUBLIC_VAPID_PUBLIC_KEY=
 VAPID_PRIVATE_KEY=
-ANDROID_PACKAGE_NAME=
+ANDROID_PACKAGE_NAME=com.digiskoolacademy.app
 ANDROID_SHA256_CERT_FINGERPRINTS=
 
 BUNNY_STREAM_LIBRARY_ID=
@@ -1221,7 +1252,7 @@ INNGEST_EVENT_KEY=
 INNGEST_SIGNING_KEY=
 
 RESEND_API_KEY=
-EMAIL_FROM=
+EMAIL_FROM=DigiSkool Academy <bonjour@digiskoolacademy.com>
 ADMIN_NOTIFICATION_EMAIL=
 
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=

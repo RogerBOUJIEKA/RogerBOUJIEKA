@@ -99,7 +99,7 @@ Toute la carte est cliquable. Sur ordinateur, au survol : fenêtre « Ce que vou
 │ ( Ajouter au panier )      ( 🎁 Offrir )
 │ 🔒 Paiement sécurisé · ⚡ Accès immédiat
 │ 🇫🇷🇬🇧 Version française + English version
-│ [MTN MoMo] [Orange Money] [Wave] [Visa]
+│ [MTN MoMo] [Orange Money] [Visa] [Mastercard]
 │ ┌ 💬 Une question ? +237 6XX XX XX XX  › ┐   ← carte WhatsApp
 └────────────────────────────────────────────
 ```
@@ -214,9 +214,9 @@ Toute la carte est cliquable. Sur ordinateur, au survol : fenêtre « Ce que vou
 │ ┌────────────┐ ┌────────────┐
 │ │ MTN MoMo ✓ │ │ Orange Money│              ← présélection selon numéro
 │ └────────────┘ └────────────┘
-│ ┌────────────┐ ┌────────────┐
-│ │   Wave     │ │   Carte    │
-│ └────────────┘ └────────────┘
+│ ┌───────────────────────────┐
+│ │  Carte (Visa, Mastercard) │                ← moyens du Cameroun
+│ └───────────────────────────┘
 │ Numéro MoMo : 6 XX XX XX XX ( modifier )
 │ ( Vous avez un code promo ? )
 │────────────────────────────────────────────
@@ -228,7 +228,7 @@ Toute la carte est cliquable. Sur ordinateur, au survol : fenêtre « Ce que vou
 └────────────────────────────────────────────
 ```
 
-**Règles :** 3 champs maximum ; tout est pré-rempli pour un client connu ; si la devise débitée diffère, afficher « Montant débité : 15,00 USD (≈ 9 900 FCFA) » au-dessus du bouton.
+**Règles :** les tuiles affichées dépendent du pays (ici le Cameroun : MTN MoMo, Orange Money, carte) ; 3 champs maximum ; tout est pré-rempli pour un client connu ; si la devise débitée diffère, afficher « Montant débité : 15,00 USD (≈ 9 900 FCFA) » au-dessus du bouton.
 
 ---
 
@@ -253,6 +253,8 @@ Toute la carte est cliquable. Sur ordinateur, au survol : fenêtre « Ce que vou
 │   La demande expire dans 02:41
 │
 │   ( Je n'ai pas reçu la demande )
+│     → MTN : composez *126# pour valider
+│       Orange : composez #150#  (à vérifier)
 │   ( Changer de moyen de paiement )
 │ ┌ 💬 Un souci ? +237 6XX XX XX XX       › ┐
 └────────────────────────────────────────────

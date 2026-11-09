@@ -7,6 +7,28 @@ Après chaque phase, fais les vérifications « Je vérifie » avant de passer �
 
 ---
 
+## Étape préalable — Préparer le projet (une seule fois)
+
+1. Sur **github.com**, crée un dépôt **privé et vide** nommé `digiskool-academy`.
+2. Ouvre **Claude Code** sur ce dépôt (application Claude, onglet Code, ou claude.ai/code).
+3. Envoie ce message :
+
+```text
+Prépare le projet DigiSkool Academy, sans rien coder d'autre :
+1. Récupère les fichiers du dossier digiskool-academy du dépôt
+   GitHub RogerBOUJIEKA/RogerBOUJIEKA (branche main).
+2. Copie 1-PROMPT-COMPLET.md, 3-PROMPTS-IA.md,
+   4-CHARTE-DE-MARQUE.md, 5-MAQUETTES.md et
+   6-PLAN-DE-LANCEMENT.md dans un dossier docs/.
+3. Copie 7-CLAUDE.md à la racine sous le nom CLAUDE.md.
+4. Crée docs/AVANCEMENT.md avec le titre « Avancement du
+   projet » et la liste des 14 phases, toutes « à faire ».
+5. Fais un commit « Mise en place des documents du projet »
+   et pousse-le.
+```
+
+---
+
 ## Prompt 0 — Le contexte (à envoyer en premier)
 
 ```text
@@ -14,26 +36,22 @@ Je vais construire avec toi DigiSkool Academy, ma plateforme
 personnelle de vente de produits digitaux (e-books, formations
 vidéo, vidéos), bilingue français / anglais, pour l'Afrique
 francophone, l'Afrique anglophone, la diaspora et
-l'international. Site web + application (Android, iPhone,
-ordinateur).
+l'international. Mon entreprise est au Cameroun. Domaine :
+digiskoolacademy.com. Site web + application (Android,
+iPhone, ordinateur).
 
-Les documents de référence (à lire en entier) :
-- le cahier des charges : 1-PROMPT-COMPLET.md
-- la charte de marque, qui s'applique sans exception :
-  4-CHARTE-DE-MARQUE.md
-- les maquettes des écrans clés : 5-MAQUETTES.md
-- les prompts de l'IA intégrée : 3-PROMPTS-IA.md
-
-[AVEC CLAUDE CODE OU CURSOR : place ces fichiers dans le
-dossier docs/ du projet et écris « Lis les fichiers du
-dossier docs/ ».
-AVEC LOVABLE OU BOLT : colle ici le contenu des fichiers 1,
-4 et 5, ou mets-les dans l'espace « Knowledge » du projet.]
+Lis en entier CLAUDE.md, puis tous les fichiers du dossier
+docs/ : le cahier des charges (1-PROMPT-COMPLET.md), la charte
+de marque (4-CHARTE-DE-MARQUE.md), les maquettes
+(5-MAQUETTES.md), les prompts de l'IA intégrée
+(3-PROMPTS-IA.md) et le plan de lancement
+(6-PLAN-DE-LANCEMENT.md).
 
 Les priorités absolues :
 1. Zéro inscription, zéro mot de passe pour les clients.
-2. Paiement ultra simple (3 champs maximum, Mobile Money
-   en quelques secondes, prix dans la devise du visiteur).
+2. Paiement ultra simple (3 champs maximum, MTN MoMo et
+   Orange Money en quelques secondes, prix dans la devise
+   du visiteur).
 3. Accès immédiat au produit après le paiement.
 4. Un niveau de design et de finition international.
 5. Les e-books au cœur du catalogue : la meilleure
@@ -42,13 +60,16 @@ Les priorités absolues :
 Pour l'instant, ne code rien. Je veux que tu :
 1. Résumes en 15 points ce que tu as compris.
 2. Proposes l'arborescence des dossiers du projet.
-3. Listes les informations qui te manquent.
+3. Listes les informations et les comptes qui te manquent.
 4. Me dises ce que tu ferais différemment ou en plus, en
    tant qu'expert, et pourquoi.
 5. Confirmes le plan en 14 phases.
+6. Notes tout cela dans docs/AVANCEMENT.md.
 
 Attends mon feu vert avant de commencer la phase 1.
 ```
+
+> **Conseil Claude Code :** ouvre **une nouvelle session pour chaque phase** et commence par « Lis CLAUDE.md et docs/AVANCEMENT.md, puis : » suivi du prompt de la phase. Grâce au journal d'avancement, Claude Code reprend exactement où il s'était arrêté.
 
 ---
 
@@ -273,8 +294,11 @@ Sections 8, 17, 18 et 31 du cahier des charges.
    détecté depuis le numéro, montant débité affiché si la
    devise diffère, un seul bouton « Payer », aide
    contextuelle, erreurs simples, réessayer sans ressaisir.
-2. PaymentProvider + [FOURNISSEUR_PRINCIPAL] et
-   [FOURNISSEUR_SECONDAIRE] en mode test, routage par pays,
+2. PaymentProvider + NotchPay (principal : MTN MoMo et
+   Orange Money avec demande directe sur le téléphone,
+   carte) et Flutterwave (secondaire : cartes
+   internationales, autres pays) en mode test, routage
+   par pays (section 8.3),
    3-D Secure, limites anti-fraude.
 3. Écran d'attente Mobile Money (17.2) : statut en direct,
    guide audio, instructions par opérateur, bandeau
@@ -470,7 +494,7 @@ Phase 13 : sections 10.3 à 10.7 du cahier des charges.
    statistiques, fonctionnement sur Android, ordinateur
    et iPhone (application installée).
 3. Paquet Google Play (Trusted Web Activity) : nom de
-   paquet [ANDROID_PACKAGE], Digital Asset Links, App Links,
+   paquet com.digiskoolacademy.app, Digital Asset Links, App Links,
    version « Mes produits » sans achats intégrés, fiche du
    store FR et EN.
 4. Paquet iPhone avec Capacitor : notifications natives,
@@ -503,7 +527,7 @@ Phase 14 : sections 33, 35 et 37 du cahier des charges.
 5. Performance avec pixels actifs (Lighthouse ≥ 90,
    LCP < 2,5 s, INP < 200 ms, CLS < 0,1), accessibilité.
 6. Suppression des données de démonstration.
-7. Guide de mise en ligne : Vercel + [DOMAINE], DNS email
+7. Guide de mise en ligne : Vercel + digiskoolacademy.com (www), DNS email
    (SPF, DKIM, DMARC), WhatsApp Business Platform
    (vérification, modèles), SMS, paiements en mode réel +
    webhooks, Bunny, Inngest, taux de change, sauvegardes,

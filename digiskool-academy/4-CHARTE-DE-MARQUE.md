@@ -19,6 +19,7 @@ La charte qui donne à DigiSkool Academy l'allure d'un produit international hau
 - **Mission :** rendre les compétences digitales concrètes, simples et accessibles à tous les Africains et à la diaspora.
 - **Vision :** devenir l'académie digitale de référence en Afrique francophone et anglophone.
 - **Promesse :** « Un savoir concret, accessible immédiatement, dans votre langue. »
+- **Origine :** née au **Cameroun**, pays officiellement bilingue. DigiSkool parle naturellement français **et** anglais : le bilinguisme n'est pas une option, c'est dans son ADN. Une histoire à raconter dans la page « À propos » et les publicités.
 
 ### 1.3 Positionnement
 
