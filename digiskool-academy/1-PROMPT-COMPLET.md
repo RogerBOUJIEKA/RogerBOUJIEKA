@@ -194,10 +194,11 @@ Objectif : chaque visiteur voit **immédiatement les prix dans sa devise**, sans
 
 Liste et correspondances modifiables dans l'admin.
 
-### 7.3 Sélecteur de devise dans le header
+### 7.3 Sélecteur de pays et de devise
 
-- Icône de devise en haut (ex. « 🇨🇲 XAF ▾ ») sur ordinateur, mobile et application.
-- Un clic ouvre une fenêtre : « Détecté automatiquement : Cameroun », recherche, liste des devises avec drapeaux. Choix mémorisé.
+- Le visiteur choisit **son pays** (pas une devise abstraite) : la devise et les moyens de paiement suivent.
+- **Bouton visible avec du texte**, pas seulement une icône : « Votre pays : 🇨🇲 Cameroun · Prix en FCFA — Changer », placé **juste au-dessus du prix** sur chaque page produit, en haut de la boutique et dans le récapitulatif du checkout ; rappel dans le menu.
+- Un toucher ouvre une fenêtre : « Détecté automatiquement : Cameroun », recherche, liste des pays avec drapeau, devise et le prix d’exemple converti. Choix mémorisé.
 
 ### 7.4 Convertisseur sur les prix
 
@@ -355,7 +356,7 @@ Barre d'onglets en bas, transitions fluides, tirer pour actualiser, retour arri�
 
 ## 11. Couvertures automatiques (miniatures au même design)
 
-- **Modèle unique** (charte) : fond dans la couleur du produit avec dégradé et **trame DigiSkool** ; en haut le logo + le type (« E-BOOK », « FORMATION VIDÉO »…) ; au centre le titre (Plus Jakarta Sans 800, blanc) et le sous-titre ; en bas l'icône du thème, le badge **FR** / **EN** et « Roger BOUJIEKA ».
+- **Modèle unique** (charte) : fond dans la couleur du produit avec dégradé et **trame DigiSkool** ; en haut le logo + le type (« E-BOOK », « FORMATION VIDÉO »…) ; au centre le titre (Plus Jakarta Sans 800, blanc) et le sous-titre ; en bas l'icône du thème, le badge **FR** / **EN** et « DigiSkool Academy ».
 - **Palette de 12 couleurs :** indigo `#4338CA`, émeraude `#059669`, cramoisi `#BE123C`, ambre `#D97706`, sarcelle `#0D9488`, violet `#7C3AED`, bleu ciel `#0284C7`, orange `#EA580C`, rose `#DB2777`, ardoise `#334155`, vert lime `#65A30D`, bleu marine `#1E3A8A`. Proposée automatiquement (différente des derniers produits), modifiable.
 - Générée **en FR et en EN**, régénérée quand le titre ou la couleur change.
 - **Formats :** 3:4 (boutique), 1:1, 16:9, 9:16 (statuts, stories), Open Graph 1200 × 630. Téléchargeables depuis l'admin.
@@ -427,7 +428,7 @@ Filtres (tiroir sur mobile), pastilles des filtres actifs, tri (populaires, réc
 
 ### 12.4 Carte produit
 
-Couverture + étiquette promo + badge ; titre (2 lignes) ; « Roger BOUJIEKA » ; ★ 4,8 (312) · 2 431 ventes ; « 120 pages » ou « 8 modules · 5 h » ; « FR + EN » ; prix promo + prix barré (dans la devise du visiteur) ; mini-chrono si l'offre finit dans moins de 48 h ; cœur favori. **Au survol sur ordinateur** : fenêtre avec 3 points « Ce que vous allez apprendre », date de mise à jour, « Ajouter au panier ».
+Couverture + étiquette promo + badge ; titre (2 lignes) ; « DigiSkool Academy » avec le badge « Compte certifié » ; ★ 4,8 (312) · 2 431 ventes ; « 120 pages » ou « 8 modules · 5 h » ; « FR + EN » ; prix promo + prix barré (dans la devise du visiteur) ; mini-chrono si l'offre finit dans moins de 48 h ; cœur favori. **Au survol sur ordinateur** : fenêtre avec 3 points « Ce que vous allez apprendre », date de mise à jour, « Ajouter au panier ».
 
 ### 12.5 Autres pages
 
@@ -442,12 +443,14 @@ Objectif : en 5 secondes, le visiteur comprend ce qu'il obtient, a confiance, et
 1. Média : **livre 3D** (e-book) ou **vidéo de présentation** avec ▶ « Aperçu gratuit ».
 2. Badges : Best-seller / Nouveau / Mis à jour en [mois].
 3. Titre + sous-titre (la promesse).
-4. ★ 4,8 (312 avis) · 2 431 ventes · par Roger BOUJIEKA.
-5. **Bloc prix** (charte) : prix promo dans la devise du visiteur + icône ⇄, prix barré, « -45 % », « Vous économisez … », **chrono** réel.
+4. ★ 4,8 (312 avis) · 2 431 ventes · par **DigiSkool Academy** (badge « Compte certifié »). Le créateur affiché est toujours la plateforme et son équipe, jamais une personne.
+5. **Bloc prix** (charte) : au-dessus du prix, un bouton bien visible **« Votre pays : 🇨🇲 Cameroun · Prix en FCFA — Changer »** (pas seulement une icône : beaucoup de visiteurs ne la comprennent pas) ; prix promo dans la devise du visiteur + icône ⇄, prix barré, « -45 % », « Vous économisez … », **compte à rebours réel** en cases (heures, minutes, secondes) avec une barre de progression et « Ensuite, prix normal : … ».
 6. **« Acheter maintenant »** (Or, pleine largeur, 56 px) ; « Ajouter au panier » ; « Offrir ce produit ».
 7. Réassurance : 🔒 Paiement sécurisé · ⚡ Accès immédiat · FR + EN inclus.
 8. Logos des moyens de paiement du pays.
-9. Carte WhatsApp compacte « Une question ? ».
+9. Ligne discrète « Une question avant d’acheter ? L’assistant répond tout de suite », qui ouvre l’assistant IA (section 28), **pas** WhatsApp.
+10. **Fiche technique en tuiles** sous le haut de page : pages, chapitres, durée de lecture, durée audio, exercices, langues (e-book) ; vidéos, durée totale, modules, ressources PDF, certificat, langues (formation).
+11. **Fond animé selon le sujet** derrière la couverture : chaque produit a un thème d’illustration (ventes, discussion, design, IA, publicité, erreurs…) dessiné en traits blancs et animé lentement (respecter « réduire les animations »). Le même thème apparaît, fixe, sur la couverture et sur la vignette du produit.
 
 ### 13.2 Version ordinateur
 
@@ -466,7 +469,7 @@ Pages / modules / leçons / heures · versions FR et EN · lecture en ligne · *
 5. Description (« Lire la suite »).
 6. **Valeur de l'offre** et bonus (section 13.9).
 7. Preuves sociales (section 15).
-8. **Le mot de l'auteur** : courte vidéo (60 s) où Roger présente le produit, puis sa biographie.
+8. **« Créé par DigiSkool Academy »** : logo, badge « Compte certifié », courte présentation de l’équipe (et, si Roger le souhaite, une vidéo de 60 s de l’équipe).
 9. Garantie ([REMBOURSEMENT]).
 10. **« Comment ça marche »** : 3 étapes illustrées (choisir, payer, accéder).
 11. FAQ (dont : comment payer, comment accéder, FR + EN, hors ligne, devise), puis **Questions des lecteurs** (section 13.11).
@@ -556,7 +559,7 @@ Les visiteurs posent une question sur la page produit ; l'admin y répond (broui
 - **Badges automatiques :** Best-seller (top 30 jours), Populaire, Nouveau, Mis à jour.
 - **Certificats vérifiables** (QR code → page publique de vérification) : preuve partageable sur LinkedIn.
 - **Lecteurs ayant terminé** un e-book et **apprenants ayant fini** une formation (réels, à partir d'un seuil).
-- **Réponse de l'auteur** sous les avis : Roger répond, publiquement, aux avis (surtout aux critiques). Rien ne rassure davantage.
+- **Réponse de l’équipe DigiSkool** sous les avis : l’équipe répond, publiquement, aux avis (surtout aux critiques). Rien ne rassure davantage.
 - **Signaux de confiance :** garantie, logos de paiement, photo réelle de Roger, numéro WhatsApp visible, réseaux sociaux, pages légales, informations de l'entreprise, « Vu dans » (si réel).
 - **Interdit :** faux avis, faux compteurs, fausses notifications.
 
@@ -646,15 +649,16 @@ Numéro WhatsApp → code à 6 chiffres → tous ses produits (même parcours qu
 
 Tableau **« Accès non ouverts »** (payé mais produit non ouvert après 30 min) : relance WhatsApp automatique avec le lien + alerte admin.
 
-## 19. Bloc WhatsApp : support + communauté
+## 19. WhatsApp : discret, et jamais en première ligne
 
-- **Design (charte) :** carte arrondie fond vert 50, bordure verte, icône officielle.
-- **Support :** « Besoin d'aide ? Écrivez-nous sur WhatsApp » + **numéro en clair** [WHATSAPP_SUPPORT], message pré-rempli (produit, numéro de commande).
-- **Communauté :** bouton vert **« Rejoindre la communauté DigiSkool »** (lien FR ou EN) + « Promos exclusives jusqu'à -45 % annoncées ici en premier ».
-- **Variantes :** page produit (« Une question ? »), checkout et attente Mobile Money (« Un souci pour payer ? »), succès (communauté en avant, après l'accès au produit), espace client, aide, footer, emails.
-- **Bouton flottant** (sauf checkout, liseuse, lecteur) : panneau avec **en premier** « 👥 Rejoindre la communauté », puis « 💬 Contacter le support ».
-- **Conseil d'expert :** utiliser **deux numéros** : un pour les messages automatiques (API WhatsApp) et un pour le support humain (application WhatsApp Business). Le support reste joignable normalement depuis un téléphone.
-- Clics mesurés : `Contact` et `JoinCommunity`.
+**Décision de Roger :** les gros boutons WhatsApp poussent les visiteurs à écrire pour tout et n’importe quoi, les messages arrivent en désordre et le site perd son intérêt (tout y est déjà expliqué). Donc :
+
+- **Aucun bouton flottant WhatsApp.** Le bouton flottant (sauf checkout, attente de paiement, liseuse, lecteur) ouvre l’**assistant IA** (section 28), libellé « Une question ? ».
+- **Aucun numéro de support affiché** sur le site. Le contact humain passe par l’assistant : il répond d’abord lui-même, et **transmet à l’équipe seulement les cas complexes** (remboursement, débit sans accès, double débit, bug, réclamation, demande explicite de parler à une personne). La demande arrive dans l’admin sous forme de **ticket** (numéro WhatsApp du client, résumé, conversation complète, commande, pays) et l’équipe répond sur WhatsApp, une seule fois, avec tout le contexte.
+- **Page d’aide :** formulaire « Votre problème n’est pas résolu ? » avec un sujet à choisir (Paiement, Accès, Remboursement, Autre) et le numéro de commande : il crée le même ticket.
+- **Communauté WhatsApp, discrète :** une ligne de texte avec la petite icône officielle (« Les prochaines promos sont annoncées en avant-première dans la communauté WhatsApp. Rejoindre »), dans le menu, le pied de page, après le code promo de l’accueil et sur la page de succès ; une page `/communaute` dédiée. Pas de gros bouton vert sur les pages de vente.
+- **Conseil d’expert :** utiliser **deux numéros** : un pour les messages automatiques (API WhatsApp : accès, codes, reçus) et un pour l’équipe (WhatsApp Business), qui ne traite que les tickets transmis.
+- Clics mesurés : `AssistantOpen`, `AssistantEscalate`, `JoinCommunity`.
 
 ## 20. Centre d'aide « zéro question en inbox »
 
@@ -662,7 +666,7 @@ Tableau **« Accès non ouverts »** (payé mais produit non ouvert après 30 mi
 - Articles indispensables : Comment payer (un article par opérateur et par pays) · Je n'ai pas reçu la demande de paiement · J'ai payé, où est mon produit ? · Retrouver mon achat · Installer l'application · Lire hors ligne · Télécharger · Changer de langue · Voir les prix dans ma devise · Remboursement · Offrir un produit.
 - **Aide contextuelle :** petites icônes « ? » dans le checkout et l'écran d'attente qui ouvrent le bon article dans un tiroir, sans quitter la page.
 - L'**assistant IA** (section 28) répond à partir de ces articles.
-- WhatsApp support en dernier recours, avec le contexte pré-rempli.
+- Si l’article ne suffit pas : l’assistant IA ; s’il ne peut pas résoudre, il transmet un ticket à l’équipe (section 19). Aucun numéro affiché.
 - Statistiques : articles les plus lus, recherches sans résultat (pour savoir quoi ajouter).
 
 ## 21. Moteur de promotions
@@ -989,7 +993,9 @@ Tâches de fond avec reprise et notification ; estimation du coût, coût réel,
 
 ### 28.1 Coach DigiSkool
 
-Chat dans la langue du visiteur : recommande le bon produit (prix **dans sa devise**, promo en cours), répond à partir de la FAQ et du **centre d'aide**, explique **comment payer étape par étape** selon son pays, rappelle l'accès immédiat, invite à la communauté. Ne doit jamais inventer de produit, de prix, de réduction ou de promesse. Problème de commande → support WhatsApp. Limites : 20 messages par heure, 1 000 caractères.
+Bouton flottant « Une question ? » sur tout le site (sauf checkout, attente, liseuse, lecteur), et entrées contextuelles : « Une question avant d’acheter ? » (page produit), « Un souci pour payer ? » (checkout et attente, avec des questions suggérées sur le paiement), page d’aide. Chat dans la langue du visiteur, avec des **questions suggérées** en un toucher : recommande le bon produit (prix **dans sa devise**, promo en cours), répond à partir de la FAQ et du **centre d’aide**, explique **comment payer étape par étape** selon son pays, rappelle l’accès immédiat. Ne doit jamais inventer de produit, de prix, de réduction ou de promesse, ni donner de numéro de téléphone.
+
+**Transfert à l’équipe** (outil `transmettre_a_l_equipe`, appelé par le modèle) seulement pour : remboursement, débit sans accès après « Retrouver mon achat », double débit, bug, réclamation, demande explicite d’une personne. Le chat affiche alors une carte « Transmettre à l’équipe » (numéro WhatsApp prérempli, résumé modifiable) qui crée un ticket dans l’admin. Après chaque réponse, un lien discret « Pas résolu ? Transmettre à l’équipe ». Limites : 20 messages par heure, 1 000 caractères.
 
 ### 28.2 Assistant de rédaction (admin)
 
@@ -1124,6 +1130,7 @@ Montants en **entiers** (plus petite unité). Chaque table : `id uuid`, `created
 **Utilisateurs**
 - `profiles` : `id`, `full_name`, `phone` (international, unique), `email` (facultatif), `whatsapp_optin`, `push_optin`, `country`, `preferred_locale`, `preferred_currency`, `referral_code`, `role` (`customer` | `support` | `admin`).
 - `user_devices` : `user_id`, `device_hash`, `platform`, `last_seen_at`.
+- `support_tickets` : `user_id` (facultatif), `phone`, `country`, `locale`, `product_id`, `order_id`, `category` (`paiement` | `acces` | `remboursement` | `bug` | `autre`), `summary`, `conversation` (jsonb : échanges avec l’assistant), `source` (`assistant` | `formulaire`), `status` (`ouvert` | `en_cours` | `resolu`), `assigned_to`, `resolved_at`. Créé uniquement par l’assistant ou le formulaire d’aide (section 19).
 - `push_subscriptions` : `user_id` (facultatif), `endpoint`, `keys`, `locale`, `country`, `platform`.
 - `notifications` : `user_id`, `type`, `title`, `body`, `url`, `read_at` + traductions.
 
