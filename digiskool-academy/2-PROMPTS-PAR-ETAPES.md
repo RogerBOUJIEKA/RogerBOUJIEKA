@@ -20,7 +20,9 @@ Prépare le projet DigiSkool Academy, sans rien coder d'autre :
 2. Copie 1-PROMPT-COMPLET.md, 3-PROMPTS-IA.md,
    4-CHARTE-DE-MARQUE.md, 5-MAQUETTES.md et
    6-PLAN-DE-LANCEMENT.md dans un dossier docs/.
-3. Copie 7-CLAUDE.md à la racine sous le nom CLAUDE.md.
+3. Copie 7-CLAUDE.md à la racine sous le nom CLAUDE.md, et
+   beta/index.html dans docs/prototype-beta.html (référence
+   visuelle).
 4. Crée docs/AVANCEMENT.md avec le titre « Avancement du
    projet » et la liste des 14 phases, toutes « à faire ».
 5. Fais un commit « Mise en place des documents du projet »

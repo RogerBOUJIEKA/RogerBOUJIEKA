@@ -15,6 +15,7 @@ DigiSkool Academy (`https://www.digiskoolacademy.com`) est la plateforme **perso
 | `docs/5-MAQUETTES.md` | Maquettes des écrans clés | Pour chaque écran concerné |
 | `docs/3-PROMPTS-IA.md` | Prompts de l'IA intégrée | Phases IA |
 | `docs/6-PLAN-DE-LANCEMENT.md` | Stratégie commerciale | Pour comprendre le « pourquoi » |
+| `docs/prototype-beta.html` | Prototype cliquable validé par Roger | Référence visuelle : le rendu final doit être au moins aussi soigné |
 | `docs/AVANCEMENT.md` | Journal d'avancement (à tenir à jour) | **Au début de chaque session** |
 
 En cas de doute, le cahier des charges fait foi ; la charte fait foi pour tout ce qui est visuel.

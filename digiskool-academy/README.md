@@ -15,7 +15,7 @@ Kit complet pour faire construire par une IA **DigiSkool Academy**, la plateform
 - **bilingue français / anglais**, chaque produit livré dans les deux langues ;
 - **communauté WhatsApp**, **parrainage**, **séquences automatiques**, **pixels** fiables, **Studio IA**.
 
-## Les 7 fichiers du kit
+## Les fichiers du kit
 
 | Fichier | À quoi il sert |
 |---|---|
@@ -25,6 +25,7 @@ Kit complet pour faire construire par une IA **DigiSkool Academy**, la plateform
 | [4-CHARTE-DE-MARQUE.md](4-CHARTE-DE-MARQUE.md) | La **charte de marque** : essence, slogans, personas, ton, logo, couleurs, polices, motif, animations, déclinaisons. Elle sert aussi pour tes réseaux sociaux et tes publicités. |
 | [5-MAQUETTES.md](5-MAQUETTES.md) | Les **maquettes** des 13 écrans clés : accueil, carte produit, page produit, checkout, attente Mobile Money, succès, Mes produits, liseuse, lecteur vidéo, popups… |
 | [6-PLAN-DE-LANCEMENT.md](6-PLAN-DE-LANCEMENT.md) | Le **plan de lancement et de croissance** : catalogue de départ, prélancement, lancement, communauté, publicités, chiffres à suivre, routine, 90 premiers jours. |
+| [beta/index.html](beta/index.html) | Le **prototype cliquable** (version bêta) : la référence visuelle de la plateforme, à ouvrir sur ton téléphone. |
 | [7-CLAUDE.md](7-CLAUDE.md) | Les **instructions permanentes pour Claude Code**, à copier à la racine du projet sous le nom `CLAUDE.md` : Claude Code les relit à chaque session. |
 
 ## Tes demandes → où c'est

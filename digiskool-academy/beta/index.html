@@ -1,0 +1,1367 @@
+<title>DigiSkool Academy Bêta</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<style>
+/* Layout: one phone-sized app column (the scroll container) + a beta guide panel beside it on wide screens.
+   Tokens follow 4-CHARTE-DE-MARQUE.md. */
+:root {
+  --nuit-950: #071427; --nuit: #0B1F3A; --nuit-800: #12294D; --nuit-700: #16325C; --nuit-500: #2A5BA8;
+  --or: #F5B700; --or-400: #FFC933; --or-600: #D99E00; --on-or: #0B1F3A; --on-dark: #FFFFFF;
+  --rouge: #E11D48; --vert: #128C7E; --vert-500: #25D366; --succes: #16A34A;
+  --bg: #F8FAFC; --page: #E9EEF5; --surface: #FFFFFF; --surface-2: #F1F5F9;
+  --fg: #0F172A; --fg-2: #475569; --fg-3: #94A3B8; --line: #E2E8F0;
+  --nuit-soft: #E6EEF9; --or-soft: #FFF6D6; --rouge-soft: #FFE4E9; --vert-soft: #E9FBF0; --succes-fg: #15803D;
+  --shadow-1: 0 1px 2px rgba(11,31,58,.06), 0 4px 12px rgba(11,31,58,.06);
+  --shadow-2: 0 10px 30px rgba(11,31,58,.18);
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --font-ui: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-read: "Literata", Georgia, "Times New Roman", serif;
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --aube: linear-gradient(135deg, #071427 0%, #0B1F3A 45%, #16325C 75%, #2A5BA8 100%);
+  --trame: repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 16px), repeating-linear-gradient(-45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 16px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #071427; --page: #040C18; --surface: #0B1F3A; --surface-2: #12294D;
+    --fg: #F1F5F9; --fg-2: #B6C2D3; --fg-3: #7C8BA1; --line: #1B3763;
+    --nuit-soft: #12294D; --or-soft: #2B2408; --rouge-soft: #3A0C1C; --vert-soft: #0A2E2A; --succes-fg: #4ADE80;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3); --shadow-2: 0 10px 30px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #071427; --page: #040C18; --surface: #0B1F3A; --surface-2: #12294D;
+  --fg: #F1F5F9; --fg-2: #B6C2D3; --fg-3: #7C8BA1; --line: #1B3763;
+  --nuit-soft: #12294D; --or-soft: #2B2408; --rouge-soft: #3A0C1C; --vert-soft: #0A2E2A; --succes-fg: #4ADE80;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3); --shadow-2: 0 10px 30px rgba(0,0,0,.5);
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body { background: var(--page); color: var(--fg); font: 400 16px/1.55 var(--font-ui); -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--or); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; letter-spacing: -.01em; }
+p { margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Shell */
+.shell { height: 100%; display: flex; justify-content: center; align-items: center; gap: 32px; }
+.guide-side { display: none; }
+.app { position: relative; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+.scroller { position: relative; flex: 1; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+@media (min-width: 1024px) {
+  .shell { padding-block: 24px; }
+  .app { width: 430px; height: min(900px, calc(100% - 8px)); border-radius: 36px; box-shadow: var(--shadow-2); border: 8px solid var(--nuit-950); }
+  .guide-side { display: block; width: 330px; max-height: calc(100% - 8px); overflow: auto; }
+}
+.wrap { padding-left: 16px; padding-right: 16px; }
+
+/* Promo bar + header */
+.promo { background: var(--rouge); color: var(--on-dark); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; padding: 8px 12px 8px 16px; }
+.promo .txt { flex: 1; min-width: 0; }
+.promo .copy { border: 1.5px solid rgba(255,255,255,.8); border-radius: 999px; padding: 3px 10px; font-size: 12px; white-space: nowrap; }
+.promo .x { opacity: .85; display: grid; place-items: center; width: 28px; height: 28px; }
+.header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; padding: 10px 12px; }
+.logo { display: flex; align-items: center; gap: 8px; color: var(--fg); text-decoration: none; }
+.logo svg { width: 30px; height: 30px; color: var(--nuit); }
+:root[data-theme="dark"] .logo svg { color: var(--on-dark); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .logo svg { color: var(--on-dark); } }
+.wm { display: flex; flex-direction: column; line-height: 1; }
+.wm b { font: 800 17px/1 var(--font-display); letter-spacing: -.02em; position: relative; white-space: nowrap; }
+.header { gap: 6px; }
+.header .chip-btn { padding: 0 8px; gap: 3px; }
+.header .lang button { padding: 0 8px; }
+@media (max-width: 440px) { .header.has-back .wm { display: none; } .header .chip-btn svg { display: none; } }
+.r-top .lang button[aria-pressed="true"] { color: var(--on-dark); opacity: 1; }
+.sheet:focus { outline: none; }
+.wm .ipix { position: relative; display: inline-block; }
+.wm .ipix i { position: absolute; left: 50%; top: -1px; width: 4.5px; height: 4.5px; background: var(--or); transform: translateX(-50%); border-radius: 1px; }
+.wm small { font: 600 7.5px/1 var(--font-display); letter-spacing: .32em; color: var(--fg-2); margin-top: 3px; }
+.h-spacer { flex: 1; }
+.chip-btn { display: inline-flex; align-items: center; gap: 4px; height: 34px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; height: 34px; }
+.lang button { padding: 0 9px; font-size: 12px; font-weight: 700; color: var(--fg-2); }
+.lang button[aria-pressed="true"] { background: var(--nuit); color: var(--on-dark); }
+.icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 999px; position: relative; }
+.icon-btn .dot { position: absolute; top: 3px; right: 2px; min-width: 16px; height: 16px; border-radius: 999px; background: var(--rouge); color: var(--on-dark); font-size: 10px; font-weight: 700; display: grid; place-items: center; padding: 0 4px; }
+.beta-pill { font: 700 10px/1 var(--font-ui); letter-spacing: .08em; background: var(--or); color: var(--on-or); padding: 5px 7px; border-radius: 6px; }
+svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i.sm { width: 16px; height: 16px; } svg.i.lg { width: 26px; height: 26px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; border-radius: 12px; font-weight: 600; transition: transform .15s var(--ease), background .15s var(--ease); text-decoration: none; }
+.btn:active { transform: scale(.98); }
+.btn-buy { background: var(--or); color: var(--on-or); font-weight: 700; min-height: 56px; font-size: 17px; letter-spacing: .01em; }
+.btn-buy:hover { background: var(--or-400); }
+.btn-dark { background: var(--nuit); color: var(--on-dark); }
+:root[data-theme="dark"] .btn-dark { background: var(--nuit-500); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-dark { background: var(--nuit-500); } }
+.btn-line { border: 1.5px solid var(--line); background: var(--surface); }
+.btn-wa { background: var(--vert); color: var(--on-dark); }
+.btn-block { width: 100%; }
+.link { color: var(--nuit-500); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+:root[data-theme="dark"] .link { color: var(--or-400); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .link { color: var(--or-400); } }
+
+/* Sections */
+.section { padding-block: 22px; display: grid; gap: 14px; }
+.section + .section { border-top: 1px solid var(--line); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.sec-head h2 { font-size: 20px; }
+.overline { font: 600 11px/1.3 var(--font-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--fg-2); }
+.muted { color: var(--fg-2); }
+.small { font-size: 13px; }
+
+/* Hero */
+.hero { background: var(--aube); color: var(--on-dark); position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; background: var(--trame); pointer-events: none; }
+.hero-in { position: relative; padding-block: 28px 26px; display: grid; gap: 14px; }
+.hero h1 { font-size: 34px; line-height: 1.08; font-weight: 800; }
+.hero h1 em { font-style: normal; color: var(--or); }
+.hero p { color: rgba(255,255,255,.82); }
+.search { display: flex; align-items: center; gap: 8px; background: var(--surface); color: var(--fg); border-radius: 12px; padding: 0 12px; height: 48px; border: 1px solid var(--line); }
+.search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; height: 100%; }
+.search-results { background: var(--surface); color: var(--fg); border-radius: 12px; box-shadow: var(--shadow-2); overflow: hidden; }
+.search-results button { display: flex; width: 100%; gap: 10px; align-items: center; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+.hero-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.85); }
+.hero-stats b { color: var(--on-dark); }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-block: 2px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 14px; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--nuit); color: var(--on-dark); border-color: var(--nuit); }
+
+/* Cover (same template, colour changes per product) */
+.cover { --c: #4338CA; container-type: inline-size; position: relative; aspect-ratio: 3 / 4; width: 100%; border-radius: 10px; overflow: hidden; color: var(--on-dark);
+  background: var(--trame), linear-gradient(160deg, color-mix(in srgb, var(--c) 92%, white 8%) 0%, var(--c) 45%, color-mix(in srgb, var(--c) 62%, black 38%) 100%);
+  display: flex; flex-direction: column; padding: 9% 9% 8%; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.cover::after { content: ""; position: absolute; right: -18%; bottom: -14%; width: 70%; aspect-ratio: 1; border: 10px solid rgba(255,255,255,.07); transform: rotate(45deg); }
+.cover .ct { display: flex; justify-content: space-between; align-items: center; font: 700 4.6cqw/1 var(--font-ui); letter-spacing: .14em; opacity: .92; }
+.cover .ct svg { width: 1.9em; height: 1.9em; color: var(--on-dark); }
+.cover .cti { font: 800 11cqw/1.08 var(--font-display); margin-top: auto; text-wrap: balance; position: relative; z-index: 1; }
+.cover .csu { font-size: 5.6cqw; opacity: .85; margin-top: .5em; line-height: 1.3; position: relative; z-index: 1; }
+.cover .cb { display: flex; justify-content: space-between; align-items: center; margin-top: 10%; font-size: 4.6cqw; font-weight: 600; position: relative; z-index: 1; }
+.cover .lg { background: rgba(255,255,255,.18); border-radius: 4px; padding: 3px 5px; letter-spacing: .08em; }
+.cover .tome { position: absolute; top: 18%; right: 9%; font: 800 20cqw/1 var(--font-display); color: var(--or); opacity: .95; }
+
+/* Product cards */
+.row-scroll { display: grid; grid-auto-flow: column; grid-auto-columns: 46%; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; scroll-snap-type: x mandatory; }
+.row-scroll::-webkit-scrollbar { display: none; }
+.row-scroll > * { scroll-snap-align: start; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+.card { display: grid; gap: 6px; text-align: left; align-content: start; min-width: 0; }
+.card .cv { position: relative; font-size: 15px; transition: transform .25s var(--ease); }
+.card:hover .cv { transform: translateY(-3px); }
+.tag { position: absolute; z-index: 2; font: 700 11px/1 var(--font-ui); padding: 5px 7px; border-radius: 999px; }
+.tag.promo-t { top: 8px; left: 8px; background: var(--rouge); color: var(--on-dark); }
+.tag.best { top: 8px; right: 8px; background: var(--or); color: var(--on-or); box-shadow: 0 0 0 4px rgba(245,183,0,.25); }
+.tag.new { top: 8px; right: 8px; background: var(--nuit); color: var(--on-dark); }
+.tag.free { top: 8px; left: 8px; background: var(--succes); color: var(--on-dark); }
+.tag.soon { top: 8px; left: 8px; background: var(--nuit-950); color: var(--or); }
+.card h3 { font-size: 15px; line-height: 1.25; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.meta { font-size: 12.5px; color: var(--fg-2); display: flex; flex-wrap: wrap; gap: 2px 6px; align-items: center; }
+.stars { color: var(--or-600); font-weight: 700; display: inline-flex; align-items: center; gap: 2px; }
+.price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.price { font: 800 16px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.was { color: var(--fg-3); text-decoration: line-through; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.mini-cd { font-size: 12px; font-weight: 600; color: var(--rouge); display: inline-flex; gap: 4px; align-items: center; }
+
+/* Steps, benefits */
+.steps { display: grid; gap: 10px; }
+.step { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.step .n { width: 34px; height: 34px; border-radius: 999px; background: var(--or); color: var(--on-or); font: 800 15px/34px var(--font-display); text-align: center; flex: none; }
+.benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.benefit { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; gap: 6px; font-size: 13.5px; }
+.duo { width: 36px; height: 36px; border-radius: 10px; background: var(--nuit-soft); display: grid; place-items: center; color: var(--nuit-500); }
+:root[data-theme="dark"] .duo { color: var(--or); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .duo { color: var(--or); } }
+.benefit b { font-family: var(--font-display); font-size: 14.5px; }
+
+/* Testimonials, author, community, forms */
+.tcards { display: grid; grid-auto-flow: column; grid-auto-columns: 84%; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+.tcards::-webkit-scrollbar { display: none; }
+.tcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 8px; font-size: 14px; }
+.who { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.avatar { width: 34px; height: 34px; border-radius: 999px; background: var(--nuit); color: var(--or); display: grid; place-items: center; font: 800 13px/1 var(--font-display); flex: none; }
+.verified { color: var(--succes-fg); font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 3px; }
+.author { display: flex; gap: 14px; align-items: center; }
+.author .avatar { width: 64px; height: 64px; font-size: 20px; }
+.wa-card { background: var(--vert-soft); border: 1.5px solid color-mix(in srgb, var(--vert) 45%, transparent); border-radius: 16px; padding: 14px; display: grid; gap: 10px; }
+.wa-card .sup { display: flex; gap: 10px; align-items: center; font-size: 14px; }
+.wa-ic { width: 36px; height: 36px; border-radius: 999px; background: var(--vert-500); color: var(--on-dark); display: grid; place-items: center; flex: none; }
+.wa-num { font-weight: 700; font-variant-numeric: tabular-nums; user-select: all; }
+.wa-mini { display: flex; gap: 10px; align-items: center; background: var(--vert-soft); border: 1px solid color-mix(in srgb, var(--vert) 40%, transparent); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; width: 100%; text-align: left; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 14px; font-weight: 600; }
+.field .hint { font-size: 12.5px; color: var(--fg-2); }
+.input { height: 50px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); padding: 0 14px; width: 100%; outline: none; }
+.input:focus { border-color: var(--nuit-500); }
+.input.err { border-color: var(--rouge); }
+.err-msg { color: var(--rouge); font-size: 13px; font-weight: 500; }
+.phone { display: flex; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); height: 50px; overflow: hidden; }
+.phone select { border: 0; background: var(--surface-2); padding: 0 8px; font-weight: 600; outline: none; }
+.phone input { flex: 1; min-width: 0; border: 0; outline: none; background: transparent; padding: 0 12px; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.phone:focus-within { border-color: var(--nuit-500); }
+.acc { border-bottom: 1px solid var(--line); }
+.acc > button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; text-align: left; font-weight: 600; }
+.acc > button svg { transition: transform .2s var(--ease); }
+.acc[data-open="true"] > button svg { transform: rotate(180deg); }
+.acc .body { padding: 0 0 14px; color: var(--fg-2); font-size: 14.5px; }
+.footer { background: var(--nuit-950); color: rgba(255,255,255,.75); font-size: 13px; padding-block: 24px 28px; display: grid; gap: 12px; }
+.footer b { color: var(--on-dark); }
+.footer .logo svg { color: var(--on-dark); }
+.noanim, .noanim .sheet { animation: none !important; }
+.pay-logos { display: flex; flex-wrap: wrap; gap: 6px; }
+.pl { height: 26px; padding: 0 8px; border-radius: 6px; display: inline-flex; align-items: center; font: 800 11px/1 var(--font-ui); letter-spacing: .02em; }
+.pl.mtn { background: #FFCC00; color: #1A1A1A; } .pl.orange { background: #FF7900; color: #FFFFFF; }
+.pl.visa { background: #1A1F71; color: #FFFFFF; font-style: italic; } .pl.mc { background: #222222; color: #FFFFFF; }
+.pl.wave { background: #1DC8FF; color: #0B1F3A; } .pl.moov { background: #0066B3; color: #FFFFFF; } .pl.bank { background: var(--surface-2); color: var(--fg); }
+
+/* Product page */
+.p-hero { background: var(--aube); color: var(--on-dark); position: relative; overflow: hidden; }
+.p-hero::before { content: ""; position: absolute; inset: 0; background: var(--trame); }
+.p-hero-in { position: relative; padding-block: 20px 22px; display: grid; justify-items: center; gap: 12px; }
+.book3d { width: 58%; max-width: 220px; perspective: 900px; position: relative; }
+.book3d .cover { transform: rotateY(-16deg); box-shadow: 18px 18px 30px rgba(0,0,0,.45); font-size: 22px; border-radius: 4px 10px 10px 4px; }
+.book3d .cover::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 7%; background: linear-gradient(90deg, rgba(0,0,0,.35), rgba(255,255,255,.08), transparent); z-index: 3; }
+.book3d .tag { z-index: 4; }
+.p-actions-top { display: flex; gap: 8px; }
+.ghost-light { color: var(--on-dark); border: 1.5px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08); min-height: 40px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.p-info { display: grid; gap: 10px; padding-block: 16px 18px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge { font: 700 11px/1 var(--font-ui); padding: 6px 8px; border-radius: 999px; letter-spacing: .03em; }
+.badge.best { background: var(--or); color: var(--on-or); }
+.badge.upd { background: var(--nuit-soft); color: var(--fg); }
+.p-info h1 { font-size: 27px; line-height: 1.12; font-weight: 800; }
+.p-sub { color: var(--fg-2); }
+.pricebox { display: grid; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow-1); }
+.big-price { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.big-price .price { font-size: 34px; }
+.pct { background: var(--rouge); color: var(--on-dark); font: 800 13px/1 var(--font-ui); padding: 6px 8px; border-radius: 999px; }
+.save { color: var(--succes-fg); font-weight: 600; font-size: 14.5px; }
+.conv { width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--fg-2); }
+.cd { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13.5px; color: var(--fg-2); }
+.cd-boxes { display: inline-flex; gap: 5px; align-items: flex-end; }
+.cd-boxes span { display: grid; justify-items: center; }
+.cd-boxes b { background: var(--nuit); color: var(--on-dark); font: 800 17px/1 var(--font-display); font-variant-numeric: tabular-nums; padding: 7px 7px; border-radius: 8px; min-width: 36px; text-align: center; }
+.cd-boxes small { font-size: 10px; color: var(--fg-3); margin-top: 2px; }
+.reassure { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; color: var(--fg-2); }
+.reassure span { display: inline-flex; gap: 4px; align-items: center; }
+.sec-actions { display: flex; gap: 8px; }
+.sec-actions .btn { flex: 1; min-height: 44px; font-size: 15px; }
+.tabs { position: sticky; top: 57px; z-index: 15; background: var(--bg); border-bottom: 1px solid var(--line); display: flex; gap: 4px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; }
+.tabs button { height: 34px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--fg-2); flex: none; }
+.tabs button[aria-current="true"] { background: var(--nuit); color: var(--on-dark); }
+.includes { display: grid; gap: 10px; }
+.includes div { display: flex; gap: 10px; align-items: center; font-size: 14.5px; }
+.learn { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: grid; gap: 10px; }
+.learn div { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; }
+.learn svg { color: var(--succes-fg); margin-top: 2px; }
+.pages-row { display: grid; grid-auto-flow: column; grid-auto-columns: 40%; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+.pages-row::-webkit-scrollbar { display: none; }
+.pg { aspect-ratio: 148 / 210; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10% 9%; display: grid; align-content: start; gap: 5%; font-size: 7.5px; line-height: 1.45; color: var(--fg-2); overflow: hidden; position: relative; box-shadow: var(--shadow-1); }
+.pg.open-ch { background: var(--trame), linear-gradient(160deg, #4338CA, #2B2486); color: var(--on-dark); align-content: center; text-align: center; }
+.pg.open-ch b { font: 800 34px/1 var(--font-display); color: var(--or); }
+.pg h4 { margin: 0; font: 700 9.5px/1.2 var(--font-display); color: var(--fg); }
+.pg .box { border-radius: 4px; padding: 6%; background: var(--or-soft); border-left: 3px solid var(--or); color: var(--fg); }
+.pg .ex { border: 1px solid var(--line); border-radius: 4px; padding: 6%; }
+.pg .ln { height: 5px; border-radius: 3px; background: var(--line); }
+.pg .lbl { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; font-size: 8px; color: var(--fg-3); }
+.toc { display: grid; }
+.toc-row { display: flex; justify-content: space-between; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.toc-row .r { color: var(--fg-2); font-size: 13px; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+.free-lbl { color: var(--succes-fg); font-weight: 700; font-size: 12px; }
+.valuebox { background: var(--surface); border: 1.5px dashed color-mix(in srgb, var(--or-600) 60%, transparent); border-radius: 16px; padding: 14px; display: grid; gap: 8px; }
+.vrow { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; }
+.vrow span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vtotal { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 4px; }
+.vtotal .t1 { display: flex; justify-content: space-between; color: var(--fg-2); }
+.vtotal .t1 s { font-variant-numeric: tabular-nums; }
+.vtotal .t2 { display: flex; justify-content: space-between; align-items: baseline; font: 800 20px/1.2 var(--font-display); }
+.dist { display: grid; gap: 6px; }
+.dist div { display: grid; grid-template-columns: 28px 1fr 40px; gap: 8px; align-items: center; font-size: 13px; color: var(--fg-2); }
+.bar { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--or); border-radius: 999px; }
+.review { display: grid; gap: 6px; padding-block: 12px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.reply { background: var(--surface-2); border-radius: 10px; padding: 10px; font-size: 13.5px; display: grid; gap: 4px; }
+.reply b { font-size: 12.5px; }
+.guar { display: flex; gap: 12px; align-items: center; background: var(--nuit-soft); border-radius: 16px; padding: 14px; }
+.seal { width: 56px; height: 56px; border-radius: 999px; background: var(--or); color: var(--on-or); display: grid; place-items: center; font: 800 12px/1.05 var(--font-display); text-align: center; flex: none; box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px var(--or); }
+.pack { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: grid; gap: 12px; }
+.pack-covers { display: flex; align-items: center; gap: 8px; }
+.pack-covers .cover { width: 64px; font-size: 7px; border-radius: 4px; }
+.final { background: var(--aube); color: var(--on-dark); border-radius: 18px; padding: 18px; display: grid; gap: 12px; position: relative; overflow: hidden; }
+.final::before { content: ""; position: absolute; inset: 0; background: var(--trame); }
+.final > * { position: relative; }
+.final .cd { color: rgba(255,255,255,.8); }
+.final .was { color: rgba(255,255,255,.6); }
+
+/* Bottom bars */
+.bottombar { flex: none; border-top: 1px solid var(--line); background: var(--surface); padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 25; }
+.tabbar { display: grid; grid-template-columns: repeat(5, 1fr); }
+.tabbar button { display: grid; justify-items: center; gap: 2px; padding: 8px 2px 7px; font-size: 10.5px; font-weight: 600; color: var(--fg-3); }
+.tabbar button[aria-current="true"] { color: var(--fg); }
+.tabbar button[aria-current="true"] svg { color: var(--or-600); }
+.buybar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+.buybar .cover { width: 34px; font-size: 4px; border-radius: 3px; flex: none; }
+.buybar .bb-price { flex: 1; min-width: 0; display: grid; }
+.buybar .btn-buy { min-height: 48px; font-size: 15px; padding: 0 18px; }
+
+/* FAB + toasts + overlays */
+.fab { position: absolute; right: 14px; bottom: 76px; z-index: 30; width: 56px; height: 56px; border-radius: 999px; background: var(--vert-500); color: var(--on-dark); display: grid; place-items: center; box-shadow: var(--shadow-2); }
+.fab.lifted { bottom: 86px; }
+.toasts { position: absolute; left: 12px; right: 12px; bottom: 80px; z-index: 40; display: grid; gap: 8px; pointer-events: none; }
+.toast { pointer-events: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-2); padding: 10px; display: flex; gap: 10px; align-items: center; animation: toastIn .35s var(--ease); position: relative; overflow: hidden; max-width: 360px; }
+.toast .cover { width: 40px; font-size: 4px; border-radius: 4px; flex: none; }
+.toast .tx { flex: 1; min-width: 0; font-size: 13px; line-height: 1.35; }
+.toast .tx b { font-size: 13.5px; }
+.toast .pbar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--or); animation: drain 6s linear forwards; }
+.toast.info { background: var(--nuit); color: var(--on-dark); border-color: var(--nuit); }
+@keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes drain { from { width: 100%; } to { width: 0; } }
+.overlay { position: absolute; inset: 0; z-index: 50; background: rgba(4,12,24,.55); display: flex; align-items: flex-end; animation: fadeIn .2s var(--ease); }
+.sheet { width: 100%; max-height: 92%; overflow-y: auto; background: var(--surface); border-radius: 22px 22px 0 0; padding: 8px 16px calc(18px + env(safe-area-inset-bottom, 0px)); animation: sheetUp .32s var(--ease); display: grid; gap: 14px; }
+.sheet.dark { background: var(--nuit); color: var(--on-dark); position: relative; overflow: hidden; }
+.sheet.dark::before { content: ""; position: absolute; inset: 0; background: var(--trame); pointer-events: none; }
+.sheet.dark > * { position: relative; }
+.grab { width: 44px; height: 5px; border-radius: 999px; background: var(--line); justify-self: center; margin-top: 2px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.sheet-head h2 { font-size: 20px; }
+.close { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 999px; margin-right: -8px; }
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Checkout */
+.co-sum { display: flex; gap: 12px; align-items: center; background: var(--surface-2); border-radius: 14px; padding: 10px; }
+.co-sum .cover { width: 52px; font-size: 6px; border-radius: 4px; flex: none; }
+.bump { display: flex; gap: 10px; align-items: flex-start; border: 1.5px dashed var(--or-600); background: var(--or-soft); border-radius: 12px; padding: 12px; font-size: 14px; text-align: left; width: 100%; }
+.bump .box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--or-600); flex: none; display: grid; place-items: center; background: var(--surface); color: var(--on-or); }
+.bump[aria-pressed="true"] .box { background: var(--or); border-color: var(--or); }
+.methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.method { border: 1.5px solid var(--line); border-radius: 12px; min-height: 60px; padding: 8px; display: grid; justify-items: center; align-content: center; gap: 6px; font-size: 13px; font-weight: 600; background: var(--surface); position: relative; }
+.method[aria-pressed="true"] { border-color: var(--nuit-500); box-shadow: 0 0 0 3px color-mix(in srgb, var(--nuit-500) 25%, transparent); }
+.method .ok { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; border-radius: 999px; background: var(--nuit-500); color: var(--on-dark); display: grid; place-items: center; }
+.method.wide { grid-column: 1 / -1; }
+.debit { background: var(--nuit-soft); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; }
+.detect { font-size: 12.5px; color: var(--succes-fg); font-weight: 600; }
+
+/* Waiting / success */
+.center-screen { min-height: 100%; display: grid; align-content: center; gap: 16px; padding-block: 28px; text-align: center; justify-items: center; }
+.phone-anim { width: 92px; height: 150px; border-radius: 18px; border: 4px solid var(--nuit); background: var(--surface); position: relative; display: grid; place-items: center; animation: buzz 1.6s infinite; }
+.phone-anim::before { content: ""; position: absolute; top: 8px; width: 26px; height: 4px; border-radius: 4px; background: var(--line); }
+.phone-anim .notif { width: 76%; background: #FFCC00; color: #1A1A1A; border-radius: 8px; padding: 6px; font: 800 9px/1.25 var(--font-ui); }
+.phone-anim .notif.orange { background: #FF7900; color: #FFFFFF; }
+@keyframes buzz { 0%, 70%, 100% { transform: rotate(0); } 75% { transform: rotate(-4deg); } 80% { transform: rotate(4deg); } 85% { transform: rotate(-3deg); } 90% { transform: rotate(3deg); } }
+.wsteps { display: grid; gap: 8px; text-align: left; width: 100%; max-width: 340px; }
+.wsteps div { display: flex; gap: 10px; align-items: center; font-size: 14.5px; }
+.wsteps b { width: 26px; height: 26px; border-radius: 999px; background: var(--nuit); color: var(--on-dark); display: grid; place-items: center; font: 700 13px/1 var(--font-ui); flex: none; }
+.dots { display: inline-flex; gap: 5px; }
+.dots i { width: 8px; height: 8px; border-radius: 999px; background: var(--or); animation: dot 1.2s infinite; }
+.dots i:nth-child(2) { animation-delay: .2s; } .dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes dot { 0%, 100% { opacity: .25; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
+.ussd { background: var(--surface-2); border-radius: 12px; padding: 12px; text-align: left; font-size: 14px; display: grid; gap: 6px; width: 100%; max-width: 340px; }
+.ussd code { font: 700 15px/1 var(--font-ui); background: var(--surface); padding: 3px 6px; border-radius: 6px; }
+.check-anim { width: 92px; height: 92px; border-radius: 999px; background: var(--or); display: grid; place-items: center; color: var(--on-or); animation: pop .5s var(--ease); }
+.check-anim svg { width: 48px; height: 48px; stroke-width: 3; stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .5s .25s var(--ease) forwards; }
+@keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.owned-card { width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px; display: grid; gap: 12px; text-align: left; box-shadow: var(--shadow-1); }
+.owned-top { display: flex; gap: 12px; align-items: center; }
+.owned-top .cover { width: 56px; font-size: 6px; border-radius: 4px; flex: none; }
+.opt-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.opt-row .btn { flex: 1 1 auto; min-height: 44px; font-size: 14px; padding: 0 12px; }
+.install { display: flex; gap: 12px; align-items: center; width: 100%; background: var(--nuit-soft); border-radius: 14px; padding: 12px; text-align: left; font-size: 14px; }
+canvas.confetti { position: absolute; inset: 0; z-index: 60; pointer-events: none; width: 100%; height: 100%; }
+
+/* Library */
+.cont { display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+.cont::-webkit-scrollbar { display: none; }
+.cont-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: grid; gap: 10px; }
+.progress { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--or); }
+.lib-item { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+.lib-item .cover { font-size: 7px; border-radius: 4px; }
+.lib-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.lib-acts button { height: 34px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; background: var(--surface); }
+.empty { text-align: center; display: grid; gap: 12px; justify-items: center; padding-block: 36px; }
+.empty .ill { width: 96px; height: 96px; border-radius: 28px; background: var(--nuit-soft); display: grid; place-items: center; color: var(--nuit-500); }
+.code-boxes { display: flex; gap: 8px; justify-content: center; }
+.code-boxes span { width: 44px; height: 54px; border: 1.5px solid var(--line); border-radius: 12px; display: grid; place-items: center; font: 800 22px/1 var(--font-display); background: var(--surface); }
+.code-boxes span.f { border-color: var(--nuit-500); }
+
+/* Reader */
+.reader { --rbg: var(--surface); --rfg: var(--fg); min-height: 100%; background: var(--rbg); color: var(--rfg); display: flex; flex-direction: column; }
+.reader.sepia { --rbg: #F6EFE1; --rfg: #3B2F1E; }
+.reader.night { --rbg: #071427; --rfg: #E7ECF3; }
+.r-top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 4px; padding: 8px 8px; background: var(--rbg); border-bottom: 1px solid color-mix(in srgb, var(--rfg) 12%, transparent); }
+.r-top .ttl { flex: 1; min-width: 0; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r-top .lang button { color: inherit; opacity: .7; }
+.r-top .lang button[aria-pressed="true"] { opacity: 1; }
+.r-body { flex: 1; padding: 22px 22px 28px; font-family: var(--font-read); font-size: var(--rsize, 18px); line-height: 1.7; display: grid; gap: 1em; max-width: 640px; margin: 0 auto; width: 100%; }
+.r-body.inter { font-family: var(--font-ui); }
+.r-body .chn { font: 700 12px/1 var(--font-ui); letter-spacing: .14em; color: var(--or-600); }
+.r-body h2 { font-family: var(--font-display); font-size: 1.45em; line-height: 1.2; }
+.r-body .q { background: color-mix(in srgb, var(--or) 22%, transparent); border-radius: 3px; cursor: pointer; }
+.r-body .callout { font-family: var(--font-ui); font-size: .86em; border-left: 4px solid var(--or); background: color-mix(in srgb, var(--or) 12%, transparent); border-radius: 0 10px 10px 0; padding: 12px 14px; }
+.r-body .exo { font-family: var(--font-ui); font-size: .86em; border: 1.5px solid color-mix(in srgb, var(--rfg) 25%, transparent); border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; text-align: left; }
+.r-body .exo .box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid currentColor; flex: none; display: grid; place-items: center; }
+.r-body .exo[aria-pressed="true"] .box { background: var(--succes); border-color: var(--succes); color: var(--on-dark); }
+.r-bottom { position: sticky; bottom: 0; background: var(--rbg); border-top: 1px solid color-mix(in srgb, var(--rfg) 12%, transparent); padding: 8px 14px 10px; display: grid; gap: 8px; font-family: var(--font-ui); }
+.r-prog { display: flex; justify-content: space-between; font-size: 12px; opacity: .75; }
+.audio { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.audio .play { width: 40px; height: 40px; border-radius: 999px; background: var(--or); color: var(--on-or); display: grid; place-items: center; flex: none; }
+.audio .tr { flex: 1; min-width: 0; display: grid; gap: 4px; }
+.audio .spd { border: 1px solid color-mix(in srgb, var(--rfg) 25%, transparent); border-radius: 999px; padding: 4px 8px; font-weight: 700; font-size: 12px; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.seg button { flex: 1; height: 42px; font-weight: 600; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--nuit); color: var(--on-dark); }
+.quote-card { aspect-ratio: 9 / 14; width: 70%; max-width: 260px; justify-self: center; border-radius: 16px; color: var(--on-dark); padding: 18px; display: flex; flex-direction: column; position: relative; overflow: hidden;
+  background: var(--trame), linear-gradient(160deg, #5146E0, #4338CA 45%, #2B2486); }
+.quote-card .qm { font: 800 64px/0.8 var(--font-display); color: var(--or); }
+.quote-card p { font: 400 17px/1.45 var(--font-read); margin-top: 6px; }
+.quote-card .qf { margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.quote-card .qf .cover { width: 30px; font-size: 3.4px; border-radius: 3px; }
+
+/* Flipbook preview */
+.flip { display: grid; gap: 12px; }
+.flip-stage { position: relative; aspect-ratio: 148 / 210; width: 78%; max-width: 300px; justify-self: center; }
+.flip-stage .pg { position: absolute; inset: 0; font-size: 10.5px; }
+.flip-stage .pg h4 { font-size: 13px; }
+.flip-stage .pg.blur > .inner { filter: blur(5px); opacity: .7; }
+.lock { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 10px; text-align: center; padding: 14px; background: color-mix(in srgb, var(--surface) 30%, transparent); }
+.lock .lk { width: 48px; height: 48px; border-radius: 999px; background: var(--nuit); color: var(--or); display: grid; place-items: center; }
+.flip-nav { display: flex; justify-content: center; align-items: center; gap: 14px; }
+.flip-nav button { width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--line); display: grid; place-items: center; }
+
+/* Guide */
+.guide { display: grid; gap: 14px; font-size: 14px; }
+.guide-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; gap: 12px; box-shadow: var(--shadow-1); }
+.guide h2 { font-size: 20px; }
+.journey { display: grid; gap: 6px; }
+.journey button { display: flex; gap: 10px; align-items: center; text-align: left; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; }
+.journey button b { width: 24px; height: 24px; border-radius: 999px; background: var(--or); color: var(--on-or); display: grid; place-items: center; font-size: 12px; flex: none; }
+.note { background: var(--or-soft); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
+.demo-flag { font-size: 12px; color: var(--fg-2); display: flex; gap: 6px; align-items: center; justify-content: center; padding-block: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<div class="shell">
+  <aside class="guide-side" id="guideSide" aria-label="Guide de la bêta"></aside>
+  <div class="app" id="app">
+    <div class="scroller" id="scroller"></div>
+    <div class="bottombar" id="bottom"></div>
+    <button class="fab" id="fab" data-a="fab" aria-label="WhatsApp"></button>
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <div id="layer"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------- Icons (lucide-style strokes) ---------- */
+const P = {
+  home: '<path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/>',
+  bag: '<path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8a3 3 0 0 1 6 0"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  book: '<path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14a6 6 0 0 1 3.5 6"/>',
+  chat: '<path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/><path d="M9 10.5c.5 1.6 1.8 3 3.5 3.5l1-1 2 .8-.3 1.5c-3.2.2-6.7-3.3-6.5-6.5l1.5-.3.8 2z"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  zap: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  check: '<path d="m5 12 5 5 9-10"/>',
+  play: '<path d="M7 4v16l13-8z" fill="currentColor"/>',
+  pause: '<rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/>',
+  head: '<path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/>',
+  down: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/>',
+  back: '<path d="m15 18-6-6 6-6"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  right: '<path d="m9 18 6-6-6-6"/>',
+  chev: '<path d="m6 9 6 6 6-6"/>',
+  copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+  gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9"/><path d="M12 8v13"/><path d="M12 8C10 4 6 4 6 6.5S12 8 12 8zM12 8c2-4 6-4 6-1.5S12 8 12 8z"/>',
+  heart: '<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+  shield: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  swap: '<path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/>',
+  mark: '<path d="M6 3h12v18l-6-4-6 4z"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+  bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 21a2 2 0 0 0 4 0"/>',
+  infinity: '<path d="M7 8a4 4 0 1 0 0 8c3 0 7-8 10-8a4 4 0 1 1 0 8c-3 0-7-8-10-8z"/>',
+  cloud: '<path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9"/><path d="M12 12v9"/><path d="m8.5 17.5 3.5 3.5 3.5-3.5"/>',
+  edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4z"/>',
+  flag: '<path d="M4 21V4"/><path d="M4 4h13l-2 4 2 4H4"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+  card: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" fill="currentColor" stroke="none"/>'
+};
+const ic = (n, cls = "") => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[n] || ""}</svg>`;
+const LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7 37 14.5 20 22 3 14.5Z" fill="currentColor"/><path d="M10.5 18.6v6.6c0 3.2 4.3 5.6 9.5 5.6s9.5-2.4 9.5-5.6v-6.6L20 22.8Z" fill="currentColor" opacity=".82"/><path d="M34 15.5v9.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="31.4" y="24.6" width="5.2" height="5.2" rx="1" style="fill:var(--or)"/></svg>';
+
+/* ---------- Safe storage ---------- */
+const store = {
+  get(k, d) { try { const v = sessionStorage.getItem("ds-" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { sessionStorage.setItem("ds-" + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ---------- Copy (FR / EN) ---------- */
+const I18N = {
+  fr: {
+    promo: "🔥 Flash 24 h : -45 % sur tous les e-books · fin dans", copyCode: "Copier DIGI45", copied: "Code copié",
+    myProducts: "Mes produits", home: "Accueil", shop: "Boutique", searchTab: "Recherche", community: "Communauté",
+    heroTitle: "Apprenez. Appliquez. <em>Avancez.</em>", heroText: "E-books et formations concrets, pensés pour l’Afrique, en français et en anglais. Payez avec MTN MoMo ou Orange Money, accédez tout de suite.",
+    searchPh: "Que voulez-vous apprendre ?", seeEbooks: "Voir les e-books", joinCommunity: "Rejoindre la communauté",
+    stats: ["<b>4,8 ★</b> note moyenne", "<b>3 200</b> apprenants", "<b>15</b> pays"],
+    cats: ["Tous", "Business en ligne", "Marketing", "Réseaux sociaux", "IA", "Canva", "Finances"],
+    deals: "Offres du moment", best: "Meilleures ventes", seeAll: "Tout voir", newT: "Nouveautés", freeT: "Gratuits", soonT: "Bientôt disponible",
+    how: "Comment ça marche", how1: "Choisissez votre e-book ou votre formation", how2: "Payez avec MTN MoMo, Orange Money ou la carte", how3: "Accédez immédiatement, en français et en anglais",
+    why: "Pourquoi DigiSkool", whyItems: [["zap", "Accès immédiat", "Votre produit s’ouvre dès le paiement."], ["globe", "FR + EN inclus", "Chaque produit dans les deux langues."], ["phone", "Mobile Money", "MTN MoMo, Orange Money, carte."], ["cloud", "Hors ligne", "Lisez sans connexion dans l’application."], ["infinity", "Accès à vie", "Mises à jour gratuites."], ["users", "Communauté", "Promos exclusives et entraide."]],
+    testimonials: "Ils ont lu, ils témoignent", demoData: "Avis de démonstration", meet: "Votre formateur", authorBio: "Vendeur de produits digitaux depuis 2 ans et designer graphique, Roger partage des méthodes concrètes, testées sur le terrain africain.",
+    commTitle: "La communauté DigiSkool", commText: "Les promos jusqu’à -45 % sont annoncées ici en premier. Nouveautés, entraide, lives.",
+    leadTitle: "E-book gratuit : Les 7 erreurs qui empêchent de vendre en ligne", leadBtn: "Recevoir l’e-book", leadHint: "Envoyé sur votre WhatsApp. Aucune inscription.",
+    faq: "Questions fréquentes",
+    faqs: [["Comment je paie ?", "Avec MTN Mobile Money, Orange Money ou une carte bancaire. Vous recevez une demande sur votre téléphone, vous tapez votre code secret, c’est tout."], ["Quand est-ce que j’accède à mon produit ?", "Immédiatement. Après le paiement, votre e-book s’ouvre tout seul, et le lien arrive aussi sur votre WhatsApp."], ["Dois-je créer un compte ?", "Non. Votre numéro WhatsApp suffit pour retrouver vos produits sur n’importe quel téléphone."], ["Je reçois quelle langue ?", "Les deux : la version française et la version anglaise sont incluses."], ["Je peux lire sans internet ?", "Oui, dans l’application : téléchargez l’e-book une fois, lisez-le partout."]],
+    footer: "DigiSkool Academy · Douala, Cameroun", legal: "Mentions légales · CGV · Confidentialité · Remboursement", findPurchase: "Retrouver mon achat", help: "Aide", install: "Installer l’application",
+    ebook: "E-BOOK", course: "FORMATION VIDÉO", pages: "pages", sales: "ventes", reviews: "avis", free: "GRATUIT", newBadge: "NOUVEAU", bestBadge: "BEST-SELLER", soonBadge: "BIENTÔT",
+    by: "par", updated: "Mis à jour en oct. 2026", leaf: "Feuilleter", trailer: "Aperçu gratuit",
+    offerEnds: "L’offre se termine dans", h: "h", min: "min", s: "s", save: "Vous économisez", buyNow: "Acheter maintenant", addCart: "Ajouter au panier", gift: "Offrir",
+    secure: "Paiement sécurisé", instant: "Accès immédiat", both: "FR + EN inclus", question: "Une question ?", needHelp: "Besoin d’aide ? Écrivez-nous sur WhatsApp",
+    tabsA: "Aperçu", tabsC: "Contenu", tabsR: "Avis", tabsF: "FAQ",
+    includes: "Ce produit comprend", learn: "Ce que vous allez apprendre", inside: "Aperçu de l’intérieur", insideHint: "Vraies pages du livre. Touchez « Feuilleter » pour lire le début.",
+    listen: "Écouter un extrait", toc: "Sommaire", chapters: "chapitres", expand: "Tout développer", collapse: "Réduire", freeLbl: "Gratuit",
+    forWho: "Pour qui ?", forYes: ["Vous voulez vendre votre premier produit digital", "Vous débutez, ou vous vendez sans méthode", "Vous voulez utiliser WhatsApp et le Mobile Money"], forNo: ["Vous cherchez de l’argent facile sans travail"],
+    value: "Valeur de l’offre", totalValue: "Valeur totale", today: "Aujourd’hui", valueNote: "Valeurs réelles : prix auxquels chaque élément est vendu séparément.",
+    reviewsT: "Avis des lecteurs", rogerReply: "Réponse de Roger", authorWord: "Le mot de l’auteur", authorVideo: "Vidéo de 60 s : Roger présente le livre",
+    guarantee: "Garantie 7 jours", guaranteeText: "Si l’e-book ne vous convient pas, écrivez-nous dans les 7 jours : vous êtes remboursé.",
+    together: "Souvent achetés ensemble", packSave: "Pack : économisez 20 %", addPack: "Ajouter le pack",
+    finalTitle: "Commencez aujourd’hui", alreadyOwned: "Accéder à mon produit",
+    convTitle: "Ce prix dans d’autres devises", convNote: "Taux du jour, à titre indicatif. Ici : taux fictifs de démonstration.",
+    curTitle: "Devise", detected: "Détecté automatiquement : Cameroun 🇨🇲",
+    coTitle: "Paiement", yourName: "Votre nom", yourWa: "Votre numéro WhatsApp", email: "Email (facultatif)", emailHint: "Recommandé pour recevoir une copie de votre accès.",
+    bump: "Ajouter le cahier d’exercices + la fiche mémo pour seulement", payWith: "Payer avec", card: "Carte bancaire", momoNum: "Numéro Mobile Money",
+    promoQ: "Vous avez un code promo ?", apply: "Appliquer", codeOk: "Code appliqué : -10 %", codeBad: "Ce code n’existe pas ou a expiré.",
+    pay: "Payer", terms: "En payant, vous acceptez les CGV.", payTrouble: "Un souci pour payer ?", howPay: "Comment payer ? (vidéo 30 s)",
+    errName: "Indiquez votre nom.", errPhone: "Ce numéro ne semble pas complet : 9 chiffres, il commence par 6.", detectedOp: "Opérateur détecté :",
+    debited: "Montant débité :", emailFix: "Vouliez-vous dire",
+    waitTitle: "Regardez votre téléphone", waitText: "Une demande de paiement va s’afficher sur votre téléphone.", w1: "Ouvrez la notification", w2: "Tapez votre code secret", w3: "Revenez ici : tout est automatique",
+    waiting: "En attente de votre confirmation…", expires: "La demande expire dans", notReceived: "Je n’ai pas reçu la demande", changeMethod: "Changer de moyen de paiement",
+    ussdMtn: "MTN : composez <code>*126#</code> pour voir et valider les paiements en attente.", ussdOrange: "Orange : composez <code>#150#</code>.", ussdNote: "Codes à vérifier avant le lancement.", resend: "Renvoyer la demande",
+    simulate: "Simuler : j’ai tapé mon code", listenIns: "Écouter les instructions (30 s)",
+    successT: "Paiement réussi !", successS: "Votre e-book est prêt.", readNow: "Lire maintenant", enVersion: "English version", frVersion: "Version française", listenBtn: "Écouter", downloadPdf: "Télécharger le PDF",
+    sentWa: "Votre accès a aussi été envoyé sur votre WhatsApp", installT: "Installez l’application pour retrouver votre e-book en un geste", installBtn: "Installer",
+    upsell: "Offre réservée aux lecteurs : le tome 2 à -30 % pendant 15 min",
+    hello: "Bonjour", continueT: "Continuer", resume: "Reprendre", library: "Ma bibliothèque", read: "Lire", offline: "Hors ligne",
+    emptyT: "Vos produits apparaîtront ici", emptyS: "Juste après le paiement, sans rien faire. Sur un autre téléphone ? Retrouvez vos achats avec votre numéro.",
+    referral: "Parrainez un ami : il reçoit -10 %, vous recevez un code de -20 %.",
+    accessT: "Retrouvez vos produits", accessS: "Entrez votre numéro WhatsApp. Pas de mot de passe.", getCode: "Recevoir mon code", codeSent: "Code reçu sur WhatsApp", google: "Continuer avec Google", emailLink: "Recevoir un lien par email", resendSms: "Renvoyer par SMS dans",
+    chapter: "CHAPITRE 4", progress: "Chapitre 4/12 · 34 % · 12 min restantes", listenCh: "Écouter ce chapitre", settings: "Réglages de lecture", size: "Taille du texte", font: "Police", theme: "Thème", light: "Clair", sepia: "Sépia", night: "Sombre",
+    quoteT: "Partager une citation", quoteS: "Touchez une phrase surlignée pour en faire une image à partager sur votre statut WhatsApp.", quoteCopy: "Copier la citation", quoteNote: "Dans l’application, l’image est envoyée directement sur votre statut WhatsApp.",
+    offerTitle: "-45 % SUR TOUS LES E-BOOKS", offerText: "Flash 24 h, réservé à cette semaine.", offerBtn: "Voir les offres", later: "Plus tard",
+    toastNew: "NOUVEAU · Canva pour vendre", toastNewS: "E-book · découvrez-le", toastBuy: "Un lecteur de Douala vient d’acheter « Vendre en ligne en 30 jours »", ago: "il y a 12 min", toastLeft: "Plus que quelques heures pour profiter de -45 %",
+    fabComm: "Rejoindre la communauté", fabCommS: "Promos exclusives jusqu’à -45 %", fabSup: "Contacter le support",
+    commPage: "Rejoignez la communauté DigiSkool", commBenefits: ["Promos exclusives jusqu’à -45 %, annoncées ici en premier", "Nouveautés en avant-première", "Entraide entre apprenants", "Lives questions-réponses avec Roger"],
+    demoLink: "Dans la version finale, ce bouton ouvre la communauté WhatsApp.", demoSupport: "Dans la version finale, ce bouton ouvre la conversation WhatsApp avec le support.",
+    notifyMe: "Me prévenir", soonText: "Sortie dans", notified: "C’est noté : vous serez prévenu sur WhatsApp à la sortie.",
+    addedCart: "Ajouté au panier", cartEmpty: "Votre panier est vide.", cartT: "Panier", checkout: "Payer maintenant",
+    filterAll: "Tous", filterEbooks: "E-books", filterCourses: "Formations", filterFree: "Gratuits", filterDeals: "Promotions",
+    beta: "BÊTA", demoBanner: "Version bêta · données et paiements simulés", soldOut: "",
+    menuText: "Menu"
+  },
+  en: {
+    promo: "🔥 24h flash sale: 45% off all e-books · ends in", copyCode: "Copy DIGI45", copied: "Code copied",
+    myProducts: "My products", home: "Home", shop: "Shop", searchTab: "Search", community: "Community",
+    heroTitle: "Learn. Apply. <em>Grow.</em>", heroText: "Practical e-books and courses built for Africa, in English and French. Pay with MTN MoMo or Orange Money and get access right away.",
+    searchPh: "What do you want to learn?", seeEbooks: "Browse e-books", joinCommunity: "Join the community",
+    stats: ["<b>4.8 ★</b> average rating", "<b>3,200</b> learners", "<b>15</b> countries"],
+    cats: ["All", "Online business", "Marketing", "Social media", "AI", "Canva", "Finance"],
+    deals: "Today’s deals", best: "Best sellers", seeAll: "See all", newT: "New releases", freeT: "Free", soonT: "Coming soon",
+    how: "How it works", how1: "Choose your e-book or course", how2: "Pay with MTN MoMo, Orange Money or card", how3: "Get instant access, in English and French",
+    why: "Why DigiSkool", whyItems: [["zap", "Instant access", "Your product opens as soon as you pay."], ["globe", "EN + FR included", "Every product in both languages."], ["phone", "Mobile Money", "MTN MoMo, Orange Money, card."], ["cloud", "Offline", "Read without data in the app."], ["infinity", "Lifetime access", "Free updates."], ["users", "Community", "Exclusive deals and support."]],
+    testimonials: "What readers say", demoData: "Demo reviews", meet: "Your instructor", authorBio: "A digital product seller for 2 years and a graphic designer, Roger shares practical methods tested in African markets.",
+    commTitle: "The DigiSkool community", commText: "Deals up to 45% off are announced here first. New releases, support, live sessions.",
+    leadTitle: "Free e-book: 7 Mistakes That Stop You Selling Online", leadBtn: "Get the e-book", leadHint: "Sent to your WhatsApp. No sign-up.",
+    faq: "Frequently asked questions",
+    faqs: [["How do I pay?", "With MTN Mobile Money, Orange Money or a bank card. You get a request on your phone, enter your PIN, and you’re done."], ["When do I get access?", "Instantly. After payment your e-book opens by itself, and the link is also sent to your WhatsApp."], ["Do I need an account?", "No. Your WhatsApp number is all you need to find your products on any phone."], ["Which language do I get?", "Both: the English and French versions are included."], ["Can I read offline?", "Yes, in the app: download the e-book once and read it anywhere."]],
+    footer: "DigiSkool Academy · Douala, Cameroon", legal: "Legal notice · Terms · Privacy · Refunds", findPurchase: "Find my purchase", help: "Help", install: "Install the app",
+    ebook: "E-BOOK", course: "VIDEO COURSE", pages: "pages", sales: "sales", reviews: "reviews", free: "FREE", newBadge: "NEW", bestBadge: "BESTSELLER", soonBadge: "SOON",
+    by: "by", updated: "Updated Oct 2026", leaf: "Look inside", trailer: "Free preview",
+    offerEnds: "Offer ends in", h: "h", min: "min", s: "s", save: "You save", buyNow: "Buy now", addCart: "Add to cart", gift: "Gift it",
+    secure: "Secure payment", instant: "Instant access", both: "EN + FR included", question: "A question?", needHelp: "Need help? Message us on WhatsApp",
+    tabsA: "Preview", tabsC: "Contents", tabsR: "Reviews", tabsF: "FAQ",
+    includes: "This product includes", learn: "What you’ll learn", inside: "Look inside", insideHint: "Real pages from the book. Tap “Look inside” to read the opening.",
+    listen: "Listen to a sample", toc: "Table of contents", chapters: "chapters", expand: "Expand all", collapse: "Collapse", freeLbl: "Free",
+    forWho: "Who is it for?", forYes: ["You want to sell your first digital product", "You’re starting out, or selling without a method", "You want to use WhatsApp and Mobile Money"], forNo: ["You’re looking for easy money without work"],
+    value: "What you get", totalValue: "Total value", today: "Today", valueNote: "Real values: the price each item sells for on its own.",
+    reviewsT: "Reader reviews", rogerReply: "Roger’s reply", authorWord: "A word from the author", authorVideo: "60-second video: Roger presents the book",
+    guarantee: "7-day guarantee", guaranteeText: "If the e-book isn’t right for you, message us within 7 days for a refund.",
+    together: "Frequently bought together", packSave: "Bundle: save 20%", addPack: "Add the bundle",
+    finalTitle: "Start today", alreadyOwned: "Open my product",
+    convTitle: "This price in other currencies", convNote: "Today’s rate, for reference only. Here: demo rates.",
+    curTitle: "Currency", detected: "Detected automatically: Cameroon 🇨🇲",
+    coTitle: "Checkout", yourName: "Your name", yourWa: "Your WhatsApp number", email: "Email (optional)", emailHint: "Recommended to receive a copy of your access.",
+    bump: "Add the workbook + one-page summary for only", payWith: "Pay with", card: "Bank card", momoNum: "Mobile Money number",
+    promoQ: "Have a promo code?", apply: "Apply", codeOk: "Code applied: 10% off", codeBad: "This code doesn’t exist or has expired.",
+    pay: "Pay", terms: "By paying, you accept the terms of sale.", payTrouble: "Trouble paying?", howPay: "How to pay (30 s video)",
+    errName: "Please enter your name.", errPhone: "This number looks incomplete: 9 digits, starting with 6.", detectedOp: "Operator detected:",
+    debited: "Amount charged:", emailFix: "Did you mean",
+    waitTitle: "Check your phone", waitText: "A payment request is about to appear on your phone.", w1: "Open the notification", w2: "Enter your PIN", w3: "Come back here: it’s all automatic",
+    waiting: "Waiting for your confirmation…", expires: "The request expires in", notReceived: "I didn’t get the request", changeMethod: "Change payment method",
+    ussdMtn: "MTN: dial <code>*126#</code> to see and approve pending payments.", ussdOrange: "Orange: dial <code>#150#</code>.", ussdNote: "Codes to be checked before launch.", resend: "Send the request again",
+    simulate: "Simulate: I entered my PIN", listenIns: "Listen to the instructions (30 s)",
+    successT: "Payment successful!", successS: "Your e-book is ready.", readNow: "Read now", enVersion: "English version", frVersion: "Version française", listenBtn: "Listen", downloadPdf: "Download PDF",
+    sentWa: "Your access was also sent to your WhatsApp", installT: "Install the app to open your e-book in one tap", installBtn: "Install",
+    upsell: "Reader-only offer: volume 2 at 30% off for 15 min",
+    hello: "Hello", continueT: "Continue", resume: "Resume", library: "My library", read: "Read", offline: "Offline",
+    emptyT: "Your products will appear here", emptyS: "Right after payment, automatically. On another phone? Find your purchases with your number.",
+    referral: "Refer a friend: they get 10% off, you get a 20% code.",
+    accessT: "Find your products", accessS: "Enter your WhatsApp number. No password.", getCode: "Send my code", codeSent: "Code received on WhatsApp", google: "Continue with Google", emailLink: "Get a link by email", resendSms: "Resend by SMS in",
+    chapter: "CHAPTER 4", progress: "Chapter 4/12 · 34% · 12 min left", listenCh: "Listen to this chapter", settings: "Reading settings", size: "Text size", font: "Font", theme: "Theme", light: "Light", sepia: "Sepia", night: "Dark",
+    quoteT: "Share a quote", quoteS: "Tap a highlighted sentence to turn it into an image for your WhatsApp status.", quoteCopy: "Copy the quote", quoteNote: "In the app, the image goes straight to your WhatsApp status.",
+    offerTitle: "45% OFF ALL E-BOOKS", offerText: "24h flash sale, this week only.", offerBtn: "See the deals", later: "Later",
+    toastNew: "NEW · Canva for Sellers", toastNewS: "E-book · take a look", toastBuy: "A reader in Douala just bought “Sell Online in 30 Days”", ago: "12 min ago", toastLeft: "Only a few hours left for 45% off",
+    fabComm: "Join the community", fabCommS: "Exclusive deals up to 45% off", fabSup: "Contact support",
+    commPage: "Join the DigiSkool community", commBenefits: ["Exclusive deals up to 45% off, announced here first", "Early access to new releases", "Learners helping each other", "Live Q&A sessions with Roger"],
+    demoLink: "In the final version, this button opens the WhatsApp community.", demoSupport: "In the final version, this button opens a WhatsApp chat with support.",
+    notifyMe: "Notify me", soonText: "Out in", notified: "Done: you’ll get a WhatsApp message on release day.",
+    addedCart: "Added to cart", cartEmpty: "Your cart is empty.", cartT: "Cart", checkout: "Pay now",
+    filterAll: "All", filterEbooks: "E-books", filterCourses: "Courses", filterFree: "Free", filterDeals: "Deals",
+    beta: "BETA", demoBanner: "Beta version · simulated data and payments", soldOut: "",
+    menuText: "Menu"
+  }
+};
+const frTypo = s => typeof s === "string" ? s.replace(/ ([?!:;»%])/g, " $1").replace(/« /g, "« ") : s;
+function t(k) {
+  const v = I18N[S.lang][k] !== undefined ? I18N[S.lang][k] : I18N.fr[k];
+  if (v === undefined) { console.warn("missing key", k); return k; }
+  if (S.lang !== "fr") return v;
+  return Array.isArray(v) ? v.map(x => Array.isArray(x) ? x.map(frTypo) : frTypo(x)) : frTypo(v);
+}
+const L = o => (o && typeof o === "object" && "fr" in o) ? (S.lang === "fr" ? frTypo(o.fr) : o.en) : o;
+
+/* ---------- Catalogue (demo data) ---------- */
+const PRODUCTS = [
+  { id: "vendre", type: "ebook", color: "#4338CA", base: 18000, promo: 9900, rating: 4.8, nrev: 312, sales: 2431, pages: 120, badge: "best", audio: true, cat: 1,
+    title: { fr: "Vendre en ligne en 30 jours", en: "Sell Online in 30 Days" },
+    sub: { fr: "La méthode pas à pas pour faire vos premières ventes de produits digitaux, même en partant de zéro.", en: "The step-by-step method to make your first digital product sales, even from scratch." },
+    short: { fr: "Méthode complète", en: "Complete method" } },
+  { id: "canva", type: "ebook", color: "#059669", base: 10000, promo: 5500, rating: 4.7, nrev: 96, sales: 640, pages: 64, badge: "new", cat: 5,
+    title: { fr: "Canva pour vendre", en: "Canva for Sellers" }, sub: { fr: "Créez des visuels qui font acheter, sans être designer.", en: "Create visuals that sell, no design skills needed." }, short: { fr: "Visuels qui vendent", en: "Visuals that sell" } },
+  { id: "whatsapp", type: "ebook", color: "#D97706", base: 14000, promo: 7700, rating: 4.9, nrev: 188, sales: 1205, pages: 86, cat: 3,
+    title: { fr: "WhatsApp Business : la méthode", en: "The WhatsApp Business Playbook" }, sub: { fr: "Transformez vos contacts WhatsApp en clients fidèles.", en: "Turn your WhatsApp contacts into loyal customers." }, short: { fr: "Vendre sur WhatsApp", en: "Sell on WhatsApp" } },
+  { id: "ia", type: "ebook", color: "#7C3AED", base: 22000, promo: 12100, rating: 4.8, nrev: 74, sales: 410, pages: 140, audio: true, cat: 4,
+    title: { fr: "L’IA au service de votre business", en: "AI for Your Business" }, sub: { fr: "Gagnez des heures chaque semaine avec les bons outils d’IA.", en: "Save hours every week with the right AI tools." }, short: { fr: "Premium + audio", en: "Premium + audio" } },
+  { id: "ads", type: "course", color: "#BE123C", base: 35000, promo: null, rating: 4.9, nrev: 58, sales: 230, modules: 8, lessons: 46, hours: "5 h 20", cat: 2,
+    title: { fr: "Publicité Facebook et TikTok", en: "Facebook & TikTok Ads" }, sub: { fr: "Lancez des publicités rentables avec un petit budget.", en: "Run profitable ads on a small budget." }, short: { fr: "8 modules · 5 h 20", en: "8 modules · 5h 20" } },
+  { id: "erreurs", type: "ebook", color: "#0D9488", base: 0, promo: 0, rating: 4.7, nrev: 420, sales: 5100, pages: 24, free: true, cat: 1,
+    title: { fr: "Les 7 erreurs qui empêchent de vendre en ligne", en: "7 Mistakes That Stop You Selling Online" }, sub: { fr: "Le guide gratuit pour bien démarrer.", en: "The free guide to get started right." }, short: { fr: "Guide gratuit", en: "Free guide" } },
+  { id: "tome2", type: "ebook", color: "#4338CA", base: 18000, promo: null, pages: 110, soon: true, tome: 2, cat: 1,
+    title: { fr: "Vendre en ligne, tome 2 : passer à 100 ventes", en: "Sell Online, Vol. 2: Reach 100 Sales" }, sub: { fr: "La suite : automatiser et vendre chaque jour.", en: "The sequel: automate and sell every day." }, short: { fr: "Collection Vendre en ligne", en: "Sell Online collection" } }
+];
+const byId = id => PRODUCTS.find(p => p.id === id);
+const CHAPTERS = [
+  [8, 10, "Le bon état d’esprit", "The right mindset", true], [12, 15, "Choisir un produit qui se vend", "Choosing a product that sells"], [10, 12, "Connaître son client", "Knowing your customer"],
+  [12, 15, "Créer votre page de vente", "Building your sales page"], [8, 10, "Fixer le bon prix", "Setting the right price"], [9, 11, "Encaisser avec le Mobile Money", "Getting paid with Mobile Money"],
+  [12, 15, "Attirer vos premiers clients", "Attracting your first customers"], [10, 12, "WhatsApp, votre meilleur vendeur", "WhatsApp, your best salesperson"], [9, 11, "Les promotions qui marchent", "Promotions that work"],
+  [8, 10, "Livrer sans stress", "Delivering stress-free"], [10, 12, "Suivre vos chiffres", "Tracking your numbers"], [12, 15, "Votre plan d’action sur 30 jours", "Your 30-day action plan"]
+];
+const LEARN = { fr: ["Trouver un produit digital qui se vend vraiment", "Créer une page de vente claire en une journée", "Encaisser avec MTN MoMo, Orange Money et la carte", "Attirer vos premiers clients sur WhatsApp et Facebook", "Lancer une promo qui fait vendre sans abîmer votre image", "Suivre vos chiffres avec un tableau simple"],
+  en: ["Find a digital product that actually sells", "Build a clear sales page in one day", "Get paid with MTN MoMo, Orange Money and card", "Attract your first customers on WhatsApp and Facebook", "Run a promotion that sells without hurting your brand", "Track your numbers with a simple sheet"] };
+const INCLUDES = { fr: [["book", "120 pages · 2 h 30 de lecture"], ["head", "Version audio · 3 h 20"], ["globe", "Version française + English version"], ["cloud", "Lecture en ligne et hors ligne · PDF"], ["edit", "12 exercices · 5 modèles prêts à l’emploi"], ["infinity", "Accès à vie · mises à jour gratuites"]],
+  en: [["book", "120 pages · 2h 30 reading time"], ["head", "Audio version · 3h 20"], ["globe", "English version + version française"], ["cloud", "Read online and offline · PDF"], ["edit", "12 exercises · 5 ready-to-use templates"], ["infinity", "Lifetime access · free updates"]] };
+const REVIEWS = [
+  { n: "Aïcha M.", c: "🇨🇲 Douala", r: 5, d: { fr: "il y a 3 jours", en: "3 days ago" }, t: { fr: "Clair et concret, et les exemples parlent de chez nous. Le chapitre sur le Mobile Money m’a débloquée.", en: "Clear and practical, with examples from home. The Mobile Money chapter got me unstuck." },
+    reply: { fr: "Merci Aïcha ! Ravi que ce chapitre vous ait aidée. Partagez vos progrès dans la communauté.", en: "Thank you Aïcha! Glad that chapter helped. Share your progress in the community." } },
+  { n: "Kwame A.", c: "🇬🇭 Accra", r: 5, d: { fr: "il y a 1 semaine", en: "1 week ago" }, t: { fr: "La version anglaise se lit naturellement. Le chapitre WhatsApp vaut à lui seul le prix.", en: "The English version reads naturally. The WhatsApp chapter alone is worth the price." } },
+  { n: "Mireille K.", c: "🇨🇮 Abidjan", r: 4, d: { fr: "il y a 2 semaines", en: "2 weeks ago" }, t: { fr: "Très bon livre. J’aurais aimé plus d’exemples sur TikTok.", en: "Great book. I’d have liked more TikTok examples." },
+    reply: { fr: "Merci Mireille ! Un chapitre TikTok arrive dans la prochaine mise à jour, gratuite pour vous.", en: "Thanks Mireille! A TikTok chapter is coming in the next update, free for you." } }
+];
+
+/* ---------- Currencies (demo rates, from XAF) ---------- */
+const CUR = {
+  XAF: { r: 1, fl: "🇨🇲", n: { fr: "Franc CFA (CEMAC)", en: "CFA franc (CEMAC)" } },
+  XOF: { r: 1, fl: "🇨🇮", n: { fr: "Franc CFA (UEMOA)", en: "CFA franc (WAEMU)" } },
+  NGN: { r: 2.65, fl: "🇳🇬", n: { fr: "Naira", en: "Naira" } },
+  GHS: { r: 0.0245, fl: "🇬🇭", n: { fr: "Cedi", en: "Cedi" } },
+  KES: { r: 0.228, fl: "🇰🇪", n: { fr: "Shilling kényan", en: "Kenyan shilling" } },
+  EUR: { r: 1 / 655.957, fl: "🇪🇺", n: { fr: "Euro", en: "Euro" } },
+  USD: { r: 1 / 565, fl: "🇺🇸", n: { fr: "Dollar US", en: "US dollar" } }
+};
+function money(xaf, cur = S.cur, exact = false) {
+  const loc = S.lang === "fr" ? "fr-FR" : "en-US";
+  if (xaf === 0) return t("free");
+  let v = xaf * CUR[cur].r;
+  if (cur === "XAF" || cur === "XOF") {
+    if (!exact) v = Math.round(v / 100) * 100;
+    return new Intl.NumberFormat(loc, { maximumFractionDigits: 0 }).format(v) + " FCFA";
+  }
+  if (cur === "NGN") return "₦" + new Intl.NumberFormat(loc, { maximumFractionDigits: 0 }).format(exact ? v : Math.round(v / 100) * 100);
+  if (cur === "GHS") return "GH₵ " + new Intl.NumberFormat(loc, { maximumFractionDigits: exact ? 2 : 0 }).format(exact ? v : Math.round(v));
+  if (cur === "KES") return "KSh " + new Intl.NumberFormat(loc, { maximumFractionDigits: 0 }).format(exact ? v : Math.round(v / 10) * 10);
+  const val = exact ? v : Math.max(0.99, Math.round(v) - 0.01);
+  return new Intl.NumberFormat(loc, { style: "currency", currency: cur }).format(val);
+}
+const pct = p => Math.round((1 - p.promo / p.base) * 100);
+const nowPrice = p => (p.promo !== null && p.promo !== undefined) ? p.promo : p.base;
+
+/* ---------- State ---------- */
+const S = {
+  lang: store.get("lang", (navigator.language || "fr").toLowerCase().startsWith("en") ? "en" : "fr"),
+  cur: store.get("cur", "XAF"),
+  view: "accueil", pid: "vendre", filter: "all",
+  owned: store.get("owned", []), cart: store.get("cart", []),
+  bump: false, coupon: null, method: "mtn", phoneCountry: "CM",
+  promoBar: true, promoEnd: store.get("promoEnd", Date.now() + (5 * 3600 + 12 * 60 + 33) * 1000),
+  soonEnd: store.get("soonEnd", Date.now() + (2 * 86400 + 6 * 3600) * 1000),
+  reader: { size: 18, font: "lit", theme: "light", lang: null, playing: false, prog: 34 },
+  modalShown: store.get("modalShown", false), toastsShown: 0, wishlist: [], notified: false
+};
+store.set("promoEnd", S.promoEnd); store.set("soonEnd", S.soonEnd);
+const EXCLUDE_POPUPS = ["attente", "succes", "liseuse"];
+const $ = s => document.querySelector(s);
+const scroller = $("#scroller"), bottom = $("#bottom"), layer = $("#layer"), toasts = $("#toasts"), fab = $("#fab");
+
+/* ---------- Shared pieces ---------- */
+function cover(p, opts = {}) {
+  const lg = opts.lang || (S.lang === "fr" ? "FR" : "EN");
+  const title = opts.lang ? (opts.lang === "FR" ? p.title.fr : p.title.en) : L(p.title);
+  return `<div class="cover" style="--c:${p.color}">
+    <div class="ct">${LOGO}<span>${p.type === "course" ? t("course") : t("ebook")}</span></div>
+    ${p.tome ? `<div class="tome">${p.tome}</div>` : ""}
+    <div class="cti">${title}</div>
+    ${opts.sub === false ? "" : `<div class="csu">${L(p.short)}</div>`}
+    <div class="cb"><span class="lg">${lg}</span><span>Roger BOUJIEKA</span></div>
+  </div>`;
+}
+function cdParts(end) {
+  let ms = Math.max(0, end - Date.now()); const h = Math.floor(ms / 3.6e6); ms -= h * 3.6e6; const m = Math.floor(ms / 6e4); ms -= m * 6e4; const s = Math.floor(ms / 1000);
+  const pad = n => String(n).padStart(2, "0"); return [pad(h), pad(m), pad(s)];
+}
+const cdText = end => cdParts(end).join(":");
+const cdBoxes = end => { const [h, m, s] = cdParts(end); return `<span class="cd-boxes" data-cdb="${end}"><span><b>${h}</b><small>${t("h")}</small></span><span><b>${m}</b><small>${t("min")}</small></span><span><b>${s}</b><small>${t("s")}</small></span></span>`; };
+function stars(r) { return `<span class="stars">${ic("star", "sm")}${S.lang === "fr" ? String(r).replace(".", ",") : r}</span>`; }
+function nf(n) { return new Intl.NumberFormat(S.lang === "fr" ? "fr-FR" : "en-US").format(n); }
+function card(p) {
+  const tagL = p.free ? `<span class="tag free">${t("free")}</span>` : p.soon ? `<span class="tag soon">${t("soonBadge")}</span>` : p.promo ? `<span class="tag promo-t">-${pct(p)} %</span>` : "";
+  const tagR = p.badge === "best" ? `<span class="tag best">${t("bestBadge")}</span>` : p.badge === "new" ? `<span class="tag new">${t("newBadge")}</span>` : "";
+  const info = p.type === "course" ? `${p.modules} modules · ${p.hours}` : `${p.pages} ${t("pages")}`;
+  const priceHtml = p.soon ? `<span class="mini-cd">${ic("clock", "sm")}${t("soonText")} <span class="num" data-cd="${S.soonEnd}" data-days="1">${daysText(S.soonEnd)}</span></span>`
+    : `<div class="price-row"><span class="price">${money(nowPrice(p))}</span>${p.promo ? `<span class="was">${money(p.base)}</span>` : ""}</div>${p.promo ? `<span class="mini-cd">${ic("clock", "sm")}<span class="num" data-cd="${S.promoEnd}">${cdText(S.promoEnd)}</span></span>` : ""}`;
+  return `<button class="card" data-a="open" data-id="${p.id}">
+    <div class="cv">${tagL}${tagR}${cover(p)}</div>
+    <h3>${L(p.title)}</h3>
+    <div class="meta">${p.soon ? "" : `${stars(p.rating)}<span>(${nf(p.nrev)})</span><span>· ${nf(p.sales)} ${t("sales")}</span>`}</div>
+    <div class="meta"><span>${p.type === "course" ? "🎬" : "📖"} ${info}</span><span>· FR+EN</span>${p.audio ? `<span>· 🎧</span>` : ""}</div>
+    ${priceHtml}
+  </button>`;
+}
+function daysText(end) { const ms = Math.max(0, end - Date.now()); const d = Math.floor(ms / 864e5); const h = Math.floor((ms - d * 864e5) / 3.6e6); return S.lang === "fr" ? `${d} j ${h} h` : `${d}d ${h}h`; }
+function payLogos(country = "CM") {
+  const m = { CM: ["mtn", "orange", "visa", "mc"], CI: ["orange", "mtn", "moov", "wave", "visa"], SN: ["wave", "orange", "visa"], NG: ["visa", "mc", "bank"], FR: ["visa", "mc"] }[country] || ["visa", "mc"];
+  const names = { mtn: "MTN MoMo", orange: "Orange Money", visa: "VISA", mc: "Mastercard", wave: "Wave", moov: "Moov Money", bank: S.lang === "fr" ? "Virement" : "Bank transfer" };
+  return `<div class="pay-logos">${m.map(k => `<span class="pl ${k}">${names[k]}</span>`).join("")}</div>`;
+}
+function waMini(kind = "question") {
+  const lbl = kind === "trouble" ? t("payTrouble") : t("question");
+  return `<button class="wa-mini" data-a="support"><span class="wa-ic">${ic("chat")}</span><span style="flex:1;min-width:0"><b>${lbl}</b><br><span class="wa-num">+237 6XX XX XX XX</span></span>${ic("right")}</button>`;
+}
+function waCard() {
+  return `<div class="wa-card"><div class="sup"><span class="wa-ic">${ic("chat")}</span><span>${t("needHelp")}<br><span class="wa-num">+237 6XX XX XX XX</span></span></div>
+  <button class="btn btn-wa btn-block" data-a="community">${ic("users")} ${t("joinCommunity")}</button><span class="small muted" style="text-align:center">${t("commText")}</span></div>`;
+}
+
+/* ---------- Header / bottom ---------- */
+function header() {
+  const promo = S.promoBar && !EXCLUDE_POPUPS.includes(S.view) ? `<div class="promo" role="region" aria-label="Promotion"><span class="txt">${t("promo")} <span class="num" data-cd="${S.promoEnd}">${cdText(S.promoEnd)}</span></span><button class="copy" data-a="copy">${t("copyCode")}</button><button class="x" data-a="closePromo" aria-label="Fermer">${ic("x", "sm")}</button></div>` : "";
+  const back = ["produit", "attente", "acces", "communaute"].includes(S.view) ? `<button class="icon-btn" data-a="back" aria-label="Retour">${ic("back")}</button>` : "";
+  return `${promo}<header class="header${back ? " has-back" : ""}">${back}
+    <button class="logo" data-a="go" data-v="accueil" aria-label="DigiSkool Academy">${LOGO}<span class="wm"><b>Dig<span class="ipix">ı<i></i></span>Skool</b><small>ACADEMY</small></span></button>
+    <span class="h-spacer"></span>
+    <button class="beta-pill" data-a="guide">${t("beta")}</button>
+    <button class="chip-btn" data-a="currency" aria-label="${t("curTitle")}">${CUR[S.cur].fl} ${S.cur} ${ic("chev", "sm")}</button>
+    <span class="lang" role="group" aria-label="Langue"><button data-a="lang" data-l="fr" aria-pressed="${S.lang === "fr"}">FR</button><button data-a="lang" data-l="en" aria-pressed="${S.lang === "en"}">EN</button></span>
+    <button class="icon-btn" data-a="cart" aria-label="${t("cartT")}">${ic("bag")}${S.cart.length ? `<span class="dot">${S.cart.length}</span>` : ""}</button>
+  </header>`;
+}
+function renderBottom() {
+  if (["attente", "succes", "liseuse"].includes(S.view)) { bottom.innerHTML = ""; bottom.hidden = true; return; }
+  bottom.hidden = false;
+  if (S.view === "produit") {
+    const p = byId(S.pid);
+    if (p.soon || S.owned.includes(p.id)) { bottom.innerHTML = ""; bottom.hidden = true; return; }
+    bottom.innerHTML = `<div class="buybar" id="buybar">${cover(p, { sub: false })}<div class="bb-price"><span class="price">${money(nowPrice(p))}</span>${p.promo ? `<span class="mini-cd">${ic("clock", "sm")}<span class="num" data-cd="${S.promoEnd}">${cdText(S.promoEnd)}</span></span>` : ""}</div><button class="btn btn-buy" data-a="buy">${p.free ? t("leadBtn") : t("buyNow")}</button></div>`;
+    return;
+  }
+  const tabs = [["accueil", "home", t("home")], ["boutique", "bag", t("shop")], ["recherche", "search", t("searchTab")], ["mes-produits", "book", t("myProducts")], ["communaute", "users", t("community")]];
+  bottom.innerHTML = `<nav class="tabbar">${tabs.map(([v, i, l]) => `<button data-a="go" data-v="${v}" aria-current="${S.view === v || (v === "boutique" && S.view === "recherche" && false)}">${ic(i)}<span>${l}</span></button>`).join("")}</nav>`;
+}
+
+/* ---------- Views ---------- */
+function vHome() {
+  const deals = PRODUCTS.filter(p => p.promo);
+  return `<section class="hero"><div class="hero-in wrap">
+      <span class="overline" style="color:rgba(255,255,255,.75)">DigiSkool Academy</span>
+      <h1>${t("heroTitle")}</h1><p>${t("heroText")}</p>
+      <div style="position:relative;display:grid;gap:6px"><label class="search">${ic("search")}<input id="q" type="search" placeholder="${t("searchPh")}" autocomplete="off"></label><div id="qres"></div></div>
+      <div class="hero-cta"><button class="btn btn-buy" style="min-height:48px;font-size:15px" data-a="go" data-v="boutique">${t("seeEbooks")}</button><button class="btn btn-wa" data-a="community">${ic("users")} ${t("joinCommunity")}</button></div>
+      <div class="hero-stats">${t("stats").map(x => `<span>${x}</span>`).join("")}</div>
+    </div></section>
+    <div class="wrap">
+      <div class="section" style="padding-block:14px 6px"><div class="chips">${t("cats").map((c, i) => `<button class="chip" data-a="cat" aria-pressed="${i === 0}">${c}</button>`).join("")}</div></div>
+      <div class="section"><div class="sec-head"><h2>${t("deals")}</h2><button class="link small" data-a="go" data-v="boutique">${t("seeAll")}</button></div><div class="row-scroll">${deals.map(card).join("")}</div></div>
+      <div class="section"><h2 style="font-size:20px">${t("how")}</h2><div class="steps">${[t("how1"), t("how2"), t("how3")].map((x, i) => `<div class="step"><span class="n">${i + 1}</span><span>${x}</span></div>`).join("")}</div>
+        <div class="sec-head" style="padding-top:4px">${payLogos()}</div></div>
+      <div class="section"><div class="sec-head"><h2>${t("newT")} · ${t("freeT")}</h2></div><div class="row-scroll">${[byId("canva"), byId("erreurs"), byId("ads")].map(card).join("")}</div></div>
+      <div class="section"><div class="sec-head"><h2>${t("soonT")}</h2></div>${soonBlock()}</div>
+      <div class="section"><h2 style="font-size:20px">${t("why")}</h2><div class="benefits">${t("whyItems").map(([i, h, d]) => `<div class="benefit"><span class="duo">${ic(i)}</span><b>${h}</b><span class="muted">${d}</span></div>`).join("")}</div></div>
+      <div class="section"><div class="sec-head"><h2>${t("testimonials")}</h2><span class="small muted">${t("demoData")}</span></div><div class="tcards">${REVIEWS.map(r => `<div class="tcard"><span class="stars">${"★".repeat(r.r)}</span><p>« ${L(r.t)} »</p><div class="who"><span class="avatar">${r.n[0]}</span><span><b>${r.n}</b> · ${r.c}<br><span class="verified">${ic("check", "sm")}${S.lang === "fr" ? "Achat vérifié" : "Verified purchase"}</span></span></div></div>`).join("")}</div></div>
+      <div class="section"><span class="overline">${t("meet")}</span><div class="author"><span class="avatar">RB</span><div><h3 style="font-size:18px">Roger BOUJIEKA</h3><p class="small muted">${t("authorBio")}</p></div></div></div>
+      <div class="section">${waCard()}</div>
+      <div class="section"><div class="guide-card" style="box-shadow:none"><span class="overline">${t("freeT")}</span><h3 style="font-size:18px">${t("leadTitle")}</h3>
+        <div class="phone"><select id="leadCountry" aria-label="Pays"><option>🇨🇲 +237</option></select><input id="leadPhone" inputmode="numeric" placeholder="6 XX XX XX XX" aria-label="WhatsApp"></div>
+        <button class="btn btn-buy" style="min-height:48px;font-size:15px" data-a="lead">${t("leadBtn")}</button><span class="small muted">${t("leadHint")}</span></div></div>
+      <div class="section"><h2 style="font-size:20px">${t("faq")}</h2><div>${t("faqs").map(([q, a]) => acc(q, a)).join("")}</div></div>
+    </div>${footer()}`;
+}
+function soonBlock() {
+  const p = byId("tome2");
+  return `<div class="pack"><div class="pack-covers">${cover(p, { sub: false })}<div style="display:grid;gap:4px;min-width:0"><b>${L(p.title)}</b><span class="small muted">${t("soonText")} <span class="num" data-cd="${S.soonEnd}" data-days="1">${daysText(S.soonEnd)}</span></span></div></div>
+  <button class="btn btn-dark" data-a="notify">${ic("bell", "sm")} ${S.notified ? "✓" : t("notifyMe")}</button></div>`;
+}
+const acc = (q, a) => `<div class="acc" data-open="false"><button data-a="acc">${q}${ic("chev")}</button><div class="body" hidden>${a}</div></div>`;
+function footer() {
+  return `<footer class="footer wrap"><span class="logo" style="color:var(--on-dark)">${LOGO.replace('fill="currentColor"', 'fill="currentColor"')}<span class="wm"><b style="color:var(--on-dark)">Dig<span class="ipix">ı<i></i></span>Skool</b><small style="color:rgba(255,255,255,.6)">ACADEMY</small></span></span>
+  <span>${t("footer")}</span>${payLogos()}
+  <span><button class="link" style="color:var(--or)" data-a="go" data-v="acces">${t("findPurchase")}</button> · ${t("help")} · ${t("install")}</span><span>${t("legal")}</span>
+  <span class="demo-flag" style="color:rgba(255,255,255,.6)">${ic("info", "sm")} ${t("demoBanner")}</span></footer>`;
+}
+function vShop() {
+  const f = S.filter;
+  const list = PRODUCTS.filter(p => f === "all" || (f === "ebook" && p.type === "ebook" && !p.free) || (f === "course" && p.type === "course") || (f === "free" && p.free) || (f === "deals" && p.promo));
+  const fs = [["all", t("filterAll")], ["ebook", t("filterEbooks")], ["course", t("filterCourses")], ["free", t("filterFree")], ["deals", t("filterDeals")]];
+  return `<div class="wrap"><div class="section"><h1 style="font-size:26px">${t("shop")}</h1>
+    <label class="search">${ic("search")}<input id="q" type="search" placeholder="${t("searchPh")}" autocomplete="off"></label><div id="qres"></div>
+    <div class="chips">${fs.map(([k, l]) => `<button class="chip" data-a="filter" data-f="${k}" aria-pressed="${f === k}">${l}</button>`).join("")}</div></div>
+    <div class="grid2" style="padding-bottom:24px">${list.map(card).join("")}</div></div>`;
+}
+function vProduct() {
+  const p = byId(S.pid); const main = p.id === "vendre"; const owned = S.owned.includes(p.id);
+  const buyBtn = owned ? `<button class="btn btn-buy btn-block" data-a="read" data-id="${p.id}">${ic("book")} ${t("alreadyOwned")}</button>`
+    : p.soon ? `<button class="btn btn-dark btn-block" data-a="notify">${ic("bell", "sm")} ${S.notified ? "✓" : t("notifyMe")}</button>`
+    : `<button class="btn btn-buy btn-block" id="mainBuy" data-a="buy">${p.free ? t("leadBtn") : t("buyNow")}</button>`;
+  const priceBox = p.soon ? `<div class="pricebox"><div class="cd">${ic("clock", "sm")} ${t("soonText")} <b class="num" data-cd="${S.soonEnd}" data-days="1">${daysText(S.soonEnd)}</b></div>${buyBtn}</div>`
+    : `<div class="pricebox">
+      <div class="big-price"><span class="price">${money(nowPrice(p))}</span>${p.promo ? `<span class="pct">-${pct(p)} %</span>` : ""}${p.free ? "" : `<button class="conv" data-a="convert" aria-label="${t("convTitle")}">${ic("swap", "sm")}</button>`}</div>
+      ${p.promo ? `<div class="price-row"><span class="was" style="font-size:15px">${money(p.base)}</span><span class="save">${t("save")} ${money(p.base - p.promo)}</span></div>
+      <div class="cd">${ic("clock", "sm")} ${t("offerEnds")} ${cdBoxes(S.promoEnd)}</div>` : ""}
+      ${buyBtn}
+      ${owned || p.free ? "" : `<div class="sec-actions"><button class="btn btn-line" data-a="addcart">${ic("bag", "sm")} ${t("addCart")}</button><button class="btn btn-line" data-a="toast-demo">${ic("gift", "sm")} ${t("gift")}</button></div>`}
+      <div class="reassure"><span>${ic("lock", "sm")}${t("secure")}</span><span>${ic("zap", "sm")}${t("instant")}</span><span>${ic("globe", "sm")}${t("both")}</span></div>
+      ${payLogos()}
+    </div>`;
+  const media = p.type === "course"
+    ? `<div style="width:86%;max-width:340px;aspect-ratio:16/9;border-radius:14px;overflow:hidden;position:relative;box-shadow:0 18px 30px rgba(0,0,0,.4)"><div class="cover" style="--c:${p.color};aspect-ratio:auto;height:100%;font-size:16px"><div class="ct">${LOGO}<span>${t("course")}</span></div><div class="cti">${L(p.title)}</div></div><button data-a="toast-demo" style="position:absolute;inset:0;display:grid;place-items:center" aria-label="${t("trailer")}"><span style="width:58px;height:58px;border-radius:999px;background:var(--or);color:var(--on-or);display:grid;place-items:center">${ic("play")}</span></button></div>`
+    : `<div class="book3d">${p.promo ? `<span class="tag promo-t">-${pct(p)} %</span>` : ""}${p.badge === "best" ? `<span class="tag best">${t("bestBadge")}</span>` : ""}${cover(p)}</div>`;
+  const mediaActions = p.type === "course" ? "" : `<div class="p-actions-top"><button class="ghost-light" data-a="flip">${ic("book", "sm")} ${t("leaf")}</button>${p.audio ? `<button class="ghost-light" data-a="sample">${ic("head", "sm")} ${t("listen")}</button>` : ""}</div>`;
+  let html = `<section class="p-hero"><div class="p-hero-in wrap">${media}${mediaActions}</div></section>
+  <div class="wrap"><div class="p-info">
+    <div class="badges">${p.badge === "best" ? `<span class="badge best">${t("bestBadge")}</span>` : ""}${p.badge === "new" ? `<span class="badge best">${t("newBadge")}</span>` : ""}<span class="badge upd">${t("updated")}</span></div>
+    <h1>${L(p.title)}</h1><p class="p-sub">${L(p.sub)}</p>
+    ${p.soon ? "" : `<div class="meta" style="font-size:13.5px">${stars(p.rating)}<span>(${nf(p.nrev)} ${t("reviews")})</span><span>· ${nf(p.sales)} ${t("sales")}</span></div>`}
+    <div class="meta" style="font-size:13.5px"><span>${t("by")} <b style="color:var(--fg)">Roger BOUJIEKA</b></span><span>· FR + EN</span></div>
+    ${priceBox}
+    ${waMini()}
+  </div></div>`;
+  if (!main) {
+    html += `<div class="wrap"><div class="section"><h2>${t("includes")}</h2><div class="includes">${INCLUDES[S.lang].slice(2).map(([i, x]) => `<div>${ic(i)}<span>${S.lang === "fr" ? frTypo(x) : x}</span></div>`).join("")}</div></div>
+      <div class="section"><div class="guar"><span class="seal">7<br>${S.lang === "fr" ? "JOURS" : "DAYS"}</span><div><b>${t("guarantee")}</b><p class="small muted">${t("guaranteeText")}</p></div></div></div>
+      <div class="section">${waCard()}</div></div><div style="height:16px"></div>`;
+    return html;
+  }
+  const totalPages = CHAPTERS.reduce((a, c) => a + c[0], 0);
+  html += `<nav class="tabs" id="ptabs" aria-label="Sections"><button data-a="tab" data-t="s-apercu" aria-current="true">${t("tabsA")}</button><button data-a="tab" data-t="s-contenu">${t("tabsC")}</button><button data-a="tab" data-t="s-avis">${t("tabsR")}</button><button data-a="tab" data-t="s-faq">${t("tabsF")}</button></nav>
+  <div class="wrap">
+    <div class="section" id="s-apercu"><h2>${t("includes")}</h2><div class="includes">${INCLUDES[S.lang].map(([i, x]) => `<div>${ic(i)}<span>${S.lang === "fr" ? frTypo(x) : x}</span></div>`).join("")}</div></div>
+    <div class="section"><h2>${t("learn")}</h2><div class="learn">${LEARN[S.lang].map(x => `<div>${ic("check")}<span>${S.lang === "fr" ? frTypo(x) : x}</span></div>`).join("")}</div></div>
+    <div class="section"><div class="sec-head"><h2>${t("inside")}</h2></div><p class="small muted">${t("insideHint")}</p>
+      <div class="pages-row">${insidePages().join("")}</div>
+      <div class="sec-actions"><button class="btn btn-line" data-a="flip">${ic("book", "sm")} ${t("leaf")}</button><button class="btn btn-line" data-a="sample">${ic("head", "sm")} ${t("listen")}</button></div></div>
+    <div class="section" id="s-contenu"><div class="sec-head"><h2>${t("toc")}</h2><span class="small muted">${CHAPTERS.length} ${t("chapters")} · ${totalPages} ${t("pages")}</span></div>
+      <div class="toc" id="toc">${CHAPTERS.map((c, i) => `<div class="toc-row" ${i > 4 ? 'data-more hidden' : ""}><span>${i + 1}. ${S.lang === "fr" ? frTypo(c[2]) : c[3]}</span><span class="r">${c[0]} p · ${c[1]} min ${c[4] ? `<span class="free-lbl">${t("freeLbl")}</span>` : ic("lock", "sm")}</span></div>`).join("")}</div>
+      <button class="link small" data-a="toc" style="justify-self:start">${t("expand")}</button></div>
+    <div class="section"><h2>${t("forWho")}</h2><div class="learn">${t("forYes").map(x => `<div>${ic("check")}<span>${x}</span></div>`).join("")}${t("forNo").map(x => `<div><span style="color:var(--rouge);display:inline-flex">${ic("x")}</span><span>${x}</span></div>`).join("")}</div></div>
+    <div class="section"><h2>${t("value")}</h2><div class="valuebox">
+      <div class="vrow"><span>E-book FR + EN</span><span>${money(18000)}</span></div>
+      <div class="vrow"><span>${S.lang === "fr" ? "Cahier d’exercices" : "Workbook"}</span><span>${money(3000)}</span></div>
+      <div class="vrow"><span>${S.lang === "fr" ? "Version audio" : "Audio version"}</span><span>${money(5000)}</span></div>
+      <div class="vtotal"><div class="t1"><span>${t("totalValue")}</span><s>${money(26000)}</s></div><div class="t2"><span>${t("today")}</span><span class="num">${money(nowPrice(p))}</span></div></div>
+      <span class="small muted">${t("valueNote")}</span></div></div>
+    <div class="section" id="s-avis"><div class="sec-head"><h2>${t("reviewsT")}</h2><span class="small muted">${t("demoData")}</span></div>
+      <div style="display:flex;gap:16px;align-items:center"><div style="text-align:center"><div class="price" style="font-size:40px">${S.lang === "fr" ? "4,8" : "4.8"}</div><div class="stars">★★★★★</div><div class="small muted">${nf(p.nrev)} ${t("reviews")}</div></div>
+      <div class="dist" style="flex:1">${[[5, 82], [4, 12], [3, 4], [2, 1], [1, 1]].map(([s, v]) => `<div><span>${s}★</span><span class="bar"><i style="width:${v}%"></i></span><span>${v} %</span></div>`).join("")}</div></div>
+      ${REVIEWS.map(r => `<div class="review"><div class="who"><span class="avatar">${r.n[0]}</span><span><b>${r.n}</b> · ${r.c} · <span class="muted">${L(r.d)}</span><br><span class="stars">${"★".repeat(r.r)}</span> <span class="verified">${ic("check", "sm")}${S.lang === "fr" ? "Achat vérifié" : "Verified purchase"}</span></span></div><p>${L(r.t)}</p>${r.reply ? `<div class="reply"><b>↳ ${t("rogerReply")}</b><span>${L(r.reply)}</span></div>` : ""}</div>`).join("")}</div>
+    <div class="section"><h2>${t("authorWord")}</h2><button class="author" data-a="toast-demo" style="text-align:left"><span class="avatar" style="position:relative">RB<span style="position:absolute;right:-4px;bottom:-4px;width:26px;height:26px;border-radius:999px;background:var(--or);color:var(--on-or);display:grid;place-items:center">${ic("play", "sm")}</span></span><div><b>Roger BOUJIEKA</b><p class="small muted">${t("authorVideo")}</p></div></button></div>
+    <div class="section"><div class="guar"><span class="seal">7<br>${S.lang === "fr" ? "JOURS" : "DAYS"}</span><div><b>${t("guarantee")}</b><p class="small muted">${t("guaranteeText")}</p></div></div>
+      <h2 style="font-size:18px;padding-top:6px">${t("how")}</h2><div class="steps">${[t("how1"), t("how2"), t("how3")].map((x, i) => `<div class="step"><span class="n">${i + 1}</span><span>${x}</span></div>`).join("")}</div></div>
+    <div class="section" id="s-faq"><h2>${t("faq")}</h2><div>${t("faqs").map(([q, a]) => acc(q, a)).join("")}</div></div>
+    <div class="section"><h2>${t("together")}</h2><div class="pack"><div class="pack-covers">${cover(p, { sub: false })}<b style="font-size:20px">+</b>${cover(byId("whatsapp"), { sub: false })}<div style="display:grid;gap:2px;margin-left:6px"><span class="save">${t("packSave")}</span><span class="price">${money(14000)}</span><span class="was">${money(17600)}</span></div></div><button class="btn btn-line" data-a="addcart">${t("addPack")}</button></div></div>
+    <div class="section"><div class="final"><span class="overline" style="color:rgba(255,255,255,.75)">${L(p.title)}</span><h2 style="font-size:24px">${t("finalTitle")}</h2>
+      <div class="price-row"><span class="price" style="font-size:30px">${money(nowPrice(p))}</span><span class="was">${money(p.base)}</span></div><div class="cd">${t("offerEnds")} ${cdBoxes(S.promoEnd)}</div>
+      ${owned ? `<button class="btn btn-buy btn-block" data-a="read" data-id="${p.id}">${t("alreadyOwned")}</button>` : `<button class="btn btn-buy btn-block" data-a="buy">${t("buyNow")}</button>`}</div></div>
+    <div class="section">${waCard()}</div>
+  </div><div style="height:12px"></div>`;
+  return html;
+}
+function insidePages() {
+  const fr = S.lang === "fr";
+  return [
+    `<div class="pg open-ch"><span class="overline" style="color:rgba(255,255,255,.75)">${fr ? "Chapitre" : "Chapter"}</span><b>4</b><h4 style="color:var(--on-dark)">${fr ? "Créer votre page de vente" : "Building your sales page"}</h4><span class="lbl" style="color:rgba(255,255,255,.6)">p. 31</span></div>`,
+    `<div class="pg"><h4>${fr ? "La promesse" : "The promise"}</h4><span class="ln"></span><span class="ln" style="width:90%"></span><span class="ln" style="width:75%"></span><div class="box"><b>★ ${fr ? "À retenir" : "Key takeaway"}</b><br>${fr ? "Promesse claire + preuves réelles + paiement évident." : "Clear promise + real proof + easy payment."}</div><span class="ln"></span><span class="ln" style="width:60%"></span><span class="lbl">p. 33</span></div>`,
+    `<div class="pg"><h4>${fr ? "Exercice" : "Exercise"}</h4><div class="ex">☐ ${fr ? "Écrivez votre promesse en moins de 12 mots." : "Write your promise in under 12 words."}<br><br>____________<br>____________</div><span class="ln"></span><span class="ln" style="width:80%"></span><span class="lbl">p. 36</span></div>`,
+    `<div class="pg"><h4>Checklist</h4><span>☑ ${fr ? "Titre clair" : "Clear title"}</span><span>☑ ${fr ? "3 avis réels" : "3 real reviews"}</span><span>☐ ${fr ? "Logos MoMo" : "MoMo logos"}</span><span>☐ ${fr ? "Bouton visible" : "Visible button"}</span><span class="lbl">p. 38</span></div>`,
+    `<div class="pg"><h4>${fr ? "Plan d’action · 30 jours" : "30-day action plan"}</h4><span>${fr ? "Semaine 1 : le produit" : "Week 1: the product"}</span><span>${fr ? "Semaine 2 : la page" : "Week 2: the page"}</span><span>${fr ? "Semaine 3 : WhatsApp" : "Week 3: WhatsApp"}</span><span>${fr ? "Semaine 4 : la promo" : "Week 4: the promo"}</span><span class="lbl">p. 109</span></div>`
+  ];
+}
+function vWaiting() {
+  const op = S.method === "orange" ? "Orange Money" : "MTN MoMo";
+  return `<div class="wrap center-screen">
+    <div class="phone-anim"><div class="notif ${S.method === "orange" ? "orange" : ""}">${op}<br>${money(totalXaf(), "XAF")}<br>DigiSkool</div></div>
+    <h1 style="font-size:26px">${t("waitTitle")}</h1><p class="muted">${t("waitText")} (${money(totalXaf(), "XAF")})</p>
+    <div class="wsteps"><div><b>1</b>${t("w1")} ${op}</div><div><b>2</b>${t("w2")}</div><div><b>3</b>${t("w3")}</div></div>
+    <button class="btn btn-line" data-a="toast-audio">${ic("head", "sm")} ${t("listenIns")}</button>
+    <div style="display:grid;gap:4px;justify-items:center"><span class="dots"><i></i><i></i><i></i></span><span class="small muted">${t("waiting")}</span><span class="small muted">${t("expires")} <b class="num" id="expiry">2:59</b></span></div>
+    <button class="btn btn-buy" style="min-height:48px;font-size:15px" data-a="confirm">${ic("check", "sm")} ${t("simulate")}</button>
+    <button class="link small" data-a="ussd">${t("notReceived")}</button>
+    <div class="ussd" id="ussd" hidden><span>${S.method === "orange" ? t("ussdOrange") : t("ussdMtn")}</span><span class="small muted">${t("ussdNote")}</span><button class="btn btn-line" data-a="toast-demo">${t("resend")}</button></div>
+    <button class="link small" data-a="changeMethod">${t("changeMethod")}</button>
+    <div style="width:100%;max-width:360px">${waMini("trouble")}</div>
+  </div>`;
+}
+function vSuccess() {
+  const p = byId(S.pid);
+  return `<div class="wrap center-screen">
+    <div class="check-anim">${ic("check")}</div>
+    <div><h1 style="font-size:28px">${p.free ? (S.lang === "fr" ? "C’est prêt\u202F!" : "It’s ready!") : t("successT")}</h1><p class="muted" style="font-size:18px">${p.type === "course" ? (S.lang === "fr" ? "Votre formation est prête." : "Your course is ready.") : t("successS")}</p></div>
+    <div class="owned-card"><div class="owned-top">${cover(p, { sub: false })}<div><b>${L(p.title)}</b><div class="small muted">FR + EN · ${p.type === "course" ? `${p.modules} modules · ${p.hours}` : `${p.pages} ${t("pages")}`}</div></div></div>
+      ${p.type === "course" ? `<button class="btn btn-buy btn-block" data-a="toast-demo" style="font-size:18px">${ic("play")} ${S.lang === "fr" ? "Commencer la formation" : "Start the course"}</button>` : `<button class="btn btn-buy btn-block" data-a="read" data-id="${p.id}" style="font-size:18px">${ic("book")} ${t("readNow")}</button>`}
+      <div class="opt-row"><button class="btn btn-line" data-a="read" data-id="${p.id}" data-rl="${S.lang === "fr" ? "en" : "fr"}">${S.lang === "fr" ? t("enVersion") : t("frVersion")}</button><button class="btn btn-line" data-a="read" data-id="${p.id}" data-audio="1">${ic("head", "sm")} ${t("listenBtn")}</button><button class="btn btn-line" data-a="toast-demo">${ic("down", "sm")} PDF</button></div></div>
+    <p class="small muted">${t("sentWa")} (+237 6•• •• •• ${(S.lastPhone || "12").slice(-2)}).</p>
+    <button class="install" data-a="toast-demo">${ic("phone", "lg")}<span style="flex:1">${t("installT")}</span><span class="btn btn-dark" style="min-height:36px;padding:0 12px;font-size:13px">${t("installBtn")}</span></button>
+    <div style="width:100%">${waCard()}</div>
+    <p class="small muted">${t("upsell")} · <button class="link" data-a="open" data-id="tome2">${S.lang === "fr" ? "Voir" : "View"}</button></p>
+  </div>`;
+}
+function vLibrary() {
+  const owned = S.owned.map(byId).filter(Boolean);
+  if (!owned.length) return `<div class="wrap"><div class="empty"><span class="ill">${ic("book", "lg")}</span><h1 style="font-size:22px">${t("emptyT")}</h1><p class="muted">${t("emptyS")}</p>
+    <button class="btn btn-buy" style="min-height:48px;font-size:15px" data-a="go" data-v="boutique">${t("seeEbooks")}</button><button class="btn btn-line" data-a="go" data-v="acces">${ic("phone", "sm")} ${t("findPurchase")}</button></div></div>`;
+  return `<div class="wrap"><div class="section"><h1 style="font-size:24px">${t("hello")} ${S.lastName ? S.lastName.split(" ")[0] : ""} 👋</h1></div>
+    <div class="section"><h2>${t("continueT")}</h2><div class="cont">${owned.map(p => `<div class="cont-card"><div class="owned-top" style="display:flex;gap:12px;align-items:center"><div style="width:52px;flex:none">${cover(p, { sub: false })}</div><div style="min-width:0"><b>${L(p.title)}</b><div class="small muted">${S.lang === "fr" ? "Chapitre 4 · 34 %" : "Chapter 4 · 34%"}</div></div></div><span class="progress"><i style="width:34%"></i></span><button class="btn btn-buy" style="min-height:44px;font-size:15px" data-a="read" data-id="${p.id}">${t("resume")}</button></div>`).join("")}</div></div>
+    <div class="section"><h2>${t("library")} (${owned.length})</h2>${owned.map(p => `<div class="lib-item"><div>${cover(p, { sub: false })}</div><div style="min-width:0"><b>${L(p.title)}</b><div class="lib-acts"><button data-a="read" data-id="${p.id}">${ic("book", "sm")} ${t("read")}</button>${p.audio ? `<button data-a="read" data-id="${p.id}" data-audio="1">${ic("head", "sm")} ${t("listenBtn")}</button>` : ""}<button data-a="toast-demo">${ic("down", "sm")} PDF</button><button data-a="toast-demo">${ic("cloud", "sm")} ${t("offline")}</button></div>
+      <div class="lib-acts"><button data-a="read" data-id="${p.id}" data-rl="fr">🇫🇷 FR</button><button data-a="read" data-id="${p.id}" data-rl="en">🇬🇧 EN</button></div></div></div>`).join("")}</div>
+    <div class="section"><div class="install" style="background:var(--or-soft)">${ic("gift", "lg")}<span>${t("referral")}</span></div>${waCard()}</div></div>`;
+}
+function vAccess() {
+  return `<div class="wrap"><div class="section" style="padding-top:28px"><span class="empty" style="padding:0;justify-items:start;text-align:left"><span class="ill">${ic("phone", "lg")}</span></span><h1 style="font-size:26px">${t("accessT")}</h1><p class="muted">${t("accessS")}</p>
+    <div class="phone"><select id="accCountry" aria-label="Pays"><option>🇨🇲 +237</option><option>🇨🇮 +225</option><option>🇳🇬 +234</option><option>🇫🇷 +33</option></select><input id="accPhone" inputmode="numeric" placeholder="6 XX XX XX XX" aria-label="WhatsApp"></div>
+    <button class="btn btn-buy" style="min-height:52px;font-size:16px" data-a="sendCode">${t("getCode")}</button>
+    <div id="codeZone" hidden style="display:grid;gap:10px"><span class="small"><b>${t("codeSent")}</b></span><div class="code-boxes" id="codeBoxes">${"<span></span>".repeat(6)}</div><span class="small muted" style="text-align:center">${t("resendSms")} <span class="num">0:24</span></span></div>
+    <button class="btn btn-line" data-a="toast-demo">${t("google")}</button><button class="link small" data-a="toast-demo" style="justify-self:center">${t("emailLink")}</button></div></div>`;
+}
+function vCommunity() {
+  return `<section class="hero"><div class="hero-in wrap"><span class="wa-ic" style="width:56px;height:56px">${ic("users", "lg")}</span><h1 style="font-size:28px">${t("commPage")}</h1><p>${t("commText")}</p></div></section>
+    <div class="wrap"><div class="section"><div class="learn">${t("commBenefits").map(x => `<div>${ic("check")}<span>${x}</span></div>`).join("")}</div>
+    <button class="btn btn-wa btn-block" style="min-height:56px;font-size:17px" data-a="community">${ic("users")} ${t("joinCommunity")}</button>
+    <span class="small muted" style="text-align:center">FR · EN</span></div><div class="section">${waMini()}</div></div>`;
+}
+function vSearch() { S.filter = "all"; return vShop(); }
+
+/* Reader */
+const CH4 = {
+  fr: { t: "Créer votre page de vente", p: [
+    ["q", "Une page de vente a un seul travail : aider la bonne personne à dire oui."], ["", " Pas besoin d’un long texte ni d’un design compliqué. Il faut une promesse claire, des preuves, et un bouton facile à trouver."],
+    ["br"], ["", "Commencez par la promesse. En une phrase, dites ce que votre client obtient et en combien de temps. « Vendez votre premier e-book en 30 jours » est plus fort que « Apprenez le marketing digital »."],
+    ["callout", "★ À retenir : une promesse claire + des preuves réelles + un paiement évident."],
+    ["", "Ensuite, montrez l’intérieur. Vos visiteurs ont peur d’acheter un produit vide. "], ["q", "Quelques pages en aperçu et trois avis réels rassurent plus que mille promesses."],
+    ["br"], ["", "Enfin, rendez le paiement évident : un seul bouton, le prix en francs CFA, les logos MTN MoMo et Orange Money, et la phrase « Accès immédiat après paiement »."],
+    ["exo", "Exercice : écrivez la promesse de votre produit en une phrase de moins de 12 mots."] ] },
+  en: { t: "Building your sales page", p: [
+    ["q", "A sales page has one job: helping the right person say yes."], ["", " You don’t need a long text or a complicated design. You need a clear promise, proof, and a button that’s easy to find."],
+    ["br"], ["", "Start with the promise. In one sentence, say what your customer gets and how fast. “Sell your first e-book in 30 days” beats “Learn digital marketing”."],
+    ["callout", "★ Key takeaway: a clear promise + real proof + an obvious way to pay."],
+    ["", "Next, show what’s inside. Visitors are afraid of buying an empty product. "], ["q", "A few preview pages and three real reviews reassure more than a thousand promises."],
+    ["br"], ["", "Finally, make paying obvious: one button, the price in CFA francs, the MTN MoMo and Orange Money logos, and the line “Instant access after payment”."],
+    ["exo", "Exercise: write your product’s promise in one sentence of fewer than 12 words."] ] }
+};
+function vReader() {
+  const R = S.reader; const rl = R.lang || S.lang; const c = CH4[rl]; const p = byId(S.pid);
+  const fx = s => rl === "fr" ? frTypo(s) : s;
+  let paras = []; let cur = "";
+  c.p.forEach(([k, s]) => {
+    if (k === "br") { paras.push(`<p>${cur}</p>`); cur = ""; return; }
+    if (k === "callout" || k === "exo") { if (cur) { paras.push(`<p>${cur}</p>`); cur = ""; }
+      paras.push(k === "callout" ? `<div class="callout">${fx(s)}</div>` : `<button class="exo" data-a="exo" aria-pressed="false"><span class="box">${ic("check", "sm")}</span><span>${fx(s)}</span></button>`); return; }
+    cur += k === "q" ? `<span class="q" data-a="quote" data-q="${encodeURIComponent(fx(s))}">${fx(s)}</span>` : fx(s);
+  });
+  if (cur) paras.push(`<p>${cur}</p>`);
+  const themeCls = R.theme === "sepia" ? "sepia" : R.theme === "night" ? "night" : "";
+  return `<div class="reader ${themeCls}" style="--rsize:${R.size}px">
+    <div class="r-top"><button class="icon-btn" data-a="go" data-v="mes-produits" aria-label="Retour">${ic("back")}</button><span class="ttl">${rl === "fr" ? p.title.fr : p.title.en}</span>
+      <span class="lang"><button data-a="rlang" data-l="fr" aria-pressed="${rl === "fr"}">FR</button><button data-a="rlang" data-l="en" aria-pressed="${rl === "en"}">EN</button></span>
+      <button class="icon-btn" data-a="rsettings" aria-label="${t("settings")}"><b style="font:700 15px/1 var(--font-display)">Aa</b></button><button class="icon-btn" data-a="toast-mark" aria-label="Marque-page">${ic("mark")}</button></div>
+    <article class="r-body ${R.font === "inter" ? "inter" : ""}"><span class="chn">${rl === "fr" ? "CHAPITRE 4" : "CHAPTER 4"}</span><h2>${c.t}</h2>${paras.join("")}
+      <p class="small" style="font-family:var(--font-ui);opacity:.7">💡 ${t("quoteS")}</p></article>
+    <div class="r-bottom"><div class="r-prog"><span>${t("progress")}</span></div><span class="progress"><i style="width:34%"></i></span>
+      ${p.audio ? `<div class="audio"><button class="play" data-a="play" aria-label="Lecture">${ic(R.playing ? "pause" : "play")}</button><div class="tr"><span>${t("listenCh")} · 14 min</span><span class="progress"><i id="aprog" style="width:${R.prog}%"></i></span></div><button class="spd" data-a="toast-demo">1×</button></div>` : ""}</div>
+  </div>`;
+}
+
+/* ---------- Render ---------- */
+function render(keepScroll) {
+  const views = { accueil: vHome, boutique: vShop, recherche: vSearch, produit: vProduct, attente: vWaiting, succes: vSuccess, "mes-produits": vLibrary, liseuse: vReader, acces: vAccess, communaute: vCommunity };
+  const top = scroller.scrollTop;
+  scroller.innerHTML = (S.view === "liseuse" ? "" : header()) + (views[S.view] || vHome)();
+  renderBottom();
+  fab.innerHTML = ic("chat", "lg");
+  fab.hidden = ["attente", "succes", "liseuse"].includes(S.view);
+  fab.classList.toggle("lifted", S.view === "produit");
+  document.documentElement.lang = S.lang;
+  if (keepScroll) scroller.scrollTop = top; else scroller.scrollTop = 0;
+  afterRender();
+  renderGuide();
+}
+function go(v, opts = {}) {
+  if (v === "recherche") { S.view = "boutique"; render(); setTimeout(() => { const q = $("#q"); if (q) q.focus(); }, 50); setHash(); return; }
+  S.view = v; Object.assign(S, opts); render(); setHash();
+}
+function setHash() { try { history.replaceState(null, "", "#" + S.view); } catch (e) {} }
+function afterRender() {
+  const mb = $("#mainBuy"), bb = $("#buybar");
+  if (mb && bb) {
+    bottom.hidden = true;
+    const io = new IntersectionObserver(([e]) => { bottom.hidden = e.isIntersecting || e.boundingClientRect.top > 0; }, { root: scroller, threshold: 0 });
+    io.observe(mb);
+  }
+  const q = $("#q");
+  if (q) q.addEventListener("input", () => {
+    const v = q.value.trim().toLowerCase(); const box = $("#qres");
+    if (!v) { box.innerHTML = ""; return; }
+    const res = PRODUCTS.filter(p => (p.title.fr + " " + p.title.en).toLowerCase().includes(v)).slice(0, 4);
+    box.innerHTML = `<div class="search-results">${res.length ? res.map(p => `<button data-a="open" data-id="${p.id}"><span style="width:34px;flex:none">${cover(p, { sub: false })}</span><span><b>${L(p.title)}</b><br><span class="small muted">${p.soon ? t("soonBadge") : money(nowPrice(p))}</span></span></button>`).join("") : `<button>${S.lang === "fr" ? "Aucun résultat. Essayez « vendre » ou « canva »." : "No results. Try “sell” or “canva”."}</button>`}</div>`;
+  });
+  if (S.view === "attente") startWaiting();
+  if (S.view === "succes") confetti();
+}
+
+/* ---------- Overlays ---------- */
+function openSheet(html, opts = {}) {
+  const na = S._noAnim ? " noanim" : ""; S._noAnim = false;
+  layer.innerHTML = `<div class="overlay${na}" data-a="${opts.locked ? "" : "closeSheet"}"><div class="sheet ${opts.dark ? "dark" : ""}" role="dialog" aria-modal="true" tabindex="-1" data-stop="1"><span class="grab"></span>${html}</div></div>`;
+  const sh = layer.querySelector(".sheet"); if (sh) sh.focus({ preventScroll: true });
+}
+const closeSheet = () => { layer.innerHTML = ""; };
+const sheetHead = title => `<div class="sheet-head"><h2>${title}</h2><button class="close" data-a="closeSheet" aria-label="Fermer">${ic("x")}</button></div>`;
+
+function sheetCurrency() {
+  openSheet(`${sheetHead(t("curTitle"))}<span class="small detect">${t("detected")}</span><div style="display:grid;gap:6px">${Object.keys(CUR).map(c => `<button class="method" style="grid-template-columns:auto 1fr auto;justify-items:start;min-height:52px;padding:0 14px;text-align:left" data-a="setCur" data-c="${c}" aria-pressed="${S.cur === c}"><span style="font-size:20px">${CUR[c].fl}</span><span><b>${c}</b> · ${L(CUR[c].n)}</span><span class="small muted">${money(9900, c)}</span></button>`).join("")}</div><span class="small muted">${t("convNote")}</span>`);
+}
+function sheetConvert() {
+  const p = byId(S.pid); const list = ["XAF", "EUR", "USD", "NGN"].filter(c => c !== S.cur).concat(S.cur === "XAF" ? [] : []);
+  openSheet(`${sheetHead(t("convTitle"))}<div class="big-price"><span class="price" style="font-size:28px">${money(nowPrice(p))}</span><span class="muted">${S.cur}</span></div>
+  <div style="display:grid;gap:8px">${list.slice(0, 3).map(c => `<div class="vrow" style="padding:10px 12px;background:var(--surface-2);border-radius:10px"><span>${CUR[c].fl} ${c}</span><b class="num">≈ ${money(nowPrice(p), c, true)}</b></div>`).join("")}</div><span class="small muted">${t("convNote")}</span>`);
+}
+function sheetGuide() { openSheet(`${sheetHead("DigiSkool Academy · " + t("beta"))}${guideHtml(true)}`); }
+function sheetFab() {
+  openSheet(`${sheetHead("WhatsApp")}<button class="btn btn-wa btn-block" style="min-height:64px;justify-content:flex-start;padding:0 16px" data-a="community">${ic("users", "lg")}<span style="text-align:left"><b>${t("fabComm")}</b><br><span class="small" style="opacity:.85">${t("fabCommS")}</span></span></button>
+  <button class="btn btn-line btn-block" style="justify-content:flex-start;min-height:56px" data-a="support">${ic("chat")}<span style="text-align:left">${t("fabSup")}<br><span class="wa-num small">+237 6XX XX XX XX</span></span></button>`);
+}
+function sheetOffer() {
+  const e = PRODUCTS.filter(p => p.promo && p.type === "ebook").slice(0, 3);
+  openSheet(`<div class="sheet-head"><span class="overline" style="color:var(--or)">Flash 24 h</span><button class="close" data-a="closeSheet" aria-label="Fermer" style="color:var(--on-dark)">${ic("x")}</button></div>
+    <div style="display:flex;gap:8px;justify-content:center">${e.map(p => `<div style="width:30%;max-width:96px;font-size:9px">${cover(p, { sub: false })}</div>`).join("")}</div>
+    <h2 style="font-size:24px;text-align:center">${t("offerTitle")}</h2><p style="text-align:center;opacity:.85">${t("offerText")}</p>
+    <div class="cd" style="justify-content:center;color:rgba(255,255,255,.85)">${cdBoxes(S.promoEnd)}</div>
+    <div style="display:flex;gap:8px;justify-content:center;align-items:center"><span class="pl" style="background:rgba(255,255,255,.12);color:var(--on-dark);height:34px;font-size:14px">DIGI45</span><button class="ghost-light" data-a="copy">${ic("copy", "sm")} ${S.lang === "fr" ? "Copier" : "Copy"}</button></div>
+    <button class="btn btn-buy btn-block" data-a="offerGo">${t("offerBtn")}</button><button class="link small" style="justify-self:center;color:rgba(255,255,255,.8)" data-a="closeSheet">${t("later")}</button>`, { dark: true });
+}
+function sheetCart() {
+  const items = S.cart.map(byId).filter(Boolean);
+  if (!items.length) { openSheet(`${sheetHead(t("cartT"))}<p class="muted">${t("cartEmpty")}</p><button class="btn btn-buy" data-a="go" data-v="boutique">${t("seeEbooks")}</button>`); return; }
+  openSheet(`${sheetHead(t("cartT"))}${items.map(p => `<div class="co-sum">${cover(p, { sub: false })}<div style="flex:1;min-width:0"><b>${L(p.title)}</b><div class="price-row"><span class="price">${money(nowPrice(p))}</span>${p.promo ? `<span class="was">${money(p.base)}</span>` : ""}</div></div></div>`).join("")}
+    <button class="btn btn-buy btn-block" data-a="buyCart">${t("checkout")}</button>`);
+}
+function sheetFlip() {
+  const fr = S.lang === "fr"; let i = 0;
+  const pages = [
+    `<div class="pg"><h4>${fr ? "Ce que vous allez obtenir" : "What you’ll get"}</h4><span>✓ ${fr ? "Un produit prêt à vendre" : "A product ready to sell"}</span><span>✓ ${fr ? "Une page de vente claire" : "A clear sales page"}</span><span>✓ ${fr ? "Vos premiers clients" : "Your first customers"}</span><span class="lbl">p. 2</span></div>`,
+    `<div class="pg"><h4>${fr ? "Sommaire" : "Contents"}</h4>${CHAPTERS.slice(0, 8).map((c, k) => `<span>${k + 1}. ${fr ? c[2] : c[3]}</span>`).join("")}<span class="lbl">p. 3</span></div>`,
+    `<div class="pg"><h4>${fr ? "Introduction" : "Introduction"}</h4><span>${fr ? "Vous avez une compétence. Des gens sont prêts à payer pour l’apprendre. Ce livre vous montre comment les relier, étape par étape, avec les outils que vous avez déjà : votre téléphone, WhatsApp et le Mobile Money." : "You have a skill. People are ready to pay to learn it. This book shows you how to connect the two, step by step, with the tools you already have: your phone, WhatsApp and Mobile Money."}</span><span class="lbl">p. 5</span></div>`
+  ];
+  const blurred = `<div class="pg blur"><div class="inner" style="display:grid;gap:6%">${'<span class="ln"></span>'.repeat(3)}<span class="ln" style="width:70%"></span>${'<span class="ln"></span>'.repeat(4)}<span class="ln" style="width:55%"></span>${'<span class="ln"></span>'.repeat(3)}</div>
+    <div class="lock"><span class="lk">${ic("lock")}</span><b>${fr ? "Débloquez les 120 pages" : "Unlock all 120 pages"}</b><span class="price">${money(nowPrice(byId("vendre")))}</span><button class="btn btn-buy" style="min-height:44px;font-size:15px" data-a="buyFromFlip">${t("buyNow")}</button></div></div>`;
+  const all = pages.concat([blurred, blurred]);
+  const draw = () => {
+    const st = layer.querySelector(".flip-stage"); if (!st) return;
+    st.innerHTML = all[i]; layer.querySelector("#flipN").textContent = `${i + 1} / ${all.length}`;
+  };
+  openSheet(`${sheetHead(t("leaf"))}<div class="flip"><div class="flip-stage"></div><div class="flip-nav"><button data-a="flipPrev" aria-label="Précédent">${ic("back")}</button><span class="num small" id="flipN"></span><button data-a="flipNext" aria-label="Suivant">${ic("right")}</button></div>
+    <span class="small muted" style="text-align:center">${fr ? "Pages floutées : générées côté serveur, le vrai texte n’est jamais envoyé." : "Blurred pages are server-generated images: the real text is never sent."}</span></div>`);
+  S._flip = { next() { i = Math.min(all.length - 1, i + 1); draw(); }, prev() { i = Math.max(0, i - 1); draw(); } };
+  draw();
+}
+function sheetQuote(q) {
+  const p = byId(S.pid);
+  openSheet(`${sheetHead(t("quoteT"))}<div class="quote-card"><span class="qm">“</span><p>${q}</p><div class="qf"><div style="width:30px">${cover(p, { sub: false })}</div><span><b>${L(p.title)}</b><br>digiskoolacademy.com</span></div></div>
+    <button class="btn btn-wa btn-block" data-a="copyQuote" data-q="${encodeURIComponent(q)}">${ic("copy", "sm")} ${t("quoteCopy")}</button><span class="small muted">${t("quoteNote")}</span>`);
+}
+function sheetReaderSettings() {
+  const R = S.reader;
+  openSheet(`${sheetHead(t("settings"))}<span class="small"><b>${t("size")}</b></span><div class="seg">${[15, 17, 18, 20, 22].map((s, k) => `<button data-a="rsize" data-s="${s}" aria-pressed="${R.size === s}" style="font-size:${12 + k * 2}px">A</button>`).join("")}</div>
+    <span class="small"><b>${t("font")}</b></span><div class="seg"><button data-a="rfont" data-f="lit" aria-pressed="${R.font === "lit"}" style="font-family:var(--font-read)">Literata</button><button data-a="rfont" data-f="inter" aria-pressed="${R.font === "inter"}">Inter</button></div>
+    <span class="small"><b>${t("theme")}</b></span><div class="seg"><button data-a="rtheme" data-th="light" aria-pressed="${R.theme === "light"}">${t("light")}</button><button data-a="rtheme" data-th="sepia" aria-pressed="${R.theme === "sepia"}">${t("sepia")}</button><button data-a="rtheme" data-th="night" aria-pressed="${R.theme === "night"}">${t("night")}</button></div>`);
+}
+
+/* ---------- Checkout ---------- */
+const COUNTRIES = { CM: ["🇨🇲", "+237", ["mtn", "orange", "card"]], CI: ["🇨🇮", "+225", ["orange", "mtn", "wave", "moov", "card"]], SN: ["🇸🇳", "+221", ["wave", "orange", "card"]], NG: ["🇳🇬", "+234", ["card", "bank"]], FR: ["🇫🇷", "+33", ["card"]] };
+function totalXaf() {
+  const items = S.checkoutItems || [S.pid];
+  let tot = items.map(byId).reduce((a, p) => a + nowPrice(p), 0);
+  if (S.bump) tot += 2000;
+  if (S.coupon) tot = Math.round(tot * 0.9 / 100) * 100;
+  return tot;
+}
+function detectOp(num) {
+  const n = num.replace(/\D/g, "");
+  if (S.phoneCountry !== "CM" || n.length < 2) return null;
+  if (/^6(7|8|5[0-4])/.test(n)) return "mtn";
+  if (/^6(9|5[5-9])/.test(n)) return "orange";
+  return null;
+}
+function sheetCheckout() {
+  const items = (S.checkoutItems || [S.pid]).map(byId);
+  const p = items[0]; const c = COUNTRIES[S.phoneCountry]; const methods = c[2];
+  if (!methods.includes(S.method)) S.method = methods[0];
+  const names = { mtn: "MTN MoMo", orange: "Orange Money", wave: "Wave", moov: "Moov Money", card: t("card"), bank: S.lang === "fr" ? "Virement" : "Bank transfer" };
+  const logo = { mtn: '<span class="pl mtn">MTN</span>', orange: '<span class="pl orange">orange</span>', wave: '<span class="pl wave">wave</span>', moov: '<span class="pl moov">moov</span>', card: '<span style="display:flex;gap:4px"><span class="pl visa">VISA</span><span class="pl mc">MC</span></span>', bank: ic("card") };
+  const tot = totalXaf();
+  const momo = ["mtn", "orange", "wave", "moov"].includes(S.method);
+  const debit = S.cur !== "XAF" && S.phoneCountry === "CM" ? `<div class="debit">${t("debited")} <b>${money(tot, "XAF")}</b> (≈ ${money(tot, S.cur, true)})</div>` : "";
+  openSheet(`${sheetHead(t("coTitle"))}
+    <div class="co-sum">${cover(p, { sub: false })}<div style="flex:1;min-width:0"><b>${items.map(x => L(x.title)).join(" + ")}</b><div class="small muted">FR + EN · ${t("instant")}</div>
+      <div class="price-row"><span class="price">${money(items.reduce((a, x) => a + nowPrice(x), 0))}</span>${p.promo ? `<span class="was">${money(items.reduce((a, x) => a + x.base, 0))}</span><span class="mini-cd">${ic("clock", "sm")}<span class="num" data-cd="${S.promoEnd}">${cdText(S.promoEnd)}</span></span>` : ""}</div></div></div>
+    <div class="field"><label for="coName">${t("yourName")}</label><input class="input" id="coName" autocomplete="name" value="${S.lastName || ""}" placeholder="Aïcha Mbarga"><span class="err-msg" id="errName" hidden>${t("errName")}</span></div>
+    <div class="field"><label for="coPhone">${t("yourWa")}</label><div class="phone"><select id="coCountry" aria-label="Pays">${Object.entries(COUNTRIES).map(([k, v]) => `<option value="${k}" ${k === S.phoneCountry ? "selected" : ""}>${v[0]} ${v[1]}</option>`).join("")}</select><input id="coPhone" inputmode="numeric" autocomplete="tel-national" placeholder="6 XX XX XX XX" value="${S.lastPhone || ""}"></div>
+      <span class="detect" id="opDetect" hidden></span><span class="err-msg" id="errPhone" hidden>${t("errPhone")}</span></div>
+    <div class="field"><label for="coEmail">${t("email")}</label><input class="input" id="coEmail" type="email" inputmode="email" autocomplete="email" placeholder="aicha@gmail.com"><span class="hint" id="emailHint">${t("emailHint")}</span></div>
+    ${items.length === 1 && p.id === "vendre" ? `<button class="bump" data-a="bump" aria-pressed="${S.bump}"><span class="box">${S.bump ? ic("check", "sm") : ""}</span><span><b>${t("bump")} ${money(2000)}</b><br><span class="small muted">${S.lang === "fr" ? "Valeur 3 000 FCFA · un seul clic" : "Worth 3,000 FCFA · one tap"}</span></span></button>` : ""}
+    <div class="field"><label>${t("payWith")}</label><div class="methods">${methods.map(m => `<button class="method ${m === "card" && methods.length % 2 === 1 ? "wide" : ""}" data-a="method" data-m="${m}" aria-pressed="${S.method === m}">${S.method === m ? `<span class="ok">${ic("check", "sm")}</span>` : ""}${logo[m]}<span>${names[m]}</span></button>`).join("")}</div>
+      ${momo ? `<span class="hint">${t("momoNum")} : <b id="momoNum">${S.lastPhone || "6 XX XX XX XX"}</b></span>` : `<span class="hint">${S.lang === "fr" ? "Paiement sécurisé 3-D Secure (simulé dans la bêta)." : "Secure 3-D Secure payment (simulated in the beta)."}</span>`}</div>
+    <div class="acc" data-open="false" style="border:0"><button data-a="acc" style="padding:4px 0">${t("promoQ")}${ic("chev")}</button><div class="body" hidden><div style="display:flex;gap:8px"><input class="input" id="coupon" placeholder="AMI10" style="text-transform:uppercase"><button class="btn btn-dark" data-a="coupon">${t("apply")}</button></div><span class="small" id="couponMsg"></span></div></div>
+    ${debit}
+    <button class="btn btn-buy btn-block" data-a="pay">${ic("lock", "sm")} ${t("pay")} ${money(tot, S.phoneCountry === "CM" ? "XAF" : S.cur)}</button>
+    <div class="reassure" style="justify-content:center"><span>${ic("lock", "sm")}${t("secure")}</span><span>${ic("zap", "sm")}${t("instant")}</span><span>${ic("shield", "sm")}${t("guarantee")}</span></div>
+    <span class="small muted" style="text-align:center">${t("terms")}</span>
+    ${waMini("trouble")}
+    <button class="link small" style="justify-self:center" data-a="toast-demo">▶ ${t("howPay")}</button>`, { locked: false });
+  const ph = $("#coPhone"), cc = $("#coCountry"), em = $("#coEmail");
+  const upd = () => {
+    const op = detectOp(ph.value); const d = $("#opDetect");
+    if (op) { d.hidden = false; d.textContent = `${t("detectedOp")} ${op === "mtn" ? "MTN MoMo" : "Orange Money"} ✓`; if (S.method !== op && ["mtn", "orange"].includes(S.method)) { S.method = op; markMethods(); } } else d.hidden = true;
+    const mn = $("#momoNum"); if (mn) mn.textContent = ph.value || "6 XX XX XX XX";
+  };
+  ph.addEventListener("input", () => { ph.value = ph.value.replace(/[^\d ]/g, "").slice(0, 12); upd(); });
+  cc.addEventListener("change", () => { S.phoneCountry = cc.value; keepForm(); S._noAnim = true; sheetCheckout(); });
+  em.addEventListener("blur", () => {
+    const m = em.value.match(/@(gmial|gmal|gamil|gnail)\.com$/i); const h = $("#emailHint");
+    h.innerHTML = m ? `${t("emailFix")} <button class="link" data-a="fixEmail">${em.value.replace(/@.*$/, "@gmail.com")}</button> ?` : t("emailHint");
+  });
+  upd();
+}
+function markMethods() {
+  layer.querySelectorAll(".method").forEach(b => { const on = b.dataset.m === S.method; b.setAttribute("aria-pressed", on); const ok = b.querySelector(".ok");
+    if (on && !ok) b.insertAdjacentHTML("afterbegin", `<span class="ok">${ic("check", "sm")}</span>`); if (!on && ok) ok.remove(); });
+}
+function keepForm() { const n = $("#coName"), ph = $("#coPhone"); if (n) S.lastName = n.value; if (ph) S.lastPhone = ph.value; }
+function refreshMethods() { keepForm(); const em = $("#coEmail"); const ev = em ? em.value : ""; const sc = layer.querySelector(".sheet").scrollTop; S._noAnim = true; sheetCheckout(); const e2 = $("#coEmail"); if (e2) e2.value = ev; layer.querySelector(".sheet").scrollTop = sc; }
+
+let waitTimer = null, autoTimer = null;
+function startWaiting() {
+  let secs = 179; clearInterval(waitTimer); clearTimeout(autoTimer);
+  waitTimer = setInterval(() => { secs = Math.max(0, secs - 1); const e = $("#expiry"); if (e) e.textContent = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`; }, 1000);
+  autoTimer = setTimeout(() => { if (S.view === "attente") paid(); }, 7000);
+}
+function paid() {
+  clearInterval(waitTimer); clearTimeout(autoTimer);
+  const items = S.checkoutItems || [S.pid];
+  items.forEach(id => { if (!S.owned.includes(id)) S.owned.push(id); });
+  S.cart = S.cart.filter(id => !items.includes(id)); store.set("cart", S.cart); store.set("owned", S.owned);
+  S.pid = items[0]; S.checkoutItems = null; S.bump = false; S.coupon = null; go("succes");
+}
+
+/* ---------- Confetti (gold pixels, brand motif) ---------- */
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const app = $("#app"); const c = document.createElement("canvas"); c.className = "confetti"; app.appendChild(c);
+  const r = app.getBoundingClientRect(); const dpr = Math.min(2, devicePixelRatio || 1); c.width = r.width * dpr; c.height = r.height * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr);
+  const cols = ["#F5B700", "#FFC933", "#D99E00", "#FFFFFF"];
+  const parts = Array.from({ length: 70 }, () => ({ x: r.width / 2 + (Math.random() - .5) * 80, y: r.height * .28, vx: (Math.random() - .5) * 7, vy: -Math.random() * 7 - 3, s: 4 + Math.random() * 5, c: cols[Math.floor(Math.random() * cols.length)], a: Math.random() * 6 }));
+  let f = 0; (function tick() { g.clearRect(0, 0, r.width, r.height); parts.forEach(p => { p.vy += .22; p.x += p.vx; p.y += p.vy; p.a += .1; g.save(); g.translate(p.x, p.y); g.rotate(p.a); g.fillStyle = p.c; g.fillRect(-p.s / 2, -p.s / 2, p.s, p.s); g.restore(); }); if (++f < 110) requestAnimationFrame(tick); else c.remove(); })();
+}
+
+/* ---------- Toasts (popup manager: max 4, spaced, never on excluded screens) ---------- */
+function toast(html, opts = {}) {
+  const el = document.createElement("div"); el.className = "toast" + (opts.info ? " info" : ""); el.innerHTML = html + (opts.info ? "" : '<span class="pbar"></span>');
+  if (opts.id) el.dataset.a = "open", el.dataset.id = opts.id, el.style.cursor = "pointer";
+  toasts.innerHTML = ""; toasts.appendChild(el);
+  setTimeout(() => { el.style.transition = "opacity .3s"; el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, opts.info ? 2600 : 6000);
+}
+const info = msg => toast(`<span class="tx">${msg}</span>`, { info: true });
+function marketingToast(kind) {
+  if (S.toastsShown >= 4) return true;
+  if (EXCLUDE_POPUPS.includes(S.view) || layer.innerHTML) return false;
+  S.toastsShown++;
+  if (kind === "new") toast(`${cover(byId("canva"), { sub: false })}<span class="tx"><b>${t("toastNew")}</b><br>${t("toastNewS")} · ${money(5500)}</span><button class="close" data-a="dismissToast" aria-label="Fermer" style="width:32px;height:32px;margin:0">${ic("x", "sm")}</button>`, { id: "canva" });
+  if (kind === "buy") toast(`${cover(byId("vendre"), { sub: false })}<span class="tx">${t("toastBuy")}<br><span class="muted">${t("ago")}</span></span>`, { id: "vendre" });
+  if (kind === "left") toast(`<span class="wa-ic" style="background:var(--rouge)">${ic("clock")}</span><span class="tx"><b>${t("toastLeft")}</b><br><span class="num">${cdText(S.promoEnd)}</span></span>`, {});
+  return true;
+}
+function schedule(fn, ms) { setTimeout(function tryIt() { if (!fn()) setTimeout(tryIt, 5000); }, ms); }
+schedule(() => {
+  if (S.modalShown) return true;
+  if (EXCLUDE_POPUPS.includes(S.view) || layer.innerHTML || !["accueil", "boutique", "produit"].includes(S.view)) return false;
+  S.modalShown = true; store.set("modalShown", true); sheetOffer(); return true;
+}, 8000);
+schedule(() => marketingToast("new"), 16000);
+schedule(() => marketingToast("buy"), 34000);
+schedule(() => marketingToast("left"), 55000);
+
+/* ---------- Countdown ticker ---------- */
+setInterval(() => {
+  document.querySelectorAll("[data-cd]").forEach(el => { const end = +el.dataset.cd; el.textContent = el.dataset.days ? daysText(end) : cdText(end); });
+  document.querySelectorAll("[data-cdb]").forEach(el => { const [h, m, s] = cdParts(+el.dataset.cdb); const b = el.querySelectorAll("b"); b[0].textContent = h; b[1].textContent = m; b[2].textContent = s; });
+  if (S.reader.playing) { S.reader.prog = Math.min(100, S.reader.prog + 0.4); const a = $("#aprog"); if (a) a.style.width = S.reader.prog + "%"; }
+}, 1000);
+
+/* ---------- Guide ---------- */
+function guideHtml(inSheet) {
+  const fr = S.lang === "fr";
+  const steps = fr ? [["accueil", "Accueil : barre promo, chrono, carrousels"], ["produit", "Page produit e-book (feuilleter, avis, valeur)"], ["buy", "Payer en 3 champs avec MTN MoMo"], ["mes-produits", "Mes produits après l’achat"], ["liseuse", "Liseuse : FR ⇄ EN, Aa, citation, audio"], ["acces", "Retrouver mon achat par numéro"], ["offer", "Voir le popup « Offre spéciale »"], ["communaute", "Communauté WhatsApp"]]
+    : [["accueil", "Home: promo bar, countdown, carousels"], ["produit", "E-book product page (preview, reviews, value)"], ["buy", "Pay in 3 fields with MTN MoMo"], ["mes-produits", "My products after purchase"], ["liseuse", "Reader: EN ⇄ FR, Aa, quote, audio"], ["acces", "Find my purchase by number"], ["offer", "See the “Special offer” popup"], ["communaute", "WhatsApp community"]];
+  return `<div class="guide">${inSheet ? "" : `<div class="logo">${LOGO}<span class="wm"><b>Dig<span class="ipix">ı<i></i></span>Skool</b><small>ACADEMY</small></span></div>`}
+    <p>${fr ? "Version bêta cliquable de la plateforme, construite à partir du cahier des charges, de la charte et des maquettes. Testez-la comme un client." : "Clickable beta of the platform, built from the specification, brand guide and wireframes. Try it like a customer would."}</p>
+    <div class="journey">${steps.map(([k, l], i) => `<button data-a="journey" data-k="${k}"><b>${i + 1}</b><span>${l}</span></button>`).join("")}</div>
+    <div class="note"><b>${fr ? "Simulé dans la bêta" : "Simulated in the beta"}</b><br>${fr ? "Paiements (aucun argent débité), messages WhatsApp, taux de change, avis et chiffres de ventes. Pour tester l’opérateur : tapez un numéro qui commence par 67 (MTN) ou 69 (Orange). Code promo : AMI10. Les popups arrivent plus vite que dans la version finale, pour la démo." : "Payments (no money charged), WhatsApp messages, exchange rates, reviews and sales figures. To test operator detection, type a number starting with 67 (MTN) or 69 (Orange). Promo code: AMI10. Popups appear faster than in the final version, for the demo."}</div>
+    <p class="small muted">${fr ? "Changez la langue (FR | EN) et la devise en haut : tout s’adapte." : "Switch language (FR | EN) and currency at the top: everything adapts."}</p></div>`;
+}
+function renderGuide() { const g = $("#guideSide"); if (getComputedStyle(g).display !== "none") g.innerHTML = `<div class="guide-card">${guideHtml(false)}</div>`; }
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-a]");
+  if (!el) return;
+  const a = el.dataset.a;
+  if (a === "closeSheet" && e.target.closest("[data-stop]") && el.classList.contains("overlay")) return;
+  switch (a) {
+    case "go": closeSheet(); go(el.dataset.v); break;
+    case "back": go(S.view === "produit" ? (S.prev || "accueil") : "accueil"); break;
+    case "open": closeSheet(); S.prev = S.view === "produit" ? "accueil" : S.view; S.pid = el.dataset.id; S.reader.lang = null; go("produit"); break;
+    case "lang": S.lang = el.dataset.l; store.set("lang", S.lang); render(true); break;
+    case "currency": sheetCurrency(); break;
+    case "setCur": S.cur = el.dataset.c; store.set("cur", S.cur); closeSheet(); render(true); info(`${CUR[S.cur].fl} ${S.cur}`); break;
+    case "convert": sheetConvert(); break;
+    case "closeSheet": closeSheet(); break;
+    case "closePromo": S.promoBar = false; render(true); break;
+    case "copy": try { navigator.clipboard.writeText("DIGI45").then(() => info(t("copied") + " : DIGI45"), () => info("DIGI45")); } catch (err) { info("DIGI45"); } break;
+    case "guide": sheetGuide(); break;
+    case "journey": {
+      const k = el.dataset.k; closeSheet();
+      if (k === "buy") { S.pid = "vendre"; go("produit"); setTimeout(() => { S.checkoutItems = null; sheetCheckout(); }, 250); }
+      else if (k === "liseuse") { S.pid = "vendre"; if (!S.owned.includes("vendre")) { S.owned.push("vendre"); store.set("owned", S.owned); } go("liseuse"); }
+      else if (k === "offer") { go("accueil"); setTimeout(sheetOffer, 200); }
+      else if (k === "produit") { S.pid = "vendre"; go("produit"); }
+      else go(k);
+      break;
+    }
+    case "cat": el.parentElement.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === el)); break;
+    case "filter": S.filter = el.dataset.f; render(true); break;
+    case "acc": { const box = el.parentElement; const open = box.dataset.open !== "true"; box.dataset.open = open; box.querySelector(".body").hidden = !open; break; }
+    case "toc": { const more = document.querySelectorAll("[data-more]"); const show = more[0] && more[0].hidden; more.forEach(r => r.hidden = !show); el.textContent = show ? t("collapse") : t("expand"); break; }
+    case "tab": { const tgt = document.getElementById(el.dataset.t); if (tgt) scroller.scrollTo({ top: tgt.offsetTop - 110, behavior: "smooth" }); el.parentElement.querySelectorAll("button").forEach(b => b.setAttribute("aria-current", b === el)); break; }
+    case "buy": { const p = byId(S.pid); if (p.free) { S.checkoutItems = null; S.owned.includes(p.id) || S.owned.push(p.id); store.set("owned", S.owned); go("succes"); break; } S.checkoutItems = null; sheetCheckout(); break; }
+    case "buyFromFlip": closeSheet(); S.pid = "vendre"; S.checkoutItems = null; sheetCheckout(); break;
+    case "buyCart": S.checkoutItems = S.cart.slice(); if (!S.checkoutItems.length) break; S.pid = S.checkoutItems[0]; sheetCheckout(); break;
+    case "addcart": { const id = S.pid; if (!S.cart.includes(id)) S.cart.push(id); if (el.textContent.trim() === t("addPack") && !S.cart.includes("whatsapp")) S.cart.push("whatsapp"); store.set("cart", S.cart); render(true); info(`✓ ${t("addedCart")}`); break; }
+    case "cart": sheetCart(); break;
+    case "bump": keepForm(); S.bump = !S.bump; refreshMethods(); break;
+    case "method": keepForm(); S.method = el.dataset.m; refreshMethods(); break;
+    case "fixEmail": { const em = $("#coEmail"); em.value = em.value.replace(/@.*$/, "@gmail.com"); $("#emailHint").textContent = t("emailHint"); break; }
+    case "coupon": { const v = ($("#coupon").value || "").trim().toUpperCase(); const msg = $("#couponMsg"); if (v === "AMI10") { keepForm(); S.coupon = "AMI10"; refreshMethods(); info(t("codeOk")); } else { msg.textContent = t("codeBad"); msg.style.color = "var(--rouge)"; } break; }
+    case "pay": {
+      const n = $("#coName"), ph = $("#coPhone"); let ok = true;
+      $("#errName").hidden = !!n.value.trim(); n.classList.toggle("err", !n.value.trim()); if (!n.value.trim()) ok = false;
+      const digits = ph.value.replace(/\D/g, ""); const phoneOk = S.phoneCountry === "CM" ? /^6\d{8}$/.test(digits) : digits.length >= 8;
+      $("#errPhone").hidden = phoneOk; if (!phoneOk) ok = false;
+      if (!ok) break;
+      S.lastName = n.value.trim(); S.lastPhone = ph.value.trim(); closeSheet();
+      if (["mtn", "orange", "wave", "moov"].includes(S.method)) go("attente");
+      else { info(S.lang === "fr" ? "Paiement par carte sécurisé… (simulé)" : "Secure card payment… (simulated)"); setTimeout(paid, 1600); }
+      break;
+    }
+    case "confirm": paid(); break;
+    case "ussd": { const u = $("#ussd"); u.hidden = !u.hidden; break; }
+    case "changeMethod": clearInterval(waitTimer); clearTimeout(autoTimer); S.view = "produit"; render(); sheetCheckout(); break;
+    case "read": { S.pid = el.dataset.id; if (!S.owned.includes(S.pid)) { S.owned.push(S.pid); store.set("owned", S.owned); } S.reader.lang = el.dataset.rl || null; S.reader.playing = !!el.dataset.audio; go("liseuse"); break; }
+    case "rlang": S.reader.lang = el.dataset.l; render(true); break;
+    case "rsettings": sheetReaderSettings(); break;
+    case "rsize": S.reader.size = +el.dataset.s; render(true); S._noAnim = true; sheetReaderSettings(); break;
+    case "rfont": S.reader.font = el.dataset.f; render(true); S._noAnim = true; sheetReaderSettings(); break;
+    case "rtheme": S.reader.theme = el.dataset.th; render(true); S._noAnim = true; sheetReaderSettings(); break;
+    case "play": S.reader.playing = !S.reader.playing; el.innerHTML = ic(S.reader.playing ? "pause" : "play"); break;
+    case "exo": { const on = el.getAttribute("aria-pressed") !== "true"; el.setAttribute("aria-pressed", on); break; }
+    case "quote": sheetQuote(decodeURIComponent(el.dataset.q)); break;
+    case "copyQuote": { const q = decodeURIComponent(el.dataset.q); try { navigator.clipboard.writeText(q).then(() => info("✓"), () => info(q)); } catch (err) { info(q); } break; }
+    case "flip": sheetFlip(); break;
+    case "flipNext": S._flip && S._flip.next(); break;
+    case "flipPrev": S._flip && S._flip.prev(); break;
+    case "sample": info(S.lang === "fr" ? "🎧 Extrait audio de 30 s (simulé dans la bêta)" : "🎧 30-second audio sample (simulated in the beta)"); break;
+    case "offerGo": closeSheet(); S.filter = "deals"; go("boutique"); break;
+    case "fab": sheetFab(); break;
+    case "community": closeSheet(); info(t("demoLink")); break;
+    case "support": closeSheet(); info(t("demoSupport")); break;
+    case "notify": S.notified = true; render(true); info(t("notified")); break;
+    case "lead": info(S.lang === "fr" ? "✓ E-book gratuit envoyé sur WhatsApp (simulé)" : "✓ Free e-book sent to WhatsApp (simulated)"); break;
+    case "sendCode": {
+      const z = $("#codeZone"); z.hidden = false; const boxes = [...document.querySelectorAll("#codeBoxes span")]; const code = "482913";
+      boxes.forEach((b, i) => setTimeout(() => { b.textContent = code[i]; b.classList.add("f"); if (i === 5) setTimeout(() => { if (!S.owned.includes("vendre")) { S.owned.push("vendre"); store.set("owned", S.owned); } info(S.lang === "fr" ? "✓ Accès accordé" : "✓ Access granted"); go("mes-produits"); }, 700); }, 600 + i * 180));
+      break;
+    }
+    case "dismissToast": e.stopPropagation(); toasts.innerHTML = ""; return;
+    case "toast-demo": info(S.lang === "fr" ? "Fonction prévue dans la version finale (simulée ici)." : "Planned for the final version (simulated here)."); break;
+    case "toast-audio": info(S.lang === "fr" ? "🔊 Guide audio de 30 s (simulé)" : "🔊 30-second audio guide (simulated)"); break;
+    case "toast-mark": info(S.lang === "fr" ? "🔖 Marque-page ajouté" : "🔖 Bookmark added"); break;
+  }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && layer.innerHTML) closeSheet(); });
+layer.addEventListener("click", e => { if (e.target.classList.contains("overlay") && e.target.dataset.a === "closeSheet") closeSheet(); }, true);
+window.addEventListener("resize", renderGuide);
+
+/* ---------- Boot ---------- */
+const h = (location.hash || "").replace("#", "");
+const allowed = ["accueil", "boutique", "produit", "mes-produits", "acces", "communaute"];
+if (allowed.includes(h)) S.view = h;
+window.addEventListener("hashchange", () => { const v = location.hash.replace("#", ""); if (allowed.includes(v) && v !== S.view) go(v); });
+render();
+})();
+</script>
