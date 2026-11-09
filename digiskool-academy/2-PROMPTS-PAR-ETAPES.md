@@ -13,160 +13,186 @@ Après chaque phase, fais les vérifications « Je vérifie » avant de passer �
 Je vais construire avec toi DigiSkool Academy, ma plateforme
 personnelle de vente de produits digitaux (e-books, formations
 vidéo, vidéos), bilingue français / anglais, pour l'Afrique
-francophone, l'Afrique anglophone et l'international.
+francophone, l'Afrique anglophone, la diaspora et
+l'international. Site web + application (Android, iPhone,
+ordinateur).
 
 Voici le cahier des charges complet :
 
 [COLLE ICI TOUT LE CONTENU DU FICHIER 1-PROMPT-COMPLET.md]
 
-Les deux priorités absolues :
-1. Un paiement ultra simple (3 champs maximum, Mobile Money
-   en quelques secondes).
-2. Un accès immédiat au produit après le paiement, sans
-   mot de passe, sans rien à chercher.
+Et voici la charte de marque, qui s'applique sans exception :
+
+[COLLE ICI TOUT LE CONTENU DU FICHIER 4-CHARTE-DE-MARQUE.md]
+
+Les priorités absolues :
+1. Zéro inscription, zéro mot de passe pour les clients.
+2. Paiement ultra simple (3 champs maximum, Mobile Money
+   en quelques secondes, prix dans la devise du visiteur).
+3. Accès immédiat au produit après le paiement.
+4. Un niveau de design et de finition international.
 
 Pour l'instant, ne code rien. Je veux que tu :
 1. Résumes en 15 points ce que tu as compris.
 2. Proposes l'arborescence des dossiers du projet.
 3. Listes les informations qui te manquent.
-4. Confirmes le plan en 12 phases.
+4. Me dises ce que tu ferais différemment ou en plus, en
+   tant qu'expert, et pourquoi.
+5. Confirmes le plan en 14 phases.
 
 Attends mon feu vert avant de commencer la phase 1.
 ```
 
 ---
 
-## Phase 1 — Fondations et bilingue
+## Phase 1 — Fondations, bilingue et localisation
 
 ```text
-Phase 1 : fondations et bilingue. Sections 3, 4, 5 et 28
-du cahier des charges.
+Phase 1 : sections 3, 4, 6, 7 et 32 du cahier des charges.
 
-1. Initialise le projet : Next.js + TypeScript strict + Tailwind
-   + shadcn/ui + next-intl.
-2. Bilingue complet :
-   - routes /fr et /en avec les URLs traduites (section 5.3) ;
-   - détection selon la langue du téléphone : français → /fr,
-     anglais → /en, autre langue → langue par défaut ;
-   - bouton FR | EN qui garde la même page et mémorise le
-     choix (cookie 1 an, prioritaire) ;
-   - liens courts /p/[code] qui redirigent vers la bonne
-     langue ;
-   - messages/fr.json et messages/en.json, aucun texte en dur.
-3. Migration SQL Supabase complète (section 28) : tables,
+1. Initialise le projet : Next.js + TypeScript strict +
+   Tailwind + shadcn/ui + next-intl.
+2. Bilingue : routes /fr et /en traduites (section 6.3),
+   détection selon la langue du téléphone, bouton FR | EN
+   qui garde la même page, liens courts /p/[code],
+   aucun texte en dur.
+3. Localisation (section 7) : pays détecté par l'IP (sans
+   demander le GPS), devise automatique selon le tableau
+   7.2, sélecteur de devise, convertisseur ⇄, taux mis à
+   jour chaque jour + valeurs manuelles, parité FCFA/euro,
+   arrondis commerciaux, prix par zone, taux figé pendant
+   la visite.
+4. Migration SQL Supabase complète (section 32) : tables,
    traductions, index, contraintes, RLS, triggers, fonctions
    is_admin() et has_access(), buckets.
-4. Authentification sans mot de passe : numéro WhatsApp + code
-   (Send SMS Hook de Supabase, envoi par WhatsApp avec SMS de
-   secours), email + lien magique, Google. Mot de passe
-   facultatif. Middleware : /compte pour les connectés,
-   /admin pour l'admin.
-5. Données de démonstration bilingues (section 33).
-6. .env.example, premier README, et comment me donner
-   le rôle admin.
-7. Tests : détection de la langue (FR, EN, autre, cookie).
+5. Données de démonstration bilingues (section 37).
+6. .env.example et premier README.
+7. Tests : détection de la langue, détection du pays et de
+   la devise, conversion et arrondis.
 ```
 
 **Je vérifie :**
-- [ ] Mon téléphone est en français → le site s'ouvre en français.
-- [ ] Un navigateur en anglais → le site s'ouvre en anglais.
-- [ ] Le bouton FR | EN change la langue en restant sur la même page.
-- [ ] Je me connecte avec mon numéro WhatsApp et le code reçu.
+- [ ] Mon téléphone en français → site en français ; un navigateur en anglais → site en anglais.
+- [ ] Depuis le Cameroun, je vois les prix en FCFA ; avec un VPN au Nigeria, en naira ; en France, en euros.
+- [ ] Le convertisseur ⇄ m'affiche le prix dans d'autres devises.
+- [ ] Je peux changer la devise en haut de la page et le choix est mémorisé.
 
 ---
 
-## Phase 2 — Design system et couvertures
+## Phase 2 — Marque et design system
 
 ```text
-Phase 2 : design system et couvertures. Sections 7 et 8
-du cahier des charges.
+Phase 2 : section 5 et section 11 du cahier des charges,
+et toute la charte de marque.
 
-C'est la phase la plus importante pour l'image de la marque.
-Je suis designer graphique : je veux un niveau Udemy / Stripe,
-soigné dans les moindres détails.
+C'est la phase qui fait la différence entre un site amateur
+et un produit international. Je suis designer graphique :
+je veux le niveau d'Udemy, Stripe ou Apple, dans les
+moindres détails.
 
-1. Tokens de design : couleurs (section 7.3, clair et sombre),
-   typographies Plus Jakarta Sans + Inter avec next/font,
-   échelle typographique, espacements, rayons, ombres.
-2. Tous les composants de la section 7.5, dans tous leurs
-   états (normal, survol, appui, désactivé, chargement,
-   erreur), avec les animations de la section 7.6.
-3. Header ordinateur et mobile, barre de navigation du bas
-   sur mobile, footer, bouton flottant WhatsApp, bloc
-   WhatsApp support + communauté (section 16).
-4. Logo provisoire DigiSkool Academy (SVG).
-5. Page /admin/design qui présente tout le design system.
-6. Générateur de couvertures (section 8) : même modèle pour
-   tous les produits, seule la couleur change, FR et EN,
-   tous les formats, effet livre 3D.
-7. Montre-moi les couvertures des produits de démonstration
-   côte à côte.
+1. Jetons de design : une seule source (JSON) → variables
+   CSS clair/sombre → thème Tailwind + export Figma.
+2. Polices Plus Jakarta Sans + Inter (next/font), hiérarchie
+   de la charte (section 5.2), typographie française
+   automatique.
+3. Logo « Chapeau-Pixel » en SVG (toutes les versions),
+   icônes d'application, favicon, motif « Trame DigiSkool »,
+   dégradé « Aube digitale ».
+4. Tous les composants de la section 5.2 du cahier des
+   charges, dans tous leurs états, avec les animations
+   signature de la charte (section 8).
+5. Éléments signature (charte, section 9) : bloc prix,
+   étiquettes, chrono, badge FR + EN, réassurance,
+   carte WhatsApp.
+6. Pages /admin/design et /admin/marque.
+7. Générateur de couvertures automatiques (section 11) et
+   couvertures des produits de démonstration, côte à côte.
 ```
 
 **Je vérifie :**
-- [ ] La page `/admin/design` est belle et cohérente, en clair et en sombre.
+- [ ] `/admin/design` et `/admin/marque` sont beaux et cohérents, en clair et en sombre.
+- [ ] Le logo, l'icône et le motif me plaisent (sinon je donne mes corrections de designer).
 - [ ] Toutes les couvertures ont le même design, avec des couleurs différentes.
-- [ ] Les boutons sont grands et faciles à toucher sur mon téléphone.
+- [ ] J'importe les jetons dans Figma.
 
 ---
 
-## Phase 3 — Boutique publique
+## Phase 3 — Connexion sans inscription et application installable
 
 ```text
-Phase 3 : boutique publique, inspirée d'Udemy et en mieux.
-Sections 9 et 30 du cahier des charges.
+Phase 3 : section 9 et sections 10.1, 10.2 et 10.8 du
+cahier des charges.
 
-1. Header complet (recherche avec suggestions instantanées,
-   méga-menu, FR | EN, devise, panier, Mes produits,
-   Communauté) et barre de navigation du bas sur mobile.
-2. Accueil complet (section 9.2) : bannières, hero, catégories,
-   carrousels, témoignages, Roger, communauté, lead magnet.
-3. Cartes produit (section 9.4), avec la fenêtre d'aperçu
-   au survol sur ordinateur.
-4. Boutique, E-books, Formations, Vidéos, Promotions,
-   Nouveautés : filtres (tiroir sur mobile), tri, recherche.
-5. Pays et devise détectés, prix convertis et arrondis
-   (section 6.1).
-6. Pages À propos, Contact, FAQ, Comment payer, 404.
-7. SEO (section 30).
-
-Priorité : fluide et rapide sur un petit téléphone Android.
+1. Aucune inscription, aucun mot de passe client. Bouton
+   « Mes produits » au lieu de « Connexion ».
+2. Accès par numéro WhatsApp + code à 6 chiffres (Send SMS
+   Hook de Supabase Auth, WhatsApp puis SMS de secours),
+   remplissage automatique du code, grandes cases.
+3. Options discrètes : Google, lien par email.
+4. Session de 1 an, limite d'appareils, écran « Déconnecter
+   un autre appareil ? ».
+5. Connexion admin séparée : email + mot de passe + double
+   authentification.
+6. PWA : manifeste, icônes, écran de démarrage animé,
+   service worker, page hors ligne, mise à jour automatique.
+7. Bouton et page /app « Installer l'application » avec
+   détection de l'appareil et guide illustré pour iPhone,
+   bannière d'installation discrète.
+8. Barre d'onglets en bas sur mobile, transitions,
+   tirer pour actualiser.
+9. Tests : code correct, incorrect, expiré, limite d'essais.
 ```
 
 **Je vérifie :**
-- [ ] L'accueil donne envie et fait professionnel sur mon téléphone.
-- [ ] La recherche propose des résultats pendant que je tape.
-- [ ] Les prix s'affichent dans la bonne devise.
-- [ ] Quand je partage un lien produit sur WhatsApp, la couverture et le titre apparaissent.
+- [ ] Je ne vois nulle part « S'inscrire » ni « mot de passe ».
+- [ ] « Mes produits » → mon numéro → le code arrive sur WhatsApp → je suis connecté.
+- [ ] J'installe l'application sur mon Android, sur un iPhone et sur mon ordinateur.
+- [ ] L'application s'ouvre avec l'animation du logo, sans barre d'adresse.
 
 ---
 
-## Phase 4 — Page produit, aperçus et preuves sociales
+## Phase 4 — Boutique publique
 
 ```text
-Phase 4 : la page produit qui convertit. Sections 10, 11
-et 12 du cahier des charges.
+Phase 4 : sections 12 et 34 du cahier des charges.
 
-1. Page produit mobile exactement dans l'ordre de la
-   section 10.1, puis les sections 10.3 et 10.4.
-2. Version ordinateur façon Udemy (section 10.2) : en-tête
-   sombre et carte d'achat collante.
-3. Barre d'achat collante sur mobile (section 10.5) et
-   micro-détails (section 10.6), dont « Accéder à mon produit »
-   si le client possède déjà le produit.
-4. Aperçus (section 11) :
-   - e-book : « Feuilleter », premières pages lisibles,
-     pages suivantes floutées générées côté serveur (le vrai
-     texte n'est jamais envoyé) ;
-   - formation : vidéo de présentation, programme complet,
-     leçons gratuites lisibles sans compte, écran d'achat
-     à la fin de l'aperçu.
-5. Preuves sociales (section 12) : ventes (dont ventes
-   antérieures), note et répartition, avis vérifiés,
-   témoignages (captures, vidéos), badges automatiques,
-   « Dernière vente il y a… », visiteurs en direct (réels,
-   Supabase Realtime, au-dessus d'un seuil).
-6. Tests : le texte des pages verrouillées n'est jamais
+1. Header complet (recherche instantanée + Ctrl+K,
+   méga-menu, FR | EN, devise ⇄, favoris, notifications,
+   panier, Mes produits, Communauté).
+2. Accueil complet (section 12.2), dont « Comment ça marche »
+   en 3 étapes.
+3. Cartes produit (section 12.4) avec aperçu au survol.
+4. Boutique, catégories, Promotions, Nouveautés : filtres,
+   tri, recherche.
+5. Pages À propos, Contact, FAQ, Parrainage, Vérification de
+   certificat, 404, hors ligne, maintenance.
+6. SEO (section 34).
+```
+
+**Je vérifie :**
+- [ ] L'accueil fait « produit international » sur mon téléphone.
+- [ ] La recherche propose des résultats pendant que je tape.
+- [ ] Un lien produit partagé sur WhatsApp affiche la couverture et le titre.
+
+---
+
+## Phase 5 — Page produit, aperçus et preuves sociales
+
+```text
+Phase 5 : sections 13, 14 et 15 du cahier des charges.
+
+1. Page produit mobile dans l'ordre exact de la section
+   13.1, puis 13.3 et 13.4.
+2. Version ordinateur façon Udemy (13.2).
+3. Barre d'achat collante (13.5) et micro-détails (13.6).
+4. Aperçus (section 14) : feuilleter l'e-book avec pages
+   floutées générées côté serveur ; leçons gratuites sans
+   connexion ; écran d'achat en fin d'aperçu.
+5. Preuves sociales (section 15) : ventes (dont antérieures),
+   étoiles, avis vérifiés, témoignages, badges, achats
+   récents et visiteurs en direct réels, certificats
+   vérifiables.
+6. Test : le texte des pages verrouillées n'est jamais
    envoyé au navigateur.
 
 Tout doit être réel : aucun chiffre, avis ou notification
@@ -174,293 +200,279 @@ inventé.
 ```
 
 **Je vérifie :**
-- [ ] Sur mon téléphone, je vois le prix, la réduction, le chrono et le bouton « Acheter » sans faire défiler.
-- [ ] Je feuillette un e-book : les premières pages sont lisibles, les suivantes floutées.
-- [ ] Je regarde une leçon gratuite sans créer de compte.
-- [ ] Le nombre de ventes et les avis s'affichent correctement.
+- [ ] Sans faire défiler, je vois le prix dans ma devise, la réduction, le chrono et « Acheter maintenant ».
+- [ ] Je feuillette un e-book : premières pages lisibles, suite floutée.
+- [ ] Je regarde une leçon gratuite sans être connecté.
 
 ---
 
-## Phase 5 — Promotions, popups et communauté
+## Phase 6 — Promotions, popups, notifications et communauté
 
 ```text
-Phase 5 : promotions, popups et communauté. Sections 16,
-17, 18 et 19 du cahier des charges.
+Phase 6 : sections 19, 21, 22 et 23 du cahier des charges.
 
-1. Moteur de promotions (section 17) : campagnes, modèles
-   en un clic, récurrences, prix de lancement limité,
-   priorités, cumul. Calcul du prix final côté serveur,
-   dans une seule fonction testée.
-2. Affichage partout : barre en haut avec chrono et code
-   à copier, étiquettes, prix barré + économie, page
-   Promotions.
-3. Codes promo avec canal, liens ?promo=CODE (mémorisés
-   7 jours), QR codes.
-4. Historique des prix.
-5. Popups de la section 18 avec toutes les règles communes
-   (un seul par visite, jamais sur le checkout, le succès,
-   la liseuse ou le lecteur).
-6. Communauté : bouton partout, bouton flottant (communauté
-   en premier, support en second), page /communaute, liens
-   FR/EN, clics comptés.
-7. Tests : calcul des prix (promotions, priorités, codes,
-   devises, arrondis).
-
-Règle absolue : chronos réels, prix barrés réels.
+1. Moteur de promotions (section 21) : campagnes, modèles
+   en un clic, récurrences, prix de lancement, priorités,
+   calcul du prix final côté serveur dans une seule
+   fonction testée, affichage partout dans la devise
+   du visiteur.
+2. Codes promo, liens ?promo=CODE, QR codes, historique
+   des prix.
+3. Popups et centre de notifications (section 22) avec
+   toutes les règles.
+4. Bloc WhatsApp (section 19) dans toutes ses variantes et
+   bouton flottant (communauté en premier).
+5. Communauté (23.1) et parrainage (23.2) avec anti-fraude.
+6. Tests : calcul des prix, parrainage.
 ```
 
 **Je vérifie :**
-- [ ] J'active « Flash 24 h -45 % sur toutes les formations » : étiquettes, barre et prix changent partout.
+- [ ] « Flash 24 h -45 % sur toutes les formations » en 2 clics : tout change sur le site.
 - [ ] La promo disparaît toute seule à la fin du chrono.
-- [ ] Un lien `?promo=CODE` applique bien le code.
 - [ ] Je ne vois jamais deux popups dans la même visite.
 - [ ] Le bouton flottant propose d'abord la communauté.
+- [ ] Mon lien de parrainage donne -10 % à un ami.
 
 ---
 
-## Phase 6 — Checkout express, paiements et accès immédiat
+## Phase 7 — Checkout express, paiements et accès immédiat
 
 ```text
-Phase 6 : la phase la plus importante pour les ventes.
-Sections 6, 14, 15 et 27 du cahier des charges.
+Phase 7 : la phase la plus importante pour les ventes.
+Sections 8, 17, 18 et 31 du cahier des charges.
 
-1. Checkout express (section 14.1) : une page ou un tiroir,
-   3 champs maximum (nom, WhatsApp, email facultatif),
-   informations mémorisées, code promo replié, un order bump,
-   moyens de paiement du pays, opérateur détecté depuis le
-   numéro, un seul bouton « Payer », réassurance, carte
-   WhatsApp « Un souci pour payer ? », erreurs en langage
-   simple, réessayer sans rien ressaisir.
+1. Checkout express (section 17.1) : 3 champs maximum,
+   pré-remplissage pour les clients connus, opérateur
+   détecté depuis le numéro, montant débité affiché si la
+   devise diffère, un seul bouton « Payer », aide
+   contextuelle, erreurs simples, réessayer sans ressaisir.
 2. PaymentProvider + [FOURNISSEUR_PRINCIPAL] et
-   [FOURNISSEUR_SECONDAIRE] en mode test, routage par pays.
-3. Écran d'attente Mobile Money (section 14.2) avec statut
-   en direct, instructions par opérateur et par pays,
-   « Renvoyer la demande ».
+   [FOURNISSEUR_SECONDAIRE] en mode test, routage par pays,
+   3-D Secure, limites anti-fraude.
+3. Écran d'attente Mobile Money (17.2) : statut en direct,
+   guide audio, instructions par opérateur, bandeau
+   d'incident.
 4. Webhook sécurisé et idempotent, rattrapage automatique.
-5. Accès immédiat (section 15) : connexion automatique après
-   paiement, page de succès avec le gros bouton « Lire
-   maintenant / Commencer la formation », ouverture directe,
-   bandeau si la page a été fermée, page « Retrouver mon
-   achat » avec code WhatsApp, surveillance des accès non
-   ouverts.
-6. Messages d'accès automatiques WhatsApp (Cloud API) + SMS
-   de secours + email (section 27).
-7. Entonnoir du checkout et relance des paniers abandonnés.
+5. Accès immédiat (section 18) : connexion automatique, page
+   de succès, ouverture directe, bandeau si la page a été
+   fermée, « Retrouver mon achat », accès non ouverts.
+6. Messages WhatsApp / SMS / email (section 31).
+7. Entonnoir du checkout, relance des paniers abandonnés.
 8. Tests : webhook (signature, doublon, montant/devise),
-   connexion automatique (jeton à usage unique), « Retrouver
-   mon achat » (code correct, incorrect, expiré).
+   connexion automatique (jeton à usage unique).
 
 Mesure : sur un écran de 360 px, de la page produit au
-produit ouvert, moins de 60 secondes et 3 champs maximum.
+produit ouvert en moins de 60 secondes et 3 champs maximum.
 ```
 
 **Je vérifie (avec mon propre téléphone) :**
 - [ ] De la page produit au produit ouvert : moins d'une minute, sans mot de passe.
-- [ ] Après le paiement, je suis directement devant mon produit, sans rien fermer ni chercher.
-- [ ] Je reçois le lien d'accès sur WhatsApp en quelques secondes.
-- [ ] Je ferme la page pendant le paiement, je reviens : le bandeau « Accéder à mon produit » s'affiche.
-- [ ] Sur un autre téléphone, « Retrouver mon achat » avec mon numéro me donne accès.
-- [ ] En cas de solde insuffisant, le message est clair et je peux réessayer sans tout retaper.
+- [ ] Après le paiement, je suis directement devant mon produit.
+- [ ] Le lien d'accès arrive sur WhatsApp en quelques secondes.
+- [ ] Je ferme la page pendant le paiement, je reviens : « Accéder à mon produit » s'affiche.
+- [ ] En cas de solde insuffisant, le message est clair et je réessaie sans tout retaper.
 
 ---
 
-## Phase 7 — Espace client : liseuse et lecteur vidéo
+## Phase 8 — Espace client et expérience d'apprentissage
 
 ```text
-Phase 7 : espace client. Sections 20, 21 et 22 du cahier
-des charges.
+Phase 8 : sections 24, 25 et 26 du cahier des charges.
 
-1. Espace client : produits achetés en premier, bibliothèque
-   (Lire / Regarder / Télécharger pour chaque langue),
-   commandes et reçus, certificats, favoris, profil,
-   appareils connectés.
-2. PDF professionnels générés par langue + nombre de pages
-   réel + images d'aperçu.
-3. Liseuse : sommaire, progression, reprise automatique,
-   bascule FR ⇄ EN sur le même chapitre, taille du texte,
-   thèmes, plein écran, marque-pages, filigrane,
-   mini-guide à la première ouverture.
-4. Lecteur vidéo Bunny Stream : progression, reprise,
-   vitesse, sous-titres FR/EN, version FR/EN, filigrane,
-   téléchargement si activé.
-5. Téléchargements sécurisés (URL signée 60 s, limite,
+1. « Mes produits » : produits achetés en premier,
+   bibliothèque FR/EN, commandes, certificats, favoris,
+   parrainage, profil, appareils.
+2. PDF professionnels (modèle de la charte), images
+   d'aperçu.
+3. Liseuse (bascule FR ⇄ EN sur le même chapitre, thèmes,
+   reprise, marque-pages, filigrane, mini-guide).
+4. Lecteur vidéo Bunny Stream (reprise, vitesse,
+   sous-titres, version FR/EN, filigrane).
+5. Téléchargements sécurisés (URL signée, limite,
    filigrane PDF).
-6. Option « Offrir un produit » (section 20.6).
-7. Avis clients (acheteurs uniquement) et demande d'avis
-   automatique.
+6. Motivation : séries, badges, anneau de progression,
+   rappels, certificat vérifiable.
+7. Recommandations en fin de produit, « Offrir »,
+   avis clients.
 8. Tests : accès refusé sans achat ou si désactivé.
 ```
 
 **Je vérifie :**
-- [ ] Je lis un e-book, je ferme, je reviens : je reprends au même endroit.
-- [ ] Je bascule de FR à EN dans la liseuse : je reste sur le même chapitre.
-- [ ] Le PDF téléchargé est beau et porte mon nom en bas de page.
-- [ ] Quand je désactive le téléchargement d'une formation, le bouton disparaît et le lien direct est refusé.
+- [ ] Je reprends ma lecture au bon endroit, sur mon téléphone puis sur mon ordinateur.
+- [ ] La bascule FR ⇄ EN garde le même chapitre.
+- [ ] Le PDF est beau et porte mon nom en bas de page.
+- [ ] Mon certificat a un QR code qui ouvre une page de vérification.
 
 ---
 
-## Phase 8 — Back-office admin
+## Phase 9 — Centre d'aide et assistant IA
 
 ```text
-Phase 8 : back-office /admin. Section 25 du cahier des
-charges (les points 3 et 14 seront faits aux phases 9
-et 10 : prévois leur emplacement).
+Phase 9 : sections 20, 28.1 et 28.2 du cahier des charges.
 
-Je gère ma boutique depuis mon téléphone : tout doit être
-parfaitement utilisable sur mobile.
-
-Points importants :
-- Tableau de bord avec entonnoir du checkout, accès non
-  ouverts, ventes par pays, langue, moyen de paiement,
-  code promo, campagne et source.
-- Produits FR / EN côte à côte, ventes antérieures, aperçus,
-  bonus, badges, offre de lancement.
-- Éditeur d'e-book, formations, pages de vente
-  publicitaires, packs.
-- Promotions en un clic, popups, bannières.
-- Commandes (renvoyer l'accès, rembourser, offrir), clients,
-  avis et témoignages (import), abonnés.
-- Paiements (routage, devises, instructions par opérateur),
-  modèles de messages, paramètres, équipe, journal.
+1. Centre d'aide /aide et /en/help : recherche, articles
+   illustrés, vidéos courtes, guides audio, les 11 articles
+   indispensables (section 20), en FR et EN.
+2. Aide contextuelle dans le checkout et l'écran d'attente.
+3. Coach DigiSkool (prompt n° 1 de 3-PROMPTS-IA.md) :
+   langue et devise du visiteur, catalogue, promos, FAQ,
+   articles d'aide et instructions de paiement du pays
+   injectés, streaming, limites, lien WhatsApp.
+4. Statistiques : articles lus, recherches sans résultat.
 ```
 
 **Je vérifie :**
-- [ ] Je lance une promo -45 % en 2 clics depuis mon téléphone.
-- [ ] Je renvoie l'accès d'un client par WhatsApp en un clic.
-- [ ] J'importe une capture de témoignage WhatsApp et elle s'affiche sur la page produit.
-- [ ] L'entonnoir me montre à quelle étape les clients abandonnent.
+- [ ] Je cherche « payer orange money » : le bon article s'affiche avec sa vidéo.
+- [ ] Je demande au Coach « C'est combien en naira ? » : il répond avec le bon prix.
+- [ ] Je lui demande une réduction inventée : il refuse poliment.
 
 ---
 
-## Phase 9 — Studio IA
+## Phase 10 — Back-office admin
 
 ```text
-Phase 9 : Studio IA. Sections 23 et 24.3 du cahier des
-charges.
+Phase 10 : section 29 du cahier des charges (les points 3
+et 16 seront faits aux phases 11 et 12 : prévois leur
+emplacement).
+
+Je gère ma boutique depuis mon téléphone : tout doit être
+parfaitement utilisable sur mobile, et l'admin installable
+comme application.
+
+Points importants : tableau de bord complet (entonnoir,
+accès non ouverts, ventes par pays et devise), produits
+FR/EN et prix par zone, éditeur d'e-book, formations, pages
+publicitaires, promotions en un clic, notifications push,
+commandes (renvoyer l'accès en un clic), clients, avis et
+témoignages, aide, paiements (taux, zones, instructions,
+bandeau d'incident), messages, application, paramètres,
+équipe, journal.
+```
+
+**Je vérifie :**
+- [ ] Je lance une promo et j'envoie la notification push en quelques gestes depuis mon téléphone.
+- [ ] Je renvoie l'accès d'un client par WhatsApp en un clic.
+- [ ] Je modifie un taux de change et les prix se mettent à jour.
+- [ ] L'entonnoir me montre où les clients abandonnent.
+
+---
+
+## Phase 11 — Studio IA
+
+```text
+Phase 11 : sections 27 et 28.3 du cahier des charges.
 
 Voici les prompts système à utiliser :
 
 [COLLE ICI TOUT LE CONTENU DU FICHIER 3-PROMPTS-IA.md]
 
-1. Création d'un e-book : brief → plan à valider → rédaction
-   en tâche de fond → traduction → contrôle qualité →
-   relecture et régénération ciblée → couverture, page
-   produit, page de vente publicitaire, bonus, aperçus,
-   prix suggéré, annonces → aperçu → publication.
-2. Formation vidéo et vidéo : transcription, sous-titres
-   FR/EN, structure, pages de vente, support PDF en option.
+1. E-book : brief → plan → rédaction en tâche de fond →
+   traduction → contrôle qualité → relecture → couverture,
+   page produit, page publicitaire, bonus, aperçus, prix par
+   zone, annonces, notification push → publication.
+2. Formation et vidéo : transcription, sous-titres FR/EN,
+   structure, pages de vente.
 3. Import de contenu existant.
-4. Tâches de fond avec reprise et notification.
-5. Estimation du coût, coût réel, budget mensuel.
-6. Boutons IA dans tout l'admin.
-7. Générateur d'annonces communauté et de visuels promo.
+4. Estimation du coût, coût réel, budget mensuel.
+5. Boutons IA dans tout l'admin.
 ```
 
 **Je vérifie :**
-- [ ] Je demande un e-book de 30 pages : le PDF fait environ 30 pages, en FR et en EN.
-- [ ] La page produit et la page de vente sont générées automatiquement dans les deux langues.
-- [ ] Je régénère un chapitre avec une consigne : seul ce chapitre change.
-- [ ] Le coût de la génération s'affiche.
+- [ ] Un e-book de 30 pages demandé fait environ 30 pages, en FR et en EN.
+- [ ] La page produit et la page publicitaire sont générées dans les deux langues.
+- [ ] Je régénère un chapitre : seul ce chapitre change.
 
 ---
 
-## Phase 10 — Pixels et pages publicitaires
+## Phase 12 — Pixels et pages publicitaires
 
 ```text
-Phase 10 : publicité. Sections 13 et 26 du cahier des
-charges.
+Phase 12 : sections 16 et 30 du cahier des charges.
 
-1. Pages de vente publicitaires /offre/[slug] (section 13) :
-   sans menu, sections modifiables, bouton d'achat répété,
-   checkout express sans quitter la page, exclues de
-   l'indexation.
-2. Page admin « Pixels et suivi » : tous les outils de la
-   section 26.1, réglés dans l'admin sans redéployer,
-   jetons chiffrés.
-3. Événements de la section 26.2 ; Purchase côté serveur
-   ET navigateur avec le même event_id ; correspondance
-   avancée ; UTM et identifiants de clic ; devise de
-   reporting ; flux catalogue.
-4. Guide de connexion intégré pour chaque outil (26.4).
-5. Page « Santé du suivi » avec pastilles et simulation
-   d'un parcours d'achat test (26.5).
-6. Générateur de liens et paramètres UTM prêts à copier
-   pour Meta et TikTok (26.6), rapport par campagne.
-7. Bannière cookies FR/EN + Google Consent Mode v2.
+1. Pages publicitaires /offre/[slug] (section 16).
+2. Page admin « Pixels et suivi » (30.1), réglée sans
+   redéployer, jetons chiffrés.
+3. Événements (30.2) ; Purchase serveur ET navigateur avec
+   le même event_id ; correspondance avancée ; UTM et
+   identifiants de clic ; devise de reporting ; flux
+   catalogue.
+4. Guide de connexion (30.4) et « Santé du suivi » avec
+   simulation d'un achat test (30.5).
+5. Générateur de liens et paramètres UTM Meta / TikTok
+   (30.6), rapport par publicité.
+6. Bannière cookies + Google Consent Mode v2.
 ```
 
 **Je vérifie :**
-- [ ] J'ai connecté mon pixel Meta en suivant le guide de l'admin, et la pastille est verte.
-- [ ] « Simuler un parcours d'achat test » fait apparaître les événements dans l'outil de test de Meta et de TikTok.
-- [ ] Un achat test n'est compté qu'une seule fois dans Meta.
-- [ ] Le rapport m'indique de quelle publicité vient chaque vente test.
+- [ ] Mon pixel Meta est connecté grâce au guide, pastille verte.
+- [ ] « Simuler un parcours d'achat test » apparaît dans les outils de test de Meta et TikTok.
+- [ ] Un achat test n'est compté qu'une fois.
+- [ ] Le rapport m'indique de quelle publicité vient chaque vente.
 
 ---
 
-## Phase 11 — Assistant IA, messages marketing et pages légales
+## Phase 13 — Application : hors ligne, notifications push et stores
 
 ```text
-Phase 11 : sections 24.1, 24.2, 27 et 29 du cahier des
-charges.
+Phase 13 : sections 10.3 à 10.7 du cahier des charges.
 
-1. Coach DigiSkool (prompt n° 1 de 3-PROMPTS-IA.md) :
-   langue du visiteur, catalogue + prix + promos + FAQ +
-   instructions de paiement injectés, streaming, limites,
-   lien WhatsApp.
-2. Tous les messages de la section 27 (WhatsApp, SMS,
-   email) en FR et EN, avec les textes des modèles WhatsApp
-   à faire valider par Meta.
-3. Lead magnet (numéro WhatsApp ou email → e-book gratuit).
-4. Pages légales FR et EN : mentions légales, CGV,
-   confidentialité, remboursement, cookies, adaptées à la
-   vente de produits digitaux en Afrique et en Europe, avec
-   des [CROCHETS] là où je dois compléter.
-5. Blog simple bilingue.
+1. Lecture hors ligne dans l'application (licences,
+   vérification du droit d'accès, synchronisation de la
+   progression, gestion de l'espace).
+2. Notifications push (Web Push) : autorisation au bon
+   moment, types, envoi depuis l'admin avec ciblage et
+   statistiques, fonctionnement sur Android, ordinateur
+   et iPhone (application installée).
+3. Paquet Google Play (Trusted Web Activity) : nom de
+   paquet [ANDROID_PACKAGE], Digital Asset Links, App Links,
+   version « Mes produits » sans achats intégrés, fiche du
+   store FR et EN.
+4. Paquet iPhone avec Capacitor : notifications natives,
+   hors ligne, Face ID / empreinte, sans achats intégrés.
+5. Microsoft Store via PWABuilder (option).
+6. Guide de publication pas à pas pour chaque store, avec
+   les règles de paiement à vérifier au moment de publier.
 ```
 
 **Je vérifie :**
-- [ ] Je demande au Coach « Comment payer avec Orange Money ? » : il explique clairement, étape par étape.
-- [ ] Je lui demande une réduction inventée : il refuse poliment.
-- [ ] Je m'inscris au lead magnet et je reçois l'e-book.
-- [ ] Je fais relire les pages légales par un professionnel avant le lancement.
+- [ ] Je télécharge un e-book hors ligne, je coupe internet : je peux le lire dans l'application.
+- [ ] Je reçois une notification de promo sur mon téléphone.
+- [ ] La version Google Play s'installe et ouvre mes produits sans bouton d'achat.
 
 ---
 
-## Phase 12 — Tests, sécurité et mise en ligne
+## Phase 14 — Sécurité, conformité, tests et mise en ligne
 
 ```text
-Phase 12 : finalisation et mise en ligne. Sections 29,
-31 et 33 du cahier des charges.
+Phase 14 : sections 33, 35 et 37 du cahier des charges.
 
-1. Audit de sécurité complet. Corrige ce qui manque.
-2. Tests de bout en bout Playwright, FR et EN, écran 360 px :
-   publicité → page produit → checkout → paiement test →
-   produit ouvert, en moins de 60 secondes.
-3. Performance avec les pixels actifs : Lighthouse mobile
-   ≥ 90, LCP < 2,5 s, INP < 200 ms, CLS < 0,1.
-4. Accessibilité : contrastes, clavier, popups.
-5. Supprime les avis et témoignages de démonstration.
-6. Guide de mise en ligne pas à pas :
-   - Vercel + domaine [DOMAINE] ;
-   - DNS email Resend (SPF, DKIM, DMARC) ;
-   - WhatsApp Business Platform : numéro, vérification de
-     l'entreprise, validation des modèles de messages ;
-   - SMS de secours ;
-   - clés de paiement en mode réel + URL des webhooks ;
-   - Bunny Stream, Inngest, sauvegardes Supabase, Sentry.
-7. README final.
+1. Audit de sécurité complet, corrections.
+2. Conformité : pages légales FR/EN (modèles avec des
+   [CROCHETS] à compléter), consentements, export et
+   suppression des données, factures, préparation fiscale
+   (pays, montants hors taxes et taxes).
+3. Supervision et alertes (section 35), sauvegardes testées.
+4. Tests de bout en bout Playwright, FR et EN, 360 px :
+   publicité → produit ouvert en moins de 60 secondes.
+5. Performance avec pixels actifs (Lighthouse ≥ 90,
+   LCP < 2,5 s, INP < 200 ms, CLS < 0,1), accessibilité.
+6. Suppression des données de démonstration.
+7. Guide de mise en ligne : Vercel + [DOMAINE], DNS email
+   (SPF, DKIM, DMARC), WhatsApp Business Platform
+   (vérification, modèles), SMS, paiements en mode réel +
+   webhooks, Bunny, Inngest, taux de change, sauvegardes,
+   Sentry, surveillance.
+8. README final.
 ```
 
 **Je vérifie avant le lancement :**
-- [ ] J'achète un vrai produit à petit prix avec mon téléphone et mon compte Mobile Money : je suis devant le produit en moins d'une minute.
-- [ ] Un proche qui n'achète jamais en ligne arrive à payer seul, sans aide.
-- [ ] Un ami anglophone achète depuis son téléphone en anglais : tout est en anglais, jusqu'au message WhatsApp.
-- [ ] Le message d'accès WhatsApp arrive en quelques secondes.
+- [ ] J'achète un vrai produit à petit prix avec mon Mobile Money : produit ouvert en moins d'une minute.
+- [ ] Un proche qui n'achète jamais en ligne réussit seul, sans aide.
+- [ ] Un ami anglophone au Nigeria voit les prix en naira et tout en anglais, jusqu'au message WhatsApp.
 - [ ] Mes pixels Meta et TikTok reçoivent l'achat, une seule fois.
 - [ ] Le site est fluide sur un vieux téléphone Android.
-- [ ] Les pages légales sont complétées et relues.
-- [ ] Les liens de la communauté FR et EN fonctionnent.
-- [ ] Les avis de démonstration ont été supprimés.
+- [ ] Les pages légales sont complétées et relues par un professionnel, et un comptable a validé la fiscalité.
+- [ ] Les données de démonstration ont été supprimées.
 
 ---
 
@@ -471,7 +483,8 @@ Phase 12 : finalisation et mise en ligne. Sections 29,
 ```text
 Il y a un problème : [décris ce que tu fais, ce que tu attends,
 et ce qui se passe à la place].
-Langue du site : [FR / EN]. Appareil : [téléphone / ordinateur].
+Langue : [FR / EN]. Devise : [ex. XAF]. Appareil : [téléphone /
+ordinateur / application].
 Voici le message d'erreur : [colle l'erreur].
 
 1. Explique-moi la cause en termes simples.
@@ -480,32 +493,32 @@ Voici le message d'erreur : [colle l'erreur].
 4. Dis-moi comment vérifier que c'est réglé.
 ```
 
-**Pour ajouter une fonctionnalité plus tard :**
+**Pour ajouter une fonctionnalité :**
 
 ```text
 Je veux ajouter : [fonctionnalité].
-Elle doit fonctionner en français et en anglais, et rester
+Elle doit fonctionner en français et en anglais, dans toutes
+les devises, sur le site et dans l'application, et rester
 simple pour un client qui achète rarement en ligne.
 Avant de coder, propose-moi un plan court : fichiers touchés,
 changements de base de données, risques pour l'existant.
-Attends mon accord avant de commencer.
+Attends mon accord.
 ```
 
 **Pour améliorer le design d'une page :**
 
 ```text
-La page [nom de la page] ne me plaît pas : [ce qui ne va pas].
-Améliore-la en respectant le design system DigiSkool
-(section 7 : bleu nuit + or, rouge promo, Plus Jakarta Sans
-+ Inter, style premium), en priorité sur mobile, dans les deux
-langues. Ne change pas la logique.
+La page [nom] ne me plaît pas : [ce qui ne va pas].
+Améliore-la en respectant strictement la charte de marque
+(4-CHARTE-DE-MARQUE.md), en priorité sur mobile, en clair et
+en sombre, dans les deux langues. Ne change pas la logique.
 ```
 
 **Pour améliorer les ventes d'une page :**
 
 ```text
-Analyse la page [nom de la page] comme un expert en conversion
-qui vend des produits digitaux en Afrique sur mobile.
+Analyse la page [nom] comme un expert en conversion qui vend
+des produits digitaux en Afrique sur mobile.
 Liste les 5 changements qui augmenteraient le plus les ventes,
 du plus important au moins important, en restant honnête
 (pas de fausses preuves ni de fausses urgences).
